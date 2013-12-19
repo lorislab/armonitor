@@ -15,8 +15,9 @@
  */
 package org.lorislab.armonitor.agent.model;
 
-import java.util.Properties;
-import java.util.jar.Manifest;
+import java.util.HashMap;
+import java.util.Map;
+import org.lorislab.armonitor.arm.model.Arm;
 
 /**
  * The release model.
@@ -26,16 +27,39 @@ import java.util.jar.Manifest;
 public class Release {
 
     /**
+     * The application release monitor descriptor
+     */
+    private Arm arm;
+
+    /**
      * The manifest
      */
-    private Manifest manifest;
-  
+    private Map<String, String> manifest = new HashMap<>();
+
+    /**
+     * Gets the ARM model.
+     *
+     * @return the ARM model.
+     */
+    public Arm getArm() {
+        return arm;
+    }
+
+    /**
+     * The ARM model.
+     *
+     * @param arm the ARM model.
+     */
+    public void setArm(Arm arm) {
+        this.arm = arm;
+    }
+
     /**
      * Gets the manifest.
      *
      * @return the manifest.
      */
-    public Manifest getManifest() {
+    public Map<String, String> getManifest() {
         return manifest;
     }
 
@@ -44,7 +68,7 @@ public class Release {
      *
      * @param manifest the manifest.
      */
-    public void setManifest(Manifest manifest) {
+    public void setManifest(Map<String, String> manifest) {
         this.manifest = manifest;
     }
 

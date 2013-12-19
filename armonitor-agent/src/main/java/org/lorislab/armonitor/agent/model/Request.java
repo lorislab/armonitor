@@ -14,30 +14,29 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.service;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.agent.rs.model.Version;
+package org.lorislab.armonitor.agent.model;
 
 /**
- * The version rest-service.
+ * The request model.
  * 
  * @author Andrej Petras
  */
-@Path("lorislab/version")
-public interface VersionService {
+public class Request {
     
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    Version getAgentVersion(@QueryParam("manifest") String manifest) throws Exception;
+    private boolean manifest = false;
     
-    @GET
-    @Path("app")
-    @Produces(MediaType.APPLICATION_JSON)    
-    Version getAppVersion(@QueryParam("manifest") String manifest) throws Exception;
-    
+    private final boolean arm = true;
+
+    public boolean isArm() {
+        return arm;
+    }
+
+    public boolean isManifest() {
+        return manifest;
+    }
+
+    public void setManifest(boolean manifest) {
+        this.manifest = manifest;
+    }
+        
 }

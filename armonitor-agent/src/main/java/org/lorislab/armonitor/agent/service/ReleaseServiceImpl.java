@@ -15,9 +15,14 @@
  */
 package org.lorislab.armonitor.agent.service;
 
+import java.util.Map;
+import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import org.lorislab.armonitor.agent.model.Release;
-import org.lorislab.armonitor.util.ManifestLoader;
+import org.lorislab.armonitor.agent.model.Request;
+import org.lorislab.armonitor.arm.model.Arm;
+import org.lorislab.armonitor.arm.util.ArmLoader;
+import org.lorislab.armonitor.manifest.util.ManifestLoader;
 
 /**
  * The release service implementation.
@@ -30,25 +35,57 @@ public class ReleaseServiceImpl implements ReleaseService {
      * {@inheritDoc}
      */
     @Override
-    public Release getAgentRelease() {
+    public Release getAgentRelease(Request request) {
         Release result = new Release();
+
+        // load arm model
+        if (request.isArm()) {
+            Arm arm = ArmLoader.loadArmFromJar(ReleaseServiceImpl.class);
+            result.setArm(arm);
+        }
         
-        Manifest manifest = ManifestLoader.loadManifestFromJar(ReleaseServiceImpl.class); 
-        result.setManifest(manifest);
-        
+        // load manifest 
+        if (request.isManifest()) {       
+            Manifest manifest = ManifestLoader.loadManifestFromJar(ReleaseServiceImpl.class);
+            if (manifest != null) {
+                Attributes mainAttribs = manifest.getMainAttributes();
+                if (mainAttribs != null) {
+                    for (Map.Entry<Object, Object> entry : mainAttribs.entrySet()) {
+                        result.getManifest().put(entry.getKey().toString(), entry.getValue().toString());
+                    }
+                }
+            }
+        }
+
         return result;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public Release getApplicationRelease() {
+    public Release getApplicationRelease(Request request) {
         Release result = new Release();
-       
-        Manifest manifest = ManifestLoader.loadManifestFrom(ReleaseServiceImpl.class); 
-        result.setManifest(manifest);
-                
+
+        // load arm model
+        if (request.isArm()) {
+            Arm arm = ArmLoader.loadArmFrom(ReleaseServiceImpl.class);
+            result.setArm(arm);
+        }
+        
+        // load manifest 
+        if (request.isManifest()) {       
+            Manifest manifest = ManifestLoader.loadManifestFrom(ReleaseServiceImpl.class);
+            if (manifest != null) {
+                Attributes mainAttribs = manifest.getMainAttributes();
+                if (mainAttribs != null) {
+                    for (Map.Entry<Object, Object> entry : mainAttribs.entrySet()) {
+                        result.getManifest().put(entry.getKey().toString(), entry.getValue().toString());
+                    }
+                }
+            }
+        }
+        
         return result;
     }
 

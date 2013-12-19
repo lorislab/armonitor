@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.agent.service;
 
 import org.lorislab.armonitor.agent.model.Release;
+import org.lorislab.armonitor.agent.model.Request;
 
 /**
  * The release service.
@@ -27,14 +28,18 @@ public interface ReleaseService {
     /**
      * Gets the release information of the agent.
      *
+     * @param request the request.
+     * 
      * @return the release information of the agent.
      */
-    Release getAgentRelease();
+    Release getAgentRelease(Request request);
 
     /**
      * Gets the release information of the application.
      *
+     * @param request the request.
+     * 
      * @return the release information of the application.
      */
-    Release getApplicationRelease();
+    Release getApplicationRelease(Request request);
 }

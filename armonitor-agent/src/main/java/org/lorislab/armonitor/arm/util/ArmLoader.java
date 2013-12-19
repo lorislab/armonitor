@@ -13,33 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.armonitor.util;
+
+package org.lorislab.armonitor.arm.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
-import java.util.jar.JarFile;
-import java.util.jar.JarInputStream;
-import java.util.jar.Manifest;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.lorislab.armonitor.arm.model.Arm;
+import org.lorislab.armonitor.arm.model.ArmConstant;
 
 /**
- * The manifest loader utility.
- *
+ * The ARM model loader.
+ * 
  * @author Andrej Petras
  */
-public final class ManifestLoader {
-
+public class ArmLoader {
+      
     /**
      * The logger for this class.
      */
-    private static final Logger LOGGER = Logger.getLogger(ManifestLoader.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArmLoader.class.getName());
 
     /**
      * The WEB-INF folder name in the WAR package.
@@ -54,36 +54,77 @@ public final class ManifestLoader {
     /**
      * The default constructor.
      */
-    private ManifestLoader() {
+    private ArmLoader() {
         // empty contrustor
     }
-
+    
+    public static Arm createArm(Properties properties) {
+        Arm result = new Arm();
+        
+        // add maven properties
+        result.setGroupdId((String) properties.remove(ArmConstant.MAVEN_GROUP_ID));        
+        result.setArtifactId((String) properties.remove(ArmConstant.MAVEN_ARTIFACT_ID));        
+        result.setVersion((String) properties.remove(ArmConstant.MAVEN_VERSION));
+        
+        // add release version
+        result.setScm((String) properties.remove(ArmConstant.RELEASE_SCM));
+        result.setBuild((String) properties.remove(ArmConstant.RELEASE_BUILD));
+        result.setVersion((String) properties.remove(ArmConstant.RELEASE_VERSION));
+        
+        // add other
+        for (String name : properties.stringPropertyNames()) {            
+            result.getOther().put(name, properties.getProperty(name));
+        }
+        
+        return result;
+    }
+    
+    public static Properties createProperties(Arm arm) {
+        Properties result = new Properties();
+        
+        // add other
+        result.putAll(arm.getOther());
+        
+        // add maven properties
+        result.put(ArmConstant.MAVEN_GROUP_ID, arm.getGroupdId());
+        result.put(ArmConstant.MAVEN_ARTIFACT_ID, arm.getArtifactId());
+        result.put(ArmConstant.MAVEN_VERSION, arm.getVersion());
+        
+        // add release properties
+        result.put(ArmConstant.RELEASE_SCM, arm.getScm());
+        result.put(ArmConstant.RELEASE_VERSION, arm.getRelease());
+        result.put(ArmConstant.RELEASE_BUILD, arm.getBuild());
+                
+        return result;
+    }
+    
     /**
      * Loads the manifest from WAR.
      *
      * @param clazz the class.
      * @return the manifest.
      */
-    public static Manifest loadManifestFrom(Class clazz) {
-        Manifest result = null;
+    public static Arm loadArmFrom(Class clazz) {
+        Arm result = null;
         ProtectionDomain domain = clazz.getProtectionDomain();
         if (domain != null) {
             CodeSource codeSource = domain.getCodeSource();
             if (codeSource != null) {
                 URL url = codeSource.getLocation();
                 String urlString = codeSource.getLocation().toExternalForm();
-                if (urlString.contains(WEB_INF)) {
-                    urlString = urlString.substring(0, urlString.lastIndexOf(WEB_INF));
-                } else if (urlString.contains(EAR_SUBSTRING)) {
+                
+                if (urlString.contains(EAR_SUBSTRING)) {
                     urlString = urlString.substring(0, urlString.lastIndexOf(EAR_SUBSTRING)) + EAR_SUBSTRING;
+                } else if (urlString.contains(WEB_INF)) {
+                    urlString = urlString.substring(0, urlString.lastIndexOf(WEB_INF));
                 }
-                System.out.println(urlString);
+                
                 try {
                     url = new URL(urlString);
                 } catch (MalformedURLException e) {
                     LOGGER.log(Level.SEVERE, "Error creating url for String: " + urlString, e);
                 }
-                result = loadManifest(url);
+                result = loadArm(url);
             }
         }
         return result;
@@ -95,13 +136,13 @@ public final class ManifestLoader {
      * @param clazz the class
      * @return the manifest of the JAR file for the class.
      */
-    public static Manifest loadManifestFromJar(Class clazz) {
-        Manifest result = null;
+    public static Arm loadArmFromJar(Class clazz) {
+        Arm result = null;
         ProtectionDomain domain = clazz.getProtectionDomain();
         if (domain != null) {
             CodeSource codeSource = domain.getCodeSource();
             if (codeSource != null) {
-                result = loadManifest(codeSource.getLocation());
+                result = loadArm(codeSource.getLocation());
             }
         }
         return result;
@@ -113,48 +154,28 @@ public final class ManifestLoader {
      * @param url the manifest URL.
      * @return the corresponding manifest.
      */
-    public static Manifest loadManifest(URL url) {
-        Manifest result = null;
+    public static Arm loadArm(URL url) {
+        Arm result = null;
         if (url != null) {
-            InputStream manifestStream = null;
+            InputStream stream = null;
             try {
-                manifestStream = urlToStream(new URL(url + "/" + JarFile.MANIFEST_NAME));
-                result = new Manifest(manifestStream);
+                stream = urlToStream(new URL(url + "/" + ArmConstant.FILE_LOCATION));
+                
+                Properties properties = new Properties();
+                properties.load(stream);
+                
+                result = createArm(properties);
+                
             } catch (MalformedURLException e1) {
                 LOGGER.log(Level.FINEST, e1.getMessage(), e1);
             } catch (IOException e) {
                 LOGGER.log(Level.FINEST, e.getMessage(), e);
             } finally {
-                if (manifestStream != null) {
+                if (stream != null) {
                     try {
-                        manifestStream.close();
+                        stream.close();
                     } catch (IOException e) {
                         LOGGER.log(Level.SEVERE, "Error closing stream: " + e.getMessage(), e);
-                    }
-                }
-            }
-
-            if (result == null) {
-                JarInputStream jis = null;
-                try {
-                    URLConnection urlConnection = url.openConnection();
-                    urlConnection.setUseCaches(false);
-                    if (urlConnection instanceof JarURLConnection) {
-                        JarURLConnection jarUrlConnection = (JarURLConnection) urlConnection;
-                        result = jarUrlConnection.getManifest();
-                    } else {
-                        jis = new JarInputStream(urlConnection.getInputStream());
-                        result = jis.getManifest();
-                    }
-                } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, "Error reading META-INF/MANIFEST.MF file: " + e.getMessage(), e);
-                } finally {
-                    if (jis != null) {
-                        try {
-                            jis.close();
-                        } catch (IOException e) {
-                            LOGGER.log(Level.SEVERE, "Error closing stream: " + e.getMessage(), e);
-                        }
                     }
                 }
             }
@@ -181,5 +202,5 @@ public final class ManifestLoader {
         } else {
             return null;
         }
-    }
+    }    
 }

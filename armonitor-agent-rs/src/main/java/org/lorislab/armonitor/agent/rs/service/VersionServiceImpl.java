@@ -15,12 +15,15 @@
  */
 package org.lorislab.armonitor.agent.rs.service;
 
-import java.util.Map;
-import java.util.jar.Attributes;
+import java.util.Date;
+import java.util.UUID;
+
 import org.lorislab.armonitor.agent.factory.ReleaseServiceFactory;
 import org.lorislab.armonitor.agent.model.Release;
+import org.lorislab.armonitor.agent.model.Request;
 import org.lorislab.armonitor.agent.rs.model.Version;
 import org.lorislab.armonitor.agent.service.ReleaseService;
+import org.lorislab.armonitor.arm.model.Arm;
 
 /**
  * The version service implementation.
@@ -33,11 +36,14 @@ public class VersionServiceImpl implements VersionService {
      * {@inheritDoc}
      */
     @Override
-    public Version getAgentVersion() throws Exception {
+    public Version getAgentVersion(String manifest) throws Exception {
         Version result = new Version();
         ReleaseService service = ReleaseServiceFactory.createService();
         if (service != null) {
-            Release release = service.getAgentRelease();
+            Request request = new Request();
+            request.setManifest(manifest != null && !manifest.isEmpty());
+            
+            Release release = service.getAgentRelease(request);
             result = createVersion(release);
         }
         return result;
@@ -47,11 +53,14 @@ public class VersionServiceImpl implements VersionService {
      * {@inheritDoc}
      */
     @Override
-    public Version getAppVersion() throws Exception {
+    public Version getAppVersion(String manifest) throws Exception {
         Version result = new Version();
         ReleaseService service = ReleaseServiceFactory.createService();
         if (service != null) {
-            Release release = service.getApplicationRelease();
+            Request request = new Request();
+            request.setManifest(manifest != null && !manifest.isEmpty());                    
+            
+            Release release = service.getApplicationRelease(request);
             result = createVersion(release);
         }
         return result;
@@ -65,14 +74,27 @@ public class VersionServiceImpl implements VersionService {
      */
     private static Version createVersion(Release release) {
         Version result = new Version();
-        if (release.getManifest() != null) {
-            Attributes mainAttribs = release.getManifest().getMainAttributes();
-            if (mainAttribs != null) {
-                for (Map.Entry<Object, Object> entry : mainAttribs.entrySet()) {
-                    result.manifest.put(entry.getKey().toString(), entry.getValue().toString());
-                }
-            }
-        }       
+        result.date = new Date();
+        result.uid = UUID.randomUUID().toString();
+        
+        Arm arm = release.getArm();
+        
+        // add maven attributes
+        result.groupdId = arm.getGroupdId();
+        result.artifactId = arm.getArtifactId();
+        result.version = arm.getVersion();
+        
+        // add release attribtues
+        result.release = arm.getRelease();
+        result.scm = arm.getScm();
+        result.build = arm.getBuild();
+        
+        // add ARM other attributes
+        result.other = arm.getOther();
+        
+        // add manifest
+        result.manifest = release.getManifest();
+        
         return result;
     }
 }

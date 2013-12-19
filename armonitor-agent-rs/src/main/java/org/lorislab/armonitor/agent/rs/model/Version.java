@@ -16,9 +16,9 @@
 
 package org.lorislab.armonitor.agent.rs.model;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * The version model.
@@ -27,8 +27,25 @@ import java.util.UUID;
  */
 public class Version {
     
-    public String uid = UUID.randomUUID().toString();
+    public String uid;
+    
+    public int ver = 1;
+    
+    public Date date;
+    
+    public String groupdId;
+    
+    public String artifactId;
+    
+    public String version;
+    
+    public String release;
+    
+    public String scm;
+    
+    public String build;
+    
+    public Map<String,String> other = new HashMap<>();   
     
     public Map<String,String> manifest = new HashMap<>();   
-    
 }
