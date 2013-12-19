@@ -89,10 +89,27 @@
 			<plugin>
 				<groupId>com.ajkaandrej.maven</groupId>
 				<artifactId>messagebundles-plugin</artifactId>				
-			</plugin>         
+			</plugin>  
+			<plugin>
+				<groupId>org.lorislab.maven.plugins</groupId>
+				<artifactId>maven-armonitor-plugin</artifactId>				
+			</plugin>       
 		</plugins>    
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.lorislab.maven.plugins</groupId>
+					<artifactId>maven-armonitor-plugin</artifactId>
+					<version>1.0.0-SNAPSHOT</version>
+					<executions>
+						<execution>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>build</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>				
 				<plugin>
 					<groupId>com.ajkaandrej.maven</groupId>
 					<artifactId>messagebundles-plugin</artifactId>

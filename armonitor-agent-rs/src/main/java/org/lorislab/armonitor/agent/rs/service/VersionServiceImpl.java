@@ -78,19 +78,20 @@ public class VersionServiceImpl implements VersionService {
         result.uid = UUID.randomUUID().toString();
         
         Arm arm = release.getArm();
-        
-        // add maven attributes
-        result.groupdId = arm.getGroupdId();
-        result.artifactId = arm.getArtifactId();
-        result.version = arm.getVersion();
-        
-        // add release attribtues
-        result.release = arm.getRelease();
-        result.scm = arm.getScm();
-        result.build = arm.getBuild();
-        
-        // add ARM other attributes
-        result.other = arm.getOther();
+        if (arm != null) {
+            // add maven attributes
+            result.groupdId = arm.getGroupdId();
+            result.artifactId = arm.getArtifactId();
+            result.version = arm.getVersion();
+
+            // add release attribtues
+            result.release = arm.getRelease();
+            result.scm = arm.getScm();
+            result.build = arm.getBuild();
+
+            // add ARM other attributes
+            result.other = arm.getOther();
+        }
         
         // add manifest
         result.manifest = release.getManifest();
