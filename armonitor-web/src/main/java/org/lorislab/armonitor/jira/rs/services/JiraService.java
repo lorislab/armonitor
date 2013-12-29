@@ -17,10 +17,12 @@
 package org.lorislab.armonitor.jira.rs.services;
 
 import java.util.List;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.lorislab.armonitor.jira.rs.controller.JiraController;
 import org.lorislab.armonitor.jira.rs.model.JiraProject;
 
 /**
@@ -28,10 +30,23 @@ import org.lorislab.armonitor.jira.rs.model.JiraProject;
  * @author Andrej Petras
  */
 @Path("jira")
-public interface JiraService {
+public class JiraService {
+
+    @Inject
+    private JiraController controller;
     
+    @GET
+    @Path("reload")
+    @Produces(MediaType.APPLICATION_JSON)    
+    public List<JiraProject> getProjects() {
+        return controller.getProjects();
+    }
+
     @GET
     @Path("projects")
     @Produces(MediaType.APPLICATION_JSON)
-    List<JiraProject> getProjects();
+    public List<JiraProject> reloadProjects() {
+        return controller.reloadProjects();
+    }
+    
 }
