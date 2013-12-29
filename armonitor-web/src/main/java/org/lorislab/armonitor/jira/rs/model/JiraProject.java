@@ -22,9 +22,9 @@ package org.lorislab.armonitor.jira.rs.model;
  */
 public class JiraProject {
     
-    private String id;
+    public String id;
     
-    private String key;
+    public String key;
     
-    private String name;
+    public String name;
 }

@@ -16,10 +16,19 @@
 
 package org.lorislab.armonitor.jira.ejb;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
+import org.lorislab.armonitor.config.rs.model.JiraConfig;
+import org.lorislab.armonitor.jira.client.JIRAClient;
+import org.lorislab.armonitor.jira.client.model.Project;
+import org.lorislab.armonitor.jira.client.services.ProjectClient;
 
 /**
  *
@@ -30,4 +39,23 @@ import javax.ejb.TransactionAttributeType;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class JiraServiceBean implements JiraServiceLocal {
     
+    @EJB
+    private ConfigurationServiceLocal configService;
+    
+    public List<Project> getProjects() {
+        List<Project> result = null;
+        JiraConfig config = configService.getConfiguration(JiraConfig.class);
+        
+        try {
+            JIRAClient client = new JIRAClient(config.server, config.user, config.password);
+            ProjectClient projectClient = client.createProjectClient();
+            result = projectClient.getProjects();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(JiraServiceBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return result;
+    }
 }

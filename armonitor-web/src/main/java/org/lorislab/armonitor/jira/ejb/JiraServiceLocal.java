@@ -16,10 +16,14 @@
 
 package org.lorislab.armonitor.jira.ejb;
 
+import java.util.List;
+import org.lorislab.armonitor.jira.client.model.Project;
+
 /**
  *
  * @author Andrej Petras
  */
 public interface JiraServiceLocal {
     
+    public List<Project> getProjects();
 }
