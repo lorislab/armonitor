@@ -14,39 +14,31 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.service;
+package org.lorislab.armonitor.config.rs.service;
 
-import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.agent.rs.model.Request;
-import org.lorislab.armonitor.agent.rs.model.Version;
+import org.lorislab.armonitor.config.rs.model.JiraConfig;
 
 /**
- * The version rest-service.
- * 
+ *
  * @author Andrej Petras
  */
-@Path("lorislab/ver")
-public interface VersionService {
+@Path("cf")
+public interface ConfigurationService {
     
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("jira")
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    Version getAgentVersion(Request request) throws Exception;
+    public JiraConfig getJiraConfig();
     
+    @Path("jira")
     @POST
-    @Path("app")
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)    
-    Version getAppVersion(Request request) throws Exception;
-    
-    @POST
-    @Path("all")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)    
-    List<Version> getAllVersion(Request request) throws Exception;    
+    public JiraConfig setJiraConfig(JiraConfig jiraConfig);
 }

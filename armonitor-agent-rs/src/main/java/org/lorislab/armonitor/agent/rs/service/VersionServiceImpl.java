@@ -15,12 +15,15 @@
  */
 package org.lorislab.armonitor.agent.rs.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.lorislab.armonitor.agent.factory.ReleaseServiceFactory;
-import org.lorislab.armonitor.agent.model.Release;
-import org.lorislab.armonitor.agent.model.Request;
+import org.lorislab.armonitor.agent.model.SearchResultItem;
+import org.lorislab.armonitor.agent.model.SearchCriteria;
+import org.lorislab.armonitor.agent.rs.model.Request;
 import org.lorislab.armonitor.agent.rs.model.Version;
 import org.lorislab.armonitor.agent.service.ReleaseService;
 import org.lorislab.armonitor.arm.model.Arm;
@@ -36,15 +39,17 @@ public class VersionServiceImpl implements VersionService {
      * {@inheritDoc}
      */
     @Override
-    public Version getAgentVersion(String manifest) throws Exception {
+    public Version getAgentVersion(Request request) throws Exception {
         Version result = new Version();
+        result.uid = request.uid;
+        
         ReleaseService service = ReleaseServiceFactory.createService();
         if (service != null) {
-            Request request = new Request();
-            request.setManifest(manifest != null && !manifest.isEmpty());
-            
-            Release release = service.getAgentRelease(request);
-            result = createVersion(release);
+            SearchCriteria criteria = createCriteria(request);
+            SearchResultItem release = service.getAgentRelease(criteria);
+            if (release != null) {
+                result = createVersion(request, release);
+            }
         }
         return result;
     }
@@ -53,17 +58,54 @@ public class VersionServiceImpl implements VersionService {
      * {@inheritDoc}
      */
     @Override
-    public Version getAppVersion(String manifest) throws Exception {
+    public Version getAppVersion(Request request) throws Exception {
         Version result = new Version();
+        result.uid = request.uid;
+        
         ReleaseService service = ReleaseServiceFactory.createService();
         if (service != null) {
-            Request request = new Request();
-            request.setManifest(manifest != null && !manifest.isEmpty());                    
-            
-            Release release = service.getApplicationRelease(request);
-            result = createVersion(release);
+            SearchCriteria criteria = createCriteria(request);
+            SearchResultItem release = service.getApplicationRelease(criteria);
+            if (release != null) {
+                result = createVersion(request, release);
+            }
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Version> getAllVersion(Request request) throws Exception {
+        List<Version> result = new ArrayList<>();
+        ReleaseService service = ReleaseServiceFactory.createService();
+        if (service != null) {
+            SearchCriteria criteria = createCriteria(request);
+            List<SearchResultItem> releases = service.getAllReleases(criteria);
+            if (releases != null) {
+                for (SearchResultItem item : releases) {
+                    Version tmp = createVersion(request, item);
+                    if (tmp != null) {
+                        result.add(tmp);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Creates the search criteria from the request.
+     *
+     * @param request the client request.
+     * @return the search criteria.
+     */
+    private static SearchCriteria createCriteria(Request request) {
+        SearchCriteria criteria = new SearchCriteria();
+        criteria.setManifest(request.manifest);
+        criteria.setService(request.service);
+        return criteria;
     }
 
     /**
@@ -72,11 +114,15 @@ public class VersionServiceImpl implements VersionService {
      * @param release the release model.
      * @return the version model.
      */
-    private static Version createVersion(Release release) {
+    private static Version createVersion(Request request, SearchResultItem release) {
         Version result = new Version();
         result.date = new Date();
-        result.uid = UUID.randomUUID().toString();
-        
+        result.uid = request.uid;
+        result.service = release.getService();
+        if (result.uid == null) {
+            result.uid = UUID.randomUUID().toString();
+        }
+
         Arm arm = release.getArm();
         if (arm != null) {
             // add maven attributes
@@ -92,10 +138,10 @@ public class VersionServiceImpl implements VersionService {
             // add ARM other attributes
             result.other = arm.getOther();
         }
-        
+
         // add manifest
         result.manifest = release.getManifest();
-        
+
         return result;
     }
 }

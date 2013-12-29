@@ -14,40 +14,16 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.model;
+package org.lorislab.armonitor.scm.client;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import org.lorislab.armonitor.scm.model.ScmLog;
 
 /**
- * The version model.
- * 
+ *
  * @author Andrej Petras
  */
-public class Version {
-    
-    public String uid;
-    
-    public int ver = 1;
-    
-    public Date date;
-    
-    public String service;
-    
-    public String groupdId;
-    
-    public String artifactId;
-    
-    public String version;
-    
-    public String release;
-    
-    public String scm;
-    
-    public String build;
-    
-    public Map<String,String> other = new HashMap<>();   
-    
-    public Map<String,String> manifest = new HashMap<>();   
+public interface ScmClient {
+      
+    public List<ScmLog> getLog(String url, String userName, String password) throws Exception;
 }

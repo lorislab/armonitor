@@ -14,40 +14,40 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.model;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+package org.lorislab.armonitor.agent.model;
 
 /**
- * The version model.
+ * The request model.
  * 
  * @author Andrej Petras
  */
-public class Version {
+public class SearchCriteria {
+
+    private boolean manifest = false;
     
-    public String uid;
+    private final boolean arm = true;
     
-    public int ver = 1;
+    private String service = null;
+
     
-    public Date date;
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
+    }
     
-    public String service;
-    
-    public String groupdId;
-    
-    public String artifactId;
-    
-    public String version;
-    
-    public String release;
-    
-    public String scm;
-    
-    public String build;
-    
-    public Map<String,String> other = new HashMap<>();   
-    
-    public Map<String,String> manifest = new HashMap<>();   
+    public boolean isArm() {
+        return arm;
+    }
+
+    public boolean isManifest() {
+        return manifest;
+    }
+
+    public void setManifest(boolean manifest) {
+        this.manifest = manifest;
+    }
+        
 }

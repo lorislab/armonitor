@@ -14,40 +14,36 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.model;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+package org.lorislab.armonitor.jira.client.model;
 
 /**
- * The version model.
+ * The JIRA version.
  * 
  * @author Andrej Petras
  */
 public class Version {
     
-    public String uid;
+    public String self;
     
-    public int ver = 1;
+    public String id;
     
-    public Date date;
+    public String description;
     
-    public String service;
+    public String name;
     
-    public String groupdId;
+    public boolean archived;
     
-    public String artifactId;
+    public boolean released;
     
-    public String version;
+    public String projectId;
     
-    public String release;
+    public boolean overdue;
     
-    public String scm;
+    public String releaseDate;
     
-    public String build;
+    public String userReleaseDate;
     
-    public Map<String,String> other = new HashMap<>();   
+    public String startDate;
     
-    public Map<String,String> manifest = new HashMap<>();   
+    public String userStartDate;
 }

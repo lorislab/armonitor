@@ -13,41 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.lorislab.armonitor.config.rs.service;
 
-package org.lorislab.armonitor.agent.rs.model;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import javax.ejb.EJB;
+import org.lorislab.armonitor.config.rs.model.JiraConfig;
+import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
 
 /**
- * The version model.
- * 
+ *
  * @author Andrej Petras
  */
-public class Version {
-    
-    public String uid;
-    
-    public int ver = 1;
-    
-    public Date date;
-    
-    public String service;
-    
-    public String groupdId;
-    
-    public String artifactId;
-    
-    public String version;
-    
-    public String release;
-    
-    public String scm;
-    
-    public String build;
-    
-    public Map<String,String> other = new HashMap<>();   
-    
-    public Map<String,String> manifest = new HashMap<>();   
+public class ConfigurationServiceImpl implements ConfigurationService {
+
+    @EJB
+    private ConfigurationServiceLocal service;
+
+    @Override
+    public JiraConfig getJiraConfig() {
+        return service.getConfiguration(JiraConfig.class);
+    }
+
+    @Override
+    public JiraConfig setJiraConfig(JiraConfig jiraConfig) {
+        return service.setConfiguration(jiraConfig);
+    }
+
 }

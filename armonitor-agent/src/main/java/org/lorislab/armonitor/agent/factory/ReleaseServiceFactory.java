@@ -15,8 +15,9 @@
  */
 package org.lorislab.armonitor.agent.factory;
 
+import java.util.Iterator;
+import java.util.ServiceLoader;
 import org.lorislab.armonitor.agent.service.ReleaseService;
-import org.lorislab.armonitor.agent.service.ReleaseServiceImpl;
 
 /**
  * The release service factory.
@@ -26,6 +27,11 @@ import org.lorislab.armonitor.agent.service.ReleaseServiceImpl;
 public final class ReleaseServiceFactory {
 
     /**
+     * The instance.
+     */
+    private static ReleaseService INSTANCE = null;
+
+    /**
      * The default constructor
      */
     private ReleaseServiceFactory() {
@@ -33,11 +39,30 @@ public final class ReleaseServiceFactory {
     }
 
     /**
-     * Creates the release service.
+     * Creates the service.
      *
      * @return the release service.
      */
     public static ReleaseService createService() {
-        return new ReleaseServiceImpl();
+        ServiceLoader<ReleaseService> tmp = ServiceLoader.load(ReleaseService.class);
+        if (tmp != null) {
+            Iterator<ReleaseService> iter = tmp.iterator();
+            if (iter.hasNext()) {
+                return iter.next();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Creates the release service.
+     *
+     * @return the release service.
+     */
+    public static ReleaseService getService() {
+        if (INSTANCE == null) {
+            INSTANCE = createService();
+        }
+        return INSTANCE;
     }
 }

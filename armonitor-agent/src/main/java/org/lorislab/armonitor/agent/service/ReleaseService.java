@@ -15,8 +15,9 @@
  */
 package org.lorislab.armonitor.agent.service;
 
-import org.lorislab.armonitor.agent.model.Release;
-import org.lorislab.armonitor.agent.model.Request;
+import java.util.List;
+import org.lorislab.armonitor.agent.model.SearchResultItem;
+import org.lorislab.armonitor.agent.model.SearchCriteria;
 
 /**
  * The release service.
@@ -28,18 +29,27 @@ public interface ReleaseService {
     /**
      * Gets the release information of the agent.
      *
-     * @param request the request.
+     * @param criteria the criteria.
      * 
      * @return the release information of the agent.
      */
-    Release getAgentRelease(Request request);
+    SearchResultItem getAgentRelease(SearchCriteria criteria);
 
     /**
      * Gets the release information of the application.
      *
-     * @param request the request.
+     * @param criteria the criteria.
      * 
      * @return the release information of the application.
      */
-    Release getApplicationRelease(Request request);
+    SearchResultItem getApplicationRelease(SearchCriteria criteria);
+    
+    /**
+     * Gets the release information of the application.
+     *
+     * @param criteria the criteria.
+     * 
+     * @return the release information of the application.
+     */
+    List<SearchResultItem> getAllReleases(SearchCriteria criteria);    
 }

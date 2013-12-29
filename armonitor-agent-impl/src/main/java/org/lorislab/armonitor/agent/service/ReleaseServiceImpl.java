@@ -15,11 +15,13 @@
  */
 package org.lorislab.armonitor.agent.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-import org.lorislab.armonitor.agent.model.Release;
-import org.lorislab.armonitor.agent.model.Request;
+import org.lorislab.armonitor.agent.model.SearchResultItem;
+import org.lorislab.armonitor.agent.model.SearchCriteria;
 import org.lorislab.armonitor.arm.model.Arm;
 import org.lorislab.armonitor.arm.util.ArmLoader;
 import org.lorislab.armonitor.manifest.util.ManifestLoader;
@@ -35,8 +37,8 @@ public class ReleaseServiceImpl implements ReleaseService {
      * {@inheritDoc}
      */
     @Override
-    public Release getAgentRelease(Request request) {
-        Release result = new Release();
+    public SearchResultItem getAgentRelease(SearchCriteria request) {
+        SearchResultItem result = new SearchResultItem();
 
         // load arm model
         if (request.isArm()) {
@@ -64,8 +66,8 @@ public class ReleaseServiceImpl implements ReleaseService {
      * {@inheritDoc}
      */
     @Override
-    public Release getApplicationRelease(Request request) {
-        Release result = new Release();
+    public SearchResultItem getApplicationRelease(SearchCriteria request) {
+        SearchResultItem result = new SearchResultItem();
 
         // load arm model
         if (request.isArm()) {
@@ -86,6 +88,19 @@ public class ReleaseServiceImpl implements ReleaseService {
             }
         }
         
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    @Override
+    public List<SearchResultItem> getAllReleases(SearchCriteria criteria) {
+        List<SearchResultItem> result = new ArrayList<>();
+        SearchResultItem item = getApplicationRelease(criteria);
+        if (item != null) {
+            result.add(item);
+        }
         return result;
     }
 

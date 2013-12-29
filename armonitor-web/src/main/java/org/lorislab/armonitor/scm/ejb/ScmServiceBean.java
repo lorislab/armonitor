@@ -14,40 +14,21 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.model;
+package org.lorislab.armonitor.scm.ejb;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 /**
- * The version model.
- * 
+ *
  * @author Andrej Petras
  */
-public class Version {
+@Stateless
+@Local(ScmServiceLocal.class)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+public class ScmServiceBean implements ScmServiceLocal {
     
-    public String uid;
     
-    public int ver = 1;
-    
-    public Date date;
-    
-    public String service;
-    
-    public String groupdId;
-    
-    public String artifactId;
-    
-    public String version;
-    
-    public String release;
-    
-    public String scm;
-    
-    public String build;
-    
-    public Map<String,String> other = new HashMap<>();   
-    
-    public Map<String,String> manifest = new HashMap<>();   
 }

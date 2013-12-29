@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.model;
+package org.lorislab.armonitor.store.project.model;
+
+import java.util.List;
 
 /**
- * The request model.
- * 
+ *
  * @author Andrej Petras
  */
-public class Request {
+public class Project {
     
-    private boolean manifest = false;
+    private String name;
     
-    private final boolean arm = true;
-
-    public boolean isArm() {
-        return arm;
-    }
-
-    public boolean isManifest() {
-        return manifest;
-    }
-
-    public void setManifest(boolean manifest) {
-        this.manifest = manifest;
-    }
-        
+    private String jira;
+    
+    private List<Application> applications;
+    
 }

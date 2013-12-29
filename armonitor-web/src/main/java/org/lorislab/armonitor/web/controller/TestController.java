@@ -14,40 +14,36 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.model;
+package org.lorislab.armonitor.web.controller;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
 /**
- * The version model.
- * 
+ *
  * @author Andrej Petras
  */
-public class Version {
+@Named
+@SessionScoped
+public class TestController implements Serializable {
     
-    public String uid;
+    private static final long serialVersionUID = -4883568423337397574L;
     
-    public int ver = 1;
+    private int count;
     
-    public Date date;
+    @PostConstruct
+    public void create() {
+        System.out.println("POST CONSTRUCT");
+        count = 100;
+    }
     
-    public String service;
+    public void addCount() {
+        count++;
+    }
     
-    public String groupdId;
-    
-    public String artifactId;
-    
-    public String version;
-    
-    public String release;
-    
-    public String scm;
-    
-    public String build;
-    
-    public Map<String,String> other = new HashMap<>();   
-    
-    public Map<String,String> manifest = new HashMap<>();   
+    public int getCount() {
+        return count;
+    }
 }

@@ -14,40 +14,29 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.model;
+package org.lorislab.armonitor.jira.client.services;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import org.lorislab.armonitor.jira.client.model.Project;
+import org.lorislab.armonitor.jira.client.model.Version;
 
 /**
- * The version model.
- * 
+ *
  * @author Andrej Petras
  */
-public class Version {
+@Path("project")
+public interface ProjectClient {
     
-    public String uid;
-    
-    public int ver = 1;
-    
-    public Date date;
-    
-    public String service;
-    
-    public String groupdId;
-    
-    public String artifactId;
-    
-    public String version;
-    
-    public String release;
-    
-    public String scm;
-    
-    public String build;
-    
-    public Map<String,String> other = new HashMap<>();   
-    
-    public Map<String,String> manifest = new HashMap<>();   
+    @GET
+    @Produces("application/json")
+    List<Project> getProjects();
+        
+    @GET
+    @Path("{id}/versions")
+    @Produces("application/json")
+    List<Version> getVersions(@PathParam("id") String id);
 }

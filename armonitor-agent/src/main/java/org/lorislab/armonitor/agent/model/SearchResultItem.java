@@ -24,7 +24,12 @@ import org.lorislab.armonitor.arm.model.Arm;
  *
  * @author Andrej Petras
  */
-public class Release {
+public class SearchResultItem {
+
+    /**
+     * The service.
+     */
+    private String service;
 
     /**
      * The application release monitor descriptor
@@ -35,6 +40,24 @@ public class Release {
      * The manifest
      */
     private Map<String, String> manifest = new HashMap<>();
+
+    /**
+     * Gets the service name.
+     *
+     * @return the service name.
+     */
+    public String getService() {
+        return service;
+    }
+
+    /**
+     * Sets the service.
+     *
+     * @param service the service name.
+     */
+    public void setService(String service) {
+        this.service = service;
+    }
 
     /**
      * Gets the ARM model.

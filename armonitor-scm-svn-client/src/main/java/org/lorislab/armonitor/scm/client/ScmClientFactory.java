@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.model;
+package org.lorislab.armonitor.scm.client;
 
-import java.util.Date;
+import org.lorislab.armonitor.scm.svn.client.SvnClient;
 
 /**
- * The rest service exception model.
- * 
+ *
  * @author Andrej Petras
  */
-public class AgentException {
+public final class ScmClientFactory {
     
-    public String uid;
+    private ScmClientFactory() {
+        // empty constructor
+    }
     
-    public String name;
-    
-    public String description;
-    
-    public Date date;
+    public static ScmClient createClient() {
+        return new SvnClient();        
+    }
 }

@@ -40,11 +40,31 @@
 		
 	<modules>
 		<module>armonitor-agent</module>
+		<module>armonitor-agent-impl</module>
 		<module>armonitor-agent-rs</module>
+		<module>armonitor-agent-web</module>
+		<module>armonitor-jira-client</module>
+		<module>armonitor-scm-svn-client</module>		
+		<module>armonitor-web</module>
 	</modules>
 
 	<dependencyManagement>       
 		<dependencies>
+			<!-- JBOSS -->     
+			<dependency>
+				<groupId>org.jboss.msc</groupId>
+				<artifactId>jboss-msc</artifactId>
+				<scope>provided</scope>
+				<version>1.2.0.CR1</version>
+			</dependency> 
+			<dependency>
+				<groupId>org.jboss.as</groupId>
+				<artifactId>jboss-as-server</artifactId>
+				<version>7.2.0.Final</version>
+				<scope>provided</scope>
+				<type>jar</type>
+			</dependency>
+			<!-- CDI -->			
 			<dependency>
 				<groupId>javax.enterprise</groupId>
 				<artifactId>cdi-api</artifactId>
@@ -68,7 +88,27 @@
 				<artifactId>servlet-api</artifactId>
 				<version>2.5</version>
 				<scope>provided</scope>
-			</dependency>  				
+			</dependency> 
+			<!-- EJB -->
+			<dependency>
+				<groupId>org.jboss.spec.javax.ejb</groupId>
+				<artifactId>jboss-ejb-api_3.1_spec</artifactId>
+				<scope>provided</scope>
+				<version>1.0.2.Final</version>
+			</dependency>			
+			<!-- JPA 2 -->
+			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.0-api</artifactId>
+				<scope>provided</scope>
+				<version>1.0.1.Final</version>
+			</dependency>			
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-jpamodelgen</artifactId>
+				<version>1.2.0.Final</version>
+				<scope>provided</scope>
+			</dependency>						 				
 		</dependencies>
 	</dependencyManagement>    
     
@@ -85,10 +125,6 @@
 			</plugin>  
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
-			</plugin> 
-			<plugin>
-				<groupId>com.ajkaandrej.maven</groupId>
-				<artifactId>messagebundles-plugin</artifactId>				
 			</plugin>  
 			<plugin>
 				<groupId>org.lorislab.maven.plugins</groupId>
@@ -97,6 +133,38 @@
 		</plugins>    
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>de.smartics.maven.plugin</groupId>
+					<artifactId>hibernate4-maven-plugin</artifactId>
+					<version>0.2.0</version>
+				</plugin>                         
+				<plugin>
+					<groupId>org.bsc.maven</groupId>
+					<artifactId>maven-processor-plugin</artifactId>
+					<version>2.2.4</version>
+					<executions>
+						<execution>
+							<id>process</id>
+							<goals>
+								<goal>process</goal>
+							</goals>
+							<phase>generate-sources</phase>
+							<configuration>
+								<processors>                                
+									<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+								</processors>
+								<outputDirectory>target/generated-sources/metamodel</outputDirectory>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>                 
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.12.4</version>
+					<configuration>
+						<skipTests>true</skipTests>
+					</configuration>
+				</plugin>                          				
 				<plugin>
 					<groupId>org.lorislab.maven.plugins</groupId>
 					<artifactId>maven-armonitor-plugin</artifactId>
@@ -109,23 +177,7 @@
 							</goals>
 						</execution>
 					</executions>
-				</plugin>				
-				<plugin>
-					<groupId>com.ajkaandrej.maven</groupId>
-					<artifactId>messagebundles-plugin</artifactId>
-					<version>0.0.2</version>
-					<executions>
-						<execution>
-							<phase>compile</phase>
-							<goals>
-								<goal>default</goal>
-							</goals>
-							<configuration>
-								<language>en</language>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>				
+				</plugin>											
 				<plugin>
 					<artifactId>maven-release-plugin</artifactId>
 					<version>2.4.1</version>
@@ -145,15 +197,6 @@
 								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							</manifest>
-							<manifestEntries>
-								<Implementation-URL>${project.url}</Implementation-URL>
-								<Release-Version>${project.version}</Release-Version>
-								<Release-Rc>${release.rc}</Release-Rc>
-								<Release-Scm>${release.scm}</Release-Scm>
-								<Maven-GroupId>${project.groupId}</Maven-GroupId>
-								<Maven-ArtifactId>${project.artifactId}</Maven-ArtifactId>
-								<Maven-Version>${project.version}</Maven-Version>								
-							</manifestEntries>
 						</archive>
 					</configuration>
 				</plugin>			
@@ -175,18 +218,13 @@
 					<version>2.3</version>
 				</plugin>
 				<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.12.4</version>
-					<configuration>
-						<skipTests>true</skipTests>
-					</configuration>
-				</plugin>
-				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3.2</version>
 					<configuration>
 						<source>1.7</source>
 						<target>1.7</target>
+						<encoding>UTF-8</encoding>
+						<compilerArgument>-proc:none</compilerArgument>
 					</configuration>
 				</plugin>
 				<plugin>

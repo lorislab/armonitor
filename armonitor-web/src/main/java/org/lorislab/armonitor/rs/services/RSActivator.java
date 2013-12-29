@@ -14,40 +14,17 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.rs.model;
+package org.lorislab.armonitor.rs.services;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
 /**
- * The version model.
+ * The rest-service activator.
  * 
  * @author Andrej Petras
  */
-public class Version {
+@ApplicationPath("rs")
+public class RSActivator extends Application {
     
-    public String uid;
-    
-    public int ver = 1;
-    
-    public Date date;
-    
-    public String service;
-    
-    public String groupdId;
-    
-    public String artifactId;
-    
-    public String version;
-    
-    public String release;
-    
-    public String scm;
-    
-    public String build;
-    
-    public Map<String,String> other = new HashMap<>();   
-    
-    public Map<String,String> manifest = new HashMap<>();   
 }
