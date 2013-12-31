@@ -13,37 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.armonitor.rs.services;
 
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.web.controller.TestController;
+package org.lorislab.armonitor.jira.client.model;
 
 /**
  *
  * @author Andrej Petras
  */
-@Path("test")
-public class TestServiceImpl {
+public class Visibility {
+    
+    private String type;
+    
+    private String value;
 
- 
-    @Inject
-    private TestController controller;
-
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String get() {
-        return "Count: " + controller.getCount();
+    public String getType() {
+        return type;
     }
 
-    @GET
-    @Path("add")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String add() {
-        controller.addCount();
-        return "Count: " + controller.getCount();
+    public void setType(String type) {
+        this.type = type;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+    
+    
 }

@@ -33,9 +33,25 @@ public class Project {
     
     private String name;
 
-    public ProjectCategory projectCategory;
+    private ProjectCategory projectCategory;
     
-    public Map<String, String> avatarUrls;
+    private Map<String, String> avatarUrls;
+
+    public ProjectCategory getProjectCategory() {
+        return projectCategory;
+    }
+
+    public void setProjectCategory(ProjectCategory projectCategory) {
+        this.projectCategory = projectCategory;
+    }
+
+    public Map<String, String> getAvatarUrls() {
+        return avatarUrls;
+    }
+
+    public void setAvatarUrls(Map<String, String> avatarUrls) {
+        this.avatarUrls = avatarUrls;
+    }
     
     /**
      * @return the self

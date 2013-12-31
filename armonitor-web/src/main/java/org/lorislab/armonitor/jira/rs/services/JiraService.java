@@ -36,14 +36,14 @@ public class JiraService {
     private JiraController controller;
     
     @GET
-    @Path("reload")
+    @Path("projects")
     @Produces(MediaType.APPLICATION_JSON)    
     public List<JiraProject> getProjects() {
         return controller.getProjects();
     }
 
     @GET
-    @Path("projects")
+    @Path("reload")
     @Produces(MediaType.APPLICATION_JSON)
     public List<JiraProject> reloadProjects() {
         return controller.reloadProjects();

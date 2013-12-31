@@ -17,19 +17,22 @@
 package org.lorislab.armonitor.jira.client.model;
 
 /**
- * The project category.
- * 
+ *
  * @author Andrej Petras
  */
-public class ProjectCategory {
-    
+public class IssueType {
+ 
     private String self;
     
     private String id;
     
     private String description;
     
+    private String iconUrl;
+    
     private String name;
+    
+    private boolean subtask;
 
     public String getSelf() {
         return self;
@@ -55,6 +58,14 @@ public class ProjectCategory {
         this.description = description;
     }
 
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
+
     public String getName() {
         return name;
     }
@@ -62,6 +73,13 @@ public class ProjectCategory {
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    public boolean isSubtask() {
+        return subtask;
+    }
+
+    public void setSubtask(boolean subtask) {
+        this.subtask = subtask;
+    }
     
 }

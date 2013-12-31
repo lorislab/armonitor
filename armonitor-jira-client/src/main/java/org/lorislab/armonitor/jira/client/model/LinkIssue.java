@@ -17,27 +17,18 @@
 package org.lorislab.armonitor.jira.client.model;
 
 /**
- * The project category.
- * 
+ *
  * @author Andrej Petras
  */
-public class ProjectCategory {
-    
-    private String self;
+public class LinkIssue {
     
     private String id;
     
-    private String description;
+    private String key;
     
-    private String name;
-
-    public String getSelf() {
-        return self;
-    }
-
-    public void setSelf(String self) {
-        this.self = self;
-    }
+    private String self;
+    
+    private Fields fields;
 
     public String getId() {
         return id;
@@ -47,21 +38,28 @@ public class ProjectCategory {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getKey() {
+        return key;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getName() {
-        return name;
+    public String getSelf() {
+        return self;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSelf(String self) {
+        this.self = self;
     }
-    
-    
+
+    public Fields getFields() {
+        return fields;
+    }
+
+    public void setFields(Fields fields) {
+        this.fields = fields;
+    }
+  
 }

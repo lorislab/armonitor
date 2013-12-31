@@ -16,20 +16,21 @@
 
 package org.lorislab.armonitor.jira.client.model;
 
+import java.util.List;
+
 /**
- * The project category.
- * 
+ *
  * @author Andrej Petras
  */
-public class ProjectCategory {
+public class Watcher {
     
     private String self;
     
-    private String id;
+    private boolean isWatching;
     
-    private String description;
+    private int watchCount;
     
-    private String name;
+    private List<User> watchers;
 
     public String getSelf() {
         return self;
@@ -39,28 +40,28 @@ public class ProjectCategory {
         this.self = self;
     }
 
-    public String getId() {
-        return id;
+    public boolean isIsWatching() {
+        return isWatching;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIsWatching(boolean isWatching) {
+        this.isWatching = isWatching;
     }
 
-    public String getDescription() {
-        return description;
+    public int getWatchCount() {
+        return watchCount;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setWatchCount(int watchCount) {
+        this.watchCount = watchCount;
     }
 
-    public String getName() {
-        return name;
+    public List<User> getWatchers() {
+        return watchers;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setWatchers(List<User> watchers) {
+        this.watchers = watchers;
     }
     
     

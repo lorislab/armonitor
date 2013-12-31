@@ -17,50 +17,41 @@
 package org.lorislab.armonitor.jira.client.model;
 
 /**
- * The project category.
- * 
+ *
  * @author Andrej Petras
  */
-public class ProjectCategory {
+public class Progress {
     
-    private String self;
+    private int progress;
     
-    private String id;
-    
-    private String description;
-    
-    private String name;
+    private int total;
 
-    public String getSelf() {
-        return self;
+    /**
+     * @return the progress
+     */
+    public int getProgress() {
+        return progress;
     }
 
-    public void setSelf(String self) {
-        this.self = self;
+    /**
+     * @param progress the progress to set
+     */
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 
-    public String getId() {
-        return id;
+    /**
+     * @return the total
+     */
+    public int getTotal() {
+        return total;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * @param total the total to set
+     */
+    public void setTotal(int total) {
+        this.total = total;
     }
     
     

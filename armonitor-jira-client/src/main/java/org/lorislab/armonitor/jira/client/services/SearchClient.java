@@ -14,36 +14,26 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.controller;
+package org.lorislab.armonitor.jira.client.services;
 
-import java.io.Serializable;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import org.lorislab.armonitor.jira.client.model.SearchCriteria;
+import org.lorislab.armonitor.jira.client.model.SearchResult;
 
 /**
  *
  * @author Andrej Petras
  */
-@Named
-@SessionScoped
-public class TestController implements Serializable {
+@Path("search")
+public interface SearchClient {
     
-    private static final long serialVersionUID = -4883568423337397574L;
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    SearchResult search(SearchCriteria criteria);
     
-    private int count;
-    
-    @PostConstruct
-    public void create() {
-        System.out.println("POST CONSTRUCT");
-        count = 100;
-    }
-    
-    public void addCount() {
-        count++;
-    }
-    
-    public int getCount() {
-        return count;
-    }
 }

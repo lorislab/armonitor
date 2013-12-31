@@ -21,6 +21,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import org.lorislab.armonitor.jira.client.model.ProjectIssue;
 import org.lorislab.armonitor.jira.client.model.Project;
 import org.lorislab.armonitor.jira.client.model.Version;
 
@@ -32,11 +34,21 @@ import org.lorislab.armonitor.jira.client.model.Version;
 public interface ProjectClient {
     
     @GET
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     List<Project> getProjects();
-        
+       
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    Project getProject();
+    
     @GET
     @Path("{id}/versions")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     List<Version> getVersions(@PathParam("id") String id);
+    
+    @GET
+    @Path("{id}/statuses")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<ProjectIssue> getStatuses(@PathParam("id") String id);    
 }

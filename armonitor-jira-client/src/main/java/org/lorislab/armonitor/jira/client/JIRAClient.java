@@ -15,16 +15,14 @@
  */
 package org.lorislab.armonitor.jira.client;
 
-import java.util.List;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ProxyFactory;
-import org.lorislab.armonitor.jira.client.model.Project;
-import org.lorislab.armonitor.jira.client.model.Version;
 import org.lorislab.armonitor.jira.client.services.ProjectClient;
+import org.lorislab.armonitor.jira.client.services.SearchClient;
 
 
 /**
@@ -41,6 +39,11 @@ public class JIRAClient {
     public JIRAClient(String server, String username, String password) throws Exception {
         this.server = server;
         this.executor = createExecutor(username, password);
+    }
+    
+    public SearchClient createSearchClient() {
+        SearchClient client = ProxyFactory.create(SearchClient.class, server, executor);
+        return client;        
     }
     
     public ProjectClient createProjectClient() {

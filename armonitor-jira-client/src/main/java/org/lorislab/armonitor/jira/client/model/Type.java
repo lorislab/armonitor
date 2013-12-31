@@ -17,51 +17,74 @@
 package org.lorislab.armonitor.jira.client.model;
 
 /**
- * The project category.
- * 
+ *
  * @author Andrej Petras
  */
-public class ProjectCategory {
-    
-    private String self;
+public class Type {
     
     private String id;
     
-    private String description;
-    
     private String name;
+    
+    private String inward;
+    
+    private String outward;
 
-    public String getSelf() {
-        return self;
-    }
-
-    public void setSelf(String self) {
-        this.self = self;
-    }
-
+    /**
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    /**
+     * @return the inward
+     */
+    public String getInward() {
+        return inward;
+    }
+
+    /**
+     * @param inward the inward to set
+     */
+    public void setInward(String inward) {
+        this.inward = inward;
+    }
+
+    /**
+     * @return the outward
+     */
+    public String getOutward() {
+        return outward;
+    }
+
+    /**
+     * @param outward the outward to set
+     */
+    public void setOutward(String outward) {
+        this.outward = outward;
+    }
+
     
 }

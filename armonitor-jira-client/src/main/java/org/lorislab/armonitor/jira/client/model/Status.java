@@ -17,51 +17,90 @@
 package org.lorislab.armonitor.jira.client.model;
 
 /**
- * The project category.
- * 
+ *
  * @author Andrej Petras
  */
-public class ProjectCategory {
-    
-    private String self;
+public class Status {
     
     private String id;
     
+    private String self;
+    
     private String description;
+    
+    private String iconUrl;
     
     private String name;
 
-    public String getSelf() {
-        return self;
-    }
-
-    public void setSelf(String self) {
-        this.self = self;
-    }
-
+    /**
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * @return the self
+     */
+    public String getSelf() {
+        return self;
+    }
+
+    /**
+     * @param self the self to set
+     */
+    public void setSelf(String self) {
+        this.self = self;
+    }
+
+    /**
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * @param description the description to set
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * @return the iconUrl
+     */
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    /**
+     * @param iconUrl the iconUrl to set
+     */
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
+
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
-    
+        
     
 }
