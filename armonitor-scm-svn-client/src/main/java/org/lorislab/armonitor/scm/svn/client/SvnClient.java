@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.lorislab.armonitor.scm.client.ScmClient;
+import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.model.ScmLog;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNURL;
@@ -35,21 +36,30 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 public class SvnClient implements ScmClient {
 
     @Override
-    public List<ScmLog> getLog(String server, String user, String password) throws Exception {
+    public List<ScmLog> getLog(ScmCriteria criteria) throws Exception {
 
         List<ScmLog> result = new ArrayList<>();
         
+        
         long startRevision = 0;
+        if (criteria.getStart() != null) {
+            startRevision = Long.parseLong(criteria.getStart());
+        }
         long endRevision = -1; //HEAD (the latest) revision
-
-        SVNRepository repository = null;
-
-        repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(server));
-        ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(user, password);
+        if (criteria.getEnd() != null) {
+            endRevision = Long.parseLong(criteria.getEnd());
+        }
+        
+        SVNRepository repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(criteria.getServer()));
+        ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(criteria.getUser(), criteria.getPassword());
         repository.setAuthenticationManager(authManager);
 
-        Collection logEntries = null;
-        logEntries = repository.log(new String[]{""}, null, startRevision, endRevision, true, true);
+        String[] path = new String[]{""};
+        if (criteria.getPath() != null && !criteria.getPath().isEmpty()) {
+            path = criteria.getPath().toArray(new String[criteria.getPath().size()]);
+        }
+        
+        Collection logEntries = repository.log(path, null, startRevision, endRevision, true, true);
 
         if (logEntries != null) {
             SVNLogEntry entry;

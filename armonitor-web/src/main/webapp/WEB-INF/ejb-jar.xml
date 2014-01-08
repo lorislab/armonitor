@@ -5,7 +5,7 @@
 	<interceptors>
 		<interceptor>
 			<interceptor-class>org.lorislab.jel.ejb.interceptor.ServiceInterceptor</interceptor-class>
-		</interceptor>
+		</interceptor>		
 	</interceptors>
 	<assembly-descriptor>
 		<interceptor-binding>

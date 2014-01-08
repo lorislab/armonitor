@@ -16,7 +16,6 @@
 package org.lorislab.armonitor.agent.rs.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -116,7 +115,6 @@ public class VersionServiceImpl implements VersionService {
      */
     private static Version createVersion(Request request, SearchResultItem release) {
         Version result = new Version();
-        result.date = new Date();
         result.uid = request.uid;
         result.service = release.getService();
         if (result.uid == null) {
@@ -125,6 +123,8 @@ public class VersionServiceImpl implements VersionService {
 
         Arm arm = release.getArm();
         if (arm != null) {
+            result.date = arm.getDate();
+            
             // add maven attributes
             result.groupdId = arm.getGroupdId();
             result.artifactId = arm.getArtifactId();

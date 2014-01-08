@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.arm.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,8 @@ import java.util.Map;
 public class Arm implements Serializable {
     
     private static final long serialVersionUID = 661979832180196561L;
+    
+    private Date date;
     
     private String groupdId;
     
@@ -43,6 +46,14 @@ public class Arm implements Serializable {
     
     private Map<String,String> other = new HashMap<>();   
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
     /**
      * @return the groupdId
      */

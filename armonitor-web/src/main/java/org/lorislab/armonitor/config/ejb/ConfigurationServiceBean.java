@@ -41,7 +41,7 @@ import org.lorislab.armonitor.config.model.Config;
 public class ConfigurationServiceBean implements ConfigurationServiceLocal {
 
     @EJB
-    private ConfigServiceLocal service;
+    private ConfigServiceBean service;
 
     private Map<Class, Object> cache = new HashMap<>();
 

@@ -26,4 +26,26 @@
 		</dependency>
 	</dependencies>
 		
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>make-rest-client-lib</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>rsclient</classifier>
+							<excludes>
+								<exclude>**/*Impl.*</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>				
+		</plugins>
+	</build>
 </project>

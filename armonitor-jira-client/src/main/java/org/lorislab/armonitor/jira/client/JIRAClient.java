@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.jira.client;
 
+import org.apache.http.client.HttpClient;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
@@ -32,13 +33,21 @@ import org.lorislab.armonitor.jira.client.services.SearchClient;
  */
 public class JIRAClient {
 
+    private static final String HTTPS = "https";
+    
     private final String server;
     
     private final ClientExecutor executor;
     
     public JIRAClient(String server, String username, String password) throws Exception {
         this.server = server;
-        this.executor = createExecutor(username, password);
+        
+        HttpClient httpClient = new DefaultHttpClient();
+        if (server.startsWith(HTTPS)) {
+            SSLSocketFactory sslSocketFactory = new SSLSocketFactory(new TrustSelfSignedStrategy(), SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme(HTTPS, 443, sslSocketFactory));
+        }
+        this.executor = new JiraApacheHttpClient4Executor(username, password, httpClient);          
     }
     
     public SearchClient createSearchClient() {
@@ -50,11 +59,5 @@ public class JIRAClient {
         ProjectClient client = ProxyFactory.create(ProjectClient.class, server, executor);
         return client;
     }
-    
-    private ClientExecutor createExecutor(String username, String password) throws Exception {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        SSLSocketFactory sslSocketFactory = new SSLSocketFactory(new TrustSelfSignedStrategy(), SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-        httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme("https", 443, sslSocketFactory));
-        return new JiraApacheHttpClient4Executor(username, password, httpClient);        
-    }
+
 }

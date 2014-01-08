@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,29 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.config.ejb;
+package org.lorislab.armonitor.web.rs.model;
 
-import java.util.List;
-import org.lorislab.armonitor.config.model.Config;
+import org.lorislab.armonitor.store.model.StoreAgentType;
 
 /**
  *
  * @author Andrej Petras
  */
-public interface ConfigServiceLocal {
+public class Agent {
     
-    List<Config> getAllConfig();
+    public String guid;
     
-    Config saveConfig(Config config);
+    public String system;
     
-    Config getConfigByClass(String clazz);
+    public String url;
+        
+    public StoreAgentType type;
+    
+    public boolean authentication;
+    
+    public String user;
+       
+    public String password;
+
+    public String service;    
 }

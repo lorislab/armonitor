@@ -41,4 +41,5 @@ public interface ArmConstant {
     
     public static final String RELEASE_BUILD = "Release-Build";
     
+    public static final String RELEASE_DATE = "Release-Date";
 }

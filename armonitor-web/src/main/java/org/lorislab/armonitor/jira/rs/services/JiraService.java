@@ -17,11 +17,16 @@
 package org.lorislab.armonitor.jira.rs.services;
 
 import java.util.List;
+import javax.ejb.EJB;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
+import org.lorislab.armonitor.config.rs.model.JiraConfig;
 import org.lorislab.armonitor.jira.rs.controller.JiraController;
 import org.lorislab.armonitor.jira.rs.model.JiraProject;
 
@@ -34,6 +39,9 @@ public class JiraService {
 
     @Inject
     private JiraController controller;
+    
+    @EJB
+    private ConfigurationServiceLocal service;
     
     @GET
     @Path("projects")
@@ -49,4 +57,18 @@ public class JiraService {
         return controller.reloadProjects();
     }
     
+    @Path("cf")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public JiraConfig getJiraConfig() {
+        return service.getConfiguration(JiraConfig.class);
+    }
+    
+    @Path("cf")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public JiraConfig setJiraConfig(JiraConfig jiraConfig) {
+        return service.setConfiguration(jiraConfig);
+    }
 }

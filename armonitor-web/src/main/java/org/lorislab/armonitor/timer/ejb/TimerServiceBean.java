@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.timer.ejb;
 
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.ScheduleExpression;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.Timeout;
+import javax.ejb.Timer;
 import javax.ejb.TimerService;
+import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
+import org.lorislab.armonitor.timer.model.TimerConfig;
 
 /**
  *
@@ -31,20 +37,78 @@ import javax.ejb.TimerService;
 @Singleton
 @Startup
 public class TimerServiceBean {
-    
+
+    private static final String AGENT_TIMER_INFO = "AgentTimer";
+
+    private static final Logger LOGGER = Logger.getLogger(TimerServiceBean.class.getName());
+
     @Resource
     private TimerService timerService;
+
+    @EJB
+    private ConfigurationServiceLocal configService;
+    
+    @EJB
+    private TimerProcessServiceBean processService;
     
     @PostConstruct
-    public void initialize(){
-//        ScheduleExpression expression = new ScheduleExpression();
-//        expression.second("*/1").minute("*").hour("*");
-//        timerService.createCalendarTimer(expression);
+    public void initialize() {
+        start();
+    }
+
+    public void restart() {
+        stop();
+        start();
+    }
+
+    public void start() {
+        Timer timer = getTimer();
+        if (timer == null) {
+            TimerConfig config = configService.getConfiguration(TimerConfig.class);
+            if (config.start) {
+                ScheduleExpression expression = new ScheduleExpression();
+                expression.second(config.second).minute(config.minute).hour(config.hour);
+
+                javax.ejb.TimerConfig timerConfig = new javax.ejb.TimerConfig(AGENT_TIMER_INFO, false);
+                Timer tmp = timerService.createCalendarTimer(expression, timerConfig);
+                
+                LOGGER.log(Level.INFO, "The timer service was started with next timeout: {0}", tmp.getNextTimeout());
+            } else {
+                LOGGER.log(Level.INFO, "The timer {0} is not started.", AGENT_TIMER_INFO);
+            }
+        } else {
+            LOGGER.log(Level.INFO, "The timer {0} is all ready running.", AGENT_TIMER_INFO);
+        }
+    }
+
+    public void stop() {
+        Timer timer = getTimer();
+        if (timer != null) {
+            timer.cancel();
+            LOGGER.log(Level.INFO, "The timer {0} was cancelled.", AGENT_TIMER_INFO);
+        } else {
+            LOGGER.log(Level.INFO, "The timer {0} is not running.", AGENT_TIMER_INFO);
+        }
+    }
+
+    public Timer getTimer() {
+        Collection<Timer> timers = timerService.getTimers();
+        for (Timer timer : timers) {
+            if (AGENT_TIMER_INFO.equals(timer.getInfo())) {
+                return timer;
+            }
+        }
+        return null;
     }
 
     @Timeout
-    public void execute(){
-//        System.out.println("----Invoked: " + System.currentTimeMillis());
-    }    
-    
+    public void execute() {
+        TimerConfig config = configService.getConfiguration(TimerConfig.class);
+        if (config.enabled) {
+            processService.timerService();
+        } else {
+            LOGGER.log(Level.FINEST, "The timer {0} excution is disabled.", AGENT_TIMER_INFO);
+        }
+    }
+
 }

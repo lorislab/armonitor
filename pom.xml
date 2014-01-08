@@ -50,6 +50,14 @@
 
 	<dependencyManagement>       
 		<dependencies>
+            <!-- EJB/Persistence libraries -->
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-6.0</artifactId>
+                <version>3.0.1.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>			
 			<!-- JBOSS -->     
 			<dependency>
 				<groupId>org.jboss.msc</groupId>

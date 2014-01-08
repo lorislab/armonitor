@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.project.model;
+package org.lorislab.armonitor.store.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import org.lorislab.jel.jpa.model.Persistent;
 
 /**
  *
  * @author Andrej Petras
  */
-public class Build {
+@Entity
+@Table(name = "ARM_VERSION")
+public class StoreVersion extends Persistent {
+    
+    private static final long serialVersionUID = 8147351791885128057L;
     
 }

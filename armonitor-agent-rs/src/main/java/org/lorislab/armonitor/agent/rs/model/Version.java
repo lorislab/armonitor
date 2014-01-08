@@ -30,7 +30,7 @@ public class Version {
     public String uid;
     
     public int ver = 1;
-    
+
     public Date date;
     
     public String service;

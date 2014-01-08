@@ -13,29 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.armonitor.config.rs.service;
 
-import javax.ejb.EJB;
-import org.lorislab.armonitor.config.rs.model.JiraConfig;
-import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
+package org.lorislab.armonitor.store.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import org.lorislab.jel.jpa.model.Persistent;
 
 /**
  *
  * @author Andrej Petras
  */
-public class ConfigurationServiceImpl implements ConfigurationService {
+@Entity
+@Table(name = "ARM_BUILD")
+public class Build extends Persistent {
+    
+    private static final long serialVersionUID = -1095643007199796298L;
+    
+    @Column(name = "C_PARENT")
+    private String parent;
 
-    @EJB
-    private ConfigurationServiceLocal service;
-
-    @Override
-    public JiraConfig getJiraConfig() {
-        return service.getConfiguration(JiraConfig.class);
+    public String getParent() {
+        return parent;
     }
 
-    @Override
-    public JiraConfig setJiraConfig(JiraConfig jiraConfig) {
-        return service.setConfiguration(jiraConfig);
-    }
-
+    public void setParent(String parent) {
+        this.parent = parent;
+    }  
+    
 }

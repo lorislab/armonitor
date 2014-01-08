@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.project.model;
+package org.lorislab.armonitor.agent.model;
 
-import java.util.List;
+import java.io.Serializable;
 
 /**
  *
  * @author Andrej Petras
  */
-public class Application {
+public class AgentClientConfig implements Serializable {
     
-    private String name;
+    private static final long serialVersionUID = 3147380952830292772L;
     
-    private String scm;
-    
-    private List<System> systems;
-    
-    private List<Version> versions;
-       
 }

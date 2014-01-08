@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.project.model;
-
-import java.util.List;
+package org.lorislab.armonitor.timer.model;
 
 /**
  *
  * @author Andrej Petras
  */
-public class Version {
+public class TimerConfig {
     
-    private List<Build> builds;
+    public boolean start = false;
+    
+    public boolean enabled = false;
+    
+    public String second = "*/30";
+    
+    public String minute = "*";
+    
+    public String hour = "*";
 }

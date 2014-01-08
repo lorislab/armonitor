@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.scm.client;
 
 import java.util.List;
+import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.model.ScmLog;
 
 /**
@@ -25,5 +26,5 @@ import org.lorislab.armonitor.scm.model.ScmLog;
  */
 public interface ScmClient {
       
-    public List<ScmLog> getLog(String url, String userName, String password) throws Exception;
+    public List<ScmLog> getLog(ScmCriteria criteria) throws Exception;
 }

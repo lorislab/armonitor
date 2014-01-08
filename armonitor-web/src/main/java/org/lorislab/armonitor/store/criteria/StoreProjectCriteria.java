@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,36 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.project.model;
+package org.lorislab.armonitor.store.criteria;
 
-import java.util.List;
+import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
+
 
 /**
  *
  * @author Andrej Petras
  */
-public class Project {
+public class StoreProjectCriteria extends AbstractSearchCriteria {
     
-    private String name;
+    private static final long serialVersionUID = 617467092691040328L;
     
-    private String jira;
-    
-    private List<Application> applications;
-    
+    private Boolean enabled;
+
+    public Boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public void reset() {
+        enabled = null;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return isEmpty(enabled);
+    }
 }

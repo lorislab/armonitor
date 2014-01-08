@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.project.model;
+package org.lorislab.armonitor.web.rs.model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Andrej Petras
  */
-public class System {
+public class Application implements Serializable {
     
+    private static final long serialVersionUID = 2446427863130586125L;
+    
+    public String guid;
+    
+    public String name;
+      
+    public List<AppSystem> systems = new ArrayList<>();
 }

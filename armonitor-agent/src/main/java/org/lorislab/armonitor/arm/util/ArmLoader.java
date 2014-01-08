@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +61,7 @@ public class ArmLoader {
     
     public static Arm createArm(Properties properties) {
         Arm result = new Arm();
-        
+                
         // add maven properties
         result.setGroupdId((String) properties.remove(ArmConstant.MAVEN_GROUP_ID));        
         result.setArtifactId((String) properties.remove(ArmConstant.MAVEN_ARTIFACT_ID));        
@@ -70,6 +71,11 @@ public class ArmLoader {
         result.setScm((String) properties.remove(ArmConstant.RELEASE_SCM));
         result.setBuild((String) properties.remove(ArmConstant.RELEASE_BUILD));
         result.setVersion((String) properties.remove(ArmConstant.RELEASE_VERSION));
+        
+        // add release date
+        String tmp = (String) properties.remove(ArmConstant.RELEASE_DATE);
+        Date date = new Date(Long.valueOf(tmp));
+        result.setDate(date);
         
         // add other
         for (String name : properties.stringPropertyNames()) {            
@@ -94,7 +100,15 @@ public class ArmLoader {
         result.put(ArmConstant.RELEASE_SCM, arm.getScm());
         result.put(ArmConstant.RELEASE_VERSION, arm.getRelease());
         result.put(ArmConstant.RELEASE_BUILD, arm.getBuild());
-                
+        
+        // add release properties
+        Long tmp = null;
+        Date date = arm.getDate();
+        if (date != null) {
+            tmp = date.getTime();
+        }
+        result.put(ArmConstant.RELEASE_DATE, tmp);
+        
         return result;
     }
     
