@@ -24,8 +24,10 @@ import java.util.Set;
 /**
  *
  * @author Andrej Petras
+ * @param <K> input object <code>from</code>.
+ * @param <T> output object <code>to</code>.
  */
-public class MappingStrategy implements Serializable {
+public class MappingStrategy<K, T> implements Serializable {
     
     private static final long serialVersionUID = 2444033037267816885L;
     
@@ -35,6 +37,10 @@ public class MappingStrategy implements Serializable {
 
     public MappingStrategy(String ... excludes) {
         setExcludes(excludes);
+    }
+    
+    public void postMapping(K input, T output) {
+        
     }
     
     public final boolean isField(String name) {

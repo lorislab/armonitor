@@ -14,26 +14,41 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.model;
+package org.lorislab.armonitor.store.criteria;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import org.lorislab.jel.jpa.model.Persistent;
+import java.util.Date;
+import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
 /**
  *
  * @author Andrej Petras
  */
-@Entity
-@Table(name = "ARM_VERSION")
-public class StoreVersion extends Persistent {
+public class StoreBuildCriteria extends AbstractSearchCriteria {
     
-    private static final long serialVersionUID = 8147351791885128057L;
- 
-    @Column(name = "C_APP")
+    private static final long serialVersionUID = 8885713194174673375L;
+
     private String application;
 
+    private String agent;
+    
+    private Date date;
+
+    public String getAgent() {
+        return agent;
+    }
+
+    public void setAgent(String agent) {
+        this.agent = agent;
+    }
+    
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+        
     public String getApplication() {
         return application;
     }
@@ -42,4 +57,16 @@ public class StoreVersion extends Persistent {
         this.application = application;
     }
         
+    @Override
+    public void reset() {
+        application = null;
+        date = null;
+        agent = null;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return isEmpty(application, date, agent);
+    }
+    
 }

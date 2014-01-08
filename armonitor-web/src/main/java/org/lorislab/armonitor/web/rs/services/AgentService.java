@@ -41,10 +41,7 @@ import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
 @Path("agent")
 public class AgentService {
     
-    private static final MappingStrategy STOREAGENT_TO_AGENT = new MappingStrategy();
-    static {
-        STOREAGENT_TO_AGENT.setExcludes("password");        
-    }
+    private static final MappingStrategy STOREAGENT_TO_AGENT = new MappingStrategy("password");
     
     @EJB
     private StoreAgentServiceBean service;

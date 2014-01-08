@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,20 +26,31 @@ import org.lorislab.jel.jpa.model.Persistent;
  * @author Andrej Petras
  */
 @Entity
-@Table(name = "ARM_BUILD")
-public class Build extends Persistent {
+@Table(name = "ARM_SYSTEM_BUILD")
+public class StoreSystemBuild extends Persistent {
     
-    private static final long serialVersionUID = -1095643007199796298L;
+    private static final long serialVersionUID = -5357640264532302086L;
     
-    @Column(name = "C_PARENT")
-    private String parent;
+    @Column(name = "C_SYSTEM")
+    private String system;
+    
+    @Column(name = "C_BUILD")
+    private String build;
 
-    public String getParent() {
-        return parent;
+    public String getSystem() {
+        return system;
     }
 
-    public void setParent(String parent) {
-        this.parent = parent;
-    }  
-    
+    public void setSystem(String system) {
+        this.system = system;
+    }
+
+    public String getBuild() {
+        return build;
+    }
+
+    public void setBuild(String build) {
+        this.build = build;
+    }
+     
 }

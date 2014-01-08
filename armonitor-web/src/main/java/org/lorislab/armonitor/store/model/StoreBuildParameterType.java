@@ -16,30 +16,18 @@
 
 package org.lorislab.armonitor.store.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import org.lorislab.jel.jpa.model.Persistent;
-
 /**
  *
  * @author Andrej Petras
  */
-@Entity
-@Table(name = "ARM_VERSION")
-public class StoreVersion extends Persistent {
+public enum StoreBuildParameterType {
     
-    private static final long serialVersionUID = 8147351791885128057L;
- 
-    @Column(name = "C_APP")
-    private String application;
-
-    public String getApplication() {
-        return application;
+    MANIFEST,
+    
+    OTHER;
+       
+    public static class Values {
+        public static final String KEY_MANIFEST = "MANIFEST";    
+        public static final String KEY_OTHER = "OTHER";
     }
-
-    public void setApplication(String application) {
-        this.application = application;
-    }
-        
 }

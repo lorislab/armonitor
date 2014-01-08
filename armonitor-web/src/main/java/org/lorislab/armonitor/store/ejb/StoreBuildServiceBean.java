@@ -27,9 +27,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.lorislab.armonitor.store.criteria.StoreAgentCriteria;
-import org.lorislab.armonitor.store.model.StoreAgent;
-import org.lorislab.armonitor.store.model.StoreAgent_;
+import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
+import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
+import org.lorislab.armonitor.store.model.StoreBuild;
+import org.lorislab.armonitor.store.model.StoreBuild_;
+import org.lorislab.armonitor.store.model.StoreSystemBuild;
+import org.lorislab.armonitor.store.model.StoreSystemBuild_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
@@ -38,37 +41,41 @@ import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent> {
+public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild> {
     
-    private static final long serialVersionUID = -6750263259636685498L;
-    
+    private static final long serialVersionUID = 8403472044970132117L;
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public StoreAgent saveAgent(StoreAgent agent) {
-        return this.save(agent);
+    public StoreBuild saveBuild(StoreBuild data) {
+        return this.save(data);
     }
     
-    public StoreAgent getAgent(String guid) {
+    public StoreBuild getBuild(String guid) {
         return this.getById(guid);
     }
     
-    public List<StoreAgent> getAgents() {
+    public List<StoreBuild> getBuilds() {
         return this.getAll();
     }
 
-    public List<StoreAgent> getAgents(StoreAgentCriteria criteria) {
-        List<StoreAgent> result = new ArrayList<>();
+    public List<StoreBuild> getSystemBuilds(StoreBuildCriteria criteria) {
+        List<StoreBuild> result = new ArrayList<>();
 
         CriteriaBuilder cb = getBaseEAO().getCriteriaBuilder();
-        CriteriaQuery<StoreAgent> cq = getBaseEAO().createCriteriaQuery();
-        Root<StoreAgent> root = cq.from(StoreAgent.class);
+        CriteriaQuery<StoreBuild> cq = getBaseEAO().createCriteriaQuery();
+        Root<StoreBuild> root = cq.from(StoreBuild.class);
 
         List<Predicate> predicates = new ArrayList<>();
-        if (criteria.getSystem() != null) {
-            predicates.add(root.get(StoreAgent_.system).in(criteria.getSystem()));
+    
+        if (criteria.getApplication() != null) {
+            predicates.add(cb.equal(root.get(StoreBuild_.application), criteria.getApplication()));
         }
 
-        if (criteria.isTimer() != null) {
-            predicates.add(cb.equal(root.get(StoreAgent_.timer),criteria.isTimer()));
+        if (criteria.getAgent() != null) {
+            predicates.add(cb.equal(root.get(StoreBuild_.agent), criteria.getAgent()));
+        }
+        
+        if (criteria.getDate() != null) {
+            predicates.add(cb.equal(root.get(StoreBuild_.date), criteria.getDate()));
         }
         
         if (!predicates.isEmpty()) {
@@ -76,11 +83,11 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
         }
 
         try {
-            TypedQuery<StoreAgent> typeQuery = getBaseEAO().createTypedQuery(cq);
+            TypedQuery<StoreBuild> typeQuery = getBaseEAO().createTypedQuery(cq);
             result = typeQuery.getResultList();
         } catch (NoResultException ex) {
             // do nothing
         }
         return result;
-    }      
+    }       
 }

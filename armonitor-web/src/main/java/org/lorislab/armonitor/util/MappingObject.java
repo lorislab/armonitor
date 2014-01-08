@@ -71,23 +71,26 @@ public final class MappingObject {
         }
     }
 
-    public static final <T> T map(Object input, T output) {
+    public static final <K, T> T map(K input, T output) {
         return map(input, output, null);
     }
     
-    public static final <T> T mapWitExcludes(Object input, T output, String... excludes) {
-        return map(input, output, new MappingStrategy(excludes));        
+    public static final <K, T> T mapWitExcludes(K input, T output, String... excludes) {
+        return map(input, output, new MappingStrategy<K,T>(excludes));        
     }
     
-    public static final <T> T map(Object input, T output, MappingStrategy strategy) {
+    public static final <K, T> T map(K input, T output, MappingStrategy<K,T> strategy) {
         if (input != null && output != null) {
             Map<String, Field> in = getFields(input.getClass(), strategy);
             Map<String, Field> out = getFields(output.getClass(), strategy);
             for (Entry<String, Field> entry : in.entrySet()) {
                 map(out.get(entry.getKey()), output, entry.getValue(), input);
             }
+            if (strategy != null) {
+                strategy.postMapping(input, output);                
+            }
         }
-        return output;
+        return null;
     }
 
 }

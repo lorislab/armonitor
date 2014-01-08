@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.agent.model;
+package org.lorislab.armonitor.store.ejb;
 
-import java.io.Serializable;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.store.model.StoreVersion;
+import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
  *
  * @author Andrej Petras
  */
-public class AgentClientConfig implements Serializable {
+@Stateless
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+public class StoreVersionServiceBean extends AbstractEntityServiceBean<StoreVersion> {
     
-    private static final long serialVersionUID = 3147380952830292772L;
+    private static final long serialVersionUID = -589567485253114559L;
+    
     
 }
