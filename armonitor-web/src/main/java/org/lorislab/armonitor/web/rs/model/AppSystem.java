@@ -30,5 +30,4 @@ public class AppSystem implements Serializable {
     
     public String name;
 
-    private SystemStatus status;
 }

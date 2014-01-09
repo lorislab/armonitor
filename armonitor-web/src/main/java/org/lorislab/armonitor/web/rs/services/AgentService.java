@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -30,8 +28,6 @@ import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.store.ejb.StoreAgentServiceBean;
 import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.util.MappingStrategy;
-import org.lorislab.armonitor.util.MappingObject;
-import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
 
 /**
@@ -40,18 +36,16 @@ import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
  */
 @Path("agent")
 public class AgentService {
-    
-    private static final MappingStrategy STOREAGENT_TO_AGENT = new MappingStrategy("password");
-    
+
     @EJB
     private StoreAgentServiceBean service;
-    
+
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public Agent create() throws Exception {
-        return MappingObject.map(new StoreAgent(), new Agent());           
+    public StoreAgent create() throws Exception {
+        return new StoreAgent();
     }
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -65,47 +59,24 @@ public class AgentService {
             }
         }
     }
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Agent save(Agent agent) throws Exception {
-        if (agent != null) {
-            StoreAgent tmp = service.getAgent(agent.guid);
-            MappingStrategy mStrategy = STOREAGENT_TO_AGENT;
-            if (tmp == null) {
-                tmp = new StoreAgent();
-                mStrategy = null;
-            }
-            tmp = MappingObject.map(agent, tmp, mStrategy);   
-            tmp = service.saveAgent(tmp);
-            return MappingObject.map(tmp, new Agent(), STOREAGENT_TO_AGENT);   
-        }
-        return null;
+    public StoreAgent save(StoreAgent agent) throws Exception {
+        return service.saveAgent(agent);
     }
-    
+
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Agent get(@PathParam("guid") String guid) throws Exception {
-        Agent result = null;
-        StoreAgent a = service.getAgent(guid);
-        if (a != null) {            
-            result = MappingObject.map(a, new Agent(), STOREAGENT_TO_AGENT);            
-        }
-        return result;
+    public StoreAgent get(@PathParam("guid") String guid) throws Exception {
+        return service.getAgent(guid);
     }
- 
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Agent> get() {
-        List<Agent> result = new ArrayList<>();
-        List<StoreAgent> agents = service.getAgents();
-        if (agents != null) {
-            for (StoreAgent agent : agents) {
-                result.add(MappingObject.map(agent, new Agent(), STOREAGENT_TO_AGENT));   
-            }
-        }
-        return result;
+    public List<StoreAgent> get() {
+        return service.getAgents();
     }
 }

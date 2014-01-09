@@ -44,6 +44,7 @@ import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild> {
     
     private static final long serialVersionUID = 8403472044970132117L;
+    
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreBuild saveBuild(StoreBuild data) {
         return this.save(data);
@@ -57,7 +58,7 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
         return this.getAll();
     }
 
-    public List<StoreBuild> getSystemBuilds(StoreBuildCriteria criteria) {
+    public List<StoreBuild> getBuilds(StoreBuildCriteria criteria) {
         List<StoreBuild> result = new ArrayList<>();
 
         CriteriaBuilder cb = getBaseEAO().getCriteriaBuilder();

@@ -128,7 +128,7 @@ public class TimerProcessServiceBean {
 
                 StoreBuildCriteria criteria = new StoreBuildCriteria();
                 criteria.setDate(build.getDate());
-                List<StoreBuild> tmp = buildService.getSystemBuilds(criteria);
+                List<StoreBuild> tmp = buildService.getBuilds(criteria);
 
                 StoreBuild systemBuild = null;
                 

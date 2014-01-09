@@ -22,7 +22,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.agent.ejb.AgentClientServiceBean;
-import org.lorislab.armonitor.agent.rs.model.Version;
 import org.lorislab.armonitor.store.criteria.StoreAgentCriteria;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
@@ -39,7 +38,6 @@ import org.lorislab.armonitor.web.rs.model.AppSystem;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.Project;
 import org.lorislab.armonitor.web.rs.model.StoreProjectResult;
-import org.lorislab.armonitor.web.rs.model.SystemStatus;
 
 /**
  *
@@ -57,25 +55,6 @@ public class StoreDataServiceBean {
 
     @EJB
     private StoreSystemServiceBean systemService;
-
-    @EJB
-    private StoreAgentServiceBean agentService;
-    
-    @EJB
-    private AgentClientServiceBean agentClientService;
-    
-    public SystemStatus getSystemStatus(String guid) {
-        SystemStatus result = null;
-        
-        StoreAgentCriteria criteria = new StoreAgentCriteria();
-        criteria.setSystem(guid);
-        List<StoreAgent> agents = agentService.getAgents(criteria);
-        if (agents != null && !agents.isEmpty()) {
-            StoreAgent agent = agents.get(0);            
-//            Version version = agentClientService.getVersion();
-        }
-        return result;
-    }
     
     public StoreProjectResult getProjects() {
         StoreProjectResult result = new StoreProjectResult();
