@@ -28,11 +28,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
-import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuild_;
-import org.lorislab.armonitor.store.model.StoreSystemBuild;
-import org.lorislab.armonitor.store.model.StoreSystemBuild_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
@@ -51,11 +48,22 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
     }
     
     public StoreBuild getBuild(String guid) {
-        return this.getById(guid);
+        StoreBuildCriteria criteria = new StoreBuildCriteria();
+        criteria.setGuid(guid);
+        return getBuild(guid);
+    }
+    
+    public StoreBuild getBuild(StoreBuildCriteria criteria) {
+        StoreBuild result = null;
+        List<StoreBuild> tmp = getBuilds(criteria);
+        if (tmp != null && !tmp.isEmpty()) {
+            result = tmp.get(0);
+        }
+        return result;
     }
     
     public List<StoreBuild> getBuilds() {
-        return this.getAll();
+        return getBuilds(new StoreBuildCriteria());
     }
 
     public List<StoreBuild> getBuilds(StoreBuildCriteria criteria) {
@@ -71,6 +79,10 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
             predicates.add(cb.equal(root.get(StoreBuild_.application), criteria.getApplication()));
         }
 
+        if (criteria.getGuid() != null) {
+            predicates.add(cb.equal(root.get(StoreBuild_.guid), criteria.getGuid()));
+        }
+        
         if (criteria.getAgent() != null) {
             predicates.add(cb.equal(root.get(StoreBuild_.agent), criteria.getAgent()));
         }

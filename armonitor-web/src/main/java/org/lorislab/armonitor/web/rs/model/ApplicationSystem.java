@@ -17,20 +17,21 @@
 package org.lorislab.armonitor.web.rs.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author Andrej Petras
  */
-public class Application implements Serializable {
+public class ApplicationSystem implements Serializable {
     
-    private static final long serialVersionUID = 2446427863130586125L;
+    private static final long serialVersionUID = -4453117979221611348L;
     
     public String guid;
     
     public String name;
-      
-    public List<ApplicationSystem> systems = new ArrayList<>();
+
+    public boolean enabled;
+    
+    public boolean timer;
+
 }

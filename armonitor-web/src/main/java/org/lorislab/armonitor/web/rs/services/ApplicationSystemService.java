@@ -13,47 +13,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
-import javax.inject.Inject;
+import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.lorislab.armonitor.web.rs.ejb.ApplicationSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
-import org.lorislab.armonitor.web.rs.model.Project;
 
 /**
  *
  * @author Andrej Petras
  */
-@Path("store")
-public class StoreService {
-    
-    @Inject
-    private StoreController controller;
-    
+@Path("sys")
+public class ApplicationSystemService {
+
+    @EJB
+    private ApplicationSystemServiceBean service;
+
     @GET
-    @Path("projects")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Project> getProjects() {
-        return controller.getProjects();
+    public List<ApplicationSystem> get() {
+        return service.get();
     }
-    
+
     @GET
-    @Path("projects/reload")
+    @Path("{uid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Project> reloadProjects() {
-        return controller.reloadProjects();
+    public ApplicationSystem get(@PathParam("uid") String uid) {
+        return service.get(uid);
     }
-    
-    @GET
-    @Path("system/update/{guid}")
+
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public ApplicationSystem updateSystem(@PathParam("guid") String guid) {
-        return controller.updateSystem(guid);
+    public ApplicationSystem create() throws Exception {
+        return service.create();
     }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ApplicationSystem save(ApplicationSystem system) throws Exception {
+        return service.save(system);
+    }
+
 }

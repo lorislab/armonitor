@@ -18,21 +18,17 @@ package org.lorislab.armonitor.config.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
  *
  * @author Andrej Petras
  */
-@Entity(name = "T_ATTRIBUTE")
+@Entity(name = "ARM_CONFIG_ATTR")
 public class Attribute extends Persistent {
     
     private static final long serialVersionUID = 8218977162091953419L;
- 
-    @ManyToOne
-    private Config config;
-    
+
     @Column(name = "C_NAME")
     private String name;
     
@@ -55,11 +51,4 @@ public class Attribute extends Persistent {
         this.value = value;
     }
 
-    public void setConfig(Config config) {
-        this.config = config;
-    }
-
-    public Config getConfig() {
-        return config;
-    }            
 }

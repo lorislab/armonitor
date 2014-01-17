@@ -16,8 +16,15 @@
 
 package org.lorislab.armonitor.store.model;
 
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
@@ -31,8 +38,9 @@ public class StoreSystem extends Persistent {
     
     private static final long serialVersionUID = -4290539931465740615L;
     
-    @Column(name = "C_APP")
-    private String application;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "C_APP")
+    private StoreApplication application;
     
     @Column(name = "C_NAME")
     private String name;
@@ -43,6 +51,39 @@ public class StoreSystem extends Persistent {
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "system")
+    private StoreAgent agent;
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "system")
+    private Set<StoreSystemBuild> builds;
+
+    @Column(name = "C_TIMER")
+    private boolean timer;
+
+    public boolean isTimer() {
+        return timer;
+    }
+
+    public void setTimer(boolean timer) {
+        this.timer = timer;
+    }
+          
+    public Set<StoreSystemBuild> getBuilds() {
+        return builds;
+    }
+
+    public void setBuilds(Set<StoreSystemBuild> builds) {
+        this.builds = builds;
+    }
+        
+    public StoreAgent getAgent() {
+        return agent;
+    }
+
+    public void setAgent(StoreAgent agent) {
+        this.agent = agent;
+    }
+        
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -51,11 +92,11 @@ public class StoreSystem extends Persistent {
         return enabled;
     }
     
-    public String getApplication() {
+    public StoreApplication getApplication() {
         return application;
     }
 
-    public void setApplication(String application) {
+    public void setApplication(StoreApplication application) {
         this.application = application;
     }
     

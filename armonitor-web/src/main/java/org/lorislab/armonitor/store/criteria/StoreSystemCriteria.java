@@ -26,10 +26,50 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
 
     private static final long serialVersionUID = -3270039293034055465L;
 
+    private String guid;
+    
     private Boolean enabled;
 
     private Set<String> applications;
 
+    private Boolean timer;
+
+    private boolean fetchAgent;
+
+    private boolean fetchApplication;
+
+    public boolean isFetchApplication() {
+        return fetchApplication;
+    }
+
+    public void setFetchApplication(boolean fetchApplication) {
+        this.fetchApplication = fetchApplication;
+    }
+        
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+    
+    public boolean isFetchAgent() {
+        return fetchAgent;
+    }
+
+    public void setFetchAgent(boolean fetchAgent) {
+        this.fetchAgent = fetchAgent;
+    }
+        
+    public Boolean isTimer() {
+        return timer;
+    }
+
+    public void setTimer(Boolean timer) {
+        this.timer = timer;
+    }
+    
     public Boolean isEnabled() {
         return enabled;
     }
@@ -50,10 +90,13 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
     public void reset() {
         applications = null;
         enabled = null;
+        timer = null;
+        fetchAgent = false;
+        fetchApplication = false;
     }
 
     @Override
     public boolean isEmpty() {
-        return isEmpty(enabled, applications);
+        return isEmpty(enabled, timer, applications);
     }
 }

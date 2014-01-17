@@ -19,8 +19,10 @@ package org.lorislab.armonitor.config.model;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import org.lorislab.jel.jpa.model.Persistent;
@@ -29,15 +31,17 @@ import org.lorislab.jel.jpa.model.Persistent;
  *
  * @author Andrej Petras
  */
-@Entity(name = "T_CONFIG")
+@Entity(name = "ARM_CONFIG")
 public class Config extends Persistent {
     
     private static final long serialVersionUID = 6269308858836846322L;
-    
+
+    @Column(name = "C_CLASS")
     private String clazz;
     
-    @OneToMany(mappedBy="config", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @MapKeyColumn(name="C_NAME")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @MapKeyColumn(name="C_NAME")   
+    @JoinColumn(name = "C_CONFIG")
     private Map<String, Attribute> attributes = new HashMap<>();
 
     public String getClazz() {

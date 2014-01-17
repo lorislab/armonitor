@@ -24,7 +24,7 @@ import javax.ejb.MessageDriven;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import org.lorislab.armonitor.store.model.StoreAgent;
+import org.lorislab.armonitor.store.model.StoreSystem;
 
 /**
  *
@@ -54,9 +54,9 @@ public class AsyncTimerProcessServiceBean implements MessageListener {
                     ObjectMessage msg = (ObjectMessage) message;
                     Object object = msg.getObject();
                     if (object != null) {
-                        if (object instanceof StoreAgent) {
-                            StoreAgent agent = (StoreAgent) object;
-                            processService.process(agent);
+                        if (object instanceof StoreSystem) {
+                            StoreSystem system = (StoreSystem) object;
+                            processService.process(system);
                         } else {
                             LOGGER.log(Level.SEVERE, "Message content object not supported format!");
                         }

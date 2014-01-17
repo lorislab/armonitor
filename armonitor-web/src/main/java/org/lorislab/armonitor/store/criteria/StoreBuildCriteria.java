@@ -27,12 +27,22 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
     
     private static final long serialVersionUID = 8885713194174673375L;
 
+    private String guid;
+    
     private String application;
 
     private String agent;
     
     private Date date;
 
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+    
     public String getAgent() {
         return agent;
     }

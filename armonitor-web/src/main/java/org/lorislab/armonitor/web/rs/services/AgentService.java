@@ -25,9 +25,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.store.ejb.StoreAgentServiceBean;
-import org.lorislab.armonitor.store.model.StoreAgent;
-import org.lorislab.armonitor.util.MappingStrategy;
+import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
+import org.lorislab.armonitor.web.rs.ejb.AgentServiceBean;
+import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
 
 /**
@@ -38,45 +38,49 @@ import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
 public class AgentService {
 
     @EJB
-    private StoreAgentServiceBean service;
+    private AgentServiceBean service;
 
+    @EJB
+    private StoreSystemServiceBean systemService;
+    
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public StoreAgent create() throws Exception {
-        return new StoreAgent();
+    public Agent create() throws Exception {
+        return service.create();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public void changePassword(AgentChangePasswordRequest reqeust) {
-        StoreAgent tmp = service.getAgent(reqeust.guid);
-        if (tmp != null) {
-            String password = tmp.getPassword();
-            if (password == null || password.equals(reqeust.old)) {
-                tmp.setPassword(reqeust.p1);
-                service.saveAgent(tmp);
-            }
-        }
+        service.changePassword(reqeust);
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public StoreAgent save(StoreAgent agent) throws Exception {
-        return service.saveAgent(agent);
+    public Agent save(Agent agent) throws Exception {
+        return service.save(agent);
     }
 
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public StoreAgent get(@PathParam("guid") String guid) throws Exception {
-        return service.getAgent(guid);
+    public Agent get(@PathParam("guid") String guid) throws Exception {
+        return service.get(guid);
     }
 
     @GET
+    @Path("system/{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<StoreAgent> get() {
-        return service.getAgents();
+    public Agent getBySystem(@PathParam("guid") String guid) throws Exception {
+        return service.getBySystem(guid);
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Agent> get() {
+        return service.get();
+    }
+
 }

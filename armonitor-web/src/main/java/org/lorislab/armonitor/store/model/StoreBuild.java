@@ -16,13 +16,14 @@
 
 package org.lorislab.armonitor.store.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -39,8 +40,9 @@ public class StoreBuild extends Persistent {
     
     private static final long serialVersionUID = -1095643007199796298L;
         
-    @Column(name = "C_APP")
-    private String application;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "C_APP")
+    private StoreApplication application;
     
     @Column(name = "C_AGENT")
     private String agent;
@@ -76,8 +78,9 @@ public class StoreBuild extends Persistent {
     @Column(name = "C_BUILD")
     private String build;
     
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<StoreBuildParameter> parameters = new ArrayList<>();   
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "C_BUILD")
+    private Set<StoreBuildParameter> parameters;   
 
     public String getAgent() {
         return agent;
@@ -87,11 +90,11 @@ public class StoreBuild extends Persistent {
         this.agent = agent;
     }
     
-    public List<StoreBuildParameter> getParameters() {
+    public Set<StoreBuildParameter> getParameters() {
         return parameters;
     }
 
-    public void setParameters(List<StoreBuildParameter> parameters) {
+    public void setParameters(Set<StoreBuildParameter> parameters) {
         this.parameters = parameters;
     }
         
@@ -103,11 +106,11 @@ public class StoreBuild extends Persistent {
         this.build = build;
     }
         
-    public String getApplication() {
+    public StoreApplication getApplication() {
         return application;
     }
 
-    public void setApplication(String application) {
+    public void setApplication(StoreApplication application) {
         this.application = application;
     }
 

@@ -20,6 +20,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
@@ -33,8 +36,9 @@ public class StoreAgent extends Persistent {
     
     private static final long serialVersionUID = -1986215389250537156L;
     
-    @Column(name = "C_SYSTEM")
-    private String system;
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "C_SYSTEM")
+    private StoreSystem system;
     
     @Column(name = "C_URL")
     private String url;
@@ -54,18 +58,7 @@ public class StoreAgent extends Persistent {
 
     @Column(name = "C_SERVICE")
     private String service;
-
-    @Column(name = "C_TIMER")
-    private boolean timer;
-
-    public boolean isTimer() {
-        return timer;
-    }
-
-    public void setTimer(boolean timer) {
-        this.timer = timer;
-    }
-        
+  
     public String getService() {
         return service;
     }
@@ -98,11 +91,11 @@ public class StoreAgent extends Persistent {
         this.password = password;
     }
         
-    public String getSystem() {
+    public StoreSystem getSystem() {
         return system;
     }
 
-    public void setSystem(String system) {
+    public void setSystem(StoreSystem system) {
         this.system = system;
     }
     

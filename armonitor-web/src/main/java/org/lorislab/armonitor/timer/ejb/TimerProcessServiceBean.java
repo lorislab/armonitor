@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.timer.ejb;
 
+import java.util.Date;
 import java.util.List;
 import javax.jms.Queue;
 import java.util.logging.Level;
@@ -36,6 +37,7 @@ import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.agent.ejb.AgentClientServiceBean;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
 import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
+import org.lorislab.armonitor.store.criteria.StoreSystemCriteria;
 import org.lorislab.armonitor.store.ejb.StoreBuildServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemBuildServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
@@ -82,11 +84,11 @@ public class TimerProcessServiceBean {
     private ConnectionFactory jmsConnectionFactory;
 
     public void timerService() {
-        StoreAgentCriteria criteria = new StoreAgentCriteria();
+        StoreSystemCriteria criteria = new StoreSystemCriteria();
         criteria.setTimer(Boolean.TRUE);
-        List<StoreAgent> agents = agentService.getAgents(criteria);
-        if (agents != null) {
-            send(agents);
+        List<StoreSystem> systems = systemService.getSystems(criteria);
+        if (systems != null) {
+            send(systems);
         } else {
             LOGGER.log(Level.FINEST, "No agents to check");
         }
@@ -97,15 +99,15 @@ public class TimerProcessServiceBean {
      *
      * @param version the version.
      */
-    private void send(List<StoreAgent> agents) {
+    private void send(List<StoreSystem> systems) {
         Connection connection = null;
         try {
             connection = jmsConnectionFactory.createConnection();
             javax.jms.Session session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
             MessageProducer publisher = session.createProducer(queue);
             connection.start();
-            for (StoreAgent agent : agents) {
-                ObjectMessage message = session.createObjectMessage(agent);
+            for (StoreSystem system : systems) {
+                ObjectMessage message = session.createObjectMessage(system);
                 publisher.send(message);
             }
         } catch (JMSException exc) {
@@ -121,46 +123,47 @@ public class TimerProcessServiceBean {
         }
     }
 
-    public void process(StoreAgent agent) {
-        if (agent != null) {
-            StoreBuild build = agentClientService.getAppBuild(agent);
-            if (build != null) {
+    public void process(StoreSystem system) {
+        if (system != null) {
+            StoreSystemCriteria criteria = new StoreSystemCriteria();
+            criteria.setGuid(system.getGuid());
+            criteria.setFetchAgent(true);
+            criteria.setFetchApplication(true);
+            criteria.setTimer(Boolean.TRUE);
+            StoreSystem tmp = systemService.getSystem(criteria);
+            if (tmp != null) {
+                StoreBuild build = agentClientService.getAppBuild(system.getAgent());
+                if (build != null) {
 
-                StoreBuildCriteria criteria = new StoreBuildCriteria();
-                criteria.setDate(build.getDate());
-                List<StoreBuild> tmp = buildService.getBuilds(criteria);
+                    StoreBuildCriteria buildCriteria = new StoreBuildCriteria();
+                    buildCriteria.setDate(build.getDate());
+                    buildCriteria.setApplication(tmp.getApplication().getGuid());
+                    StoreBuild buildOld = buildService.getBuild(buildCriteria);
 
-                StoreBuild systemBuild = null;
-                
-                // get or create new version
-                if (tmp == null || tmp.isEmpty()) {                    
-                    StoreSystem system = systemService.getSystem(agent.getSystem());
-                    if (system != null) {
-                        build.setApplication(system.getApplication());
-                        systemBuild = buildService.saveBuild(build);
+                    boolean createSystemBuild = false;
+                    if (buildOld == null) {
+                        build.setApplication(tmp.getApplication());
+                        buildOld = buildService.saveBuild(build);
+                        createSystemBuild = true;
                     } else {
-                        LOGGER.log(Level.WARNING, "The system for the agent {0} does not exists!", agent.getGuid());
+                        StoreSystemBuildCriteria sbc = new StoreSystemBuildCriteria();
+                        sbc.setBuild(buildOld.getGuid());
+                        sbc.setSystem(tmp.getGuid());
+                        StoreSystemBuild sb = systemBuildService.getSystemBuild(sbc);
+                        if (sb == null) {
+                            createSystemBuild = true;
+                        }
                     }
-                } else {
-                    systemBuild = tmp.get(0);
-                }
 
-                // check the system build for the system
-                if (systemBuild != null) {
-                    StoreSystemBuildCriteria sc = new StoreSystemBuildCriteria();
-                    sc.setBuild(systemBuild.getGuid());
-                    sc.setSystem(agent.getSystem());
-
-                    List<StoreSystemBuild> builds = systemBuildService.getSystemBuilds(sc);
-                    if (builds == null || builds.isEmpty()) {
+                    if (createSystemBuild) {
                         StoreSystemBuild sb = new StoreSystemBuild();
-                        sb.setBuild(sc.getBuild());
-                        sb.setSystem(sc.getSystem());
-                        sb = systemBuildService.saveSystemBuild(sb);
-                        LOGGER.log(Level.INFO, "Create new system build {0} for the system {1}", new Object[]{ sb.getBuild(), sb.getSystem()});                        
+                        sb.setBuild(buildOld);
+                        sb.setSystem(tmp);
+                        sb.setDate(new Date());
+                        systemBuildService.saveSystemBuild(sb);
                     }
                 } else {
-                    LOGGER.log(Level.WARNING, "The system build is not correct!");
+                    LOGGER.log(Level.WARNING, "Could not get the build for the system {0}", system.getGuid());
                 }
             }
         }

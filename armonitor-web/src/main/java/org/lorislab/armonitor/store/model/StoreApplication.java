@@ -16,8 +16,13 @@
 
 package org.lorislab.armonitor.store.model;
 
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
@@ -43,6 +48,28 @@ public class StoreApplication extends Persistent {
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")
+    private Set<StoreBuild> builds;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")   
+    private Set<StoreSystem> systems;
+
+    public Set<StoreSystem> getSystems() {
+        return systems;
+    }
+
+    public void setSystems(Set<StoreSystem> systems) {
+        this.systems = systems;
+    }
+        
+    public Set<StoreBuild> getBuilds() {
+        return builds;
+    }
+
+    public void setBuilds(Set<StoreBuild> builds) {
+        this.builds = builds;
+    }
+        
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }

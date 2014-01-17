@@ -16,9 +16,16 @@
 
 package org.lorislab.armonitor.store.model;
 
+import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
@@ -31,25 +38,39 @@ public class StoreSystemBuild extends Persistent {
     
     private static final long serialVersionUID = -5357640264532302086L;
     
-    @Column(name = "C_SYSTEM")
-    private String system;
-    
-    @Column(name = "C_BUILD")
-    private String build;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "C_SYSTEM")
+    private StoreSystem system;
+      
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)    
+    @JoinColumn(name = "C_BUILD")
+    private StoreBuild build;
 
-    public String getSystem() {
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "C_DATE")
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+        
+    public StoreSystem getSystem() {
         return system;
     }
 
-    public void setSystem(String system) {
+    public void setSystem(StoreSystem system) {
         this.system = system;
     }
 
-    public String getBuild() {
+    public StoreBuild getBuild() {
         return build;
     }
 
-    public void setBuild(String build) {
+    public void setBuild(StoreBuild build) {
         this.build = build;
     }
      

@@ -28,14 +28,24 @@ public class StoreAgentCriteria extends AbstractSearchCriteria {
 
     private String system;
 
-    private Boolean timer;
+    private String guid;
 
-    public Boolean isTimer() {
-        return timer;
+    private boolean fetchSystem;
+
+    public boolean isFetchSystem() {
+        return fetchSystem;
     }
 
-    public void setTimer(Boolean timer) {
-        this.timer = timer;
+    public void setFetchSystem(boolean fetchSystem) {
+        this.fetchSystem = fetchSystem;
+    }
+        
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
         
     public String getSystem() {
@@ -49,12 +59,13 @@ public class StoreAgentCriteria extends AbstractSearchCriteria {
     @Override
     public void reset() {
         system = null;
-        timer = null;
+        guid = null;
+        fetchSystem = true;
     }
 
     @Override
     public boolean isEmpty() {
-        return isEmpty(system, timer);
+        return isEmpty(system, guid);
     }
     
 }

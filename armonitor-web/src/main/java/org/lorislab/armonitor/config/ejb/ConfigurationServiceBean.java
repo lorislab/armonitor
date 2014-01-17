@@ -96,7 +96,6 @@ public class ConfigurationServiceBean implements ConfigurationServiceLocal {
                 Attribute attr = attributes.get(field.getName());
                 if (attr == null) {
                     attr = createAttribute(mapper, data, field);
-                    attr.setConfig(config);
                     attributes.put(field.getName(), attr);
                 } else {
                     updateAttribute(mapper, data, attr, field);

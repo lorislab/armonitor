@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.ejb;
 
 import java.util.ArrayList;
@@ -39,22 +38,39 @@ import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent> {
-    
+
     private static final long serialVersionUID = -6750263259636685498L;
-    
+
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreAgent saveAgent(StoreAgent agent) {
         return this.save(agent);
     }
-    
-    public StoreAgent getAgent(String guid) {
-        return this.getById(guid);
+
+    public StoreAgent loadAgent(String guid) {
+        StoreAgentCriteria criteria = new StoreAgentCriteria();
+        criteria.setGuid(guid);
+        return loadAgent(criteria);
+    }
+
+    public StoreAgent loadAgentBySystem(String guid) {
+        StoreAgentCriteria criteria = new StoreAgentCriteria();
+        criteria.setSystem(guid);
+        return loadAgent(criteria);
     }
     
     public List<StoreAgent> getAgents() {
-        return this.getAll();
+        return getAgents(new StoreAgentCriteria());
     }
 
+    public StoreAgent loadAgent(StoreAgentCriteria criteria) {
+        StoreAgent result = null;
+        List<StoreAgent> tmp = getAgents(criteria);
+        if (tmp != null && !tmp.isEmpty()) {
+            result = tmp.get(0);
+        }
+        return result;        
+    }
+    
     public List<StoreAgent> getAgents(StoreAgentCriteria criteria) {
         List<StoreAgent> result = new ArrayList<>();
 
@@ -62,15 +78,19 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
         CriteriaQuery<StoreAgent> cq = getBaseEAO().createCriteriaQuery();
         Root<StoreAgent> root = cq.from(StoreAgent.class);
 
-        List<Predicate> predicates = new ArrayList<>();
-        if (criteria.getSystem() != null) {
-            predicates.add(root.get(StoreAgent_.system).in(criteria.getSystem()));
+        if (criteria.isFetchSystem()) {
+            root.fetch(StoreAgent_.system);
         }
 
-        if (criteria.isTimer() != null) {
-            predicates.add(cb.equal(root.get(StoreAgent_.timer),criteria.isTimer()));
+        List<Predicate> predicates = new ArrayList<>();
+        if (criteria.getSystem() != null) {
+            predicates.add(cb.equal(root.get(StoreAgent_.system), criteria.getSystem()));
         }
-        
+
+        if (criteria.getGuid() != null) {
+            predicates.add(cb.equal(root.get(StoreAgent_.guid), criteria.getGuid()));
+        }
+
         if (!predicates.isEmpty()) {
             cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }
@@ -82,5 +102,5 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
             // do nothing
         }
         return result;
-    }      
+    }
 }

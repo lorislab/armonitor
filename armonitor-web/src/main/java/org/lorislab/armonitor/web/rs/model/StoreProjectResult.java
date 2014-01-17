@@ -37,13 +37,13 @@ public class StoreProjectResult implements Serializable {
     
     private Map<String, Application> cacheApplications = new HashMap<>();
     
-    private Map<String, AppSystem> cacheSystems = new HashMap<>();
+    private Map<String, ApplicationSystem> cacheSystems = new HashMap<>();
 
-    public void updateAppSystem(AppSystem system) {
+    public void updateAppSystem(ApplicationSystem system) {
         
     }
     
-    public void addAppSystem(String app, AppSystem system) {
+    public void addAppSystem(String app, ApplicationSystem system) {
         Application a = cacheApplications.get(app);
         a.systems.add(system);
         cacheSystems.put(system.guid, system);

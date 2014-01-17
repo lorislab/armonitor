@@ -22,7 +22,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.lorislab.armonitor.web.rs.ejb.StoreDataServiceBean;
-import org.lorislab.armonitor.web.rs.model.AppSystem;
+import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Project;
 import org.lorislab.armonitor.web.rs.model.StoreProjectResult;
 
@@ -41,9 +41,9 @@ public class StoreController implements Serializable {
     
     private StoreProjectResult projects;
     
-    public AppSystem updateSystem(String guid) {
+    public ApplicationSystem updateSystem(String guid) {
         
-//        AppSystem sys = storeService.getSystemStatus(guid);
+//        ApplicationSystem sys = storeService.getSystemStatus(guid);
 //        if (sys != null) {
 //            projects.a
 //        }

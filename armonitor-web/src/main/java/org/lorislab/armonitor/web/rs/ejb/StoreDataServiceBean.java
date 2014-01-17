@@ -34,7 +34,7 @@ import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSystem;
-import org.lorislab.armonitor.web.rs.model.AppSystem;
+import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.Project;
 import org.lorislab.armonitor.web.rs.model.StoreProjectResult;
@@ -44,7 +44,7 @@ import org.lorislab.armonitor.web.rs.model.StoreProjectResult;
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class StoreDataServiceBean {
 
     @EJB
@@ -95,7 +95,7 @@ public class StoreDataServiceBean {
                     List<StoreSystem> systems = systemService.getSystems(sysCriteria);
                     if (systems != null) {
                         for (StoreSystem system : systems) {
-                            AppSystem s = new AppSystem();
+                            ApplicationSystem s = new ApplicationSystem();
                             s.guid = system.getGuid();
                             s.name = system.getName();
                             result.addAppSystem(system.getGuid(), s);

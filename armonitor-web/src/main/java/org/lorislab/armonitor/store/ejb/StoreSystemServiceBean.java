@@ -48,13 +48,24 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
     }
     
     public StoreSystem getSystem(String guid) {
-        return this.getById(guid);
+        StoreSystemCriteria criteria = new StoreSystemCriteria();
+        criteria.setGuid(guid);
+        return getSystem(criteria);
+    }
+    
+    public StoreSystem getSystem(StoreSystemCriteria criteria) {
+        StoreSystem result = null;
+        List<StoreSystem> tmp = getSystems(criteria);
+        if (tmp != null && !tmp.isEmpty()) {
+            result = tmp.get(0);
+        }
+        return result;
     }
     
     public List<StoreSystem> getSystems() {
-        return this.getAll();
+        return getSystems(new StoreSystemCriteria());
     }
-
+    
     public List<StoreSystem> getSystems(StoreSystemCriteria criteria) {
         List<StoreSystem> result = new ArrayList<>();
 
@@ -62,11 +73,27 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
         CriteriaQuery<StoreSystem> cq = getBaseEAO().createCriteriaQuery();
         Root<StoreSystem> root = cq.from(StoreSystem.class);
 
+        if (criteria.isFetchAgent()) {
+            root.fetch(StoreSystem_.agent);
+        }
+        
+        if (criteria.isFetchApplication()) {
+            root.fetch(StoreSystem_.application);
+        }
+        
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.isEnabled() != null) {
             predicates.add(cb.equal(root.get(StoreSystem_.enabled), criteria.isEnabled()));
         }
 
+        if (criteria.getGuid() != null) {
+            predicates.add(cb.equal(root.get(StoreSystem_.guid), criteria.getGuid()));
+        }
+        
+        if (criteria.isTimer() != null) {
+            predicates.add(cb.equal(root.get(StoreSystem_.timer), criteria.isTimer()));
+        }
+        
         if (criteria.getApplications() != null && !criteria.getApplications().isEmpty()) {
             predicates.add(root.get(StoreSystem_.application).in(criteria.getApplications()));
         }

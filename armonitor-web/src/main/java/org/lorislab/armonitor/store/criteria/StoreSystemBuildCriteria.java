@@ -26,12 +26,20 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     
     private static final long serialVersionUID = 1180646542774715225L;
 
+    private String guid;
+    
     private String system;
     
     private String build;
-    
-    private Boolean active;
 
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+       
     public String getBuild() {
         return build;
     }
@@ -47,25 +55,16 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     public void setSystem(String system) {
         this.system = system;
     }
-
-    public Boolean isActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
         
     @Override
     public void reset() {
         system = null;
         build = null;
-        active = null;
     }
 
     @Override
     public boolean isEmpty() {
-        return isEmpty(system, build, active);
+        return isEmpty(system, build);
     }
     
 }

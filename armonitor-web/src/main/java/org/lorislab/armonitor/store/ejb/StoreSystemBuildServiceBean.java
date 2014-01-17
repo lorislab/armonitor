@@ -48,11 +48,22 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
     }
     
     public StoreSystemBuild getSystemBuild(String guid) {
+        StoreSystemBuildCriteria criteria = new StoreSystemBuildCriteria();
+        criteria.setGuid(guid);
         return this.getById(guid);
     }
     
+    public StoreSystemBuild getSystemBuild(StoreSystemBuildCriteria criteria) {
+        StoreSystemBuild result = null;
+        List<StoreSystemBuild> tmp = getSystemBuilds(criteria);
+        if (tmp != null && !tmp.isEmpty()) {
+            result = tmp.get(0);
+        }
+        return result;
+    }
+    
     public List<StoreSystemBuild> getSystemBuilds() {
-        return this.getAll();
+        return getSystemBuilds(new StoreSystemBuildCriteria());
     }
 
     public List<StoreSystemBuild> getSystemBuilds(StoreSystemBuildCriteria criteria) {
@@ -63,11 +74,6 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
         Root<StoreSystemBuild> root = cq.from(StoreSystemBuild.class);
 
         List<Predicate> predicates = new ArrayList<>();
-
-        if (criteria.isActive() != null) {
-            // TODO:
-        }
-        
         if (criteria.getSystem() != null) {
             predicates.add(cb.equal(root.get(StoreSystemBuild_.system), criteria.getSystem()));
         }

@@ -16,18 +16,24 @@
 
 package org.lorislab.armonitor.web.rs.model;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Andrej Petras
  */
-public class AppSystem implements Serializable {
-    
-    private static final long serialVersionUID = -4453117979221611348L;
+public class Agent {
     
     public String guid;
     
-    public String name;
+    public String system;
+    
+    public String url;
+        
+    public AgentType type;
+   
+    public boolean authentication;
+    
+    public String user;
+
+    public String service;
 
 }
