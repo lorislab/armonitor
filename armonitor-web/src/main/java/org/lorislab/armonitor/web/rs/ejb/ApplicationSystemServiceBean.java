@@ -22,7 +22,9 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
+import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 
@@ -37,6 +39,9 @@ public class ApplicationSystemServiceBean {
     @EJB
     private StoreSystemServiceBean service;
 
+    @EJB
+    private StoreApplicationServiceBean appService;
+    
     public List<ApplicationSystem> get() {
         List<StoreSystem> tmp = service.getSystems();
         return map(tmp);
@@ -58,12 +63,23 @@ public class ApplicationSystemServiceBean {
         ApplicationSystem result = null;
         if (system != null) {
             StoreSystem tmp = service.getSystem(system.guid);
-            if (tmp == null) {
+            if (tmp != null) {
+                tmp = update(tmp, system);
+                tmp = service.saveSystem(tmp);
+                tmp = service.getSystem(tmp.getGuid());
+                result = map(tmp);
+            } else {
                 tmp = new StoreSystem();
-            }
-            update(tmp, system);
-            tmp = service.saveSystem(tmp);
-            result = map(tmp);
+                tmp.setGuid(system.guid);
+                tmp = update(tmp, system);
+                StoreApplication app = appService.getApplication(system.application);
+                if (app != null) {
+                    tmp.setApplication(app);
+                    tmp = service.saveSystem(tmp);
+                    tmp = service.getSystem(tmp.getGuid());
+                    result = map(tmp);
+                }
+            }           
         }
         return result;
     }
@@ -90,16 +106,20 @@ public class ApplicationSystemServiceBean {
             result.name = tmp.getName();
             result.enabled = tmp.isEnabled();
             result.timer = tmp.isTimer();
+            if (tmp.getApplication() != null) {
+                result.application = tmp.getApplication().getGuid();
+            }
         }
         return result;
     }
 
-    private void update(StoreSystem tmp, ApplicationSystem sys) {
+    private StoreSystem update(StoreSystem tmp, ApplicationSystem sys) {
         if (tmp != null && sys != null) {
             tmp.setName(sys.name);
             tmp.setEnabled(sys.enabled);
             tmp.setTimer(sys.timer);            
         }
+        return tmp;
     }
     
 }

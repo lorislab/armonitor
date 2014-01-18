@@ -27,11 +27,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
-
+import org.hibernate.annotations.Proxy;
 /**
  *
  * @author Andrej Petras
  */
+@Proxy(lazy=false)
 @Entity
 @Table(name = "ARM_SYSTEM")
 public class StoreSystem extends Persistent {

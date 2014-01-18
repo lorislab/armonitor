@@ -92,7 +92,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
         enabled = null;
         timer = null;
         fetchAgent = false;
-        fetchApplication = false;
+        fetchApplication = true;
     }
 
     @Override

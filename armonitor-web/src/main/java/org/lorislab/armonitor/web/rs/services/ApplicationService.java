@@ -18,48 +18,50 @@ package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.web.rs.ejb.BuildServiceBean;
-import org.lorislab.armonitor.web.rs.model.Build;
+import org.lorislab.armonitor.web.rs.ejb.ApplicationServiceBean;
+import org.lorislab.armonitor.web.rs.model.Application;
 
 /**
  *
  * @author Andrej Petras
  */
-@Path("build")
-public class BuildService {
+@Path("app")
+public class ApplicationService {
     
     @EJB
-    private BuildServiceBean service;
+    private ApplicationServiceBean service;
     
-    @GET
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Build> get() {
-       return service.get(false);
+    public Application create() throws Exception {
+        return service.create();
     }
     
-    @GET
-    @Path("param")
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Build> getWithParameters() {
-       return service.get(true);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Application save(Application app) throws Exception {
+        return service.save(app);
     }
+
+    @GET
+    @Path("{guid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Application get(@PathParam("guid") String guid) throws Exception {
+        return service.get(guid);
+    }  
     
     @GET
-    @Path("app/{uid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Build> getForApp(@PathParam("uid") String app) {
-       return service.getForApp(app, false);
-    }        
-    
-    @GET
-    @Path("app/{uid}/param")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Build> getForAppWithParam(@PathParam("uid") String app) {
-       return service.getForApp(app, true);
+    public List<Application> get() throws Exception {
+        return service.get();
     }    
 }

@@ -35,6 +35,26 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
     
     private Date date;
 
+    private boolean fetchParameters;
+
+    private boolean fetchApplication;
+
+    public boolean isFetchApplication() {
+        return fetchApplication;
+    }
+
+    public void setFetchApplication(boolean fetchApplication) {
+        this.fetchApplication = fetchApplication;
+    }
+        
+    public boolean isFetchParameters() {
+        return fetchParameters;
+    }
+
+    public void setFetchParameters(boolean fetchParameters) {
+        this.fetchParameters = fetchParameters;
+    }
+        
     public String getGuid() {
         return guid;
     }
@@ -72,6 +92,8 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
         application = null;
         date = null;
         agent = null;
+        fetchParameters = false;
+        fetchApplication = false;
     }
 
     @Override

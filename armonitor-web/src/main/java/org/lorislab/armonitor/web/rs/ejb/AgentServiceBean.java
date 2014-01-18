@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.ejb;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.ejb.StoreAgentServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreAgent;
-import org.lorislab.armonitor.store.model.StoreAgentType;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
-import org.lorislab.armonitor.web.rs.model.AgentType;
 
 /**
  *
@@ -38,16 +35,15 @@ import org.lorislab.armonitor.web.rs.model.AgentType;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NEVER)
 public class AgentServiceBean {
-    
+
     @EJB
     private StoreAgentServiceBean service;
 
     @EJB
     private StoreSystemServiceBean systemService;
-    
+
     public Agent create() throws Exception {
-        StoreAgent tmp = new StoreAgent();
-        return map(tmp);
+        return Mapper.map(StoreAgent.class, Agent.class);
     }
 
     public void changePassword(AgentChangePasswordRequest reqeust) {
@@ -63,85 +59,38 @@ public class AgentServiceBean {
 
     public Agent save(Agent agent) throws Exception {
         Agent result = null;
-        StoreAgent tmp = service.loadAgent(agent.guid);
-        if (tmp != null) {
-            tmp = update(tmp, agent);        
-            tmp = service.saveAgent(tmp);
-            result = map(tmp);
-        } else {
-            tmp = new StoreAgent();
-            tmp.setGuid(agent.guid);            
-            update(tmp, agent);
-            StoreSystem system = systemService.getSystem(agent.system);
-            if (system != null) {
-                tmp.setSystem(system);
-                tmp = service.saveAgent(tmp);
-                result = map(tmp);
+        if (agent != null) {
+            StoreAgent tmp = service.loadAgent(agent.guid);
+            if (tmp != null) {
+                tmp = Mapper.update(tmp, agent);
+            } else {
+                tmp = Mapper.create(agent, StoreAgent.class);
+                StoreSystem system = systemService.getSystem(agent.system);
+                if (system != null) {
+                    tmp.setSystem(system);
+                } else {
+                    throw new Exception("Missing system for the agent!");
+                }
             }
+            tmp = service.saveAgent(tmp);
+            result = Mapper.map(tmp, Agent.class);
         }
         return result;
     }
 
     public Agent get(String guid) throws Exception {
         StoreAgent tmp = service.loadAgent(guid);
-        return map(tmp);
+        return Mapper.map(tmp, Agent.class);
     }
 
     public Agent getBySystem(String guid) throws Exception {
         StoreAgent tmp = service.loadAgentBySystem(guid);
-        return map(tmp);
+        return Mapper.map(tmp, Agent.class);
     }
 
     public List<Agent> get() {
         List<StoreAgent> tmp = service.getAgents();
-        return map(tmp);
-    }    
-
-    private StoreAgent update(StoreAgent tmp, Agent agent) {
-        if (tmp != null) {
-            tmp.setAuthentication(agent.authentication);
-            tmp.setService(agent.service);
-            tmp.setType(StoreAgentType.SERVICE);
-            if (AgentType.INTEGRATION == agent.type) {
-                tmp.setType(StoreAgentType.INTEGRATION);
-            }            
-            tmp.setUrl(agent.url);
-            tmp.setUser(agent.user);            
-        }
-        return tmp;
-    }
-    
-    private List<Agent> map(List<StoreAgent> tmp) {
-        List<Agent> result = null;
-        if (tmp != null) {
-            result = new ArrayList<>();
-            for (StoreAgent item : tmp) {
-                Agent agent = map(item);
-                if (agent != null) {
-                    result.add(agent);
-                }
-            }
-        }
-        return result;
+        return Mapper.map(tmp, Agent.class);
     }
 
-    private Agent map(StoreAgent agent) {
-        Agent result = null;
-        if (agent != null) {            
-            result = new Agent();
-            result.guid = agent.getGuid();
-            result.user = agent.getUser();
-            result.authentication = agent.isAuthentication();
-            result.service = agent.getService();
-            result.type = AgentType.SERVICE;
-            if (StoreAgentType.INTEGRATION == agent.getType()) {
-                result.type = AgentType.INTEGRATION;
-            }
-            if (agent.getSystem() != null) {
-                result.system = agent.getSystem().getGuid();                
-            }            
-            result.url = agent.getUrl();
-        }
-        return result;
-    }    
 }

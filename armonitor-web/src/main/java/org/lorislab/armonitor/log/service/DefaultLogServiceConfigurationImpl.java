@@ -18,6 +18,7 @@ package org.lorislab.armonitor.log.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.lorislab.armonitor.log.model.MessageLogParameter;
 import org.lorislab.jel.ejb.log.parameters.PersistentLogParameter;
 import org.lorislab.jel.ejb.log.parameters.WrapperLogParameter;
 import org.lorislab.jel.log.config.LogServiceConfiguration;
@@ -54,6 +55,7 @@ public class DefaultLogServiceConfigurationImpl implements LogServiceConfigurati
         INSTANCE_PARAM.add(new CollectionLogParameter());
         INSTANCE_PARAM.add(new PersistentLogParameter());
         INSTANCE_PARAM.add(new WrapperLogParameter());
+        INSTANCE_PARAM.add(new MessageLogParameter());
     }
     
     @Override

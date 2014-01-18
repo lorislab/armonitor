@@ -25,6 +25,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreSystemCriteria;
@@ -74,11 +75,11 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
         Root<StoreSystem> root = cq.from(StoreSystem.class);
 
         if (criteria.isFetchAgent()) {
-            root.fetch(StoreSystem_.agent);
+            root.fetch(StoreSystem_.agent, JoinType.LEFT);
         }
         
         if (criteria.isFetchApplication()) {
-            root.fetch(StoreSystem_.application);
+            root.fetch(StoreSystem_.application, JoinType.LEFT);
         }
         
         List<Predicate> predicates = new ArrayList<>();

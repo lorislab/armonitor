@@ -24,12 +24,15 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreAgentCriteria;
 import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreAgent_;
+import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
+
 
 /**
  *
@@ -43,7 +46,11 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreAgent saveAgent(StoreAgent agent) {
-        return this.save(agent);
+        StoreAgent tmp = this.save(agent);
+        if (tmp != null) {
+            return loadAgent(tmp.getGuid());
+        }
+        return null;
     }
 
     public StoreAgent loadAgent(String guid) {
@@ -79,12 +86,12 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
         Root<StoreAgent> root = cq.from(StoreAgent.class);
 
         if (criteria.isFetchSystem()) {
-            root.fetch(StoreAgent_.system);
+            root.fetch(StoreAgent_.system, JoinType.LEFT);
         }
 
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.getSystem() != null) {
-            predicates.add(cb.equal(root.get(StoreAgent_.system), criteria.getSystem()));
+            predicates.add(cb.equal(root.get(StoreAgent_.system).get(StoreSystem_.guid), criteria.getSystem()));            
         }
 
         if (criteria.getGuid() != null) {

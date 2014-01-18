@@ -86,6 +86,7 @@ public class TimerProcessServiceBean {
     public void timerService() {
         StoreSystemCriteria criteria = new StoreSystemCriteria();
         criteria.setTimer(Boolean.TRUE);
+        criteria.setEnabled(Boolean.TRUE);
         List<StoreSystem> systems = systemService.getSystems(criteria);
         if (systems != null) {
             send(systems);
@@ -130,6 +131,7 @@ public class TimerProcessServiceBean {
             criteria.setFetchAgent(true);
             criteria.setFetchApplication(true);
             criteria.setTimer(Boolean.TRUE);
+            criteria.setEnabled(Boolean.TRUE);
             StoreSystem tmp = systemService.getSystem(criteria);
             if (tmp != null) {
                 StoreBuild build = agentClientService.getAppBuild(system.getAgent());

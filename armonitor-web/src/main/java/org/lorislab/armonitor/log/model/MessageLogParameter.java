@@ -14,22 +14,30 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.model;
+package org.lorislab.armonitor.log.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.jms.Message;
+import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
 
 /**
  *
  * @author Andrej Petras
  */
-public class Application {
+public class MessageLogParameter implements InstanceOfLogParameter {
+
+    @Override
+    public boolean instanceOfClasses(Object parameter) {
+        return parameter instanceof Message;
+    }
+
+    @Override
+    public boolean isResult() {
+        return true;
+    }
+
+    @Override
+    public Object getObject(Object parameter) {   
+        return parameter.getClass().getSimpleName();
+    }
     
-    private static final long serialVersionUID = 2446427863130586125L;
-    
-    public String guid;
-    
-    public String name;
-      
-    public List<ApplicationSystem> systems = new ArrayList<>();
 }

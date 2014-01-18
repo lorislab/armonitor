@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.agent.ejb;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,8 +34,6 @@ import org.lorislab.armonitor.store.model.StoreAgentType;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuildParameter;
 import org.lorislab.armonitor.store.model.StoreBuildParameterType;
-import org.lorislab.armonitor.util.MappingObject;
-import org.lorislab.armonitor.util.MappingStrategy;
 import org.lorislab.armonitor.util.RestClient;
 
 /**
@@ -50,18 +49,7 @@ public class AgentClientServiceBean {
      */
     private static final Logger LOGGER = Logger.getLogger(AgentClientServiceBean.class.getName());
 
-    private static final MappingStrategy MAPPING = new MappingStrategy<Version, StoreBuild>("other", "manifest") {
-        
-        private static final long serialVersionUID = -3867537252705838724L;
-
-        @Override
-        public void postMapping(Version input, StoreBuild output) {
-            output.getParameters().addAll(createStoreBuildParameter(input.manifest, StoreBuildParameterType.MANIFEST));
-            output.getParameters().addAll(createStoreBuildParameter(input.other, StoreBuildParameterType.OTHER));            
-        }        
-    };
-
-    private static final String AGENT_SERVICE = "/armonitor-service";
+    private static final String AGENT_SERVICE = "/armonitor-agent/rs";
 
     public List<StoreBuild> getAppBuilds(StoreAgent agent) {
         List<StoreBuild> result = new ArrayList<>();
@@ -77,7 +65,7 @@ public class AgentClientServiceBean {
             if (versions != null) {
 
                 for (Version version : versions) {
-                    StoreBuild tmp = MappingObject.map(version, new StoreBuild(), MAPPING);
+                    StoreBuild tmp = map(version);
                     if (tmp != null) {
                         result.add(tmp);
                     }
@@ -100,7 +88,7 @@ public class AgentClientServiceBean {
             request.uid = UUID.randomUUID().toString();
 
             Version version = service.getAgentVersion(request);
-            result = MappingObject.map(version, new StoreBuild(), MAPPING);
+            result = map(version);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error reading the version of the agent " + agent.getGuid(), ex);
         }
@@ -118,13 +106,34 @@ public class AgentClientServiceBean {
             request.uid = UUID.randomUUID().toString();
 
             Version version = service.getAppVersion(request);
-            result = MappingObject.map(version, new StoreBuild(), MAPPING);
+            result = map(version);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error reading the application version for the the agent " + agent.getGuid(), ex);
         }
         return result;
     }
 
+    private static StoreBuild map(Version version) {
+        StoreBuild result = null;
+        if (version != null) {            
+            result = new StoreBuild();
+            result.setUid(version.uid);
+            result.setBuild(version.build);
+            result.setArtifactId(version.artifactId);
+            result.setGroupdId(version.groupdId);
+            result.setMavenVersion(version.version);
+            result.setDate(version.date);
+            result.setRelease(version.release);
+            result.setScm(version.scm);
+            result.setService(version.service);
+            result.setVer(version.ver);
+            result.setParameters(new HashSet<StoreBuildParameter>());            
+            result.getParameters().addAll(createStoreBuildParameter(version.manifest, StoreBuildParameterType.MANIFEST));
+            result.getParameters().addAll(createStoreBuildParameter(version.other, StoreBuildParameterType.OTHER));
+        }        
+        return result;
+    }
+    
     private static List<StoreBuildParameter> createStoreBuildParameter(Map<String, String> params, StoreBuildParameterType type) {
         List<StoreBuildParameter> result = new ArrayList<>();
         if (params != null) {

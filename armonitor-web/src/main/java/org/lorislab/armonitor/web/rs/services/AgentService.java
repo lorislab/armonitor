@@ -25,7 +25,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.web.rs.ejb.AgentServiceBean;
 import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
@@ -40,9 +39,6 @@ public class AgentService {
     @EJB
     private AgentServiceBean service;
 
-    @EJB
-    private StoreSystemServiceBean systemService;
-    
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Agent create() throws Exception {
@@ -50,6 +46,7 @@ public class AgentService {
     }
 
     @POST
+    @Path("password")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public void changePassword(AgentChangePasswordRequest reqeust) {
@@ -79,7 +76,7 @@ public class AgentService {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Agent> get() {
+    public List<Agent> get() throws Exception {
         return service.get();
     }
 

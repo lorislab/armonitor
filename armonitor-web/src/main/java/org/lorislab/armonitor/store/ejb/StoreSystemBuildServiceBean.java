@@ -28,9 +28,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
+import org.lorislab.armonitor.store.model.StoreBuild_;
+import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.store.model.StoreSystemBuild_;
+import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
+import org.lorislab.jel.jpa.model.Persistent_;
 
 /**
  *
@@ -75,11 +79,11 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
 
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.getSystem() != null) {
-            predicates.add(cb.equal(root.get(StoreSystemBuild_.system), criteria.getSystem()));
+            predicates.add(cb.equal(root.get(StoreSystemBuild_.system).get(StoreSystem_.guid), criteria.getSystem()));
         }
 
         if (criteria.getBuild() != null) {
-            predicates.add(cb.equal(root.get(StoreSystemBuild_.build), criteria.getBuild()));
+            predicates.add(cb.equal(root.get(StoreSystemBuild_.build).get(StoreBuild_.guid), criteria.getBuild()));            
         }
         
         if (!predicates.isEmpty()) {

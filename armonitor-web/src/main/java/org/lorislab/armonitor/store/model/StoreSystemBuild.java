@@ -26,12 +26,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.Proxy;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
  *
  * @author Andrej Petras
  */
+@Proxy(lazy=false)
 @Entity
 @Table(name = "ARM_SYSTEM_BUILD")
 public class StoreSystemBuild extends Persistent {

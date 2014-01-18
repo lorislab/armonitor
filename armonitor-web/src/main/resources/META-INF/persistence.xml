@@ -7,7 +7,7 @@
         <jta-data-source>java:jboss/datasources/ARMonitorDS</jta-data-source>       
         <properties>
             <!-- Update database flag. Only for development -->
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <!--<property name="hibernate.hbm2ddl.auto" value="update" />-->
             <!-- Show SQL statment. Only for development -->
             <property name="hibernate.show_sql" value="false" />
             <!-- Hibernate database dialect -->

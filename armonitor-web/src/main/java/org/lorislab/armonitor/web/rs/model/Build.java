@@ -16,15 +16,43 @@
 
 package org.lorislab.armonitor.web.rs.model;
 
+import java.util.Date;
+import java.util.Map;
+
 /**
  *
  * @author Andrej Petras
  */
 public class Build {
     
+    public String guid;
+    
     public String application;
     
     public String agent;
     
+    public String uid;
+    
+    public Integer ver;
+
+    public Date date;
+    
+    public String service;
+        
+    public String groupdId;
+    
+    public String artifactId;
+    
+    public String mavenVersion;
+    
+    public String release;
+    
+    public String scm;
+    
     public String build;
+    
+    public Map<String,String> manifest;
+    
+    public Map<String,String> other;
+    
 }
