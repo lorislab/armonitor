@@ -28,7 +28,7 @@ import org.lorislab.armonitor.web.rs.model.AgentType;
 public class AgentMapper implements MapperService<StoreAgent, Agent> {
 
     @Override
-    public Agent map(StoreAgent data) {
+    public Agent map(StoreAgent data, String profile) {
         Agent result = new Agent();
         result.guid = data.getGuid();
         result.user = data.getUser();
@@ -46,7 +46,7 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
     }
 
     @Override
-    public StoreAgent update(StoreAgent entity, Agent data) {
+    public StoreAgent update(StoreAgent entity, Agent data, String profile) {
         entity.setAuthentication(data.authentication);
         entity.setService(data.service);
         entity.setType(StoreAgentType.SERVICE);
@@ -59,17 +59,17 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
     }
 
     @Override
-    public StoreAgent create(Agent data) {
+    public StoreAgent create(Agent data, String profile) {
         StoreAgent result = new StoreAgent();
         result.setGuid(data.guid);
-        result = update(result, data);
+        result = update(result, data, profile);
         return result;
     }
 
     @Override
-    public Agent map() {
+    public Agent map(String profile) {
         StoreAgent agent = new StoreAgent();
-        return map(agent);
+        return map(agent, profile);
     }
 
 }

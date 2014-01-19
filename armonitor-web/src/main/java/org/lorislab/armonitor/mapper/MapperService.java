@@ -28,32 +28,36 @@ public interface MapperService<E, T> {
     /**
      * Maps the entity to the rest model.
      *
+     * @param profile the map profile.
      * @param data the entity object.
      * @return the rest model.
      */
-    public T map(E data);
+    public T map(E data, String profile);
 
     /**
      * Updates the entity.
      *
+     * @param profile the map profile.
      * @param entity the entity.
      * @param data the rest model.
      * @return the updated entity.
      */
-    public E update(E entity, T data);
+    public E update(E entity, T data, String profile);
 
     /**
      * Creates new entity from rest model.
      *
+     * @param profile the map profile.
      * @param data the rest model.
      * @return the created entity.
      */
-    public E create(T data);
+    public E create(T data, String profile);
 
     /**
      * Map new created entity to the rest model.
      *
+     * @param profile the map profile.
      * @return the new rest model.
      */
-    public T map();
+    public T map(String profile);
 }
