@@ -16,10 +16,7 @@
 package org.lorislab.armonitor.agent.ejb;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,11 +26,10 @@ import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.agent.rs.model.Request;
 import org.lorislab.armonitor.agent.rs.model.Version;
 import org.lorislab.armonitor.agent.rs.service.VersionService;
+import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreAgentType;
 import org.lorislab.armonitor.store.model.StoreBuild;
-import org.lorislab.armonitor.store.model.StoreBuildParameter;
-import org.lorislab.armonitor.store.model.StoreBuildParameterType;
 import org.lorislab.armonitor.util.RestClient;
 
 /**
@@ -65,7 +61,7 @@ public class AgentClientServiceBean {
             if (versions != null) {
 
                 for (Version version : versions) {
-                    StoreBuild tmp = map(version);
+                    StoreBuild tmp = Mapper.map(version, StoreBuild.class);
                     if (tmp != null) {
                         result.add(tmp);
                     }
@@ -88,7 +84,7 @@ public class AgentClientServiceBean {
             request.uid = UUID.randomUUID().toString();
 
             Version version = service.getAgentVersion(request);
-            result = map(version);
+            result = Mapper.map(version, StoreBuild.class);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error reading the version of the agent " + agent.getGuid(), ex);
         }
@@ -106,43 +102,9 @@ public class AgentClientServiceBean {
             request.uid = UUID.randomUUID().toString();
 
             Version version = service.getAppVersion(request);
-            result = map(version);
+            result = Mapper.map(version, StoreBuild.class);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error reading the application version for the the agent " + agent.getGuid(), ex);
-        }
-        return result;
-    }
-
-    private static StoreBuild map(Version version) {
-        StoreBuild result = null;
-        if (version != null) {            
-            result = new StoreBuild();
-            result.setUid(version.uid);
-            result.setBuild(version.build);
-            result.setArtifactId(version.artifactId);
-            result.setGroupdId(version.groupdId);
-            result.setMavenVersion(version.version);
-            result.setDate(version.date);
-            result.setRelease(version.release);
-            result.setScm(version.scm);
-            result.setService(version.service);
-            result.setVer(version.ver);
-            result.setParameters(new HashSet<StoreBuildParameter>());            
-            result.getParameters().addAll(createStoreBuildParameter(version.manifest, StoreBuildParameterType.MANIFEST));
-            result.getParameters().addAll(createStoreBuildParameter(version.other, StoreBuildParameterType.OTHER));
-        }        
-        return result;
-    }
-    
-    private static List<StoreBuildParameter> createStoreBuildParameter(Map<String, String> params, StoreBuildParameterType type) {
-        List<StoreBuildParameter> result = new ArrayList<>();
-        if (params != null) {
-            for (Entry<String, String> entry : params.entrySet()) {
-                StoreBuildParameter param = new StoreBuildParameter();
-                param.setType(type);
-                param.setName(entry.getKey());
-                param.setValue(entry.getValue());
-            }
         }
         return result;
     }

@@ -26,10 +26,20 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
     
     private static final long serialVersionUID = -506625437892985522L;
 
+    private String guid;
+    
     private Boolean enabled;
 
     private Set<String> projects;
 
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+    
     public Boolean isEnabled() {
         return enabled;
     }
@@ -50,11 +60,12 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
     public void reset() {
         projects = null;
         enabled = null;
+        guid = null;
     }
 
     @Override
     public boolean isEmpty() {
-        return isEmpty(enabled, projects);
+        return isEmpty(enabled, projects, guid);
     }
 
 }

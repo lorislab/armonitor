@@ -37,22 +37,35 @@ import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class StoreApplicationServiceBean extends AbstractEntityServiceBean<StoreApplication> {
     
     private static final long serialVersionUID = -6510343941028532559L;
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreApplication saveApplication(StoreApplication application) {
-        return this.save(application);
+        StoreApplication tmp = this.save(application);
+        return getApplication(tmp.getGuid());
     }
     
     public StoreApplication getApplication(String guid) {
+        StoreApplicationCriteria criteria = new StoreApplicationCriteria(); 
+        criteria.setGuid(guid);
         return this.getById(guid);
     }
     
+    public StoreApplication getApplication(StoreApplicationCriteria criteria) {
+        StoreApplication result = null;
+        List<StoreApplication> tmp = getApplications(criteria);
+        if (tmp != null && !tmp.isEmpty()) {
+            result = tmp.get(0);
+        }
+        return result;
+    }
+    
     public List<StoreApplication> getApplications() {
-        return this.getAll();
+        StoreApplicationCriteria criteria = new StoreApplicationCriteria();        
+        return getApplications(criteria);
     }
 
     public List<StoreApplication> getApplications(StoreApplicationCriteria criteria) {
@@ -63,6 +76,11 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
         Root<StoreApplication> root = cq.from(StoreApplication.class);
 
         List<Predicate> predicates = new ArrayList<>();
+        
+        if (criteria.getGuid() != null) {
+            predicates.add(cb.equal(root.get(StoreApplication_.guid), criteria.getGuid()));
+        }
+        
         if (criteria.isEnabled() != null) {
             predicates.add(cb.equal(root.get(StoreApplication_.enabled), criteria.isEnabled()));
         }

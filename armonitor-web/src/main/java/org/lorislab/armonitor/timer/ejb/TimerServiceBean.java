@@ -27,6 +27,8 @@ import javax.ejb.Startup;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerService;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
 import org.lorislab.armonitor.timer.model.TimerConfig;
 
@@ -36,9 +38,10 @@ import org.lorislab.armonitor.timer.model.TimerConfig;
  */
 @Singleton
 @Startup
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class TimerServiceBean {
 
-    private static final String AGENT_TIMER_INFO = "AgentTimer";
+    private static final String AGENT_TIMER_INFO = TimerServiceBean.class.getName();
 
     private static final Logger LOGGER = Logger.getLogger(TimerServiceBean.class.getName());
 

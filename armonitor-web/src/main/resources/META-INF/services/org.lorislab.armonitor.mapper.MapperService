@@ -1,1 +1,5 @@
+org.lorislab.armonitor.agent.mapper.VersionMapper
 org.lorislab.armonitor.web.rs.mapper.AgentMapper
+org.lorislab.armonitor.web.rs.mapper.ApplicationMapper
+org.lorislab.armonitor.web.rs.mapper.ApplicationSystemMapper
+org.lorislab.armonitor.web.rs.mapper.BuildMapper

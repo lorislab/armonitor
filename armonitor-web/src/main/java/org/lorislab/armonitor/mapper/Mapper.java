@@ -131,16 +131,16 @@ public final class Mapper {
         return result;
     }
 
-    public static <T, E> T map(Class<E> entity, Class<T> data) {
+    public static <T, E> T create(Class<E> entity, Class<T> data) {
         return map(entity, data, null);
     }
     
-    public static <T, E> T map(Class<E> entity, Class<T> data, String profile) {
+    public static <T, E> T create(Class<E> entity, Class<T> data, String profile) {
         T result = null;
         if (entity != null && data != null) {
             MapperService<E, T> mapper = MAPPER.get(entity).get(data);
             if (mapper != null) {
-                result = mapper.map(profile);
+                result = mapper.create(profile);
             }
         }
         return result;

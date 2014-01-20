@@ -43,7 +43,7 @@ public class AgentServiceBean {
     private StoreSystemServiceBean systemService;
 
     public Agent create() throws Exception {
-        return Mapper.map(StoreAgent.class, Agent.class);
+        return Mapper.create(StoreAgent.class, Agent.class);
     }
 
     public void changePassword(AgentChangePasswordRequest reqeust) {

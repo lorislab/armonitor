@@ -29,19 +29,17 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
 import org.lorislab.armonitor.store.model.StoreBuild_;
-import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.store.model.StoreSystemBuild_;
 import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
-import org.lorislab.jel.jpa.model.Persistent_;
 
 /**
  *
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<StoreSystemBuild> {
     
     private static final long serialVersionUID = 3658813042535292506L;

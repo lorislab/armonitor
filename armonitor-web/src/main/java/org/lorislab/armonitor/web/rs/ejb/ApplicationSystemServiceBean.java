@@ -16,12 +16,12 @@
 
 package org.lorislab.armonitor.web.rs.ejb;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
@@ -44,19 +44,16 @@ public class ApplicationSystemServiceBean {
     
     public List<ApplicationSystem> get() {
         List<StoreSystem> tmp = service.getSystems();
-        return map(tmp);
+        return Mapper.map(tmp, ApplicationSystem.class);
     }
 
     public ApplicationSystem get(String uid) {
         StoreSystem tmp = service.getSystem(uid);
-        return map(tmp);
+        return Mapper.map(tmp, ApplicationSystem.class);
     }
 
     public ApplicationSystem create() throws Exception {
-        StoreSystem tmp = new StoreSystem();
-        ApplicationSystem result = new ApplicationSystem();
-        result.guid = tmp.getGuid();
-        return result;
+        return Mapper.create(StoreSystem.class, ApplicationSystem.class);
     }
 
     public ApplicationSystem save(ApplicationSystem system) throws Exception {
@@ -64,62 +61,20 @@ public class ApplicationSystemServiceBean {
         if (system != null) {
             StoreSystem tmp = service.getSystem(system.guid);
             if (tmp != null) {
-                tmp = update(tmp, system);
-                tmp = service.saveSystem(tmp);
-                tmp = service.getSystem(tmp.getGuid());
-                result = map(tmp);
+                tmp = Mapper.update(tmp, system);
             } else {
-                tmp = new StoreSystem();
-                tmp.setGuid(system.guid);
-                tmp = update(tmp, system);
+                tmp = Mapper.create(system, StoreSystem.class);
                 StoreApplication app = appService.getApplication(system.application);
                 if (app != null) {
-                    tmp.setApplication(app);
-                    tmp = service.saveSystem(tmp);
-                    tmp = service.getSystem(tmp.getGuid());
-                    result = map(tmp);
+                    tmp.setApplication(app);                    
+                } else {
+                    throw new Exception("Missing application for the system!");
                 }
-            }           
+            }              
+            tmp = service.saveSystem(tmp);
+            result = Mapper.map(tmp, ApplicationSystem.class);
         }
         return result;
     }
 
-    private List<ApplicationSystem> map(List<StoreSystem> tmp) {
-        List<ApplicationSystem> result = null;
-        if (tmp != null) {
-            result = new ArrayList<>();
-            for (StoreSystem item : tmp) {
-                ApplicationSystem sys = map(item);
-                if (sys != null) {
-                    result.add(sys);
-                }
-            }
-        }
-        return result;
-    }
-
-    private ApplicationSystem map(StoreSystem tmp) {
-        ApplicationSystem result = null;
-        if (tmp != null) {
-            result = new ApplicationSystem();
-            result.guid = tmp.getGuid();
-            result.name = tmp.getName();
-            result.enabled = tmp.isEnabled();
-            result.timer = tmp.isTimer();
-            if (tmp.getApplication() != null) {
-                result.application = tmp.getApplication().getGuid();
-            }
-        }
-        return result;
-    }
-
-    private StoreSystem update(StoreSystem tmp, ApplicationSystem sys) {
-        if (tmp != null && sys != null) {
-            tmp.setName(sys.name);
-            tmp.setEnabled(sys.enabled);
-            tmp.setTimer(sys.timer);            
-        }
-        return tmp;
-    }
-    
 }

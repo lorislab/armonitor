@@ -38,14 +38,15 @@ import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSystem> {
     
     private static final long serialVersionUID = -9106271336827485594L;
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreSystem saveSystem(StoreSystem application) {
-        return this.save(application);
+        StoreSystem tmp = this.save(application);
+        return getSystem(tmp.getGuid());
     }
     
     public StoreSystem getSystem(String guid) {

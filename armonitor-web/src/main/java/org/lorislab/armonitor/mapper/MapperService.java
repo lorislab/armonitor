@@ -59,5 +59,5 @@ public interface MapperService<E, T> {
      * @param profile the map profile.
      * @return the new rest model.
      */
-    public T map(String profile);
+    public T create(String profile);
 }

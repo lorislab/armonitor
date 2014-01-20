@@ -16,12 +16,12 @@
 
 package org.lorislab.armonitor.web.rs.ejb;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.web.rs.model.Application;
@@ -39,64 +39,30 @@ public class ApplicationServiceBean {
     
     
     public Application create() throws Exception {
-        StoreApplication tmp = new StoreApplication();
-        return map(tmp);
+        return Mapper.create(StoreApplication.class, Application.class);
     }
     
     public Application get(String guid) throws Exception {
         StoreApplication tmp = service.getApplication(guid);
-        return map(tmp);
+        return Mapper.map(tmp, Application.class);
     }
     
     public List<Application> get() throws Exception {
         List<StoreApplication> tmp = service.getApplications();
-        return map(tmp);
+        return Mapper.map(tmp, Application.class);
     }
     
     public Application save(Application app) throws Exception {
         Application result;
         StoreApplication tmp = service.getApplication(app.guid);
         if (tmp != null) {
-            tmp = update(tmp, app);
+            tmp = Mapper.update(tmp, app);
         } else {
-            tmp = new StoreApplication();
-            tmp.setGuid(app.guid);
-            tmp = update(tmp, app);
+            tmp = Mapper.create(tmp, StoreApplication.class);
         }
         tmp = service.saveApplication(tmp);
-        tmp = service.getApplication(tmp.getGuid());
-        result = map(tmp);
+        result = Mapper.map(tmp, Application.class);
         return result;
     }
-    
-    private List<Application> map(List<StoreApplication> tmp) {
-        List<Application> result = null;
-        if (tmp != null) {
-            result = new ArrayList<>();
-            for (StoreApplication item : tmp) {
-                Application agent = map(item);
-                if (agent != null) {
-                    result.add(agent);
-                }
-            }
-        }
-        return result;
-    }
-    
-    private StoreApplication update(StoreApplication tmp, Application app) {
-        if (tmp != null) {
-            tmp.setName(app.name);
-        }
-        return tmp;
-    }
-    
-    private Application map(StoreApplication app) {
-        Application result = null;
-        if (app != null) {
-            result = new Application();
-            result.guid = app.getGuid();
-            result.name = app.getName();
-        }
-        return result;
-    }
+
 }

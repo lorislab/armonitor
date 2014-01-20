@@ -16,12 +16,12 @@
 
 package org.lorislab.armonitor.web.rs.ejb;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
 import org.lorislab.armonitor.store.ejb.StoreBuildServiceBean;
 import org.lorislab.armonitor.store.model.StoreBuild;
@@ -42,7 +42,7 @@ public class BuildServiceBean {
         StoreBuildCriteria criteria = new StoreBuildCriteria();
         criteria.setFetchParameters(parameters);
         List<StoreBuild> tmp = service.getBuilds(criteria);
-        return map(tmp);
+        return Mapper.map(tmp, Build.class);
     }
     
     public List<Build> getForApp(String guid, boolean parameters) {
@@ -50,31 +50,7 @@ public class BuildServiceBean {
         criteria.setFetchParameters(parameters);
         criteria.setApplication(guid);
         List<StoreBuild> tmp = service.getBuilds(criteria);
-        return map(tmp);
+        return Mapper.map(tmp, Build.class);
     }
-    
-    private List<Build> map(List<StoreBuild> tmp) {
-        List<Build> result = null;
-        if (tmp != null) {
-            result = new ArrayList<>();
-            for (StoreBuild item : tmp) {
-                Build build = map(item);
-                if (build != null) {
-                    result.add(build);
-                }
-            }
-        }
-        return result;
-    }
-    
-    private Build map(StoreBuild tmp) {
-        Build result = null;
-        if (tmp != null) {
-            result = new Build();
-            result.guid = tmp.getGuid();
-            
-        }
-        return result;
-    }
-    
+      
 }

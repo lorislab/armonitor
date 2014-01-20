@@ -67,7 +67,7 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
     }
 
     @Override
-    public Agent map(String profile) {
+    public Agent create(String profile) {
         StoreAgent agent = new StoreAgent();
         return map(agent, profile);
     }

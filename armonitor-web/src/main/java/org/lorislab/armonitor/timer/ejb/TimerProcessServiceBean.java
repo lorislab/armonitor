@@ -49,16 +49,13 @@ import org.lorislab.armonitor.store.model.StoreSystemBuild;
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class TimerProcessServiceBean {
 
     /**
      * The logger for this class.
      */
     private static final Logger LOGGER = Logger.getLogger(TimerProcessServiceBean.class.getName());
-
-    @EJB
-    private StoreAgentServiceBean agentService;
 
     @EJB
     private AgentClientServiceBean agentClientService;
