@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.armonitor.timer.ejb;
+package org.lorislab.armonitor.ejb;
 
 import java.util.Date;
 import java.util.List;
@@ -30,9 +30,6 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
-import org.lorislab.armonitor.store.criteria.StoreAgentCriteria;
-import org.lorislab.armonitor.store.ejb.StoreAgentServiceBean;
-import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.agent.ejb.AgentClientServiceBean;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
@@ -49,13 +46,13 @@ import org.lorislab.armonitor.store.model.StoreSystemBuild;
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NEVER)
-public class TimerProcessServiceBean {
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+public class ProcessServiceBean {
 
     /**
      * The logger for this class.
      */
-    private static final Logger LOGGER = Logger.getLogger(TimerProcessServiceBean.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ProcessServiceBean.class.getName());
 
     @EJB
     private AgentClientServiceBean agentClientService;
@@ -121,6 +118,58 @@ public class TimerProcessServiceBean {
         }
     }
 
+    public void process(String key, StoreBuild build) throws Exception {
+        if (key != null) {
+            if (build != null) {
+                StoreSystemCriteria criteria = new StoreSystemCriteria();
+                criteria.setKey(key);
+                StoreSystem tmp = systemService.getSystem(criteria);
+                if (tmp != null) {
+                    process(tmp, build);
+                } else {
+                    LOGGER.log(Level.SEVERE, "No system for the key {0} found!", key);
+                    throw new Exception("No system for the key " + key + " found!");
+                }
+            } else {
+                LOGGER.log(Level.SEVERE, "The build object is null!");
+                throw new Exception("The build object is null!");
+            }
+        } else {
+            LOGGER.log(Level.SEVERE, "The key is null!");
+            throw new Exception("The key is null!");
+        }
+    }
+
+    private void process(StoreSystem tmp, StoreBuild build) {
+        StoreBuildCriteria buildCriteria = new StoreBuildCriteria();
+        buildCriteria.setDate(build.getDate());
+        buildCriteria.setApplication(tmp.getApplication().getGuid());
+        StoreBuild buildOld = buildService.getBuild(buildCriteria);
+
+        boolean createSystemBuild = false;
+        if (buildOld == null) {
+            build.setApplication(tmp.getApplication());
+            buildOld = buildService.saveBuild(build);
+            createSystemBuild = true;
+        } else {
+            StoreSystemBuildCriteria sbc = new StoreSystemBuildCriteria();
+            sbc.setBuild(buildOld.getGuid());
+            sbc.setSystem(tmp.getGuid());
+            StoreSystemBuild sb = systemBuildService.getSystemBuild(sbc);
+            if (sb == null) {
+                createSystemBuild = true;
+            }
+        }
+
+        if (createSystemBuild) {
+            StoreSystemBuild sb = new StoreSystemBuild();
+            sb.setBuild(buildOld);
+            sb.setSystem(tmp);
+            sb.setDate(new Date());
+            systemBuildService.saveSystemBuild(sb);
+        }
+    }
+
     public void process(StoreSystem system) {
         if (system != null) {
             StoreSystemCriteria criteria = new StoreSystemCriteria();
@@ -133,34 +182,7 @@ public class TimerProcessServiceBean {
             if (tmp != null) {
                 StoreBuild build = agentClientService.getAppBuild(system.getAgent());
                 if (build != null) {
-
-                    StoreBuildCriteria buildCriteria = new StoreBuildCriteria();
-                    buildCriteria.setDate(build.getDate());
-                    buildCriteria.setApplication(tmp.getApplication().getGuid());
-                    StoreBuild buildOld = buildService.getBuild(buildCriteria);
-
-                    boolean createSystemBuild = false;
-                    if (buildOld == null) {
-                        build.setApplication(tmp.getApplication());
-                        buildOld = buildService.saveBuild(build);
-                        createSystemBuild = true;
-                    } else {
-                        StoreSystemBuildCriteria sbc = new StoreSystemBuildCriteria();
-                        sbc.setBuild(buildOld.getGuid());
-                        sbc.setSystem(tmp.getGuid());
-                        StoreSystemBuild sb = systemBuildService.getSystemBuild(sbc);
-                        if (sb == null) {
-                            createSystemBuild = true;
-                        }
-                    }
-
-                    if (createSystemBuild) {
-                        StoreSystemBuild sb = new StoreSystemBuild();
-                        sb.setBuild(buildOld);
-                        sb.setSystem(tmp);
-                        sb.setDate(new Date());
-                        systemBuildService.saveSystemBuild(sb);
-                    }
+                    process(tmp, build);
                 } else {
                     LOGGER.log(Level.WARNING, "Could not get the build for the system {0}", system.getGuid());
                 }

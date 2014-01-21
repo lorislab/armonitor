@@ -39,7 +39,7 @@ public class SearchResultItem {
     /**
      * The manifest
      */
-    private Map<String, String> manifest = new HashMap<>();
+    private Map<String, String> manifest;
 
     /**
      * Gets the service name.

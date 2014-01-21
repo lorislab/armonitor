@@ -44,10 +44,7 @@ public class StoreSystem extends Persistent {
     
     @Column(name = "C_NAME")
     private String name;
-    
-    @Column(name = "C_SERVER")
-    private String server;
-   
+
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
@@ -60,6 +57,17 @@ public class StoreSystem extends Persistent {
     @Column(name = "C_TIMER")
     private boolean timer;
 
+    @Column(name = "C_KEY")
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+        
     public boolean isTimer() {
         return timer;
     }
@@ -99,15 +107,7 @@ public class StoreSystem extends Persistent {
     public void setApplication(StoreApplication application) {
         this.application = application;
     }
-    
-    public String getServer() {
-        return server;
-    }
-
-    public void setServer(String server) {
-        this.server = server;
-    }
- 
+   
     public String getName() {
         return name;
     }

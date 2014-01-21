@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 lorislab.org.
+ * Copyright 2013 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.lorislab.armonitor.rs.service;
 
-package org.lorislab.armonitor.store.ejb;
-
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import org.lorislab.armonitor.store.model.StoreVersion;
-import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import org.lorislab.armonitor.rs.model.Request;
+import org.lorislab.armonitor.rs.model.Result;
 
 /**
  *
  * @author Andrej Petras
  */
-@Stateless
-@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class StoreVersionServiceBean extends AbstractEntityServiceBean<StoreVersion> {
+@Path("monitor")
+public interface MonitorService {
     
-    private static final long serialVersionUID = -589567485253114559L;
-    
-    
+    @POST
+    @Path("request/build")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Result buildRequest(Request request) throws Exception;
 }

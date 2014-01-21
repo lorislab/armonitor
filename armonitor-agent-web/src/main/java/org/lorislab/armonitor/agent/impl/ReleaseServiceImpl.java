@@ -58,15 +58,8 @@ public class ReleaseServiceImpl implements ReleaseService {
 
         // load manifest 
         if (criteria.isManifest()) {
-            Manifest manifest = ManifestLoader.loadManifestFrom(ReleaseServiceImpl.class);
-            if (manifest != null) {
-                Attributes mainAttribs = manifest.getMainAttributes();
-                if (mainAttribs != null) {
-                    for (Map.Entry<Object, Object> entry : mainAttribs.entrySet()) {
-                        result.getManifest().put(entry.getKey().toString(), entry.getValue().toString());
-                    }
-                }
-            }
+            Map<String,String> tmp = ManifestLoader.loadManifestFromToMap(ReleaseServiceImpl.class);
+            result.setManifest(tmp);
         }
 
         return result;
@@ -102,16 +95,10 @@ public class ReleaseServiceImpl implements ReleaseService {
             }
         }
 
-        if (criteria.isManifest()) {
+        if (criteria.isManifest()) {            
             Manifest manifest = root.getAttachment(Attachments.MANIFEST);
-            if (manifest != null) {
-                Attributes mainAttribs = manifest.getMainAttributes();
-                if (mainAttribs != null) {
-                    for (Map.Entry<Object, Object> entry : mainAttribs.entrySet()) {
-                        result.getManifest().put(entry.getKey().toString(), entry.getValue().toString());
-                    }
-                }
-            }
+            Map<String,String> tmp = ManifestLoader.loadManifestToMap(manifest);
+            result.setManifest(tmp);           
         }
         return result;
     }

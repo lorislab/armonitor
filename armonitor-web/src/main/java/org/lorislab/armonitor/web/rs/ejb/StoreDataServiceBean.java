@@ -44,7 +44,7 @@ import org.lorislab.armonitor.web.rs.model.StoreProjectResult;
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NEVER)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreDataServiceBean {
 
     @EJB

@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.ejb;
+package org.lorislab.armonitor.rs.model;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import org.lorislab.armonitor.store.model.StoreVersion;
-import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
+import org.lorislab.armonitor.agent.rs.model.Version;
 
 /**
  *
  * @author Andrej Petras
  */
-@Stateless
-@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class StoreVersionServiceBean extends AbstractEntityServiceBean<StoreVersion> {
+public class Request {
     
-    private static final long serialVersionUID = -589567485253114559L;
+    public Version version;
     
+    public String key;
     
 }

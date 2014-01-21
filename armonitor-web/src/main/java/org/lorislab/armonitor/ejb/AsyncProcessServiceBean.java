@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.timer.ejb;
+package org.lorislab.armonitor.ejb;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,15 +36,15 @@ activationConfig = {
     @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/timerProcess"),
     @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
 })
-public class AsyncTimerProcessServiceBean implements MessageListener {
+public class AsyncProcessServiceBean implements MessageListener {
 
     /**
      * The logger for this class.
      */
-    private static final Logger LOGGER = Logger.getLogger(AsyncTimerProcessServiceBean.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AsyncProcessServiceBean.class.getName());
     
     @EJB
-    private TimerProcessServiceBean processService;
+    private ProcessServiceBean processService;
     
     @Override
     public void onMessage(Message message) {

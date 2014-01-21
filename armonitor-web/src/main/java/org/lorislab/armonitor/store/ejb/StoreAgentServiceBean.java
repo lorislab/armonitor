@@ -39,7 +39,7 @@ import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NEVER)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent> {
 
     private static final long serialVersionUID = -6750263259636685498L;

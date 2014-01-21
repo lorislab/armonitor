@@ -33,7 +33,7 @@ public final class Mapper {
 
     private static final Map<Class, Map<Class, MapperService>> MAPPER = new HashMap<>();
 
-    private Mapper() {
+    static {
         ServiceLoader<MapperService> services = ServiceLoader.load(MapperService.class);
         if (services != null) {
             Iterator<MapperService> iter = services.iterator();
@@ -43,6 +43,10 @@ public final class Mapper {
         }
     }
 
+    private Mapper() {
+        // empty default constructor.
+    }
+    
     private static void add(MapperService mapper) {
         Type[] type = ((ParameterizedType) mapper.getClass().getGenericInterfaces()[0]).getActualTypeArguments();
         Class entity = (Class) type[0];
@@ -84,6 +88,8 @@ public final class Mapper {
     public static <T, E> T map(E data, Class<T> clazz, String profile) {
         T result = null;
         if (data != null) {
+            System.out.println(data.toString());
+            System.out.println(clazz);
             MapperService<E, T> mapper = MAPPER.get(data.getClass()).get(clazz);
             result = map(data, mapper, profile);
         }

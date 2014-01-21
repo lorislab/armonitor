@@ -18,8 +18,6 @@ package org.lorislab.armonitor.agent.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 import org.lorislab.armonitor.agent.model.SearchResultItem;
 import org.lorislab.armonitor.agent.model.SearchCriteria;
 import org.lorislab.armonitor.arm.model.Arm;
@@ -47,16 +45,9 @@ public class ReleaseServiceImpl implements ReleaseService {
         }
         
         // load manifest 
-        if (request.isManifest()) {       
-            Manifest manifest = ManifestLoader.loadManifestFromJar(ReleaseServiceImpl.class);
-            if (manifest != null) {
-                Attributes mainAttribs = manifest.getMainAttributes();
-                if (mainAttribs != null) {
-                    for (Map.Entry<Object, Object> entry : mainAttribs.entrySet()) {
-                        result.getManifest().put(entry.getKey().toString(), entry.getValue().toString());
-                    }
-                }
-            }
+        if (request.isManifest()) {    
+            Map<String,String> tmp = ManifestLoader.loadManifestFromJarToMap(ReleaseServiceImpl.class); 
+            result.setManifest(tmp);
         }
 
         return result;
@@ -76,16 +67,9 @@ public class ReleaseServiceImpl implements ReleaseService {
         }
         
         // load manifest 
-        if (request.isManifest()) {       
-            Manifest manifest = ManifestLoader.loadManifestFrom(ReleaseServiceImpl.class);
-            if (manifest != null) {
-                Attributes mainAttribs = manifest.getMainAttributes();
-                if (mainAttribs != null) {
-                    for (Map.Entry<Object, Object> entry : mainAttribs.entrySet()) {
-                        result.getManifest().put(entry.getKey().toString(), entry.getValue().toString());
-                    }
-                }
-            }
+        if (request.isManifest()) {
+            Map<String,String> tmp = ManifestLoader.loadManifestFromToMap(ReleaseServiceImpl.class);            
+            result.setManifest(tmp);
         }
         
         return result;

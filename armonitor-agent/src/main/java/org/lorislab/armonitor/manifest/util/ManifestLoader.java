@@ -23,6 +23,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -50,7 +53,7 @@ public final class ManifestLoader {
      * The EAR package path substring.
      */
     private static final String EAR_SUBSTRING = ".ear/";
-    
+
     /**
      * The default constructor.
      */
@@ -58,6 +61,17 @@ public final class ManifestLoader {
         // empty contrustor
     }
 
+    /**
+     * Loads the manifest from WAR.
+     *
+     * @param clazz the class.
+     * @return the manifest attributes.
+     */    
+    public static Map<String, String> loadManifestFromToMap(Class clazz) {
+        Manifest tmp = loadManifestFrom(clazz);
+        return loadManifestToMap(tmp);
+    }
+    
     /**
      * Loads the manifest from WAR.
      *
@@ -72,13 +86,13 @@ public final class ManifestLoader {
             if (codeSource != null) {
                 URL url = codeSource.getLocation();
                 String urlString = codeSource.getLocation().toExternalForm();
-                
+
                 if (urlString.contains(EAR_SUBSTRING)) {
                     urlString = urlString.substring(0, urlString.lastIndexOf(EAR_SUBSTRING)) + EAR_SUBSTRING;
                 } else if (urlString.contains(WEB_INF)) {
                     urlString = urlString.substring(0, urlString.lastIndexOf(WEB_INF));
                 }
-                
+
                 try {
                     url = new URL(urlString);
                 } catch (MalformedURLException e) {
@@ -89,7 +103,18 @@ public final class ManifestLoader {
         }
         return result;
     }
-
+    
+    /**
+     * Load the manifest of the JAR file for the class.
+     *
+     * @param clazz the class
+     * @return the manifest attributes of the JAR file for the class.
+     */    
+    public static Map<String,String> loadManifestFromJarToMap(Class clazz) {
+        Manifest tmp = loadManifestFromJar(clazz);
+        return loadManifestToMap(tmp);
+    }
+    
     /**
      * Load the manifest of the JAR file for the class.
      *
@@ -108,6 +133,24 @@ public final class ManifestLoader {
         return result;
     }
 
+    public static Map<String, String> loadManifestToMap(Manifest manifest) {
+        Map<String, String> result = null;
+        if (manifest != null) {
+            Attributes mainAttribs = manifest.getMainAttributes();
+            if (mainAttribs != null) {
+                result = new HashMap<>();
+                for (Map.Entry<Object, Object> entry : mainAttribs.entrySet()) {
+                    result.put(entry.getKey().toString(), entry.getValue().toString());
+                }
+            }
+        }
+        return result;
+    }
+
+    public static Map<String, String> loadManifestToMap(URL url) {
+        Manifest tmp = loadManifest(url);
+        return loadManifestToMap(tmp);
+    }
     /**
      * Read manifest from the URL.
      *

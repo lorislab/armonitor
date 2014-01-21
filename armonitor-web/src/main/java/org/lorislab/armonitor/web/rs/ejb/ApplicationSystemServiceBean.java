@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.List;
+import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -33,7 +34,7 @@ import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NEVER)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class ApplicationSystemServiceBean {
    
     @EJB
@@ -77,4 +78,22 @@ public class ApplicationSystemServiceBean {
         return result;
     }
 
+    public void deleteKey(String guid) throws Exception {
+        StoreSystem tmp = service.getSystem(guid);
+        if (tmp != null) {
+            tmp.setKey(null);
+            service.saveSystem(tmp);
+        }
+    }
+    
+    public String generatedKey(String guid) throws Exception {
+        String result = null;
+        StoreSystem tmp = service.getSystem(guid);
+        if (tmp != null && !tmp.isTimer()) {
+            tmp.setKey(UUID.randomUUID().toString());
+            tmp = service.saveSystem(tmp);
+            result = tmp.getKey();
+        }        
+        return result;
+    }
 }

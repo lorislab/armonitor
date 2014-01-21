@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.timer.ejb;
 
+import org.lorislab.armonitor.ejb.ProcessServiceBean;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +39,7 @@ import org.lorislab.armonitor.timer.model.TimerConfig;
  */
 @Singleton
 @Startup
-@TransactionAttribute(TransactionAttributeType.NEVER)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class TimerServiceBean {
 
     private static final String AGENT_TIMER_INFO = TimerServiceBean.class.getName();
@@ -52,7 +53,7 @@ public class TimerServiceBean {
     private ConfigurationServiceLocal configService;
     
     @EJB
-    private TimerProcessServiceBean processService;
+    private ProcessServiceBean processService;
     
     @PostConstruct
     public void initialize() {

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+    
+	<parent>
+		<groupId>org.lorislab.armonitor</groupId>
+		<artifactId>armonitor</artifactId>
+		<version>1.0.0-SNAPSHOT</version>	
+		<relativePath>../</relativePath>		
+	</parent>
+	
+	<name>armonitor-rs</name>
+	<artifactId>armonitor-rs</artifactId>
+	<packaging>jar</packaging>
+
+	<dependencies>  	
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lorislab.armonitor</groupId>
+			<artifactId>armonitor-agent-rs</artifactId>
+			<version>${project.version}</version>
+			<classifier>rsclient</classifier>
+		</dependency>		
+	</dependencies>
+		
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>make-rest-client-lib</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>rsclient</classifier>
+							<excludes>
+								<exclude>**/*Impl.*</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>				
+		</plugins>
+	</build>
+</project>

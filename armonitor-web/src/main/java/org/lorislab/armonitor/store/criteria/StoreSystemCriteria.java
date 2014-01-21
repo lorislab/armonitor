@@ -34,10 +34,20 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
 
     private Boolean timer;
 
+    private String key;
+    
     private boolean fetchAgent;
 
     private boolean fetchApplication;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+    
     public boolean isFetchApplication() {
         return fetchApplication;
     }
@@ -93,10 +103,11 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
         timer = null;
         fetchAgent = false;
         fetchApplication = true;
+        key = null;
     }
 
     @Override
     public boolean isEmpty() {
-        return isEmpty(enabled, timer, applications);
+        return isEmpty(enabled, timer, applications, key);
     }
 }

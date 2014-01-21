@@ -33,7 +33,7 @@ import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
  * @author Andrej Petras
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.NEVER)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class AgentServiceBean {
 
     @EJB

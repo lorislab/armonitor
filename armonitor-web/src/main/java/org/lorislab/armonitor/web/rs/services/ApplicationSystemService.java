@@ -18,6 +18,7 @@ package org.lorislab.armonitor.web.rs.services;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -63,5 +64,16 @@ public class ApplicationSystemService {
     public ApplicationSystem save(ApplicationSystem system) throws Exception {
         return service.save(system);
     }
-
+    
+    @DELETE
+    @Path("key/{uid}")
+    public void deleteKey(@PathParam("uid") String guid) throws Exception {
+        service.deleteKey(guid);
+    }
+    
+    @GET
+    @Path("key/{uid}")
+    public String generatedKey(@PathParam("uid") String guid) throws Exception {
+        return service.generatedKey(guid);
+    }
 }
