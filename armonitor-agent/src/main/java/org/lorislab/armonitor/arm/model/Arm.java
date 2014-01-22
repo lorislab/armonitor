@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.arm.model;
 
 import java.io.Serializable;
@@ -23,59 +22,96 @@ import java.util.Map;
 
 /**
  * The ARM model.
- * 
+ *
  * @author Andrej Petras
  */
 public class Arm implements Serializable {
-    
-    private static final long serialVersionUID = 661979832180196561L;
-    
-    private Date date;
-    
-    private String groupdId;
-    
-    private String artifactId;
-    
-    private String version;
-    
-    private String release;
-    
-    private String scm;
-    
-    private String build;
-    
-    private Map<String,String> other = new HashMap<>();   
 
+    /**
+     * The UID for this class.
+     */
+    private static final long serialVersionUID = 661979832180196561L;
+    /**
+     * The data.
+     */
+    private Date date;
+    /**
+     * The group ID.
+     */
+    private String groupId;
+    /**
+     * The artifact ID.
+     */
+    private String artifactId;
+    /**
+     * The version.
+     */
+    private String version;
+    /**
+     * The release.
+     */
+    private String release;
+    /**
+     * The SCM.
+     */
+    private String scm;
+    /**
+     * The build.
+     */
+    private String build;
+    /**
+     * The other parameters.
+     */
+    private Map<String, String> other = new HashMap<>();
+
+    /**
+     * Gets the date.
+     *
+     * @return the date.
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Sets the date.
+     *
+     * @param date the date.
+     */
     public void setDate(Date date) {
         this.date = date;
     }
-    
+
     /**
-     * @return the groupdId
+     * Gets the group ID.
+     *
+     * @return the group ID.
      */
-    public String getGroupdId() {
-        return groupdId;
+    public String getGroupId() {
+        return groupId;
     }
 
     /**
-     * @param groupdId the groupdId to set
+     * Sets the group ID.
+     *
+     * @param groupId the groupId to set
      */
-    public void setGroupdId(String groupdId) {
-        this.groupdId = groupdId;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     /**
-     * @return the artifactId
+     * Gets the artifact ID.
+     *
+     * @return the artifactId the artifact ID.
      */
     public String getArtifactId() {
         return artifactId;
     }
 
     /**
+     * Sets the artifact ID.
+     *
      * @param artifactId the artifactId to set
      */
     public void setArtifactId(String artifactId) {
@@ -83,20 +119,26 @@ public class Arm implements Serializable {
     }
 
     /**
-     * @return the version
+     * Gets the version.
+     *
+     * @return the version.
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * @param version the version to set
+     * Sets the version.
+     *
+     * @param version the version to set.
      */
     public void setVersion(String version) {
         this.version = version;
     }
 
     /**
+     * Gets the release.
+     *
      * @return the release
      */
     public String getRelease() {
@@ -104,6 +146,8 @@ public class Arm implements Serializable {
     }
 
     /**
+     * Sets the release.
+     *
      * @param release the release to set
      */
     public void setRelease(String release) {
@@ -111,46 +155,57 @@ public class Arm implements Serializable {
     }
 
     /**
-     * @return the scm
+     * Gets the SCM.
+     *
+     * @return the SCM.
      */
     public String getScm() {
         return scm;
     }
 
     /**
-     * @param scm the scm to set
+     * Sets the SCM.
+     *
+     * @param scm the SCM to set
      */
     public void setScm(String scm) {
         this.scm = scm;
     }
 
     /**
-     * @return the build
+     * Gets the build.
+     *
+     * @return the build.
      */
     public String getBuild() {
         return build;
     }
 
     /**
-     * @param build the build to set
+     * Sets the build.
+     *
+     * @param build the build to set.
      */
     public void setBuild(String build) {
         this.build = build;
     }
 
     /**
-     * @return the other
+     * Gets the other parameters.
+     *
+     * @return the other parameters.
      */
-    public Map<String,String> getOther() {
+    public Map<String, String> getOther() {
         return other;
     }
 
     /**
-     * @param other the other to set
+     * Sets the other parameters.
+     *
+     * @param other the other to set.
      */
-    public void setOther(Map<String,String> other) {
+    public void setOther(Map<String, String> other) {
         this.other = other;
     }
-    
-    
+
 }

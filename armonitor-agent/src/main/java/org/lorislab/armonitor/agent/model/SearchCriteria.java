@@ -13,41 +13,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.agent.model;
 
 /**
  * The request model.
- * 
+ *
  * @author Andrej Petras
  */
 public class SearchCriteria {
 
+    /**
+     * The manifest.
+     */
     private boolean manifest = false;
-    
+
+    /**
+     * The ARM properties.
+     */
     private final boolean arm = true;
-    
+
+    /**
+     * The service name.
+     */
     private String service = null;
 
-    
+    /**
+     * Gets the service.
+     *
+     * @return the service.
+     */
     public String getService() {
         return service;
     }
 
+    /**
+     * Sets the service.
+     *
+     * @param service the service.
+     */
     public void setService(String service) {
         this.service = service;
     }
-    
+
+    /**
+     * Gets the ARM.
+     *
+     * @return the ARM.
+     */
     public boolean isArm() {
         return arm;
     }
 
+    /**
+     * Gets the manifest.
+     *
+     * @return the manifest.
+     */
     public boolean isManifest() {
         return manifest;
     }
 
+    /**
+     * Sets the manifest.
+     *
+     * @param manifest the manifest.
+     */
     public void setManifest(boolean manifest) {
         this.manifest = manifest;
     }
-        
+
 }

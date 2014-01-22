@@ -15,7 +15,6 @@
  */
 package org.lorislab.armonitor.agent.model;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.lorislab.armonitor.arm.model.Arm;
 

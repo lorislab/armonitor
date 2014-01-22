@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.agent.rs.model;
 
 import java.util.Date;
@@ -22,32 +21,57 @@ import java.util.Map;
 
 /**
  * The version model.
- * 
+ *
  * @author Andrej Petras
  */
 public class Version {
-    
-    public String uid;
-    
-    public int ver = 1;
 
+    /**
+     * The UID of the request.
+     */
+    public String uid;
+    /**
+     * The version.
+     */
+    public int ver = 1;
+    /**
+     * The build date.
+     */
     public Date date;
-    
+    /**
+     * The service name.
+     */
     public String service;
-    
+    /**
+     * The MAVEN group id.
+     */
     public String groupdId;
-    
+    /**
+     * The MAVEN artifact id.
+     */
     public String artifactId;
-    
+    /**
+     * The MAVEN version.
+     */
     public String version;
-    
+    /**
+     * The release.
+     */
     public String release;
-    
+    /**
+     * The SCM.
+     */
     public String scm;
-    
+    /**
+     * The build.
+     */
     public String build;
-    
-    public Map<String,String> other = new HashMap<>();   
-    
-    public Map<String,String> manifest = new HashMap<>();   
+    /**
+     * The other parameters.
+     */
+    public Map<String, String> other = new HashMap<>();
+    /**
+     * The manifest.
+     */
+    public Map<String, String> manifest = new HashMap<>();
 }

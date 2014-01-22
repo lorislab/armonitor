@@ -66,12 +66,12 @@ public final class ManifestLoader {
      *
      * @param clazz the class.
      * @return the manifest attributes.
-     */    
+     */
     public static Map<String, String> loadManifestFromToMap(Class clazz) {
         Manifest tmp = loadManifestFrom(clazz);
         return loadManifestToMap(tmp);
     }
-    
+
     /**
      * Loads the manifest from WAR.
      *
@@ -103,18 +103,18 @@ public final class ManifestLoader {
         }
         return result;
     }
-    
+
     /**
      * Load the manifest of the JAR file for the class.
      *
      * @param clazz the class
      * @return the manifest attributes of the JAR file for the class.
-     */    
-    public static Map<String,String> loadManifestFromJarToMap(Class clazz) {
+     */
+    public static Map<String, String> loadManifestFromJarToMap(Class clazz) {
         Manifest tmp = loadManifestFromJar(clazz);
         return loadManifestToMap(tmp);
     }
-    
+
     /**
      * Load the manifest of the JAR file for the class.
      *
@@ -133,6 +133,12 @@ public final class ManifestLoader {
         return result;
     }
 
+    /**
+     * Loads the manifest to map.
+     *
+     * @param manifest the manifest.
+     * @return the corresponding map of attributes.
+     */
     public static Map<String, String> loadManifestToMap(Manifest manifest) {
         Map<String, String> result = null;
         if (manifest != null) {
@@ -147,10 +153,17 @@ public final class ManifestLoader {
         return result;
     }
 
+    /**
+     * Read manifest from the URL.
+     *
+     * @param url the manifest URL.
+     * @return the corresponding map of attributes.
+     */
     public static Map<String, String> loadManifestToMap(URL url) {
         Manifest tmp = loadManifest(url);
         return loadManifestToMap(tmp);
     }
+
     /**
      * Read manifest from the URL.
      *

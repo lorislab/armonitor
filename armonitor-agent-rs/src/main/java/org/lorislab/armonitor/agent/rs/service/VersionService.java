@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.agent.rs.service;
 
 import java.util.List;
@@ -27,26 +26,47 @@ import org.lorislab.armonitor.agent.rs.model.Version;
 
 /**
  * The version rest-service.
- * 
+ *
  * @author Andrej Petras
  */
 @Path("lorislab/ver")
 public interface VersionService {
-    
+
+    /**
+     * Gets the agent version.
+     *
+     * @param request the request.
+     * @return the version of the agent.
+     * @throws Exception if the method fails.
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     Version getAgentVersion(Request request) throws Exception;
-    
+
+    /**
+     * Gets the version of the application.
+     *
+     * @param request the request.
+     * @return the version of the application.
+     * @throws Exception if the method fails.
+     */
     @POST
     @Path("app")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)    
+    @Produces(MediaType.APPLICATION_JSON)
     Version getAppVersion(Request request) throws Exception;
-    
+
+    /**
+     * Gets all versions.
+     *
+     * @param request the request.
+     * @return the list of version.
+     * @throws Exception if the method fails.
+     */
     @POST
     @Path("all")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)    
-    List<Version> getAllVersion(Request request) throws Exception;    
+    @Produces(MediaType.APPLICATION_JSON)
+    List<Version> getAllVersion(Request request) throws Exception;
 }

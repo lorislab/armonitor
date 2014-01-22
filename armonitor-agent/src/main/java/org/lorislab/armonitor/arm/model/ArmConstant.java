@@ -13,33 +13,62 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.arm.model;
 
 /**
  * The ARM model constant.
- * 
+ *
  * @author Andrej Petras
  */
 public interface ArmConstant {
-   
+
+    /**
+     * The ARM file.
+     */
     public static final String FILE_NAME = "arm.properties";
     
+    /**
+     * The ARM file directory.
+     */
     public static final String DIR_LOCATION = "META-INF/armonitor";
-    
+
+    /**
+     * The ARM file location.
+     */
     public static final String FILE_LOCATION = DIR_LOCATION + "/" + FILE_NAME;
-        
+
+    /**
+     * The MAVEN group id parameter.
+     */
     public static final String MAVEN_GROUP_ID = "Maven-GroupId";
     
+    /**
+     * The MAVEN artifact id parameter.
+     */
     public static final String MAVEN_ARTIFACT_ID = "Maven-ArtifactId";
-    
+
+    /**
+     * The MAVEN version parameter.
+     */
     public static final String MAVEN_VERSION = "Maven-Version";
     
+    /**
+     * The release version.
+     */
     public static final String RELEASE_VERSION = "Release-Version";
     
+    /**
+     * The release SCM.
+     */
     public static final String RELEASE_SCM = "Release-Scm";
     
+    /**
+     * The release build.
+     */
     public static final String RELEASE_BUILD = "Release-Build";
     
+    /**
+     * The release date.
+     */
     public static final String RELEASE_DATE = "Release-Date";
 }

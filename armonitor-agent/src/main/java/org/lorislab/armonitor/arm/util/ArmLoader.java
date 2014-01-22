@@ -24,7 +24,6 @@ import java.net.URLConnection;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,11 +61,17 @@ public class ArmLoader {
         // empty contrustor
     }
 
+    /**
+     * Creates the ARM model from the properties.
+     *
+     * @param properties the properties.
+     * @return the corresponding ARM model.
+     */
     public static Arm createArm(Properties properties) {
         Arm result = new Arm();
 
         // add maven properties
-        result.setGroupdId((String) properties.remove(ArmConstant.MAVEN_GROUP_ID));
+        result.setGroupId((String) properties.remove(ArmConstant.MAVEN_GROUP_ID));
         result.setArtifactId((String) properties.remove(ArmConstant.MAVEN_ARTIFACT_ID));
         result.setVersion((String) properties.remove(ArmConstant.MAVEN_VERSION));
 
@@ -88,6 +93,12 @@ public class ArmLoader {
         return result;
     }
 
+    /**
+     * Creates the properties from the ARM model.
+     *
+     * @param arm the ARM model.
+     * @return the corresponding properties.
+     */
     public static Properties createProperties(Arm arm) {
         Properties result = new Properties();
 
@@ -95,7 +106,7 @@ public class ArmLoader {
         result.putAll(arm.getOther());
 
         // add maven properties
-        result.put(ArmConstant.MAVEN_GROUP_ID, arm.getGroupdId());
+        result.put(ArmConstant.MAVEN_GROUP_ID, arm.getGroupId());
         result.put(ArmConstant.MAVEN_ARTIFACT_ID, arm.getArtifactId());
         result.put(ArmConstant.MAVEN_VERSION, arm.getVersion());
 
@@ -165,6 +176,12 @@ public class ArmLoader {
         return result;
     }
 
+    /**
+     * Loads the ARM model from the file.
+     *
+     * @param file the file.
+     * @return the corresponding the ARM model.
+     */
     public static Arm loadArmFromJar(File file) {
         Arm result = null;
         if (file != null) {

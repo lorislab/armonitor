@@ -33,6 +33,7 @@ import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.util.RestClient;
 
 /**
+ * The agent client service.
  *
  * @author Andrej Petras
  */
@@ -45,8 +46,17 @@ public class AgentClientServiceBean {
      */
     private static final Logger LOGGER = Logger.getLogger(AgentClientServiceBean.class.getName());
 
+    /**
+     * The agent REST link
+     */
     private static final String AGENT_SERVICE = "/armonitor-agent/rs";
 
+    /**
+     * Gets all applications build.
+     *
+     * @param agent the agent.
+     * @return the list of applications build.
+     */
     public List<StoreBuild> getAppBuilds(StoreAgent agent) {
         List<StoreBuild> result = new ArrayList<>();
 
@@ -73,6 +83,12 @@ public class AgentClientServiceBean {
         return result;
     }
 
+    /**
+     * Gets the agent service build.
+     *
+     * @param agent the agent.
+     * @return the agent service build.
+     */
     public StoreBuild getAgentBuild(StoreAgent agent) {
         StoreBuild result = null;
 
@@ -91,6 +107,12 @@ public class AgentClientServiceBean {
         return result;
     }
 
+    /**
+     * Gets the application build.
+     *
+     * @param agent the agent.
+     * @return the build of the application.
+     */
     public StoreBuild getAppBuild(StoreAgent agent) {
         StoreBuild result = null;
 
@@ -109,6 +131,12 @@ public class AgentClientServiceBean {
         return result;
     }
 
+    /**
+     * Creates the version service.
+     *
+     * @param agent the agent.
+     * @return the version service for the agent.
+     */
     private static VersionService createClientService(StoreAgent agent) {
         VersionService result = null;
         if (agent != null) {

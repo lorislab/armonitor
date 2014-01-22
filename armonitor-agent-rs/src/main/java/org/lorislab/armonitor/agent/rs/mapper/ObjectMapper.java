@@ -23,11 +23,15 @@ import org.lorislab.armonitor.arm.model.Arm;
 import org.lorislab.armonitor.agent.model.SearchCriteria;
 
 /**
+ * The object mapper.
  *
  * @author Andrej Petras
  */
 public final class ObjectMapper {
 
+    /**
+     * The default constructor.
+     */
     private ObjectMapper() {
         // empty constructor
     }
@@ -45,18 +49,30 @@ public final class ObjectMapper {
         return criteria;
     }
 
+    /**
+     * Creates the version.
+     *
+     * @return the version.
+     */
     public static Version create() {
         Version result = new Version();
         result.uid = UUID.randomUUID().toString();
         return result;
     }
 
+    /**
+     * Update the version with the ARM model.
+     *
+     * @param version the version.
+     * @param arm the arm model.
+     * @return the version.
+     */
     public static Version update(Version version, Arm arm) {
         if (arm != null && version != null) {
             version.date = arm.getDate();
 
             // add maven attributes
-            version.groupdId = arm.getGroupdId();
+            version.groupdId = arm.getGroupId();
             version.artifactId = arm.getArtifactId();
             version.version = arm.getVersion();
 
@@ -71,6 +87,13 @@ public final class ObjectMapper {
         return version;
     }
 
+    /**
+     * Updates the version with the search result item.
+     *
+     * @param version the version.
+     * @param release the search result item.
+     * @return the version.
+     */
     public static Version update(Version version, SearchResultItem release) {
         if (version != null && release != null) {
             version.service = release.getService();
