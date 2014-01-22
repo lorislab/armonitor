@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.arm.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -24,19 +24,22 @@ import java.net.URLConnection;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import org.lorislab.armonitor.arm.model.Arm;
 import org.lorislab.armonitor.arm.model.ArmConstant;
 
 /**
  * The ARM model loader.
- * 
+ *
  * @author Andrej Petras
  */
 public class ArmLoader {
-      
+
     /**
      * The logger for this class.
      */
@@ -51,56 +54,56 @@ public class ArmLoader {
      * The EAR package path substring.
      */
     private static final String EAR_SUBSTRING = ".ear/";
-    
+
     /**
      * The default constructor.
      */
     private ArmLoader() {
         // empty contrustor
     }
-    
+
     public static Arm createArm(Properties properties) {
         Arm result = new Arm();
-                
+
         // add maven properties
-        result.setGroupdId((String) properties.remove(ArmConstant.MAVEN_GROUP_ID));        
-        result.setArtifactId((String) properties.remove(ArmConstant.MAVEN_ARTIFACT_ID));        
+        result.setGroupdId((String) properties.remove(ArmConstant.MAVEN_GROUP_ID));
+        result.setArtifactId((String) properties.remove(ArmConstant.MAVEN_ARTIFACT_ID));
         result.setVersion((String) properties.remove(ArmConstant.MAVEN_VERSION));
-        
+
         // add release version
         result.setScm((String) properties.remove(ArmConstant.RELEASE_SCM));
         result.setBuild((String) properties.remove(ArmConstant.RELEASE_BUILD));
         result.setVersion((String) properties.remove(ArmConstant.RELEASE_VERSION));
-        
+
         // add release date
         String tmp = (String) properties.remove(ArmConstant.RELEASE_DATE);
         Date date = new Date(Long.valueOf(tmp));
         result.setDate(date);
-        
+
         // add other
-        for (String name : properties.stringPropertyNames()) {            
+        for (String name : properties.stringPropertyNames()) {
             result.getOther().put(name, properties.getProperty(name));
         }
-        
+
         return result;
     }
-    
+
     public static Properties createProperties(Arm arm) {
         Properties result = new Properties();
-        
+
         // add other
         result.putAll(arm.getOther());
-        
+
         // add maven properties
         result.put(ArmConstant.MAVEN_GROUP_ID, arm.getGroupdId());
         result.put(ArmConstant.MAVEN_ARTIFACT_ID, arm.getArtifactId());
         result.put(ArmConstant.MAVEN_VERSION, arm.getVersion());
-        
+
         // add release properties
         result.put(ArmConstant.RELEASE_SCM, arm.getScm());
         result.put(ArmConstant.RELEASE_VERSION, arm.getRelease());
         result.put(ArmConstant.RELEASE_BUILD, arm.getBuild());
-        
+
         // add release properties
         Long tmp = null;
         Date date = arm.getDate();
@@ -108,10 +111,10 @@ public class ArmLoader {
             tmp = date.getTime();
         }
         result.put(ArmConstant.RELEASE_DATE, tmp);
-        
+
         return result;
     }
-    
+
     /**
      * Loads the manifest from WAR.
      *
@@ -126,13 +129,13 @@ public class ArmLoader {
             if (codeSource != null) {
                 URL url = codeSource.getLocation();
                 String urlString = codeSource.getLocation().toExternalForm();
-                
+
                 if (urlString.contains(EAR_SUBSTRING)) {
                     urlString = urlString.substring(0, urlString.lastIndexOf(EAR_SUBSTRING)) + EAR_SUBSTRING;
                 } else if (urlString.contains(WEB_INF)) {
                     urlString = urlString.substring(0, urlString.lastIndexOf(WEB_INF));
                 }
-                
+
                 try {
                     url = new URL(urlString);
                 } catch (MalformedURLException e) {
@@ -162,6 +165,34 @@ public class ArmLoader {
         return result;
     }
 
+    public static Arm loadArmFromJar(File file) {
+        Arm result = null;
+        if (file != null) {
+            InputStream stream = null;
+            try {
+                ZipFile zipFile = new ZipFile(file);
+                ZipEntry entry = zipFile.getEntry(ArmConstant.FILE_LOCATION);
+                if (entry != null) {
+                    stream = zipFile.getInputStream(entry);
+                    Properties properties = new Properties();
+                    properties.load(stream);
+                    result = createArm(properties);
+                }
+            } catch (IOException ex) {
+                LOGGER.log(Level.FINEST, ex.getMessage(), ex);
+            } finally {
+                if (stream != null) {
+                    try {
+                        stream.close();
+                    } catch (IOException e) {
+                        LOGGER.log(Level.SEVERE, "Error closing stream: " + e.getMessage(), e);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * Read manifest from the URL.
      *
@@ -174,12 +205,12 @@ public class ArmLoader {
             InputStream stream = null;
             try {
                 stream = urlToStream(new URL(url + "/" + ArmConstant.FILE_LOCATION));
-                
+
                 Properties properties = new Properties();
                 properties.load(stream);
-                
+
                 result = createArm(properties);
-                
+
             } catch (MalformedURLException e1) {
                 LOGGER.log(Level.FINEST, e1.getMessage(), e1);
             } catch (IOException e) {
@@ -216,5 +247,5 @@ public class ArmLoader {
         } else {
             return null;
         }
-    }    
+    }
 }

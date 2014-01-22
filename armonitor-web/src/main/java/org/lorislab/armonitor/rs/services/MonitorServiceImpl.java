@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.rs.service;
+package org.lorislab.armonitor.rs.services;
 
 import javax.ejb.EJB;
 import org.lorislab.armonitor.ejb.ProcessServiceBean;
@@ -22,6 +22,7 @@ import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.rs.model.Request;
 import org.lorislab.armonitor.rs.model.Result;
 import org.lorislab.armonitor.rs.model.Status;
+import org.lorislab.armonitor.rs.service.MonitorService;
 import org.lorislab.armonitor.store.model.StoreBuild;
 
 /**
