@@ -22,10 +22,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
@@ -54,12 +57,30 @@ public class StoreSystem extends Persistent {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "system")
     private Set<StoreSystemBuild> builds;
 
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name = "ARM_SYS_ROLE",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"C_ROLE", "C_SYSTEM"})},
+    joinColumns = {
+        @JoinColumn(name = "C_SYSTEM")},
+    inverseJoinColumns = {
+        @JoinColumn(name = "C_ROLE")})
+    private Set<StoreRole> roles;
+    
     @Column(name = "C_TIMER")
     private boolean timer;
 
     @Column(name = "C_KEY")
     private String key;
 
+    public Set<StoreRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<StoreRole> roles) {
+        this.roles = roles;
+    }
+    
     public String getKey() {
         return key;
     }

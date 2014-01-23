@@ -17,12 +17,10 @@
 		<dependency>
 			<groupId>org.lorislab.jel</groupId>
 			<artifactId>ejb</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.lorislab.jel</groupId>
 			<artifactId>base</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>		
 		<dependency>
 			<groupId>org.lorislab.armonitor</groupId>
@@ -41,7 +39,11 @@
 			<version>${project.version}</version>
 			<classifier>rsclient</classifier>
 		</dependency>
-						
+		<dependency>
+			<groupId>org.lorislab.armonitor</groupId>
+			<artifactId>armonitor-mail</artifactId>
+			<version>${project.version}</version>
+		</dependency>				
 		<!-- EJB -->
 		<dependency>
 			<groupId>org.jboss.spec.javax.ejb</groupId>

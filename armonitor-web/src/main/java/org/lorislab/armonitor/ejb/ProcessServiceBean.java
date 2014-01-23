@@ -21,6 +21,7 @@ import javax.jms.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -32,6 +33,7 @@ import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.agent.ejb.AgentClientServiceBean;
+import org.lorislab.armonitor.mail.model.Mail;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
 import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
 import org.lorislab.armonitor.store.criteria.StoreSystemCriteria;
@@ -107,6 +109,34 @@ public class ProcessServiceBean {
             }
         } catch (JMSException exc) {
             LOGGER.log(Level.SEVERE, "Error by seding the process message.", exc);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (JMSException e) {
+                    LOGGER.log(Level.SEVERE, "Error by closing the queue connection.", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Add the email to the process queue.
+     *
+     * @param mail the mail.
+     */
+    private void send(Mail mail) {
+        Connection connection = null;
+        try {
+            connection = jmsConnectionFactory.createConnection();
+            javax.jms.Session session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
+            MessageProducer publisher = session.createProducer(queue);
+            connection.start();
+
+            ObjectMessage message = session.createObjectMessage(mail);
+            publisher.send(message);
+        } catch (JMSException exc) {
+            LOGGER.log(Level.SEVERE, "Error by seding the mail object message.", exc);
         } finally {
             if (connection != null) {
                 try {

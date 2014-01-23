@@ -24,6 +24,8 @@ import javax.ejb.MessageDriven;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
+import org.lorislab.armonitor.mail.ejb.MailServiceBean;
+import org.lorislab.armonitor.mail.model.Mail;
 import org.lorislab.armonitor.store.model.StoreSystem;
 
 /**
@@ -46,6 +48,9 @@ public class AsyncProcessServiceBean implements MessageListener {
     @EJB
     private ProcessServiceBean processService;
     
+    @EJB
+    private MailServiceBean mailService;
+    
     @Override
     public void onMessage(Message message) {
         try {
@@ -57,6 +62,9 @@ public class AsyncProcessServiceBean implements MessageListener {
                         if (object instanceof StoreSystem) {
                             StoreSystem system = (StoreSystem) object;
                             processService.process(system);
+                        } else if (object instanceof Mail) {
+                            Mail mail = (Mail) object;
+                            mailService.sendEmail(mail);
                         } else {
                             LOGGER.log(Level.SEVERE, "Message content object not supported format!");
                         }

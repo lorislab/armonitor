@@ -13,58 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
+ * The role.
  *
  * @author Andrej Petras
  */
 @Entity
-@Table(name = "ARM_BUILD_PARAM")
-public class StoreBuildParameter extends Persistent {
-    
-    private static final long serialVersionUID = -5508967118564416749L;
-    
-    @Column(name = "C_TYPE")
-    @Enumerated(EnumType.STRING)
-    private StoreBuildParameterType type;
-    
+@Table(name = "ARM_ROLE")
+public class StoreRole extends Persistent {
+
+    /**
+     * The UID for this class.
+     */
+    private static final long serialVersionUID = 5902150853124220591L;
+
+    /**
+     * The role name.
+     */
     @Column(name = "C_NAME")
     private String name;
-    
-    @Column(name = "C_VALUE")
-    private String value;
-    
+
+    /**
+     * Gets the role name.
+     *
+     * @return the role name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the role name.
+     *
+     * @param name the role name.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
-    public StoreBuildParameterType getType() {
-        return type;
-    }
-
-    public void setType(StoreBuildParameterType type) {
-        this.type = type;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }        
-    
 }
