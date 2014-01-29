@@ -24,6 +24,7 @@ import org.lorislab.armonitor.agent.model.SearchCriteria;
 import org.lorislab.armonitor.agent.rs.mapper.ObjectMapper;
 import org.lorislab.armonitor.agent.rs.model.Request;
 import org.lorislab.armonitor.agent.rs.model.Version;
+import org.lorislab.armonitor.agent.rs.service.VersionService;
 import org.lorislab.armonitor.agent.service.ReleaseService;
 
 /**

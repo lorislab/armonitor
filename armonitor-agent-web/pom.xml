@@ -45,6 +45,12 @@
 	
 	<build>
 		<finalName>armonitor-agent-web</finalName>	
+		<plugins>
+			<plugin>
+				<groupId>org.lorislab.armonitor</groupId>
+				<artifactId>armonitor-maven-plugin</artifactId>			
+			</plugin>  			
+		</plugins>
 	</build>  
 	
 	<profiles>

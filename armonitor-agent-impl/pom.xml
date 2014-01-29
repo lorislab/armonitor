@@ -20,4 +20,13 @@
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.lorislab.armonitor</groupId>
+				<artifactId>armonitor-maven-plugin</artifactId>			
+			</plugin>  
+		</plugins>
+	</build>
 </project>
