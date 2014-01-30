@@ -25,7 +25,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
+import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.config.rs.model.JiraConfig;
 import org.lorislab.armonitor.jira.rs.controller.JiraController;
 import org.lorislab.armonitor.jira.rs.model.JiraProject;
@@ -41,7 +41,7 @@ public class JiraService {
     private JiraController controller;
     
     @EJB
-    private ConfigurationServiceLocal service;
+    private ConfigurationServiceBean service;
     
     @GET
     @Path("projects")

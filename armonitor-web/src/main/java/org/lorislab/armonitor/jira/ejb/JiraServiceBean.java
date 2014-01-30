@@ -24,7 +24,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
+import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.config.rs.model.JiraConfig;
 import org.lorislab.armonitor.jira.client.JIRAClient;
 import org.lorislab.armonitor.jira.client.model.Project;
@@ -40,7 +40,7 @@ import org.lorislab.armonitor.jira.client.services.ProjectClient;
 public class JiraServiceBean implements JiraServiceLocal {
     
     @EJB
-    private ConfigurationServiceLocal configService;
+    private ConfigurationServiceBean configService;
     
     public List<Project> getProjects() {
         List<Project> result = null;

@@ -36,9 +36,8 @@ import org.lorislab.armonitor.config.model.Config;
  * @author Andrej Petras
  */
 @Singleton
-@Local(ConfigurationServiceLocal.class)
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class ConfigurationServiceBean implements ConfigurationServiceLocal {
+public class ConfigurationServiceBean {
 
     @EJB
     private ConfigServiceBean service;
@@ -46,12 +45,10 @@ public class ConfigurationServiceBean implements ConfigurationServiceLocal {
     private Map<Class, Object> cache = new HashMap<>();
 
     @PostConstruct
-    @Override
     public void start() {
         reload();
     }
 
-    @Override
     public void reload() {
         cache = new HashMap<>();
         List<Config> configs = service.getAllConfig();
@@ -108,7 +105,6 @@ public class ConfigurationServiceBean implements ConfigurationServiceLocal {
         return data;
     }
 
-    @Override
     public <T> T setConfiguration(T data) {
         T result = null;
         if (data != null) {
@@ -119,7 +115,6 @@ public class ConfigurationServiceBean implements ConfigurationServiceLocal {
         return result;
     }
 
-    @Override
     public <T> T getConfiguration(Class<T> clazz) {
         T result = (T) cache.get(clazz);
         if (result == null) {

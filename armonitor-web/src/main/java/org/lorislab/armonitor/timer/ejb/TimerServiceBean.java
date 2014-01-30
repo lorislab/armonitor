@@ -30,7 +30,7 @@ import javax.ejb.Timer;
 import javax.ejb.TimerService;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
+import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.timer.model.TimerConfig;
 
 /**
@@ -50,7 +50,7 @@ public class TimerServiceBean {
     private TimerService timerService;
 
     @EJB
-    private ConfigurationServiceLocal configService;
+    private ConfigurationServiceBean configService;
     
     @EJB
     private ProcessServiceBean processService;

@@ -25,7 +25,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.config.ejb.ConfigurationServiceLocal;
+import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.timer.ejb.TimerServiceBean;
 import org.lorislab.armonitor.timer.model.TimerConfig;
 
@@ -37,7 +37,7 @@ import org.lorislab.armonitor.timer.model.TimerConfig;
 public class TimerService {
     
     @EJB
-    private ConfigurationServiceLocal configService;
+    private ConfigurationServiceBean configService;
     
     @EJB
     private TimerServiceBean timerService;

@@ -48,7 +48,6 @@
 		<module>armonitor-jira-client</module>
 		<module>armonitor-scm-svn-client</module>		
 		<module>armonitor-rs</module>
-		<module>armonitor-mail</module>
 		<module>armonitor-web</module>
 	</modules>
 

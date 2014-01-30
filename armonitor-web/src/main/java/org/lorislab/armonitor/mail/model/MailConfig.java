@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.config.ejb;
+package org.lorislab.armonitor.mail.model;
+
+import java.util.Locale;
 
 /**
  *
  * @author Andrej Petras
  */
-public interface ConfigurationServiceLocal {
+public class MailConfig {
     
-    public void start();
+    public Locale locale;
+        
+    public String from;
     
-    public void reload();
+    public String contentType;
     
-    public <T> T setConfiguration(T data);
-            
-    public <T> T getConfiguration(Class<T> clazz);
+    public String contentCharset;
+    
+    public String transferEncoding;
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.ejb;
 
 import java.util.logging.Level;
@@ -24,33 +23,37 @@ import javax.ejb.MessageDriven;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import org.lorislab.armonitor.mail.ejb.MailServiceBean;
 import org.lorislab.armonitor.mail.model.Mail;
 import org.lorislab.armonitor.store.model.StoreSystem;
 
 /**
+ * The asynchronous process service.
  *
  * @author Andrej Petras
  */
 @MessageDriven(name = "AsyncTimerProcessServiceBean",
-activationConfig = {
-    @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-    @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/timerProcess"),
-    @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
-})
+        activationConfig = {
+            @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+            @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/timerProcess"),
+            @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
+        })
 public class AsyncProcessServiceBean implements MessageListener {
 
     /**
      * The logger for this class.
      */
     private static final Logger LOGGER = Logger.getLogger(AsyncProcessServiceBean.class.getName());
-    
+    /**
+     * The process service.
+     */
     @EJB
     private ProcessServiceBean processService;
-    
-    @EJB
-    private MailServiceBean mailService;
-    
+
+    /**
+     * Get the message from the queue.
+     *
+     * @param message the message.
+     */
     @Override
     public void onMessage(Message message) {
         try {
@@ -63,8 +66,8 @@ public class AsyncProcessServiceBean implements MessageListener {
                             StoreSystem system = (StoreSystem) object;
                             processService.process(system);
                         } else if (object instanceof Mail) {
-                            Mail mail = (Mail) object;
-                            mailService.sendEmail(mail);
+                            Mail request = (Mail) object;
+                            processService.process(request);
                         } else {
                             LOGGER.log(Level.SEVERE, "Message content object not supported format!");
                         }
@@ -79,5 +82,5 @@ public class AsyncProcessServiceBean implements MessageListener {
             LOGGER.log(Level.SEVERE, "Error by processing the user application message.", ex);
         }
     }
-    
+
 }
