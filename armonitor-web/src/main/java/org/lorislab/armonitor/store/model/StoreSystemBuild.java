@@ -20,16 +20,20 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
- *
+ * The system build.
+ * 
  * @author Andrej Petras
  */
 @Entity
@@ -50,6 +54,18 @@ public class StoreSystemBuild extends Persistent {
     @Column(name = "C_DATE")
     private Date date;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "C_TYPE")
+    private StoreSystemBuildType type;
+
+    public StoreSystemBuildType getType() {
+        return type;
+    }
+
+    public void setType(StoreSystemBuildType type) {
+        this.type = type;
+    }
+        
     public Date getDate() {
         return date;
     }

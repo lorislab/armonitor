@@ -46,6 +46,7 @@ import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreUserServiceBean;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
+import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 
 /**
  * The core process service.
@@ -143,7 +144,7 @@ public class ProcessServiceBean {
                 criteria.setKey(key);
                 StoreSystem tmp = systemService.getSystem(criteria);
                 if (tmp != null) {
-                    process(tmp, build);
+                    process(tmp, build, StoreSystemBuildType.MANUAL);
                 } else {
                     LOGGER.log(Level.SEVERE, "No system for the key {0} found!", key);
                     throw new Exception("No system for the key " + key + " found!");
@@ -184,7 +185,7 @@ public class ProcessServiceBean {
             if (tmp != null) {
                 StoreBuild build = agentClientService.getAppBuild(system.getAgent());
                 if (build != null) {
-                    process(tmp, build);
+                    process(tmp, build, StoreSystemBuildType.TIMER);
                 } else {
                     LOGGER.log(Level.WARNING, "Could not get the build for the system {0}", system.getGuid());
                 }
@@ -198,7 +199,7 @@ public class ProcessServiceBean {
      * @param tmp the system.
      * @param build the build.
      */
-    private void process(StoreSystem tmp, StoreBuild build) {
+    private void process(StoreSystem tmp, StoreBuild build, StoreSystemBuildType type) {
         StoreBuildCriteria buildCriteria = new StoreBuildCriteria();
         buildCriteria.setDate(build.getDate());
         buildCriteria.setApplication(tmp.getApplication().getGuid());
@@ -226,6 +227,7 @@ public class ProcessServiceBean {
             StoreSystemBuild sb = new StoreSystemBuild();
             sb.setBuild(buildOld);
             sb.setSystem(tmp);
+            sb.setType(type);
             sb.setDate(new Date());
             systemBuildService.saveSystemBuild(sb);
 
