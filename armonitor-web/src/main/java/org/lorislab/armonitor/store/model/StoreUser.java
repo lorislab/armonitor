@@ -61,9 +61,7 @@ public class StoreUser extends Persistent {
      * The set of roles.
      */
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinTable(name = "ARM_USER_GROUP",
-            uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"C_ROLE", "C_USER"})},
+    @JoinTable(name = "ARM_USER_ROLE",
             joinColumns = {
                 @JoinColumn(name = "C_USER")},
             inverseJoinColumns = {

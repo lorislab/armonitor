@@ -41,7 +41,6 @@ import org.lorislab.armonitor.mail.model.MailConfig;
 import org.lorislab.armonitor.mail.model.MailTemplate;
 import org.lorislab.armonitor.mail.model.MailTemplateResource;
 import org.lorislab.armonitor.mail.util.MailUtil;
-import static org.lorislab.armonitor.mail.util.MailUtil.createTemplateValues;
 import org.lorislab.jel.base.util.FileUtil;
 
 /**
@@ -61,9 +60,12 @@ public class MailServiceBean {
     /**
      * The mail session.
      */
-    @Resource(lookup = "java:/ArMonitorMailServer")
+    @Resource(lookup = "java:jboss/mail/ArMonitorMailServer")
     private Session mailSession;
 
+    /**
+     * The configuration service.
+     */
     @EJB
     private ConfigurationServiceBean configService;
 
