@@ -32,6 +32,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import org.lorislab.armonitor.store.criteria.StoreUserCriteria;
+import org.lorislab.armonitor.store.model.StoreRole;
 import org.lorislab.armonitor.store.model.StoreRole_;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystem_;
@@ -63,6 +64,17 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
         return this.deleteUser(guid);
     }
     
+    public Set<StoreRole> getRoles(String guid) {
+        StoreUserCriteria criteria = new StoreUserCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchRoles(true);
+        StoreUser user = getUser(criteria);
+        if (user != null) {
+            return user.getRoles();
+        }       
+        return null;
+    }
+          
     public StoreUser getUser(StoreUserCriteria criteria) {
         StoreUser result = null;
         List<StoreUser> tmp = getUsers(criteria);
@@ -102,7 +114,7 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
         
         return result;
     }
-    
+
     public List<StoreUser> getUsers(StoreUserCriteria criteria) {
       List<StoreUser> result = new ArrayList<>();
 

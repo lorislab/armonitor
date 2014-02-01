@@ -19,10 +19,14 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The mapper.
@@ -31,6 +35,8 @@ import java.util.ServiceLoader;
  */
 public final class Mapper {
 
+    private static final Logger LOGGER = Logger.getLogger(Mapper.class.getName());
+    
     private static final Map<Class, Map<Class, MapperService>> MAPPER = new HashMap<>();
 
     static {
@@ -38,7 +44,9 @@ public final class Mapper {
         if (services != null) {
             Iterator<MapperService> iter = services.iterator();
             while (iter.hasNext()) {
-                add(iter.next());
+                MapperService service = iter.next();
+                LOGGER.log(Level.FINE,"Add mapper service {0}", service.getClass().getName());
+                add(service);
             }
         }
     }
@@ -58,6 +66,29 @@ public final class Mapper {
         tmp.put((Class) type[1], mapper);
     }
 
+    public static <T, E> Set<T> map(Set<E> data, Class<T> clazz) {
+        return map(data, clazz, null);
+    }
+    
+    public static <T, E> Set<T> map(Set<E> data, Class<T> clazz, String profile) {
+        Set<T> result = null;
+        if (data != null) {
+            result = new HashSet<>();
+            if (!data.isEmpty()) {
+                MapperService<E, T> mapper = MAPPER.get(data.iterator().next().getClass()).get(clazz);
+                for (E item : data) {
+                    if (item != null) {
+                        T tmp = map(item, mapper, profile);
+                        if (tmp != null) {
+                            result.add(tmp);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
     public static <T, E> List<T> map(List<E> data, Class<T> clazz) {
         return map(data, clazz, null);
     }
@@ -67,7 +98,7 @@ public final class Mapper {
         if (data != null) {
             result = new ArrayList<>();
             if (!data.isEmpty()) {
-                MapperService<E, T> mapper = MAPPER.get(data.get(0).getClass()).get(clazz);;
+                MapperService<E, T> mapper = MAPPER.get(data.get(0).getClass()).get(clazz);
                 for (E item : data) {
                     if (item != null) {
                         T tmp = map(item, mapper, profile);
@@ -88,8 +119,6 @@ public final class Mapper {
     public static <T, E> T map(E data, Class<T> clazz, String profile) {
         T result = null;
         if (data != null) {
-            System.out.println(data.toString());
-            System.out.println(clazz);
             MapperService<E, T> mapper = MAPPER.get(data.getClass()).get(clazz);
             result = map(data, mapper, profile);
         }
@@ -138,7 +167,7 @@ public final class Mapper {
     }
 
     public static <T, E> T create(Class<E> entity, Class<T> data) {
-        return map(entity, data, null);
+        return create(entity, data, null);
     }
     
     public static <T, E> T create(Class<E> entity, Class<T> data, String profile) {

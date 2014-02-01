@@ -3,3 +3,5 @@ org.lorislab.armonitor.web.rs.mapper.AgentMapper
 org.lorislab.armonitor.web.rs.mapper.ApplicationMapper
 org.lorislab.armonitor.web.rs.mapper.ApplicationSystemMapper
 org.lorislab.armonitor.web.rs.mapper.BuildMapper
+org.lorislab.armonitor.web.rs.mapper.UserMapper
+org.lorislab.armonitor.web.rs.mapper.RoleMapper

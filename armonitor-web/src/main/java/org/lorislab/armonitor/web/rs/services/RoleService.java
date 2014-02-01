@@ -13,74 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.services;
 
-import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Timer;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
-import org.lorislab.armonitor.timer.ejb.TimerServiceBean;
-import org.lorislab.armonitor.timer.model.TimerConfig;
+import org.lorislab.armonitor.web.rs.ejb.RoleServiceBean;
+import org.lorislab.armonitor.web.rs.model.Role;
 
 /**
  *
  * @author Andrej Petras
  */
-@Path("timer")
-public class TimerService {
-    
+@Path("role")
+public class RoleService {
+
     @EJB
-    private ConfigurationServiceBean configService;
-    
-    @EJB
-    private TimerServiceBean timerService;
-    
-    @Path("start")
+    private RoleServiceBean service;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Date start() {
-        timerService.start();
-        return status();
+    public List<Role> get() {
+        return service.get();
     }
-    
-    @Path("stop")
-    @GET
+
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public Date stop() {
-        timerService.stop();
-        return status();
+    public Role create() {
+        return service.create();
     }
-    
-    @Path("status")
+
     @GET
+    @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Date status() {
-        Timer timer = timerService.getTimer();
-        if (timer != null) {
-            return timer.getNextTimeout();
-        }
-        return null;
+    public Role get(@PathParam("guid") String guid) {
+        return service.get(guid);
     }
-    
-    @Path("cf")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public TimerConfig getConfig() {
-        return configService.getConfiguration(TimerConfig.class);
-    }
-    
-    @Path("cf")
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public TimerConfig setConfig(TimerConfig jiraConfig) {
-        return configService.setConfiguration(jiraConfig);
-    }    
+    public Role save(Role role) {
+        return service.save(role);
+    }
 }

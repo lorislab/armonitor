@@ -48,7 +48,7 @@ public class StoreUser extends Persistent {
     /**
      * The user email.
      */
-    @Column(name = "C_EMAIL")
+    @Column(name = "C_EMAIL", unique = true, nullable = false)
     private String email;
 
     /**

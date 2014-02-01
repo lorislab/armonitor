@@ -130,16 +130,24 @@ public class MailServiceBean {
      */
     public void sendEmail(Mail email) {
         MailConfig config = configService.getConfiguration(MailConfig.class);
-        // set email locale
-        email.setLocale(config.locale);
-        // set email from
-        email.setFrom(config.from);
-        // sets the attributes
-        email.setContentType(config.contentType);
-        email.setContentCharset(config.contentCharset);
-        email.setTransferEncoding(config.transferEncoding);
-        // send email
-        sendMail(email);
+
+        if (config.enabled) {
+            // set email locale
+            email.setLocale(config.locale);
+            // set email from
+            email.setFrom(config.from);
+            // sets the attributes
+            email.setContentType(config.contentType);
+            email.setContentCharset(config.contentCharset);
+            email.setTransferEncoding(config.transferEncoding);
+            // add special parameter
+            email.getParameters().put(MailConfig.class.getSimpleName(), config);
+            email.getParameters().put(Mail.class.getSimpleName(), email);
+            // send email
+            sendMail(email);
+        } else {
+            LOGGER.log(Level.FINE, "The send email is disabled!");
+        }
     }
 
     /**

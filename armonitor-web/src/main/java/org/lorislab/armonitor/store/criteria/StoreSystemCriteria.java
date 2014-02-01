@@ -40,6 +40,16 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
 
     private boolean fetchApplication;
 
+    private boolean fetchRoles;
+
+    public boolean isFetchRoles() {
+        return fetchRoles;
+    }
+
+    public void setFetchRoles(boolean fetchRoles) {
+        this.fetchRoles = fetchRoles;
+    }
+        
     public String getKey() {
         return key;
     }
@@ -104,6 +114,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
         fetchAgent = false;
         fetchApplication = true;
         key = null;
+        fetchRoles = false;
     }
 
     @Override

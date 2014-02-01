@@ -83,6 +83,10 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
             root.fetch(StoreSystem_.application, JoinType.LEFT);
         }
         
+        if (criteria.isFetchRoles()) {
+            root.fetch(StoreSystem_.roles, JoinType.LEFT);
+        }
+        
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.isEnabled() != null) {
             predicates.add(cb.equal(root.get(StoreSystem_.enabled), criteria.isEnabled()));

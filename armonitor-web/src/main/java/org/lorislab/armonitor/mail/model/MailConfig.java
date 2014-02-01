@@ -13,24 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.mail.model;
 
 import java.util.Locale;
 
 /**
+ * The mail configuration.
  *
  * @author Andrej Petras
  */
 public class MailConfig {
-    
-    public Locale locale;
-        
-    public String from;
-    
-    public String contentType;
-    
-    public String contentCharset;
-    
-    public String transferEncoding;
+
+    /**
+     * The server resource URL.
+     */
+    public String url = "http://localhost:8080/armonitor/rs/mail/public/resource";
+    /**
+     * Disabled or enabled the send email functionality.
+     */
+    public boolean enabled = false;
+    /**
+     * The default email locale.
+     */
+    public Locale locale = Locale.ENGLISH;
+    /**
+     * The from email.
+     */
+    public String from = "armonitor@localhost";
+    /**
+     * The content type.
+     */
+    public String contentType = "text/html;charset=\"UTF-8\"";
+    /**
+     * The content char-set.
+     */
+    public String contentCharset = "UTF-8";
+    /**
+     * The transfer encoding.
+     */
+    public String transferEncoding = "quoted-printable";
 }

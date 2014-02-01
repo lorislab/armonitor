@@ -17,17 +17,22 @@
 package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.store.criteria.StoreSystemCriteria;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreRoleServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
+import org.lorislab.armonitor.store.model.StoreRole;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
+import org.lorislab.armonitor.web.rs.model.Role;
 
 /**
  *
@@ -42,6 +47,51 @@ public class ApplicationSystemServiceBean {
 
     @EJB
     private StoreApplicationServiceBean appService;
+    
+    @EJB
+    private StoreRoleServiceBean roleService;
+        
+    public Set<Role> getRoles(String guid) {
+        StoreSystemCriteria criteria = new StoreSystemCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchApplication(false);
+        criteria.setFetchRoles(true);
+        StoreSystem sys = service.getSystem(criteria);
+        if (sys != null) {
+            return Mapper.map(sys.getRoles(), Role.class);
+        }       
+        return null;
+    }
+    
+    public void addRole(String guid, String role) {
+        StoreSystemCriteria criteria = new StoreSystemCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchApplication(false);
+        criteria.setFetchRoles(true);
+        StoreSystem sys = service.getSystem(criteria);
+        if (sys != null) {
+            StoreRole tmp = roleService.getRole(role);
+            if (tmp != null) {
+                sys.getRoles().add(tmp);
+                service.saveSystem(sys);
+            }
+        }
+    }
+
+    public void removeRole(String guid, String role) {
+        StoreSystemCriteria criteria = new StoreSystemCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchApplication(false);
+        criteria.setFetchRoles(true);
+        StoreSystem sys = service.getSystem(criteria);
+        if (sys != null) {
+            StoreRole tmp = roleService.getRole(role);
+            if (tmp != null) {
+                sys.getRoles().remove(tmp);
+                service.saveSystem(sys);
+            }
+        }
+    } 
     
     public List<ApplicationSystem> get() {
         List<StoreSystem> tmp = service.getSystems();

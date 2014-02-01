@@ -37,7 +37,7 @@ public class StoreRole extends Persistent {
     /**
      * The role name.
      */
-    @Column(name = "C_NAME")
+    @Column(name = "C_NAME", unique = true, nullable = false)
     private String name;
 
     /**

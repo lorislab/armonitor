@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
@@ -27,19 +28,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.web.rs.ejb.ApplicationSystemServiceBean;
-import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
+import org.lorislab.armonitor.web.rs.ejb.UserServiceBean;
 import org.lorislab.armonitor.web.rs.model.Role;
+import org.lorislab.armonitor.web.rs.model.User;
 
 /**
  *
  * @author Andrej Petras
  */
-@Path("sys")
-public class ApplicationSystemService {
-
+@Path("user")
+public class UserService {
+    
     @EJB
-    private ApplicationSystemServiceBean service;
+    private UserServiceBean service;
 
     @GET
     @Path("{guid}/role")
@@ -64,39 +65,27 @@ public class ApplicationSystemService {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ApplicationSystem> get() {
+    public List<User> get() {
         return service.get();
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public User create() {
+        return service.create();
     }
 
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ApplicationSystem get(@PathParam("guid") String uid) {
-        return service.get(uid);
-    }
-
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    public ApplicationSystem create() throws Exception {
-        return service.create();
+    public User get(@PathParam("guid") String guid) {
+        return service.get(guid);
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ApplicationSystem save(ApplicationSystem system) throws Exception {
-        return service.save(system);
-    }
-    
-    @DELETE
-    @Path("key/{guid}")
-    public void deleteKey(@PathParam("guid") String guid) throws Exception {
-        service.deleteKey(guid);
-    }
-    
-    @GET
-    @Path("key/{guid}")
-    public String generatedKey(@PathParam("guid") String guid) throws Exception {
-        return service.generatedKey(guid);
-    }
+    public User save(User user) {
+        return service.save(user);
+    }    
 }
