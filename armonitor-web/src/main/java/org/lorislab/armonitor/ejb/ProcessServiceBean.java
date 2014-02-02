@@ -256,6 +256,7 @@ public class ProcessServiceBean {
                 mail.setTemplate(MAIL_BUILD_DEPLOYED_TEMPLATE);
                 mail.getParameters().put(StoreSystem.class.getSimpleName(), system);
                 mail.getParameters().put(StoreBuild.class.getSimpleName(), build);
+                result.add(mail);
             }
         }
         return result;

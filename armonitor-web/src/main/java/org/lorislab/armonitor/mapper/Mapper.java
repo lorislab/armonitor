@@ -143,7 +143,7 @@ public final class Mapper {
     
     public static <T, E> E update(E entity, T data, String profile) {
         if (entity != null && data != null) {
-            MapperService<E, T> mapper = MAPPER.get(data.getClass()).get(data.getClass());
+            MapperService<E, T> mapper = MAPPER.get(entity.getClass()).get(data.getClass());
             if (mapper != null) {
                 entity = mapper.update(entity, data, profile);
             }

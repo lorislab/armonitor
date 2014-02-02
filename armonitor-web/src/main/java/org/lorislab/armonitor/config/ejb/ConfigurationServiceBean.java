@@ -129,8 +129,8 @@ public class ConfigurationServiceBean {
             try {
                 boolean accessible = field.isAccessible();
                 try {
-                    Object value = field.get(object);
                     field.setAccessible(true);
+                    Object value = field.get(object);                    
                     String tmp = mapper.writeValueAsString(value);
                     attribute.setValue(tmp);
                 } finally {
@@ -148,8 +148,8 @@ public class ConfigurationServiceBean {
             result.setName(field.getName());
             boolean accessible = field.isAccessible();
             try {
-                Object value = field.get(object);
                 field.setAccessible(true);
+                Object value = field.get(object);                
                 String tmp = mapper.writeValueAsString(value);
                 result.setValue(tmp);
             } finally {

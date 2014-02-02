@@ -18,7 +18,6 @@ package org.lorislab.armonitor.mail.ejb;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +37,6 @@ import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.mail.model.Mail;
 import org.lorislab.armonitor.mail.model.MailAttachment;
 import org.lorislab.armonitor.mail.model.MailConfig;
-import org.lorislab.armonitor.mail.model.MailTemplate;
 import org.lorislab.armonitor.mail.model.MailTemplateResource;
 import org.lorislab.armonitor.mail.util.MailUtil;
 import org.lorislab.jel.base.util.FileUtil;
@@ -68,37 +66,6 @@ public class MailServiceBean {
      */
     @EJB
     private ConfigurationServiceBean configService;
-
-    /**
-     * Loads the mail template by name.
-     *
-     * @param name the template name.
-     * @param locale the locale.
-     * @return the mail template.
-     */
-    public MailTemplate loadMailTemplateByName(String name, Locale locale) {
-
-        String subject = null;
-        String content = null;
-
-        try {
-            // load the email configuration: content for the locale.
-            ResourceBundle bundle = ResourceBundle.getBundle(MailUtil.CONF_EMAIL, locale, this.getClass().getClassLoader());
-            String contentFile = bundle.getString(MailUtil.TEMPLATE_CONTENT_FILE);
-            String subjectFile = bundle.getString(MailUtil.TEMPLATE_SUBJECT_FILE);
-            // load the content of the template
-            subject = FileUtil.readFileAsString(MailUtil.getFilePathFromTemplate(name, contentFile), this.getClass().getClassLoader());
-            content = FileUtil.readFileAsString(MailUtil.getFilePathFromTemplate(name, subjectFile), this.getClass().getClassLoader());
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, "Error reading the templates", ex);
-        }
-        // create template
-        MailTemplate template = new MailTemplate();
-        template.setName(name);
-        template.setSubject(subject);
-        template.setContent(content);
-        return template;
-    }
 
     /**
      * Load the mail template resource.
@@ -131,15 +98,15 @@ public class MailServiceBean {
     public void sendEmail(Mail email) {
         MailConfig config = configService.getConfiguration(MailConfig.class);
 
-        if (config.enabled) {
+        if (config.isEnabled()) {
             // set email locale
-            email.setLocale(config.locale);
+            email.setLocale(config.getLocale());
             // set email from
-            email.setFrom(config.from);
+            email.setFrom(config.getFrom());
             // sets the attributes
-            email.setContentType(config.contentType);
-            email.setContentCharset(config.contentCharset);
-            email.setTransferEncoding(config.transferEncoding);
+            email.setContentType(config.getContentType());
+            email.setContentCharset(config.getContentCharset());
+            email.setTransferEncoding(config.getTransferEncoding());
             // add special parameter
             email.getParameters().put(MailConfig.class.getSimpleName(), config);
             email.getParameters().put(Mail.class.getSimpleName(), email);
@@ -162,9 +129,8 @@ public class MailServiceBean {
             message.setFrom(MailUtil.createAddress(email.getFrom()));
             message.setRecipients(Message.RecipientType.TO, MailUtil.createAddresses(email.getTo()));
 
-            MailTemplate template = loadMailTemplateByName(email.getTemplate(), email.getLocale());
 
-            String subject = MailUtil.getEmailContent(template.getSubject(), email.getParameters());
+            String subject = MailUtil.getMailSubject(email.getTemplate(), email.getLocale(), email.getParameters());
             message.setSubject(subject);
             message.setSentDate(new Date());
 
@@ -180,7 +146,7 @@ public class MailServiceBean {
 
             // Email content
             MimeBodyPart messagePart = new MimeBodyPart();
-            String content = MailUtil.getEmailContent(template.getContent(), email.getParameters());
+            String content = MailUtil.getMailContent(email.getTemplate(), email.getLocale(), email.getParameters());
             messagePart.setText(content, email.getContentCharset());
 
             // Email header

@@ -16,7 +16,6 @@
 
 package org.lorislab.armonitor.mail.util;
 
-import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.StringWriter;
@@ -36,21 +35,11 @@ import org.lorislab.armonitor.mail.model.Mail;
  * 
  * @author Andrej Petras
  */
-public final class MailUtil {
-  
-    /**
-     * The template content file.
-     */
-    public static final String TEMPLATE_CONTENT_FILE = "email.content";
-    /**
-     * The template subject file.
-     */
-    public static final String TEMPLATE_SUBJECT_FILE = "email.subject";
-
-    /**
-     * The email configuration file.
-     */
-    public static final String CONF_EMAIL = "email.properties";
+public final class MailUtil {      
+    
+    private static final String TEMPLATE_CONTENT = "content";
+    
+    private static final String TEMPLATE_SUBJECT = "subject";
     
     /**
      * The template directory.
@@ -60,10 +49,7 @@ public final class MailUtil {
      * The path separator.
      */
     private static final String PATH_SEPARATOR = "/";
-    /**
-     * The template.
-     */
-    private static final String TEMPLATE = "content";
+
 
     /**
      * The free marker configuration.
@@ -71,7 +57,8 @@ public final class MailUtil {
     private static final Configuration CFG = new Configuration();
     
     static {
-        CFG.setTemplateLoader(new StringTemplateLoader());
+        CFG.setDefaultEncoding("UTF-8");
+        CFG.setClassForTemplateLoading(MailUtil.class, TEMPLATE_DIR_NAME);        
     }
     
     /**
@@ -150,32 +137,36 @@ public final class MailUtil {
         return TEMPLATE_DIR_NAME + template + PATH_SEPARATOR + file;
     }
 
+    public static String getMailContent(String template, Locale locale, Map<String, Object> parameters) throws Exception {
+        return getContent(TEMPLATE_CONTENT, template, locale, parameters);
+    }
+    
+    public static String getMailSubject(String template, Locale locale, Map<String, Object> parameters) throws Exception {
+        return getContent(TEMPLATE_SUBJECT, template, locale, parameters);
+    }
+    
     /**
      * Gets the email content.
      *
+     * @param name the name of the content.
      * @param template the template.
      * @param parameters the list of parameters.
      * @return the email content.
      * @throws Exception if the method fails.
-     */
-    public static String getEmailContent(String template, Map<String, Object> parameters) throws Exception {
-        String result = null;
-        if (template != null && !template.isEmpty()) {
-
-            Template contentTmp = CFG.getTemplate(template);
-            if (contentTmp == null) {
-                StringTemplateLoader loader = (StringTemplateLoader) CFG.getTemplateLoader();
-                loader.putTemplate(template, template);
-                contentTmp = CFG.getTemplate(TEMPLATE);
-            }
+     */    
+    private static String getContent(String name, String template, Locale locale, Map<String, Object> parameters) throws Exception {
+        
+        String contentKey = name + "_" + locale.getLanguage();
+        String key = template + "/" + contentKey + ".html";
             
-            final StringWriter writer = new StringWriter();
-            contentTmp.process(parameters, writer);
-            result = writer.toString();
-        }
+        Template contentTmp = CFG.getTemplate(key);
+
+        final StringWriter writer = new StringWriter();
+        contentTmp.process(parameters, writer);
+        String result = writer.toString();        
         return result;
     }
-    
+           
     public static boolean validate(String email) {
         return PATTERN.matcher(email).matches();
     }
