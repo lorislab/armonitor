@@ -4,7 +4,7 @@
 	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   </head>
   <body>
-    <div id="body" style="font-family:Helvetica, Arial, sans-serif;font-size:16px;color:#808080;width:600px;margin:0 auto">
+    <div id="body" style="font-family:Helvetica, Arial, sans-serif;font-size:16px;color:#808080;width:800px;margin:0 auto">
 	  <table background="" style="padding:0px;border:0px;width:100%;color:#606060;font-size:20px;margin-bottom:15px;margin-top:15px;">
         <tr style="padding:0px;border:0px;">
           <td style="padding:0px;border:0px;vertical-align:middle">
@@ -16,7 +16,7 @@
 		  </td>
         </tr>
       </table>
-      <div id="build" style="border-radius:5px;padding:0px;width:600px;font-size:13px">
+      <div id="build" style="border-radius:5px;padding:0px;width:800px;font-size:13px">
         <div>
           <table style="padding:0px;border:0px;width:100%;border-spacing:0">
             <thead>
@@ -48,21 +48,20 @@
 							
 							<#list ChangeReport.changes as change>
 							<tr>
-								<td align="right" style="width:150px;border:0px;padding:10px 20px 10px 0px;height:20px;padding-top:20px;padding-bottom:5px;text-decoration:none;font-weight:bold;color:#57769d">
-									<a href="${StoreProject.bts.link}${change.id}" style="text-decoration:none;font-weight:bold;color:#57769d;">
+								<td align="left" style="border:0px;padding:0px;height:20px;text-decoration:none;font-weight:bold;color:#57769d;padding-bottom:2px;padding-top:2px;padding-left:2px;">
+									<a href="${StoreProject.bts.link}${change.id}" style="text-decoration:none;font-weight:bold;color:#57769d;font-size:14px;">
 										${change.id}
 									</a> 									
 								</td>																																
-								<td style="width:150px;border:0px;color:#808080;padding:10px 20px 10px 0px;height:20px;padding-top:20px;padding-bottom:5px;">
-									<strong>${change.resolution!""}</strong>
+								<td align="left" style="border:0px;color:#808080;padding:0px;height:20px;font-size:14px;padding-bottom:2px;padding-top:2px;padding-left:2px;">
+									<strong>${change.issue.resolution!""}</strong>
 								</td>	
-								<td style="width:150px;border:0px;color:#808080;padding:10px 20px 10px 0px;height:20px;padding-top:20px;padding-bottom:5px;">
-									${change.assignee!""}
+								<td align="left" style="border:0px;color:#808080;padding:0px;height:20px;font-size:12px;padding-bottom:2px;padding-top:2px;padding-left:2px;">
+									${change.issue.assignee!""}
 								</td>								
-								<td style="border:0px;color:#808080;padding:10px 20px 10px 0px;height:20px;padding-top:20px;padding-bottom:5px;">
-									${change.summary!""}
-								</td>	
-						
+								<td align="left" style="border:0px;color:#808080;padding:0px;height:20px;font-size:12px;padding-bottom:2px;padding-top:2px;padding-left:2px;">
+									${change.issue.summary!""}
+								</td>							
 							</tr>
 							</#list>
 						</tbody>
@@ -77,8 +76,8 @@
         </div>
       </div>
 
-      <div style="padding-top: 10px; width: 570px">
-        <div style="font-size:12px;text-align:center;vertical-align:middle;height:20px;width:570px">
+      <div style="padding-top: 10px; width: 800px">
+        <div style="font-size:12px;text-align:center;vertical-align:middle;height:20px;width:800px">
           <p style="color:#808080;margin-top:10px"> 
             <span style="vertical-align:middle">Application release monitor is powered by </span><a href="http://www.lorislab.org" style="text-decoration:underline"><img src="${MailConfig.url}/${Mail.template}/logo.png" style="vertical-align:middle"></a>
           </p>

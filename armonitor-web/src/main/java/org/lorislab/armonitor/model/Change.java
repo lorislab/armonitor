@@ -19,7 +19,7 @@ package org.lorislab.armonitor.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.lorislab.armonitor.jira.client.model.Issue;
+import org.lorislab.armonitor.bts.model.BtsIssue;
 import org.lorislab.armonitor.scm.model.ScmLog;
 
 /**
@@ -32,37 +32,17 @@ public class Change implements Serializable {
     
     private String id;
     
-    private String assignee;
+    private BtsIssue issue;
     
-    private String summary;
-    
-    private String resolution;
-    
-    private List<ScmLog> scmLogs = new ArrayList<>();
-
-    public String getAssignee() {
-        return assignee;
+    private final List<ScmLog> scmLogs = new ArrayList<>();
+ 
+    public BtsIssue getIssue() {
+        return issue;
     }
 
-    public void setAssignee(String assignee) {
-        this.assignee = assignee;
-    }
-
-    public String getResolution() {
-        return resolution;
-    }
-
-    public void setResolution(String resolution) {
-        this.resolution = resolution;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
+    public void setIssue(BtsIssue issue) {
+        this.issue = issue;
+    }   
         
     public String getId() {
         return id;
@@ -75,9 +55,8 @@ public class Change implements Serializable {
     public List<ScmLog> getScmLogs() {
         return scmLogs;
     }
-
-    public void setScmLog(List<ScmLog> scmLogs) {
-        this.scmLogs = scmLogs;
+    
+    public boolean isError() {
+        return issue == null;
     }
-   
 }

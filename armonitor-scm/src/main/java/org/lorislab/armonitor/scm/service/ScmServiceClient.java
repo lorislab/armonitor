@@ -14,36 +14,19 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.model;
+package org.lorislab.armonitor.scm.service;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+import org.lorislab.armonitor.scm.model.ScmCriteria;
+import org.lorislab.armonitor.scm.model.ScmLog;
 
 /**
  *
  * @author Andrej Petras
  */
-public class ChangeReport implements Serializable {
+public interface ScmServiceClient {
+            
+    public String getType();
     
-    private static final long serialVersionUID = -8226350181208816998L;
-    
-    private final List<Change> other = new ArrayList<>();
-    
-    private final List<Change> changes = new ArrayList<>();
-
-    private final List<Change> errors = new ArrayList<>();
-
-    public List<Change> getOther() {
-        return other;
-    }
-    
-    public List<Change> getErrors() {
-        return errors;
-    }
-   
-    public List<Change> getChanges() {
-        return changes;
-    }
-        
+    public List<ScmLog> getLog(ScmCriteria criteria) throws Exception;    
 }

@@ -17,9 +17,9 @@ package org.lorislab.armonitor.ejb;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,21 +40,16 @@ import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.agent.ejb.AgentClientServiceBean;
-import org.lorislab.armonitor.jira.client.JIRAClient;
-import org.lorislab.armonitor.jira.client.model.FieldNames;
-import org.lorislab.armonitor.jira.client.model.Fields;
-import org.lorislab.armonitor.jira.client.model.Issue;
-import org.lorislab.armonitor.jira.client.model.SearchCriteria;
-import org.lorislab.armonitor.jira.client.model.SearchResult;
-import org.lorislab.armonitor.jira.client.services.SearchClient;
+import org.lorislab.armonitor.bts.model.BtsCriteria;
+import org.lorislab.armonitor.bts.model.BtsIssue;
+import org.lorislab.armonitor.bts.service.BtsService;
 import org.lorislab.armonitor.mail.ejb.MailServiceBean;
 import org.lorislab.armonitor.mail.model.Mail;
 import org.lorislab.armonitor.model.Change;
 import org.lorislab.armonitor.model.ChangeReport;
-import org.lorislab.armonitor.scm.client.ScmClient;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.model.ScmLog;
-import org.lorislab.armonitor.scm.svn.client.SvnClient;
+import org.lorislab.armonitor.scm.service.ScmService;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
 import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
@@ -73,7 +68,6 @@ import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.store.model.enums.StoreBTSystemType;
-import org.lorislab.armonitor.store.model.enums.StoreSCMSystemType;
 import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 
 /**
@@ -301,7 +295,28 @@ public class ProcessServiceBean {
                 throw new Exception("Missing the bug tracking configuration");
             }
 
+            Map<String, Change> other = new HashMap<>();
             Map<String, Change> changes = new HashMap<>();
+            Map<String, Change> errors = new HashMap<>();
+            
+            // update changes from the bug tracking system
+            BtsCriteria bc = new BtsCriteria();
+            bc.setServer(bts.getServer());
+            bc.setUser(bts.getUser());
+            bc.setPassword(bts.getPassword());
+            bc.setAuth(bts.isAuth());
+            bc.setType(bts.getType().name());
+            bc.setVersion(build.getMavenVersion());
+            bc.setProject(project.getBtsId());
+            List<BtsIssue> issues = BtsService.getIssues(bc);
+            if (issues != null) {
+                for (BtsIssue issue : issues) {
+                    Change change = new Change();
+                    change.setId(issue.getId());
+                    change.setIssue(issue);
+                    other.put(change.getId(), change);
+                }
+            }
 
             // get changes from the SCM
             StoreSCMSystem scm = app.getScm();
@@ -309,102 +324,69 @@ public class ProcessServiceBean {
                 throw new Exception("Missing the SCM configuration");
             }
 
-            if (scm.getType() == StoreSCMSystemType.SUBVERSION) {
-                ScmClient scmClient = new SvnClient();
-                ScmCriteria criteria = new ScmCriteria();
+            // create the server link
+            String server = scm.getServer() + app.getScmBranches();
+            server = server.replaceAll(VERSION_REGEX, build.getMavenVersion());
 
-                String server = scm.getServer() + app.getScmBranches();
-                server = server.replaceAll(VERSION_REGEX, build.getMavenVersion());
+            // get the SCM log
+            ScmCriteria criteria = new ScmCriteria();
+            criteria.setType(scm.getType().name());
+            criteria.setServer(server);
+            criteria.setAuth(scm.isAuth());
+            criteria.setUser(scm.getUser());
+            criteria.setPassword(scm.getPassword());
+            List<ScmLog> scmLogs = ScmService.getIssues(criteria);
 
-                criteria.setServer(server);
+            if (scmLogs != null) {
 
-                criteria.setAuth(scm.isAuth());
-                criteria.setUser(scm.getUser());
-                criteria.setPassword(scm.getPassword());
-                List<ScmLog> scmLogs = scmClient.getLog(criteria);
-                if (scmLogs != null) {
+                // create issue id pattern
+                String key = BtsService.getIdPattern(bts.getType().name(), project.getBtsId());
+                Pattern searchPattern = Pattern.compile(key);
 
-                    // create issue id pattern
-                    String key = project.getBtsId();
-                    if (bts.getType() == StoreBTSystemType.JIRA) {
-                        key = key + "\\-\\d+";
-                    }
-                    Pattern searchPattern = Pattern.compile(key);
-
-                    // search issues in the SCM log.
-                    for (ScmLog scmLog : scmLogs) {
-
-                        Matcher matcher = searchPattern.matcher(scmLog.getMessage());
-                        while (matcher.find()) {
-                            String issue = matcher.group();
-                            Change ch = changes.get(issue);
-                            if (ch == null) {
-                                ch = new Change();
-                                ch.setId(issue);
-                                changes.put(issue, ch);
+                // search issues in the SCM log.
+                for (ScmLog scmLog : scmLogs) {
+                    LOGGER.log(Level.INFO, "REV: " + scmLog.getId());
+                    Matcher matcher = searchPattern.matcher(scmLog.getMessage());
+                    while (matcher.find()) {
+                        String issue = matcher.group();
+                        Change change = other.remove(issue);
+                        if (change != null) {
+                            changes.put(change.getId(), change);
+                        } else {
+                            change = changes.get(issue);
+                            // check the issue
+                            if (change == null) {
+                                change = new Change();
+                                change.setId(issue);
+                                errors.put(issue, change);
                             }
-                            ch.getScmLogs().add(scmLog);
                         }
+                        // add SCM log to the change
+                        change.getScmLogs().add(scmLog);
                     }
                 }
-            } else {
-                throw new Exception("Not supported SCM provider");
             }
 
-            // update changes from the bug tracking system
-            if (!changes.isEmpty()) {
-                if (bts.getType() == StoreBTSystemType.JIRA) {
-
-                    // search issues in the current project and current version
-                    Set<String> issues = changes.keySet();
-                    StringBuilder jql = new StringBuilder();
-                    jql.append("id in (");
-                    boolean first = false;
-                    for (String issue : issues) {
-                        if (first) {
-                            jql.append(',');
-                        }
-                        jql.append(issue);
-                        first = true;
-                    }
-                    jql.append(") and fixVersion = \"");
-                    jql.append(build.getMavenVersion());
-                    jql.append("\" and project = ");
-                    jql.append(project.getBtsId());
-
-                    JIRAClient btsClient = new JIRAClient(bts.getServer(), bts.getUser(), bts.getPassword(), bts.isAuth());
-                    SearchClient search = btsClient.createSearchClient();
-
-                    SearchCriteria criteria = new SearchCriteria();
-                    criteria.setJql(jql.toString());
-                    criteria.setFields(Arrays.asList(FieldNames.STATUS, FieldNames.SUMMARY, FieldNames.ASSIGNEE, FieldNames.RESOLUTION));
-
-                    SearchResult result = search.search(criteria);
-                    if (result != null) {
-                        for (Issue issue : result.getIssues()) {
-                            Change change = changes.get(issue.getKey());
-                            if (change != null) {
-                                Fields fields = issue.getFields();
-                                if (fields.getAssignee() != null) {
-                                    change.setAssignee(fields.getAssignee().getDisplayName());
-                                }
-                                if (fields.getResolution() != null) {
-                                    change.setResolution(fields.getResolution().getName());
-                                } else {
-                                    change.setResolution("Unresolved");
-                                }
-                                change.setSummary(fields.getSummary());
-                            }
+            // get the wrong commits from the BTS
+            if (!errors.isEmpty()) {
+                bc.setVersion(null);
+                bc.setProject(null);
+                List<BtsIssue> issues2 = BtsService.getIssues(bc);
+                if (issues2 != null) {
+                    for (BtsIssue issue : issues2) {
+                        Change change = errors.get(issue.getId());
+                        if (change != null) {
+                            change.setIssue(issue);
                         }
                     }
-                } else {
-                    throw new Exception("Not supported bug tracking system");
                 }
             }
 
             // create change report
             ChangeReport changeReport = new ChangeReport();
+            changeReport.getOther().addAll(other.values());
             changeReport.getChanges().addAll(changes.values());
+            changeReport.getErrors().addAll(errors.values());
 
             // notification
             Set<String> users = userService.getUsersEmailsForSystem(tmp.getGuid());
