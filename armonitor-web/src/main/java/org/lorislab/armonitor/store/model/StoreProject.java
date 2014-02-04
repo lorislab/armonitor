@@ -16,8 +16,14 @@
 
 package org.lorislab.armonitor.store.model;
 
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
@@ -34,15 +40,35 @@ public class StoreProject extends Persistent {
     @Column(name = "C_NAME")
     private String name;
     
-    @Column(name = "C_JIRA_ID")
-    private String jiraId;
- 
-    @Column(name = "C_JIRA_KEY")
-    private String jiraKey;
+    @Column(name = "C_BTS_ID")
+    private String btsId;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "C_BTS")    
+    private StoreBTSystem bts;
     
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "project")   
+    private Set<StoreApplication> applications;
+
+    public StoreBTSystem getBts() {
+        return bts;
+    }
+
+    public void setBts(StoreBTSystem bts) {
+        this.bts = bts;
+    }
+    
+    public Set<StoreApplication> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(Set<StoreApplication> applications) {
+        this.applications = applications;
+    }
+        
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -50,23 +76,15 @@ public class StoreProject extends Persistent {
     public boolean isEnabled() {
         return enabled;
     }
-        
-    public String getJiraId() {
-        return jiraId;
+
+    public String getBtsId() {
+        return btsId;
     }
 
-    public void setJiraId(String jiraId) {
-        this.jiraId = jiraId;
+    public void setBtsId(String btsId) {
+        this.btsId = btsId;
     }
-
-    public String getJiraKey() {
-        return jiraKey;
-    }
-
-    public void setJiraKey(String jiraKey) {
-        this.jiraKey = jiraKey;
-    }
-        
+                  
     /**
      * @return the name
      */

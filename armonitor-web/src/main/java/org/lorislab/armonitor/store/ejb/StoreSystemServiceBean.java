@@ -29,6 +29,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreSystemCriteria;
+import org.lorislab.armonitor.store.model.StoreApplication_;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
@@ -45,8 +46,7 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreSystem saveSystem(StoreSystem application) {
-        StoreSystem tmp = this.save(application);
-        return getSystem(tmp.getGuid());
+        return this.save(application);
     }
     
     public StoreSystem getSystem(String guid) {
@@ -101,7 +101,7 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
         }
         
         if (criteria.getApplications() != null && !criteria.getApplications().isEmpty()) {
-            predicates.add(root.get(StoreSystem_.application).in(criteria.getApplications()));
+            predicates.add(root.get(StoreSystem_.application).get(StoreApplication_.guid).in(criteria.getApplications()));
         }
         
         if (!predicates.isEmpty()) {

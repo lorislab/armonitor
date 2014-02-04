@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,72 +27,64 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.web.rs.ejb.ApplicationServiceBean;
+import org.lorislab.armonitor.web.rs.ejb.ProjectServiceBean;
 import org.lorislab.armonitor.web.rs.model.Application;
+import org.lorislab.armonitor.web.rs.model.BTSystem;
 import org.lorislab.armonitor.web.rs.model.Project;
-import org.lorislab.armonitor.web.rs.model.SCMSystem;
 
 /**
  *
  * @author Andrej Petras
  */
-@Path("app")
-public class ApplicationService {
+@Path("project")
+public class ProjectService {
     
     @EJB
-    private ApplicationServiceBean service;
+    private ProjectServiceBean service;
     
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public Application create() throws Exception {
+    public Project create() throws Exception {
         return service.create();
     }
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Application save(Application app) throws Exception {
-        return service.save(app);
+    public Project save(Project project) throws Exception {
+        return service.save(project);
     }
 
     @GET
-    @Path("{guid}/project")
+    @Path("{guid}/app")
     @Produces(MediaType.APPLICATION_JSON)
-    public Project getProject(@PathParam("guid") String guid) throws Exception {
-        return service.getProject(guid);
-    }
-    
-    @PUT
-    @Path("{guid}/project/{project}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void addProject(@PathParam("guid") String guid, @PathParam("project") String project) throws Exception {
-        service.addProject(guid, project);
-    }
+    public Set<Application> getApplications(@PathParam("guid") String guid) throws Exception {
+        return service.getApplications(guid);
+    }   
     
     @GET
-    @Path("{guid}/scm")
+    @Path("{guid}/bts")
     @Produces(MediaType.APPLICATION_JSON)
-    public SCMSystem getSCMSystem(@PathParam("guid") String guid) throws Exception {
-        return service.getSCMSystem(guid);
+    public BTSystem getBTSystem(@PathParam("guid") String guid) throws Exception {
+        return service.getBTSystem(guid);
     }
     
     @PUT
-    @Path("{guid}/scm/{scm}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void getSCMSystem(@PathParam("guid") String guid, @PathParam("scm") String scm) throws Exception {
-        service.addSCMSystem(guid, scm);
+    @Path("{guid}/bts/{bts}")
+    public void addBTSystem(@PathParam("guid") String guid, @PathParam("bts") String bts) throws Exception {
+        service.addBTSystem(guid, bts);
     }
     
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Application get(@PathParam("guid") String guid) throws Exception {
+    public Project get(@PathParam("guid") String guid) throws Exception {
         return service.get(guid);
     }  
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Application> get() throws Exception {
+    public List<Project> get() throws Exception {
         return service.get();
-    }    
+    }       
 }

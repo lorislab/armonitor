@@ -17,16 +17,29 @@
 package org.lorislab.armonitor.web.rs.model;
 
 /**
- *
+ * The user.
+ * 
  * @author Andrej Petras
  */
 public class User {
-    
+   
+    /**
+     * The GUID.
+     */
     public String guid;
     
+    /**
+     * The name.
+     */
     public String name;
 
+    /**
+     * The email.
+     */
     public String email;
     
+    /**
+     * The login flag.
+     */
     public boolean login;    
 }

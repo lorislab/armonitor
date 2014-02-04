@@ -51,9 +51,12 @@ public class SvnClient implements ScmClient {
         }
         
         SVNRepository repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(criteria.getServer()));
-        ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(criteria.getUser(), criteria.getPassword());
-        repository.setAuthenticationManager(authManager);
-
+        
+        if (criteria.isAuth()) {
+            ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(criteria.getUser(), new String(criteria.getPassword()));
+            repository.setAuthenticationManager(authManager);
+        }
+        
         String[] path = new String[]{""};
         if (criteria.getPath() != null && !criteria.getPath().isEmpty()) {
             path = criteria.getPath().toArray(new String[criteria.getPath().size()]);

@@ -15,18 +15,23 @@
  */
 package org.lorislab.armonitor.web.rs.ejb;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.store.criteria.StoreAgentCriteria;
 import org.lorislab.armonitor.store.ejb.StoreAgentServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.Agent;
-import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
+import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
+import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 
 /**
  *
@@ -36,6 +41,8 @@ import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class AgentServiceBean {
 
+    private static final Logger LOGGER = Logger.getLogger(AgentServiceBean.class.getName());
+    
     @EJB
     private StoreAgentServiceBean service;
 
@@ -46,12 +53,45 @@ public class AgentServiceBean {
         return Mapper.create(StoreAgent.class, Agent.class);
     }
 
-    public void changePassword(AgentChangePasswordRequest reqeust) {
-        StoreAgent tmp = service.loadAgent(reqeust.guid);
+    public ApplicationSystem getSystem(String guid) {
+        StoreAgentCriteria criteria = new StoreAgentCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchSystem(true);
+        StoreAgent sys = service.loadAgent(criteria);
+        if (sys != null) {
+            return Mapper.map(sys.getSystem(), ApplicationSystem.class);
+        }       
+        return null;
+    }
+    
+    public void addSystem(String guid, String sys) {
+        StoreAgentCriteria criteria = new StoreAgentCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchSystem(true);        
+        StoreAgent tmp = service.loadAgent(criteria);
         if (tmp != null) {
-            String password = tmp.getPassword();
-            if (password == null || password.equals(reqeust.old)) {
-                tmp.setPassword(reqeust.p1);
+            if (tmp.getSystem() == null) {             
+                StoreSystem system = systemService.getSystem(sys);
+                if (system != null) {
+                    tmp.setSystem(system);
+                    service.saveAgent(tmp);
+                } else {
+                    LOGGER.log(Level.WARNING,"Missing system {0}", sys);
+                }
+            } else {
+                LOGGER.log(Level.WARNING,"The agent {0} has already system", guid);
+            }
+        } else {
+            LOGGER.log(Level.WARNING,"Missing agent {0}", guid);
+        }
+    }
+    
+    public void changePassword(String guid, ChangePasswordRequest reqeust) {
+        StoreAgent tmp = service.loadAgent(guid);
+        if (tmp != null) {
+            char[] password = tmp.getPassword();
+            if (password == null || Arrays.equals(password,reqeust.old.toCharArray())) {
+                tmp.setPassword(reqeust.p1.toCharArray());
                 service.saveAgent(tmp);
             }
         }
@@ -65,12 +105,6 @@ public class AgentServiceBean {
                 tmp = Mapper.update(tmp, agent);
             } else {
                 tmp = Mapper.create(agent, StoreAgent.class);
-                StoreSystem system = systemService.getSystem(agent.system);
-                if (system != null) {
-                    tmp.setSystem(system);
-                } else {
-                    throw new Exception("Missing system for the agent!");
-                }
             }
             tmp = service.saveAgent(tmp);
             result = Mapper.map(tmp, Agent.class);

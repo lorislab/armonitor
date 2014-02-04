@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.jira.ejb;
-
-import java.util.List;
-import org.lorislab.armonitor.jira.client.model.Project;
+package org.lorislab.armonitor.jira.client.model;
 
 /**
  *
  * @author Andrej Petras
  */
-public interface JiraServiceLocal {
+public class FieldNames {
     
-    public List<Project> getProjects();
+    public static String RESOLUTION = "resolution";
+    
+    public static String FIXVERSIONS = "fixVersions";
+    
+    public static String ASSIGNEE = "assignee";
+    
+    public static String SUMMARY = "summary";
+    
+    public static String STATUS = "status";
+    
 }

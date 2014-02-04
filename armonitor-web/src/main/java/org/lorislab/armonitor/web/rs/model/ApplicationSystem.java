@@ -26,8 +26,6 @@ public class ApplicationSystem implements Serializable {
     
     private static final long serialVersionUID = -4453117979221611348L;
     
-    public String application;
-    
     public String guid;
     
     public String name;

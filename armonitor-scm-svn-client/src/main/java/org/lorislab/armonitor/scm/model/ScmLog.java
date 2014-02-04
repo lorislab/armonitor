@@ -16,13 +16,16 @@
 
 package org.lorislab.armonitor.scm.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Andrej Petras
  */
-public class ScmLog {
+public class ScmLog implements Serializable {
+    
+    private static final long serialVersionUID = -7337240885124801581L;
     
     private String id;
     

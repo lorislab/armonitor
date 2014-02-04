@@ -45,16 +45,26 @@
                 <td colspan="2" style="border:0px;height:20px;width:200px;padding:0px;padding-top:20px;padding-bottom:5px;text-align:right;border-left:1px solid #adadad;border-right:1px solid #adadad;">					
 					<table style="width:100%">
 						<tbody>
+							
+							<#list ChangeReport.changes as change>
 							<tr>
 								<td align="right" style="width:150px;border:0px;padding:10px 20px 10px 0px;height:20px;padding-top:20px;padding-bottom:5px;text-decoration:none;font-weight:bold;color:#57769d">
-									<a href="${MailConfig.url}/public/jira/${StoreSystem.application.guid}" style="text-decoration:none;font-weight:bold;color:#57769d">
-										TICKET-000
+									<a href="${StoreProject.bts.link}${change.id}" style="text-decoration:none;font-weight:bold;color:#57769d;">
+										${change.id}
 									</a> 									
-								</td>
+								</td>																																
+								<td style="width:150px;border:0px;color:#808080;padding:10px 20px 10px 0px;height:20px;padding-top:20px;padding-bottom:5px;">
+									<strong>${change.resolution!""}</strong>
+								</td>	
+								<td style="width:150px;border:0px;color:#808080;padding:10px 20px 10px 0px;height:20px;padding-top:20px;padding-bottom:5px;">
+									${change.assignee!""}
+								</td>								
 								<td style="border:0px;color:#808080;padding:10px 20px 10px 0px;height:20px;padding-top:20px;padding-bottom:5px;">
-									<strong>Bug this is a bug</strong>
-								</td>
+									${change.summary!""}
+								</td>	
+						
 							</tr>
+							</#list>
 						</tbody>
 					</table>
 				</td>

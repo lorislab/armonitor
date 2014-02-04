@@ -112,7 +112,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
         enabled = null;
         timer = null;
         fetchAgent = false;
-        fetchApplication = true;
+        fetchApplication = false;
         key = null;
         fetchRoles = false;
     }

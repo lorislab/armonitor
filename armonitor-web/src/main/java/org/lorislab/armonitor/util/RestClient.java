@@ -52,7 +52,7 @@ public class RestClient {
      * 
      * @return the the rest-service client instance.
      */
-    public static <T> T getClient(final Class<T> clazz, String url, String username, String password) throws Exception {
+    public static <T> T getClient(final Class<T> clazz, String url, boolean auth, String username, char[] password) throws Exception {
                 
         DefaultHttpClient httpClient = new DefaultHttpClient();
         if (url.startsWith(HTTPS)) {
@@ -60,9 +60,9 @@ public class RestClient {
             httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme(HTTPS, 443, sslSocketFactory));
         }
         
-        if (username != null) {
+        if (auth) {
             BasicCredentialsProvider provider = new BasicCredentialsProvider();
-            Credentials credentials = new UsernamePasswordCredentials(username, password);
+            Credentials credentials = new UsernamePasswordCredentials(username, new String(password));
             provider.setCredentials(AuthScope.ANY, credentials);
             httpClient.setCredentialsProvider(provider);
         }

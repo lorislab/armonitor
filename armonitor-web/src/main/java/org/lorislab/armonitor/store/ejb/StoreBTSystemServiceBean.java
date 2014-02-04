@@ -16,21 +16,39 @@
 
 package org.lorislab.armonitor.store.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import org.lorislab.armonitor.store.model.StoreVersion;
+import org.lorislab.armonitor.store.model.StoreBTSystem;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
- *
+ * The bug tracking system service.
+ * 
  * @author Andrej Petras
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class StoreVersionServiceBean extends AbstractEntityServiceBean<StoreVersion> {
+public class StoreBTSystemServiceBean extends AbstractEntityServiceBean<StoreBTSystem> {
     
-    private static final long serialVersionUID = -589567485253114559L;
+    private static final long serialVersionUID = -1543513660078529228L;
     
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public StoreBTSystem saveBTSystem(StoreBTSystem system) {
+        return this.save(system);
+    }
     
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean deleteBTSystem(String guid) {
+        return this.delete(this);
+    }
+    
+    public StoreBTSystem getBTSystem(String guid) {
+        return getById(guid);
+    }
+    
+    public List<StoreBTSystem> getBTSystems() {
+        return getAll();
+    }
 }

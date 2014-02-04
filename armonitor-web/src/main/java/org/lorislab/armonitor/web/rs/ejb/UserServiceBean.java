@@ -103,7 +103,7 @@ public class UserServiceBean {
         if (tmp != null) {
             tmp = Mapper.update(tmp, user);
         } else {
-            tmp = Mapper.create(tmp, StoreUser.class);
+            tmp = Mapper.create(user, StoreUser.class);
         }
         tmp = service.saveUser(tmp);
         User result = Mapper.map(tmp, User.class);

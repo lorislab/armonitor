@@ -16,9 +16,6 @@
 
 package org.lorislab.armonitor.web.rs.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author Andrej Petras
@@ -30,6 +27,12 @@ public class Application {
     public String guid;
     
     public String name;
-      
-    public List<ApplicationSystem> systems = new ArrayList<>();
+
+    public String scmTrunk;
+    
+    public String scmBranches;
+    
+    public String scmTags;
+    
+    public boolean enabled;
 }

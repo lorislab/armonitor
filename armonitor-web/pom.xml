@@ -29,6 +29,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.lorislab.armonitor</groupId>
+			<artifactId>armonitor-scm-svn-client</artifactId>
+			<version>${project.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.lorislab.armonitor</groupId>
 			<artifactId>armonitor-agent-rs</artifactId>
 			<version>${project.version}</version>
 			<classifier>rsclient</classifier>

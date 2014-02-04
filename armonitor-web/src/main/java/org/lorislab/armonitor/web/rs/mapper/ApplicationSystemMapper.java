@@ -32,9 +32,6 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         result.name = data.getName();
         result.enabled = data.isEnabled();
         result.timer = data.isTimer();
-        if (data.getApplication() != null) {
-            result.application = data.getApplication().getGuid();
-        }
         return result;
     }
 

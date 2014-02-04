@@ -13,24 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.model;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author Andrej Petras
  */
-public class Project {
-    
-    public String guid;
-    
-    public String name;
+public class SCMSystem {
 
-    public String btsId;
-    
-    public boolean enabled;
+    public String guid;
+
+    public String user;
+
+    public boolean auth;
+
+    public String server;
+
+    public SCMSystemType type;
 }

@@ -21,7 +21,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.ws.rs.PathParam;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.ejb.StoreRoleServiceBean;
 import org.lorislab.armonitor.store.model.StoreRole;
@@ -47,7 +46,7 @@ public class RoleServiceBean {
         return Mapper.create(StoreRole.class, Role.class);
     }
     
-    public Role get(@PathParam("guid") String guid) {
+    public Role get(String guid) {
         StoreRole tmp = service.getRole(guid);
         return Mapper.map(tmp, Role.class);
     }

@@ -17,14 +17,23 @@
 package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreProjectServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreSCMSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
+import org.lorislab.armonitor.store.model.StoreProject;
+import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.web.rs.model.Application;
+import org.lorislab.armonitor.web.rs.model.Project;
+import org.lorislab.armonitor.web.rs.model.SCMSystem;
 
 /**
  *
@@ -34,9 +43,82 @@ import org.lorislab.armonitor.web.rs.model.Application;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class ApplicationServiceBean {
     
+    private static final Logger LOGGER = Logger.getLogger(ApplicationServiceBean.class.getName());
+    
     @EJB
     private StoreApplicationServiceBean service;
     
+    @EJB
+    private StoreSCMSystemServiceBean scmService;
+    
+    @EJB
+    private StoreProjectServiceBean projectService;
+    
+    public Project getProject(String guid) {
+        StoreApplicationCriteria criteria = new StoreApplicationCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchProject(true);
+        StoreApplication sys = service.getApplication(criteria);
+        if (sys != null) {
+            return Mapper.map(sys.getProject(), Project.class);
+        }       
+        return null;        
+    }
+    
+    public void addProject(String guid, String project) {
+        StoreApplicationCriteria criteria = new StoreApplicationCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchProject(true);        
+        StoreApplication tmp = service.getApplication(criteria);
+        if (tmp != null) {
+            if (tmp.getScm() == null) {             
+                StoreProject sp = projectService.getProject(project);
+                if (sp != null) {
+                    tmp.setProject(sp);
+                    service.saveApplication(tmp);
+                } else {
+                    LOGGER.log(Level.WARNING,"Missing project {0}", project);
+                }
+            } else {
+                LOGGER.log(Level.WARNING,"The application {0} has already project", guid);
+            }
+        } else {
+            LOGGER.log(Level.WARNING,"Missing application {0}", guid);
+        }        
+    }
+    
+    public SCMSystem getSCMSystem(String guid) {
+        StoreApplicationCriteria criteria = new StoreApplicationCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchSCM(true);
+        StoreApplication sys = service.getApplication(criteria);
+        if (sys != null) {
+            return Mapper.map(sys.getScm(), SCMSystem.class);
+        }       
+        return null;        
+    }
+    
+    public void addSCMSystem(String guid, String scm) {
+        StoreApplicationCriteria criteria = new StoreApplicationCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchSCM(true);        
+        StoreApplication tmp = service.getApplication(criteria);
+        if (tmp != null) {
+            if (tmp.getScm() == null) {             
+                StoreSCMSystem system = scmService.getSCMSystem(scm);
+                if (system != null) {
+                    tmp.setScm(system);
+                    service.saveApplication(tmp);
+                } else {
+                    LOGGER.log(Level.WARNING,"Missing SCM system {0}", scm);
+                }
+            } else {
+                LOGGER.log(Level.WARNING,"The application {0} has already SCM system", guid);
+            }
+        } else {
+            LOGGER.log(Level.WARNING,"Missing application {0}", guid);
+        }        
+    }
     
     public Application create() throws Exception {
         return Mapper.create(StoreApplication.class, Application.class);
@@ -58,7 +140,7 @@ public class ApplicationServiceBean {
         if (tmp != null) {
             tmp = Mapper.update(tmp, app);
         } else {
-            tmp = Mapper.create(tmp, StoreApplication.class);
+            tmp = Mapper.create(app, StoreApplication.class);
         }
         tmp = service.saveApplication(tmp);
         result = Mapper.map(tmp, Application.class);

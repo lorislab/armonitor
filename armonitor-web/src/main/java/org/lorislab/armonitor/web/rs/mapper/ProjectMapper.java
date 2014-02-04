@@ -13,52 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.lorislab.armonitor.web.rs.mapper;
 
 import org.lorislab.armonitor.mapper.MapperService;
-import org.lorislab.armonitor.store.model.StoreApplication;
-import org.lorislab.armonitor.web.rs.model.Application;
+import org.lorislab.armonitor.store.model.StoreProject;
+import org.lorislab.armonitor.web.rs.model.Project;
 
 /**
  *
  * @author Andrej Petras
  */
-public class ApplicationMapper implements MapperService<StoreApplication, Application> {
+public class ProjectMapper implements MapperService<StoreProject, Project> {
 
     @Override
-    public Application map(StoreApplication data, String profile) {
-        Application result = new Application();
+    public Project map(StoreProject data, String profile) {
+        Project result = new Project();
         result.guid = data.getGuid();
         result.name = data.getName();
-        result.scmTags = data.getScmTags();
-        result.scmTrunk = data.getScmTrunk();
-        result.scmBranches = data.getScmBranches();
+        result.btsId = data.getBtsId();
         result.enabled = data.isEnabled();
         return result;
     }
 
     @Override
-    public StoreApplication update(StoreApplication entity, Application data, String profile) {
+    public StoreProject update(StoreProject entity, Project data, String profile) {
         entity.setName(data.name);
+        entity.setBtsId(data.btsId);
         entity.setEnabled(data.enabled);
-        entity.setScmTrunk(data.scmTrunk);
-        entity.setScmBranches(data.scmBranches);
-        entity.setScmTags(data.scmTags);
         return entity;
     }
 
     @Override
-    public StoreApplication create(Application data, String profile) {
-        StoreApplication result = new StoreApplication();
+    public StoreProject create(Project data, String profile) {
+        StoreProject result = new StoreProject();
         result.setGuid(data.guid);
         result = update(result, data, profile);
         return result;
     }
 
     @Override
-    public Application create(String profile) {
-        StoreApplication tmp = new StoreApplication();
-        return map(tmp, profile);
+    public Project create(String profile) {
+        StoreProject role = new StoreProject();
+        return map(role, profile);
     }
-
+    
 }

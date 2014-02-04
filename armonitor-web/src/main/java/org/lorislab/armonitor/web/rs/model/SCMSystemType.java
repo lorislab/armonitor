@@ -14,32 +14,13 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.model;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import org.lorislab.jel.jpa.model.Persistent;
+package org.lorislab.armonitor.web.rs.model;
 
 /**
  *
  * @author Andrej Petras
  */
-@Entity
-@Table(name = "ARM_VERSION")
-public class StoreVersion extends Persistent {
+public enum SCMSystemType {
     
-    private static final long serialVersionUID = 8147351791885128057L;
- 
-    @Column(name = "C_APP")
-    private String application;
-
-    public String getApplication() {
-        return application;
-    }
-
-    public void setApplication(String application) {
-        this.application = application;
-    }
-        
+    SUBVERSION;
 }

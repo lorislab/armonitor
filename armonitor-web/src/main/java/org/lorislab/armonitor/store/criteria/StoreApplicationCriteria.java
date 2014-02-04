@@ -32,6 +32,26 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
 
     private Set<String> projects;
 
+    private boolean fetchSCM;
+
+    private boolean fetchProject;
+
+    public boolean isFetchProject() {
+        return fetchProject;
+    }
+
+    public void setFetchProject(boolean fetchProject) {
+        this.fetchProject = fetchProject;
+    }
+        
+    public boolean isFetchSCM() {
+        return fetchSCM;
+    }
+
+    public void setFetchSCM(boolean fetchSCM) {
+        this.fetchSCM = fetchSCM;
+    }
+        
     public String getGuid() {
         return guid;
     }
@@ -61,6 +81,8 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
         projects = null;
         enabled = null;
         guid = null;
+        fetchSCM = false;
+        fetchProject = false;
     }
 
     @Override

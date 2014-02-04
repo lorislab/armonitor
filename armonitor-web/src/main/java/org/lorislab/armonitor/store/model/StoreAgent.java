@@ -54,7 +54,7 @@ public class StoreAgent extends Persistent {
     private String user;
     
     @Column(name = "C_PASSWORD")
-    private String password;
+    private char[] password;
 
     @Column(name = "C_SERVICE")
     private String service;
@@ -83,11 +83,11 @@ public class StoreAgent extends Persistent {
         this.user = user;
     }
     
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
         

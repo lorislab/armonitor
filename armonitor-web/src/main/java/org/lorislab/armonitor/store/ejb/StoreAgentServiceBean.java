@@ -46,11 +46,7 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreAgent saveAgent(StoreAgent agent) {
-        StoreAgent tmp = this.save(agent);
-        if (tmp != null) {
-            return loadAgent(tmp.getGuid());
-        }
-        return null;
+        return this.save(agent);
     }
 
     public StoreAgent loadAgent(String guid) {

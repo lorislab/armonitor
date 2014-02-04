@@ -141,19 +141,12 @@ public class AgentClientServiceBean {
         VersionService result = null;
         if (agent != null) {
 
-            String user = null;
-            String password = null;
-            if (agent.isAuthentication()) {
-                user = agent.getUser();
-                password = agent.getPassword();
-            }
-
             String url = agent.getUrl();
             if (StoreAgentType.SERVICE.equals(agent.getType())) {
                 url = url + AGENT_SERVICE;
             }
             try {
-                result = RestClient.getClient(VersionService.class, url, user, password);
+                result = RestClient.getClient(VersionService.class, url, agent.isAuthentication(), agent.getUser(), agent.getPassword());
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, "Error creating the version service for the agent " + agent.getGuid(), ex);
             }

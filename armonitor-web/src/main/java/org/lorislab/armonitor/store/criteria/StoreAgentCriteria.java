@@ -60,7 +60,7 @@ public class StoreAgentCriteria extends AbstractSearchCriteria {
     public void reset() {
         system = null;
         guid = null;
-        fetchSystem = true;
+        fetchSystem = false;
     }
 
     @Override

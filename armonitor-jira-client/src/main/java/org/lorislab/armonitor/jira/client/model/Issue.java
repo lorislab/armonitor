@@ -16,8 +16,6 @@
 
 package org.lorislab.armonitor.jira.client.model;
 
-import java.util.List;
-
 /**
  *
  * @author Andrej Petras

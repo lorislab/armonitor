@@ -20,10 +20,8 @@ package org.lorislab.armonitor.web.rs.model;
  *
  * @author Andrej Petras
  */
-public class AgentChangePasswordRequest {
-    
-    public String guid;
-    
+public class ChangePasswordRequest {
+
     public String old;
     
     public String p1;

@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.model;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+package org.lorislab.armonitor.store.model.enums;
 
 /**
  *
  * @author Andrej Petras
  */
-public class Project {
+public enum StoreBTSystemType {
     
-    public String guid;
-    
-    public String name;
-
-    public String btsId;
-    
-    public boolean enabled;
+    JIRA;
 }

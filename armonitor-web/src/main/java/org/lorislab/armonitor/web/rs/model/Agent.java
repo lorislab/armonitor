@@ -24,8 +24,6 @@ public class Agent {
     
     public String guid;
     
-    public String system;
-    
     public String url;
         
     public AgentType type;

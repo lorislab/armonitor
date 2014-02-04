@@ -27,7 +27,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.AgentServiceBean;
 import org.lorislab.armonitor.web.rs.model.Agent;
-import org.lorislab.armonitor.web.rs.model.AgentChangePasswordRequest;
+import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
+import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 
 /**
  *
@@ -46,13 +47,19 @@ public class AgentService {
     }
 
     @POST
-    @Path("password")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{guid}/password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changePassword(AgentChangePasswordRequest reqeust) {
-        service.changePassword(reqeust);
+    public void changePassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) {
+        service.changePassword(guid, reqeust);
     }
 
+    @PUT
+    @Path("{guid}/password")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ChangePasswordRequest createchangePassword(@PathParam("guid") String guid) {
+        return new ChangePasswordRequest();
+    }
+    
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -67,6 +74,19 @@ public class AgentService {
         return service.get(guid);
     }
 
+    @GET
+    @Path("{guid}/system")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ApplicationSystem getSystem(@PathParam("guid") String guid) throws Exception {
+        return service.getSystem(guid);
+    }
+    
+    @PUT
+    @Path("{guid}/sys/{sys}")
+    public void addSystem(@PathParam("guid") String guid, @PathParam("sys") String sys) throws Exception {
+        service.addSystem(guid, sys);
+    }
+    
     @GET
     @Path("system/{guid}")
     @Produces(MediaType.APPLICATION_JSON)

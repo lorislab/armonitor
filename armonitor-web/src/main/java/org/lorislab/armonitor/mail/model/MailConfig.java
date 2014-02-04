@@ -27,7 +27,7 @@ public class MailConfig {
     /**
      * The server resource URL.
      */
-    private String url = "http://localhost:8080/armonitor/rs/mail/public/resource";
+    private String url = "http://localhost:8080/armonitor/rs/mail/public";
     /**
      * Disabled or enabled the send email functionality.
      */

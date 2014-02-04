@@ -19,6 +19,8 @@ package org.lorislab.armonitor.web.rs.ejb;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -31,6 +33,7 @@ import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreRole;
 import org.lorislab.armonitor.store.model.StoreSystem;
+import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Role;
 
@@ -42,6 +45,8 @@ import org.lorislab.armonitor.web.rs.model.Role;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class ApplicationSystemServiceBean {
    
+    private static final Logger LOGGER = Logger.getLogger(ApplicationSystemServiceBean.class.getName());
+    
     @EJB
     private StoreSystemServiceBean service;
 
@@ -51,10 +56,42 @@ public class ApplicationSystemServiceBean {
     @EJB
     private StoreRoleServiceBean roleService;
         
+    public void addApplication(String guid, String app) {
+        StoreSystemCriteria criteria = new StoreSystemCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchApplication(true);
+        StoreSystem tmp = service.getSystem(criteria);
+        if (tmp != null) {
+            if (tmp.getApplication() == null) {             
+                StoreApplication application = appService.getApplication(app);
+                if (application != null) {
+                    tmp.setApplication(application);
+                    service.saveSystem(tmp);
+                } else {
+                    LOGGER.log(Level.WARNING,"Missing application {0}", app);
+                }
+            } else {
+                LOGGER.log(Level.WARNING,"The system {0} has already application", guid);
+            }
+        } else {
+            LOGGER.log(Level.WARNING,"Missing agent {0}", guid);
+        }
+    }
+    
+    public Application getApplication(String guid) {
+        StoreSystemCriteria criteria = new StoreSystemCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchApplication(true);
+        StoreSystem sys = service.getSystem(criteria);
+        if (sys != null) {
+            return Mapper.map(sys.getApplication(), Application.class);
+        }       
+        return null;        
+    }
+    
     public Set<Role> getRoles(String guid) {
         StoreSystemCriteria criteria = new StoreSystemCriteria();
         criteria.setGuid(guid);
-        criteria.setFetchApplication(false);
         criteria.setFetchRoles(true);
         StoreSystem sys = service.getSystem(criteria);
         if (sys != null) {
@@ -115,12 +152,6 @@ public class ApplicationSystemServiceBean {
                 tmp = Mapper.update(tmp, system);
             } else {
                 tmp = Mapper.create(system, StoreSystem.class);
-                StoreApplication app = appService.getApplication(system.application);
-                if (app != null) {
-                    tmp.setApplication(app);                    
-                } else {
-                    throw new Exception("Missing application for the system!");
-                }
             }              
             tmp = service.saveSystem(tmp);
             result = Mapper.map(tmp, ApplicationSystem.class);

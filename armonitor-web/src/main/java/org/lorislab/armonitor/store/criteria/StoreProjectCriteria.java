@@ -27,8 +27,48 @@ public class StoreProjectCriteria extends AbstractSearchCriteria {
     
     private static final long serialVersionUID = 617467092691040328L;
     
+    private String guid;
+    
     private Boolean enabled;
 
+    private String application;
+
+    private boolean fetchApplication;
+
+    private boolean fetchBTS;
+
+    public boolean isFetchBTS() {
+        return fetchBTS;
+    }
+
+    public void setFetchBTS(boolean fetchBTS) {
+        this.fetchBTS = fetchBTS;
+    }
+        
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+    
+    public boolean isFetchApplication() {
+        return fetchApplication;
+    }
+
+    public void setFetchApplication(boolean fetchApplication) {
+        this.fetchApplication = fetchApplication;
+    }
+        
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
+    }
+        
     public Boolean isEnabled() {
         return enabled;
     }
@@ -40,10 +80,14 @@ public class StoreProjectCriteria extends AbstractSearchCriteria {
     @Override
     public void reset() {
         enabled = null;
+        application = null;
+        fetchApplication = false;
+        guid = null;
+        fetchBTS = false;
     }
 
     @Override
     public boolean isEmpty() {
-        return isEmpty(enabled);
+        return isEmpty(enabled, application, guid);
     }
 }

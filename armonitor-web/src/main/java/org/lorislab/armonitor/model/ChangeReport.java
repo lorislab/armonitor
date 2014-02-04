@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.model;
+package org.lorislab.armonitor.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,13 +24,18 @@ import java.util.List;
  *
  * @author Andrej Petras
  */
-public class Project {
+public class ChangeReport implements Serializable {
     
-    public String guid;
+    private static final long serialVersionUID = -8226350181208816998L;
     
-    public String name;
+    private List<Change> changes = new ArrayList<>();
 
-    public String btsId;
-    
-    public boolean enabled;
+    public List<Change> getChanges() {
+        return changes;
+    }
+
+    public void setChanges(List<Change> changes) {
+        this.changes = changes;
+    }
+        
 }

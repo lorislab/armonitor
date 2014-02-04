@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.jira.rs.model;
+package org.lorislab.armonitor.web.rs.model;
 
 /**
  *
  * @author Andrej Petras
  */
-public class JiraProject {
+public class BTSystem {
     
-    public String id;
+    public String guid;
     
-    public String key;
+    public String user;
     
-    public String name;
+    public boolean auth;
+    
+    public String server;
+    
+    public String link;
+    
+    public BTSystemType type;
+    
 }

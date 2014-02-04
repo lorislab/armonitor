@@ -21,6 +21,7 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.jboss.resteasy.client.ClientExecutor;
+import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.lorislab.armonitor.jira.client.services.ProjectClient;
 import org.lorislab.armonitor.jira.client.services.SearchClient;
@@ -37,9 +38,9 @@ public class JIRAClient {
     
     private final String server;
     
-    private final ClientExecutor executor;
-    
-    public JIRAClient(String server, String username, String password) throws Exception {
+    private ClientExecutor executor = ClientRequest.getDefaultExecutor();
+        
+    public JIRAClient(String server, String username, char[] password, boolean auth) throws Exception {
         this.server = server;
         
         HttpClient httpClient = new DefaultHttpClient();
@@ -47,7 +48,9 @@ public class JIRAClient {
             SSLSocketFactory sslSocketFactory = new SSLSocketFactory(new TrustSelfSignedStrategy(), SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
             httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme(HTTPS, 443, sslSocketFactory));
         }
-        this.executor = new JiraApacheHttpClient4Executor(username, password, httpClient);          
+        if (auth) {
+            this.executor = new JiraApacheHttpClient4Executor(username, new String(password), httpClient);          
+        }
     }
     
     public SearchClient createSearchClient() {

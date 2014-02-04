@@ -21,6 +21,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
@@ -35,15 +37,26 @@ public class StoreApplication extends Persistent {
     
     private static final long serialVersionUID = -6964092704804204045L;
     
-    @Column(name = "C_PROJECT")
-    private String project;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "C_PROJECT")
+    private StoreProject project;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "C_SCM")
+    private StoreSCMSystem scm;
     
     @Column(name = "C_NAME")
     private String name;
     
-    @Column(name = "C_SCM")
-    private String scm;    
-
+    @Column(name = "C_SCM_TRUNK")
+    private String scmTrunk;    
+    
+    @Column(name = "C_SCM_TAG")
+    private String scmTags;
+    
+    @Column(name = "C_SCM_BRANCHES")
+    private String scmBranches;
+         
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
@@ -53,6 +66,30 @@ public class StoreApplication extends Persistent {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")   
     private Set<StoreSystem> systems;
 
+    public String getScmBranches() {
+        return scmBranches;
+    }
+
+    public void setScmBranches(String scmBranches) {
+        this.scmBranches = scmBranches;
+    }
+
+    public String getScmTags() {
+        return scmTags;
+    }
+
+    public void setScmTags(String scmTags) {
+        this.scmTags = scmTags;
+    }
+
+    public String getScmTrunk() {
+        return scmTrunk;
+    }
+
+    public void setScmTrunk(String scmTrunk) {
+        this.scmTrunk = scmTrunk;
+    }   
+        
     public Set<StoreSystem> getSystems() {
         return systems;
     }
@@ -77,11 +114,11 @@ public class StoreApplication extends Persistent {
         return enabled;
     }
     
-    public String getProject() {
+    public StoreProject getProject() {
         return project;
     }
 
-    public void setProject(String project) {
+    public void setProject(StoreProject project) {
         this.project = project;
     }
     
@@ -102,14 +139,14 @@ public class StoreApplication extends Persistent {
     /**
      * @return the scm
      */
-    public String getScm() {
+    public StoreSCMSystem getScm() {
         return scm;
     }
 
     /**
      * @param scm the scm to set
      */
-    public void setScm(String scm) {
+    public void setScm(StoreSCMSystem scm) {
         this.scm = scm;
     } 
     

@@ -16,19 +16,24 @@
 
 package org.lorislab.armonitor.scm.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Andrej Petras
  */
-public class ScmCriteria {
+public class ScmCriteria implements Serializable {
+    
+    private static final long serialVersionUID = 5576804571037265497L;
+    
+    private boolean auth;
     
     private String server;
     
     private String user;
     
-    private String password;
+    private char[] password;
     
     private String start;
     
@@ -36,6 +41,14 @@ public class ScmCriteria {
     
     private List<String> path;
 
+    public boolean isAuth() {
+        return auth;
+    }
+
+    public void setAuth(boolean auth) {
+        this.auth = auth;
+    }
+   
     public String getServer() {
         return server;
     }
@@ -52,11 +65,11 @@ public class ScmCriteria {
         this.user = user;
     }
 
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
 
