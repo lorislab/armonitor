@@ -30,6 +30,7 @@ import org.lorislab.armonitor.config.model.Config_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
+ * The configuration model service.
  *
  * @author Andrej Petras
  */
@@ -37,17 +38,37 @@ import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class ConfigServiceBean extends AbstractEntityServiceBean<Config> {
 
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = 3429620108065122167L;
 
+    /**
+     * Gets all configuration models.
+     *
+     * @return the list of all configuration models.
+     */
     public List<Config> getAllConfig() {
         return this.getAll();
     }
 
+    /**
+     * Saves the configuration model.
+     *
+     * @param config the configuration model.
+     * @return the saved configuration model.
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Config saveConfig(Config config) {
         return this.save(config);
     }
 
+    /**
+     * Gets the configuration model by class.
+     *
+     * @param clazz the class.
+     * @return the corresponding configuration model to the class.
+     */
     public Config getConfigByClass(String clazz) {
         Config result = null;
 

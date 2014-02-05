@@ -23,7 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Singleton;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -32,6 +31,7 @@ import org.lorislab.armonitor.config.model.Attribute;
 import org.lorislab.armonitor.config.model.Config;
 
 /**
+ * The configuration service.
  *
  * @author Andrej Petras
  */
@@ -39,16 +39,28 @@ import org.lorislab.armonitor.config.model.Config;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class ConfigurationServiceBean {
 
+    /**
+     * The configuration model service.
+     */
     @EJB
     private ConfigServiceBean service;
 
+    /**
+     * The cache.
+     */
     private Map<Class, Object> cache = new HashMap<>();
 
+    /**
+     * After start method.
+     */
     @PostConstruct
     public void start() {
         reload();
     }
 
+    /**
+     * Reloads all configuration models.
+     */
     public void reload() {
         cache = new HashMap<>();
         List<Config> configs = service.getAllConfig();
@@ -60,6 +72,12 @@ public class ConfigurationServiceBean {
         }
     }
 
+    /**
+     * Creates the configuration object from the model.
+     *
+     * @param config the configuration model.
+     * @return the corresponding configuration object.
+     */
     private Object loadConfiguration(Config config) {
         Object result = createInstance(config.getClazz());
         if (result != null) {
@@ -73,6 +91,13 @@ public class ConfigurationServiceBean {
         return result;
     }
 
+    /**
+     * Saves the configuration object.
+     *
+     * @param <T> the type.
+     * @param data the object.
+     * @return the saved configuration object.
+     */
     private <T> T saveConfiguration(T data) {
         Class clazz = data.getClass();
         Config config = service.getConfigByClass(clazz.getName());
@@ -100,11 +125,17 @@ public class ConfigurationServiceBean {
             }
         }
 
-        Config tmp = service.saveConfig(config);
-
+        service.saveConfig(config);
         return data;
     }
 
+    /**
+     * Updates the configuration object.
+     *
+     * @param <T> the configuration object type.
+     * @param data the configuration object.
+     * @return the saved configuration object.
+     */
     public <T> T setConfiguration(T data) {
         T result = null;
         if (data != null) {
@@ -115,6 +146,13 @@ public class ConfigurationServiceBean {
         return result;
     }
 
+    /**
+     * Gets the configuration object by class.
+     *
+     * @param <T> the class type.
+     * @param clazz the class.
+     * @return the corresponding configuration object.
+     */
     public <T> T getConfiguration(Class<T> clazz) {
         T result = (T) cache.get(clazz);
         if (result == null) {
@@ -124,13 +162,22 @@ public class ConfigurationServiceBean {
         return result;
     }
 
+    /**
+     * Updates the attribute in the configuration model by configuration object
+     * field.
+     *
+     * @param mapper the mapper.
+     * @param object the object.
+     * @param attribute the attribute.
+     * @param field the field.
+     */
     private void updateAttribute(ObjectMapper mapper, Object object, Attribute attribute, Field field) {
         if (attribute != null) {
             try {
                 boolean accessible = field.isAccessible();
                 try {
                     field.setAccessible(true);
-                    Object value = field.get(object);                    
+                    Object value = field.get(object);
                     String tmp = mapper.writeValueAsString(value);
                     attribute.setValue(tmp);
                 } finally {
@@ -142,6 +189,14 @@ public class ConfigurationServiceBean {
         }
     }
 
+    /**
+     * Creates the attribute for the configuration object field.
+     *
+     * @param mapper the mapper.
+     * @param object the object.
+     * @param field the field.
+     * @return the corresponding attribute.
+     */
     private Attribute createAttribute(ObjectMapper mapper, Object object, Field field) {
         Attribute result = new Attribute();
         try {
@@ -149,7 +204,7 @@ public class ConfigurationServiceBean {
             boolean accessible = field.isAccessible();
             try {
                 field.setAccessible(true);
-                Object value = field.get(object);                
+                Object value = field.get(object);
                 String tmp = mapper.writeValueAsString(value);
                 result.setValue(tmp);
             } finally {
@@ -161,6 +216,14 @@ public class ConfigurationServiceBean {
         return result;
     }
 
+    /**
+     * Sets the attribute to the configuration object.
+     *
+     * @param <T> the configuration object type.
+     * @param mapper the mapper.
+     * @param object the configuration object.
+     * @param attribute the attribute.
+     */
     private <T> void setAttributeToObject(ObjectMapper mapper, T object, Attribute attribute) {
         try {
             String tmp = attribute.getValue();
@@ -181,6 +244,12 @@ public class ConfigurationServiceBean {
         }
     }
 
+    /**
+     * Creates object instance by class name.
+     *
+     * @param name the class name.
+     * @return the corresponding object instance.
+     */
     private Object createInstance(String name) {
         Object result = null;
         try {

@@ -13,27 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.criteria;
 
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
 /**
+ * The user criteria.
  *
  * @author Andrej Petras
  */
 public class StoreUserCriteria extends AbstractSearchCriteria {
-    
+
+    /**
+     * The timeout configuration: second.
+     */
     private static final long serialVersionUID = -3133444873708479295L;
 
     private String name;
-    
+
     private String guid;
-    
+
     private boolean fetchRoles;
-    
+
     private String system;
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
         name = null;
@@ -42,6 +48,9 @@ public class StoreUserCriteria extends AbstractSearchCriteria {
         fetchRoles = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return isEmpty(name, guid, system);
@@ -54,7 +63,7 @@ public class StoreUserCriteria extends AbstractSearchCriteria {
     public void setSystem(String system) {
         this.system = system;
     }
-    
+
     public String getGuid() {
         return guid;
     }
@@ -62,7 +71,7 @@ public class StoreUserCriteria extends AbstractSearchCriteria {
     public void setGuid(String guid) {
         this.guid = guid;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -78,5 +87,5 @@ public class StoreUserCriteria extends AbstractSearchCriteria {
     public void setFetchRoles(boolean fetchRoles) {
         this.fetchRoles = fetchRoles;
     }
-        
+
 }

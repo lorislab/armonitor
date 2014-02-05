@@ -17,12 +17,11 @@
 package org.lorislab.armonitor.web.rs.model;
 
 /**
- *
+ * The application.
+ * 
  * @author Andrej Petras
  */
 public class Application {
-    
-    private static final long serialVersionUID = 2446427863130586125L;
     
     public String guid;
     

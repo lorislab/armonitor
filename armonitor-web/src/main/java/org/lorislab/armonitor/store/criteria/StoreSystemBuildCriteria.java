@@ -13,27 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.criteria;
 
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
 /**
+ * The system build criteria.
  *
  * @author Andrej Petras
  */
 public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
-    
+
+    /**
+     * The timeout configuration: second.
+     */
     private static final long serialVersionUID = 1180646542774715225L;
 
     private String guid;
-    
+
     private String system;
-    
+
     private String build;
 
     private boolean fetchSystem;
-    
+
     private boolean fetchBuild;
 
     public boolean isFetchBuild() {
@@ -51,7 +54,7 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     public void setFetchSystem(boolean fetchSystem) {
         this.fetchSystem = fetchSystem;
     }
-        
+
     public String getGuid() {
         return guid;
     }
@@ -59,7 +62,7 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     public void setGuid(String guid) {
         this.guid = guid;
     }
-       
+
     public String getBuild() {
         return build;
     }
@@ -75,7 +78,10 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     public void setSystem(String system) {
         this.system = system;
     }
-        
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
         system = null;
@@ -84,9 +90,12 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
         fetchBuild = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return isEmpty(system, build);
     }
-    
+
 }

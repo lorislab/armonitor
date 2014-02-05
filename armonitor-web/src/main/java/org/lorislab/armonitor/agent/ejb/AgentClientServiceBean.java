@@ -28,7 +28,7 @@ import org.lorislab.armonitor.agent.rs.model.Version;
 import org.lorislab.armonitor.agent.rs.service.VersionService;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.model.StoreAgent;
-import org.lorislab.armonitor.store.model.StoreAgentType;
+import org.lorislab.armonitor.store.model.enums.StoreAgentType;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.util.RestClient;
 

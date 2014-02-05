@@ -17,12 +17,17 @@
 package org.lorislab.armonitor.web.rs.model;
 
 /**
- *
+ * The role.
+ * 
  * @author Andrej Petras
  */
 public class Role {
-    
+    /**
+     * The GUID.
+     */
     public String guid;
-    
+    /**
+     * The name.
+     */
     public String name;
 }

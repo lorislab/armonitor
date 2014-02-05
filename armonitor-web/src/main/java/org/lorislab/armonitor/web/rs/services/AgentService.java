@@ -31,7 +31,8 @@ import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 
 /**
- *
+ * The agent rest-service.
+ * 
  * @author Andrej Petras
  */
 @Path("agent")

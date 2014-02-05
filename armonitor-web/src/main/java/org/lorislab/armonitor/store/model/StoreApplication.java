@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.model;
 
 import java.util.Set;
@@ -28,42 +27,46 @@ import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
+ * The application.
  *
  * @author Andrej Petras
  */
 @Entity
 @Table(name = "ARM_APP")
 public class StoreApplication extends Persistent {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -6964092704804204045L;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_PROJECT")
     private StoreProject project;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_SCM")
     private StoreSCMSystem scm;
-    
+
     @Column(name = "C_NAME")
     private String name;
-    
+
     @Column(name = "C_SCM_TRUNK")
-    private String scmTrunk;    
-    
+    private String scmTrunk;
+
     @Column(name = "C_SCM_TAG")
     private String scmTags;
-    
+
     @Column(name = "C_SCM_BRANCHES")
     private String scmBranches;
-         
+
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")
     private Set<StoreBuild> builds;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")   
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")
     private Set<StoreSystem> systems;
 
     public String getScmBranches() {
@@ -88,8 +91,8 @@ public class StoreApplication extends Persistent {
 
     public void setScmTrunk(String scmTrunk) {
         this.scmTrunk = scmTrunk;
-    }   
-        
+    }
+
     public Set<StoreSystem> getSystems() {
         return systems;
     }
@@ -97,7 +100,7 @@ public class StoreApplication extends Persistent {
     public void setSystems(Set<StoreSystem> systems) {
         this.systems = systems;
     }
-        
+
     public Set<StoreBuild> getBuilds() {
         return builds;
     }
@@ -105,7 +108,7 @@ public class StoreApplication extends Persistent {
     public void setBuilds(Set<StoreBuild> builds) {
         this.builds = builds;
     }
-        
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -113,7 +116,7 @@ public class StoreApplication extends Persistent {
     public boolean isEnabled() {
         return enabled;
     }
-    
+
     public StoreProject getProject() {
         return project;
     }
@@ -121,7 +124,7 @@ public class StoreApplication extends Persistent {
     public void setProject(StoreProject project) {
         this.project = project;
     }
-    
+
     /**
      * @return the name
      */
@@ -148,6 +151,6 @@ public class StoreApplication extends Persistent {
      */
     public void setScm(StoreSCMSystem scm) {
         this.scm = scm;
-    } 
-    
+    }
+
 }

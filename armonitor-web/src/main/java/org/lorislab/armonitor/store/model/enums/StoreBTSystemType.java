@@ -17,10 +17,14 @@
 package org.lorislab.armonitor.store.model.enums;
 
 /**
- *
+ * THe bug tracking system type.
+ * 
  * @author Andrej Petras
  */
 public enum StoreBTSystemType {
-    
+   
+    /**
+     * The JIRA.
+     */
     JIRA;
 }

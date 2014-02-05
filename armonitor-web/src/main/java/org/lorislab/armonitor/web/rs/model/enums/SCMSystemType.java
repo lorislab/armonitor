@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.lorislab.armonitor.web.rs.model;
+package org.lorislab.armonitor.web.rs.model.enums;
 
 /**
+ * The SCM system type.
  *
  * @author Andrej Petras
  */
-public enum BTSystemType {
-    
-    JIRA;
+public enum SCMSystemType {
+
+    /**
+     * The subversion.
+     */
+    SUBVERSION;
 }

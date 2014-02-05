@@ -16,16 +16,13 @@
 
 package org.lorislab.armonitor.web.rs.model;
 
-import java.io.Serializable;
-
 /**
- *
+ * The application system.
+ * 
  * @author Andrej Petras
  */
-public class ApplicationSystem implements Serializable {
-    
-    private static final long serialVersionUID = -4453117979221611348L;
-    
+public class ApplicationSystem {
+
     public String guid;
     
     public String name;

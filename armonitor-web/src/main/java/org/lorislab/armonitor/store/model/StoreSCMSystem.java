@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.model;
 
 import java.util.Set;
@@ -29,30 +28,34 @@ import org.lorislab.armonitor.store.model.enums.StoreSCMSystemType;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
+ * The SCM system.
  *
  * @author Andrej Petras
  */
 @Entity
 @Table(name = "ARM_SCM")
 public class StoreSCMSystem extends Persistent {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -2589083311226920375L;
-    
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "scm")   
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "scm")
     private Set<StoreApplication> applications;
-    
+
     @Column(name = "C_USER")
     private String user;
-    
+
     @Column(name = "C_PASWORD")
     private char[] password;
-    
+
     @Column(name = "C_AUTH")
     private boolean auth;
-    
+
     @Column(name = "C_SERVER")
     private String server;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name = "C_TYPE")
     private StoreSCMSystemType type;
@@ -140,6 +143,5 @@ public class StoreSCMSystem extends Persistent {
     public void setType(StoreSCMSystemType type) {
         this.type = type;
     }
-    
-    
+
 }

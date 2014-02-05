@@ -20,7 +20,7 @@ import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.store.model.enums.StoreSCMSystemType;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
-import org.lorislab.armonitor.web.rs.model.SCMSystemType;
+import org.lorislab.armonitor.web.rs.model.enums.SCMSystemType;
 
 /**
  *

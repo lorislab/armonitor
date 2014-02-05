@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.model.enums;
 
 /**
+ * The system build type.
  *
  * @author Andrej Petras
  */
 public enum StoreSystemBuildType {
-    
+
+    /**
+     * The timer.
+     */
     TIMER,
-    
+    /**
+     * The manual.
+     */
     MANUAL;
 }

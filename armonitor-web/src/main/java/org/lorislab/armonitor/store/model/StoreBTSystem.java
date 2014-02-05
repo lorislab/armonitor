@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.model;
 
 import java.util.Set;
@@ -30,33 +29,36 @@ import org.lorislab.jel.jpa.model.Persistent;
 
 /**
  * The bug tracking system.
- * 
+ *
  * @author Andrej Petras
  */
 @Entity
 @Table(name = "ARM_BTS")
 public class StoreBTSystem extends Persistent {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -4923603154378426272L;
-    
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "bts")   
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "bts")
     private Set<StoreProject> projects;
-    
+
     @Column(name = "C_USER")
     private String user;
-    
+
     @Column(name = "C_PASWORD")
     private char[] password;
-    
+
     @Column(name = "C_AUTH")
     private boolean auth;
-    
+
     @Column(name = "C_SERVER")
     private String server;
-    
+
     @Column(name = "C_LINK")
     private String link;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name = "C_TYPE")
     private StoreBTSystemType type;
@@ -158,5 +160,5 @@ public class StoreBTSystem extends Persistent {
     public void setType(StoreBTSystemType type) {
         this.type = type;
     }
-        
+
 }

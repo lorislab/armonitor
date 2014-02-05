@@ -23,14 +23,18 @@ import org.lorislab.armonitor.agent.rs.model.Version;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuildParameter;
-import org.lorislab.armonitor.store.model.StoreBuildParameterType;
+import org.lorislab.armonitor.store.model.enums.StoreBuildParameterType;
 
 /**
+ * The version mapper.
  *
  * @author Andrej Petras
  */
 public class VersionMapper implements MapperService<Version, StoreBuild> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreBuild map(Version data, String profile) {
         StoreBuild result = new StoreBuild();
@@ -50,6 +54,13 @@ public class VersionMapper implements MapperService<Version, StoreBuild> {
         return result;
     }
 
+    /**
+     * Creates the list of store build parameters.
+     *
+     * @param params the map of parameters.
+     * @param type the type of parameters.
+     * @return the corresponding list of parameter.
+     */
     private static List<StoreBuildParameter> createStoreBuildParameter(Map<String, String> params, StoreBuildParameterType type) {
         List<StoreBuildParameter> result = new ArrayList<>();
         if (params != null) {
@@ -63,16 +74,25 @@ public class VersionMapper implements MapperService<Version, StoreBuild> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Version update(Version entity, StoreBuild data, String profile) {
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Version create(StoreBuild data, String profile) {
         return new Version();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreBuild create(String profile) {
         return new StoreBuild();

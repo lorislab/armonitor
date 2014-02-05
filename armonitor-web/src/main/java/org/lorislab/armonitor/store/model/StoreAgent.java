@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.model;
 
+import org.lorislab.armonitor.store.model.enums.StoreAgentType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,38 +27,42 @@ import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
+ * The agent.
  *
  * @author Andrej Petras
  */
 @Entity
 @Table(name = "ARM_AGENT")
 public class StoreAgent extends Persistent {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -1986215389250537156L;
-    
-    @OneToOne(fetch=FetchType.LAZY)
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_SYSTEM")
     private StoreSystem system;
-    
+
     @Column(name = "C_URL")
     private String url;
-    
+
     @Column(name = "C_TYPE")
     @Enumerated(EnumType.STRING)
     private StoreAgentType type;
 
     @Column(name = "C_AUTH")
     private boolean authentication;
-    
+
     @Column(name = "C_USER")
     private String user;
-    
+
     @Column(name = "C_PASSWORD")
     private char[] password;
 
     @Column(name = "C_SERVICE")
     private String service;
-  
+
     public String getService() {
         return service;
     }
@@ -66,7 +70,7 @@ public class StoreAgent extends Persistent {
     public void setService(String service) {
         this.service = service;
     }
-        
+
     public boolean isAuthentication() {
         return authentication;
     }
@@ -82,7 +86,7 @@ public class StoreAgent extends Persistent {
     public void setUser(String user) {
         this.user = user;
     }
-    
+
     public char[] getPassword() {
         return password;
     }
@@ -90,7 +94,7 @@ public class StoreAgent extends Persistent {
     public void setPassword(char[] password) {
         this.password = password;
     }
-        
+
     public StoreSystem getSystem() {
         return system;
     }
@@ -98,7 +102,7 @@ public class StoreAgent extends Persistent {
     public void setSystem(StoreSystem system) {
         this.system = system;
     }
-    
+
     public String getUrl() {
         return url;
     }
@@ -114,5 +118,5 @@ public class StoreAgent extends Persistent {
     public void setType(StoreAgentType type) {
         this.type = type;
     }
-        
+
 }

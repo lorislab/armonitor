@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.log.service;
 
 import java.util.ArrayList;
@@ -36,51 +35,79 @@ import org.lorislab.jel.log.parameters.impl.EnumLogParamater;
 import org.lorislab.jel.log.parameters.impl.MapLogParameter;
 
 /**
+ * The default log service configuration.
  *
  * @author Andrej Petras
  */
 public class DefaultLogServiceConfigurationImpl implements LogServiceConfiguration {
 
+    /**
+     * The default context logger.
+     */
     private static final ContextLogger CONTEXT_LOG = new DefaultContextLogger();
-    
+
+    /**
+     * The default log parameter.
+     */
     private static final LogParameter DEFAULT_PARAMETER = new DefaultReflectionLogParameter();
-    
+
+    /**
+     * The list of class log parameters.
+     */
     private static final List<ClassLogParameter> CLASS_PARAM = new ArrayList<>();
-    
+
+    /**
+     * The list of instance log parameters.
+     */
     private static final List<InstanceOfLogParameter> INSTANCE_PARAM = new ArrayList<>();
-    
+
+    /**
+     * Set up the default configuration.
+     */
     static {
-        CLASS_PARAM.add(new BasicLogParamater());  
-        
+        CLASS_PARAM.add(new BasicLogParamater());
+
         INSTANCE_PARAM.add(new MapLogParameter());
         INSTANCE_PARAM.add(new EnumLogParamater());
         INSTANCE_PARAM.add(new CollectionLogParameter());
         INSTANCE_PARAM.add(new PersistentLogParameter());
         INSTANCE_PARAM.add(new WrapperLogParameter());
         INSTANCE_PARAM.add(new MessageLogParameter());
-        
+
         INSTANCE_PARAM.add(new MailLogParameter());
-        INSTANCE_PARAM.add(new MailTemplateResourceLogParameter());        
+        INSTANCE_PARAM.add(new MailTemplateResourceLogParameter());
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ClassLogParameter> getClassLogParameters() {
         return CLASS_PARAM;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<InstanceOfLogParameter> getInstanceOfLogParameters() {
         return INSTANCE_PARAM;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LogParameter getDefaultLogParameter() {
         return DEFAULT_PARAMETER;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContextLogger getContextLogger() {
         return CONTEXT_LOG;
     }
-    
+
 }

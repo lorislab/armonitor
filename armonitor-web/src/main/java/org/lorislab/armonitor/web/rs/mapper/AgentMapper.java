@@ -17,9 +17,9 @@ package org.lorislab.armonitor.web.rs.mapper;
 
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreAgent;
-import org.lorislab.armonitor.store.model.StoreAgentType;
+import org.lorislab.armonitor.store.model.enums.StoreAgentType;
 import org.lorislab.armonitor.web.rs.model.Agent;
-import org.lorislab.armonitor.web.rs.model.AgentType;
+import org.lorislab.armonitor.web.rs.model.enums.AgentType;
 
 /**
  *

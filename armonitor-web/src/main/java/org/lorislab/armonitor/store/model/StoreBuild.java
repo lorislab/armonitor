@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.model;
 
 import java.util.Date;
@@ -31,56 +30,60 @@ import javax.persistence.TemporalType;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
+ * The build.
  *
  * @author Andrej Petras
  */
 @Entity
 @Table(name = "ARM_BUILD")
 public class StoreBuild extends Persistent {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -1095643007199796298L;
-        
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_APP")
     private StoreApplication application;
-    
+
     @Column(name = "C_AGENT")
     private String agent;
-    
+
     @Column(name = "C_UID")
     private String uid;
-    
+
     @Column(name = "C_VERSION")
     private Integer ver;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "C_DATE")
     private Date date;
-    
+
     @Column(name = "C_SERVICE")
     private String service;
-    
+
     @Column(name = "C_MVN_GROUP_ID")
     private String groupdId;
-    
+
     @Column(name = "C_MVN_ARTIFACT_ID")
     private String artifactId;
-    
+
     @Column(name = "C_MVN_VERSION")
     private String mavenVersion;
-    
+
     @Column(name = "C_RELEASE")
     private String release;
-    
+
     @Column(name = "C_SCM")
     private String scm;
-    
+
     @Column(name = "C_BUILD")
     private String build;
-    
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "C_BUILD")
-    private Set<StoreBuildParameter> parameters;   
+    private Set<StoreBuildParameter> parameters;
 
     public String getAgent() {
         return agent;
@@ -89,7 +92,7 @@ public class StoreBuild extends Persistent {
     public void setAgent(String agent) {
         this.agent = agent;
     }
-    
+
     public Set<StoreBuildParameter> getParameters() {
         return parameters;
     }
@@ -97,7 +100,7 @@ public class StoreBuild extends Persistent {
     public void setParameters(Set<StoreBuildParameter> parameters) {
         this.parameters = parameters;
     }
-        
+
     public String getBuild() {
         return build;
     }
@@ -105,7 +108,7 @@ public class StoreBuild extends Persistent {
     public void setBuild(String build) {
         this.build = build;
     }
-        
+
     public StoreApplication getApplication() {
         return application;
     }
@@ -239,5 +242,5 @@ public class StoreBuild extends Persistent {
     public void setScm(String scm) {
         this.scm = scm;
     }
-    
+
 }

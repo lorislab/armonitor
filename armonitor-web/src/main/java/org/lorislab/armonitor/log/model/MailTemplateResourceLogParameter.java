@@ -20,21 +20,31 @@ import org.lorislab.armonitor.mail.model.MailTemplateResource;
 import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
 
 /**
- *
+ * The mail template resource parameter.
+ * 
  * @author Andrej Petras
  */
 public class MailTemplateResourceLogParameter implements InstanceOfLogParameter {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean instanceOfClasses(Object parameter) {
         return parameter instanceof MailTemplateResource;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isResult() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getObject(Object parameter) {   
         MailTemplateResource res = (MailTemplateResource) parameter;

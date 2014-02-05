@@ -19,15 +19,19 @@ import java.util.Set;
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
 /**
+ * The application criteria.
  *
  * @author Andrej Petras
  */
 public class StoreApplicationCriteria extends AbstractSearchCriteria {
-    
+
+    /**
+     * The timeout configuration: second.
+     */
     private static final long serialVersionUID = -506625437892985522L;
 
     private String guid;
-    
+
     private Boolean enabled;
 
     private Set<String> projects;
@@ -45,7 +49,7 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
     public void setSystem(String system) {
         this.system = system;
     }
-        
+
     public boolean isFetchProject() {
         return fetchProject;
     }
@@ -53,7 +57,7 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
     public void setFetchProject(boolean fetchProject) {
         this.fetchProject = fetchProject;
     }
-        
+
     public boolean isFetchSCM() {
         return fetchSCM;
     }
@@ -61,7 +65,7 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
     public void setFetchSCM(boolean fetchSCM) {
         this.fetchSCM = fetchSCM;
     }
-        
+
     public String getGuid() {
         return guid;
     }
@@ -69,7 +73,7 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
     public void setGuid(String guid) {
         this.guid = guid;
     }
-    
+
     public Boolean isEnabled() {
         return enabled;
     }
@@ -85,7 +89,10 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
     public void setProjects(Set<String> projects) {
         this.projects = projects;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
         projects = null;
@@ -96,6 +103,9 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
         system = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return isEmpty(enabled, projects, guid);

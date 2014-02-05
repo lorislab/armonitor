@@ -34,6 +34,7 @@ import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.timer.model.TimerConfig;
 
 /**
+ * The timer service.
  *
  * @author Andrej Petras
  */
@@ -42,29 +43,52 @@ import org.lorislab.armonitor.timer.model.TimerConfig;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class TimerServiceBean {
 
-    private static final String AGENT_TIMER_INFO = TimerServiceBean.class.getName();
+    /**
+     * The timer info.
+     */
+    private static final String TIMER_INFO = TimerServiceBean.class.getName();
 
+    /**
+     * The logger for this class.
+     */
     private static final Logger LOGGER = Logger.getLogger(TimerServiceBean.class.getName());
 
+    /**
+     * The timer service.
+     */
     @Resource
     private TimerService timerService;
 
+    /**
+     * The configuration service.
+     */
     @EJB
     private ConfigurationServiceBean configService;
-    
+    /**
+     * The process service.
+     */
     @EJB
     private ProcessServiceBean processService;
-    
+
+    /**
+     * Initialise after start.
+     */
     @PostConstruct
     public void initialize() {
         start();
     }
 
+    /**
+     * Restart the timer.
+     */
     public void restart() {
         stop();
         start();
     }
 
+    /**
+     * Start the timer.
+     */
     public void start() {
         Timer timer = getTimer();
         if (timer == null) {
@@ -73,45 +97,56 @@ public class TimerServiceBean {
                 ScheduleExpression expression = new ScheduleExpression();
                 expression.second(config.second).minute(config.minute).hour(config.hour);
 
-                javax.ejb.TimerConfig timerConfig = new javax.ejb.TimerConfig(AGENT_TIMER_INFO, false);
+                javax.ejb.TimerConfig timerConfig = new javax.ejb.TimerConfig(TIMER_INFO, false);
                 Timer tmp = timerService.createCalendarTimer(expression, timerConfig);
-                
+
                 LOGGER.log(Level.INFO, "The timer service was started with next timeout: {0}", tmp.getNextTimeout());
             } else {
-                LOGGER.log(Level.INFO, "The timer {0} is not started.", AGENT_TIMER_INFO);
+                LOGGER.log(Level.INFO, "The timer {0} is not started.", TIMER_INFO);
             }
         } else {
-            LOGGER.log(Level.INFO, "The timer {0} is all ready running.", AGENT_TIMER_INFO);
+            LOGGER.log(Level.INFO, "The timer {0} is all ready running.", TIMER_INFO);
         }
     }
 
+    /**
+     * Stop the timer.
+     */
     public void stop() {
         Timer timer = getTimer();
         if (timer != null) {
             timer.cancel();
-            LOGGER.log(Level.INFO, "The timer {0} was cancelled.", AGENT_TIMER_INFO);
+            LOGGER.log(Level.INFO, "The timer {0} was cancelled.", TIMER_INFO);
         } else {
-            LOGGER.log(Level.INFO, "The timer {0} is not running.", AGENT_TIMER_INFO);
+            LOGGER.log(Level.INFO, "The timer {0} is not running.", TIMER_INFO);
         }
     }
 
+    /**
+     * Gets the timer.
+     *
+     * @return the timer.
+     */
     public Timer getTimer() {
         Collection<Timer> timers = timerService.getTimers();
         for (Timer timer : timers) {
-            if (AGENT_TIMER_INFO.equals(timer.getInfo())) {
+            if (TIMER_INFO.equals(timer.getInfo())) {
                 return timer;
             }
         }
         return null;
     }
 
+    /**
+     * Execution method.
+     */
     @Timeout
     public void execute() {
         TimerConfig config = configService.getConfiguration(TimerConfig.class);
         if (config.enabled) {
             processService.timerService();
         } else {
-            LOGGER.log(Level.FINEST, "The timer {0} excution is disabled.", AGENT_TIMER_INFO);
+            LOGGER.log(Level.FINEST, "The timer {0} excution is disabled.", TIMER_INFO);
         }
     }
 

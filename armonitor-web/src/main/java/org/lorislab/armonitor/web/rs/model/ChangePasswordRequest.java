@@ -13,17 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.model;
 
 /**
+ * The change password request.
  *
  * @author Andrej Petras
  */
 public class ChangePasswordRequest {
 
+    /**
+     * The old password.
+     */
     public String old;
-    
+    /**
+     * The new password.
+     */
     public String p1;
 
 }

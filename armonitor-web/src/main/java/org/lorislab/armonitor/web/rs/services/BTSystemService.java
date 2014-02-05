@@ -28,7 +28,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.BTSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
-import org.lorislab.armonitor.web.rs.model.BTSystemType;
+import org.lorislab.armonitor.web.rs.model.enums.BTSystemType;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 
 /**

@@ -15,6 +15,8 @@
  */
 package org.lorislab.armonitor.web.rs.model;
 
+import org.lorislab.armonitor.web.rs.model.enums.SCMSystemType;
+
 /**
  *
  * @author Andrej Petras

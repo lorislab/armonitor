@@ -20,21 +20,31 @@ import org.lorislab.armonitor.mail.model.Mail;
 import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
 
 /**
- *
+ * The mail log parameter.
+ * 
  * @author Andrej Petras
  */
 public class MailLogParameter implements InstanceOfLogParameter {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean instanceOfClasses(Object parameter) {
         return parameter instanceof Mail;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isResult() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getObject(Object parameter) {   
         Mail mail = (Mail) parameter;

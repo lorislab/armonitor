@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.model;
 
 import java.io.Serializable;
@@ -21,29 +20,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The change report.
  *
  * @author Andrej Petras
  */
 public class ChangeReport implements Serializable {
-    
-    private static final long serialVersionUID = -8226350181208816998L;
-    
-    private final List<Change> other = new ArrayList<>();
-    
-    private final List<Change> changes = new ArrayList<>();
 
+    /**
+     * The UID for this class.
+     */
+    private static final long serialVersionUID = -8226350181208816998L;
+    /**
+     * The other changes.
+     */
+    private final List<Change> other = new ArrayList<>();
+    /**
+     * The current changes.
+     */
+    private final List<Change> changes = new ArrayList<>();
+    /**
+     * The error changes.
+     */
     private final List<Change> errors = new ArrayList<>();
 
+    /**
+     * Gets the other changes.
+     *
+     * @return the other changes.
+     */
     public List<Change> getOther() {
         return other;
     }
-    
+
+    /**
+     * Gets the error changes.
+     *
+     * @return the error changes.
+     */
     public List<Change> getErrors() {
         return errors;
     }
-   
+
+    /**
+     * Gets the current changes.
+     *
+     * @return the current changes.
+     */
     public List<Change> getChanges() {
         return changes;
     }
-        
+
 }

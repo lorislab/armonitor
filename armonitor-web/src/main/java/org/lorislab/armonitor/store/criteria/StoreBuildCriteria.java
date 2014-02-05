@@ -13,26 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.criteria;
 
 import java.util.Date;
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
 /**
+ * The build criteria.
  *
  * @author Andrej Petras
  */
 public class StoreBuildCriteria extends AbstractSearchCriteria {
-    
+
+    /**
+     * The timeout configuration: second.
+     */
     private static final long serialVersionUID = 8885713194174673375L;
 
     private String guid;
-    
+
     private String application;
 
     private String agent;
-    
+
     private Date date;
 
     private boolean fetchParameters;
@@ -46,7 +49,7 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
     public void setFetchApplication(boolean fetchApplication) {
         this.fetchApplication = fetchApplication;
     }
-        
+
     public boolean isFetchParameters() {
         return fetchParameters;
     }
@@ -54,7 +57,7 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
     public void setFetchParameters(boolean fetchParameters) {
         this.fetchParameters = fetchParameters;
     }
-        
+
     public String getGuid() {
         return guid;
     }
@@ -62,7 +65,7 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
     public void setGuid(String guid) {
         this.guid = guid;
     }
-    
+
     public String getAgent() {
         return agent;
     }
@@ -70,7 +73,7 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
     public void setAgent(String agent) {
         this.agent = agent;
     }
-    
+
     public Date getDate() {
         return date;
     }
@@ -78,7 +81,7 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
     public void setDate(Date date) {
         this.date = date;
     }
-        
+
     public String getApplication() {
         return application;
     }
@@ -86,7 +89,10 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
     public void setApplication(String application) {
         this.application = application;
     }
-        
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
         application = null;
@@ -96,9 +102,12 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
         fetchApplication = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return isEmpty(application, date, agent);
     }
-    
+
 }

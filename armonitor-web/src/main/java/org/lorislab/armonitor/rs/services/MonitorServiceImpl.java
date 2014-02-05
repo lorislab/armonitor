@@ -26,14 +26,21 @@ import org.lorislab.armonitor.rs.service.MonitorService;
 import org.lorislab.armonitor.store.model.StoreBuild;
 
 /**
- *
+ * The monitor rest-service implementation.
+ * 
  * @author Andrej Petras
  */
 public class MonitorServiceImpl implements MonitorService {
 
+    /**
+     * The process service.
+     */
     @EJB
     private ProcessServiceBean service;
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Result buildRequest(Request request) throws Exception {
         Result result = new Result();

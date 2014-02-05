@@ -17,10 +17,14 @@
 package org.lorislab.armonitor.store.model.enums;
 
 /**
- *
+ * The SCM system type.
+ * 
  * @author Andrej Petras
  */
 public enum StoreSCMSystemType {
-    
+   
+    /**
+     * The subversion type.
+     */
     SUBVERSION;
 }

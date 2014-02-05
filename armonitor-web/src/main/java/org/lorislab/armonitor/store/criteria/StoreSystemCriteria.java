@@ -19,15 +19,19 @@ import java.util.Set;
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
 /**
+ * The system criteria.
  *
  * @author Andrej Petras
  */
 public class StoreSystemCriteria extends AbstractSearchCriteria {
 
+    /**
+     * The timeout configuration: second.
+     */
     private static final long serialVersionUID = -3270039293034055465L;
 
     private String guid;
-    
+
     private Boolean enabled;
 
     private Set<String> applications;
@@ -35,7 +39,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
     private Boolean timer;
 
     private String key;
-    
+
     private boolean fetchAgent;
 
     private boolean fetchApplication;
@@ -49,7 +53,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
     public void setFetchRoles(boolean fetchRoles) {
         this.fetchRoles = fetchRoles;
     }
-        
+
     public String getKey() {
         return key;
     }
@@ -57,7 +61,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
     public void setKey(String key) {
         this.key = key;
     }
-    
+
     public boolean isFetchApplication() {
         return fetchApplication;
     }
@@ -65,7 +69,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
     public void setFetchApplication(boolean fetchApplication) {
         this.fetchApplication = fetchApplication;
     }
-        
+
     public String getGuid() {
         return guid;
     }
@@ -73,7 +77,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
     public void setGuid(String guid) {
         this.guid = guid;
     }
-    
+
     public boolean isFetchAgent() {
         return fetchAgent;
     }
@@ -81,7 +85,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
     public void setFetchAgent(boolean fetchAgent) {
         this.fetchAgent = fetchAgent;
     }
-        
+
     public Boolean isTimer() {
         return timer;
     }
@@ -89,7 +93,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
     public void setTimer(Boolean timer) {
         this.timer = timer;
     }
-    
+
     public Boolean isEnabled() {
         return enabled;
     }
@@ -106,6 +110,9 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
         this.applications = applications;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
         applications = null;
@@ -117,6 +124,9 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
         fetchRoles = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return isEmpty(enabled, timer, applications, key);

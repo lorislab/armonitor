@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.criteria;
 
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
-
 /**
+ * The project criteria.
  *
  * @author Andrej Petras
  */
 public class StoreProjectCriteria extends AbstractSearchCriteria {
-    
+
+    /**
+     * The timeout configuration: second.
+     */
     private static final long serialVersionUID = 617467092691040328L;
-    
+
     private String guid;
-    
+
     private Boolean enabled;
 
     private String application;
@@ -44,7 +46,7 @@ public class StoreProjectCriteria extends AbstractSearchCriteria {
     public void setFetchBTS(boolean fetchBTS) {
         this.fetchBTS = fetchBTS;
     }
-        
+
     public String getGuid() {
         return guid;
     }
@@ -52,7 +54,7 @@ public class StoreProjectCriteria extends AbstractSearchCriteria {
     public void setGuid(String guid) {
         this.guid = guid;
     }
-    
+
     public boolean isFetchApplication() {
         return fetchApplication;
     }
@@ -60,7 +62,7 @@ public class StoreProjectCriteria extends AbstractSearchCriteria {
     public void setFetchApplication(boolean fetchApplication) {
         this.fetchApplication = fetchApplication;
     }
-        
+
     public String getApplication() {
         return application;
     }
@@ -68,7 +70,7 @@ public class StoreProjectCriteria extends AbstractSearchCriteria {
     public void setApplication(String application) {
         this.application = application;
     }
-        
+
     public Boolean isEnabled() {
         return enabled;
     }
@@ -77,6 +79,9 @@ public class StoreProjectCriteria extends AbstractSearchCriteria {
         this.enabled = enabled;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
         enabled = null;
@@ -86,6 +91,9 @@ public class StoreProjectCriteria extends AbstractSearchCriteria {
         fetchBTS = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return isEmpty(enabled, application, guid);

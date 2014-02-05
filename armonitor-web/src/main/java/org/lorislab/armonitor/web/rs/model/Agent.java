@@ -13,25 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.model;
 
+import org.lorislab.armonitor.web.rs.model.enums.AgentType;
+
 /**
+ * The agent.
  *
  * @author Andrej Petras
  */
 public class Agent {
-    
-    public String guid;
-    
-    public String url;
-        
-    public AgentType type;
-   
-    public boolean authentication;
-    
-    public String user;
 
+    /**
+     * The GUID.
+     */
+    public String guid;
+    /**
+     * The URL.
+     */
+    public String url;
+    /**
+     * The agent type.
+     */
+    public AgentType type;
+    /**
+     * The authentication flag.
+     */
+    public boolean authentication;
+    /**
+     * The user name.
+     */
+    public String user;
+    /**
+     * The service.
+     */
     public String service;
 
 }

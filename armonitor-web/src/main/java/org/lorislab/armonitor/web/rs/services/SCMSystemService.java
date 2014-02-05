@@ -29,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.SCMSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
-import org.lorislab.armonitor.web.rs.model.SCMSystemType;
+import org.lorislab.armonitor.web.rs.model.enums.SCMSystemType;
 
 /**
  *

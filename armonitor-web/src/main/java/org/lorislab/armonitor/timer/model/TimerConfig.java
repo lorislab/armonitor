@@ -17,18 +17,30 @@
 package org.lorislab.armonitor.timer.model;
 
 /**
- *
+ * The timer configuration model.
+ * 
  * @author Andrej Petras
  */
 public class TimerConfig {
-    
+   
+    /**
+     * Start the timer after restart.
+     */
     public boolean start = false;
-    
+    /**
+     * Enable the execution of the timer.
+     */
     public boolean enabled = false;
-    
+    /**
+     * The timeout configuration: second.
+     */
     public String second = "*/30";
-    
+    /**
+     * The timeout configuration: minute.
+     */    
     public String minute = "*";
-    
+    /**
+     * The timeout configuration: hour.
+     */    
     public String hour = "*";
 }

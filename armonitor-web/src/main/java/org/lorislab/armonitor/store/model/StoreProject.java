@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.model;
 
 import java.util.Set;
@@ -28,29 +27,33 @@ import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
+ * The project.
  *
  * @author Andrej Petras
  */
 @Entity
 @Table(name = "ARM_PROJECT")
 public class StoreProject extends Persistent {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -4437511008574023358L;
-    
+
     @Column(name = "C_NAME")
     private String name;
-    
+
     @Column(name = "C_BTS_ID")
     private String btsId;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "C_BTS")    
+    @JoinColumn(name = "C_BTS")
     private StoreBTSystem bts;
-    
+
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "project")   
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "project")
     private Set<StoreApplication> applications;
 
     public StoreBTSystem getBts() {
@@ -60,7 +63,7 @@ public class StoreProject extends Persistent {
     public void setBts(StoreBTSystem bts) {
         this.bts = bts;
     }
-    
+
     public Set<StoreApplication> getApplications() {
         return applications;
     }
@@ -68,7 +71,7 @@ public class StoreProject extends Persistent {
     public void setApplications(Set<StoreApplication> applications) {
         this.applications = applications;
     }
-        
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -84,7 +87,7 @@ public class StoreProject extends Persistent {
     public void setBtsId(String btsId) {
         this.btsId = btsId;
     }
-                  
+
     /**
      * @return the name
      */
@@ -98,5 +101,5 @@ public class StoreProject extends Persistent {
     public void setName(String name) {
         this.name = name;
     }
-    
+
 }

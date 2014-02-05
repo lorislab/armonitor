@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.armonitor.web.rs.model;
+
+package org.lorislab.armonitor.web.rs.model.enums;
 
 /**
- *
+ * The bug tracking system type.
+ * 
  * @author Andrej Petras
  */
-public enum AgentType {
-
-    INTEGRATION,
-    
-    SERVICE;
+public enum BTSystemType {
+   
+    /**
+     * The JIRA.
+     */
+    JIRA;
 }

@@ -20,7 +20,7 @@ import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBTSystem;
 import org.lorislab.armonitor.store.model.enums.StoreBTSystemType;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
-import org.lorislab.armonitor.web.rs.model.BTSystemType;
+import org.lorislab.armonitor.web.rs.model.enums.BTSystemType;
 
 /**
  *

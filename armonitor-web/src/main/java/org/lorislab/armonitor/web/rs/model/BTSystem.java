@@ -16,6 +16,8 @@
 
 package org.lorislab.armonitor.web.rs.model;
 
+import org.lorislab.armonitor.web.rs.model.enums.BTSystemType;
+
 /**
  *
  * @author Andrej Petras

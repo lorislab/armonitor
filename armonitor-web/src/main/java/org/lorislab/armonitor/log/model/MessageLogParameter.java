@@ -20,21 +20,31 @@ import javax.jms.Message;
 import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
 
 /**
- *
+ * The message log parameter.
+ * 
  * @author Andrej Petras
  */
 public class MessageLogParameter implements InstanceOfLogParameter {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean instanceOfClasses(Object parameter) {
         return parameter instanceof Message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isResult() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getObject(Object parameter) {   
         return parameter.getClass().getSimpleName();

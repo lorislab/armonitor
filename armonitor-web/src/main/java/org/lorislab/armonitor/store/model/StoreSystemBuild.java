@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.model;
 
 import java.util.Date;
@@ -33,20 +32,23 @@ import org.lorislab.jel.jpa.model.Persistent;
 
 /**
  * The system build.
- * 
+ *
  * @author Andrej Petras
  */
 @Entity
 @Table(name = "ARM_SYSTEM_BUILD")
 public class StoreSystemBuild extends Persistent {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -5357640264532302086L;
-    
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "C_SYSTEM")
     private StoreSystem system;
-      
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)    
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "C_BUILD")
     private StoreBuild build;
 
@@ -65,7 +67,7 @@ public class StoreSystemBuild extends Persistent {
     public void setType(StoreSystemBuildType type) {
         this.type = type;
     }
-        
+
     public Date getDate() {
         return date;
     }
@@ -73,7 +75,7 @@ public class StoreSystemBuild extends Persistent {
     public void setDate(Date date) {
         this.date = date;
     }
-        
+
     public StoreSystem getSystem() {
         return system;
     }
@@ -89,5 +91,5 @@ public class StoreSystemBuild extends Persistent {
     public void setBuild(StoreBuild build) {
         this.build = build;
     }
-     
+
 }

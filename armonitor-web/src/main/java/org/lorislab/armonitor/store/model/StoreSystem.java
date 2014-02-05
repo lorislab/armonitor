@@ -30,6 +30,7 @@ import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
+ * The system.
  *
  * @author Andrej Petras
  */
@@ -37,6 +38,9 @@ import org.lorislab.jel.jpa.model.Persistent;
 @Table(name = "ARM_SYSTEM")
 public class StoreSystem extends Persistent {
 
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -4290539931465740615L;
 
     @ManyToOne(fetch = FetchType.LAZY)

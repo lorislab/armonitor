@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.model;
+package org.lorislab.armonitor.store.model.enums;
 
 /**
- *
+ * The build parameter types.
+ * 
  * @author Andrej Petras
  */
-public enum StoreAgentType {
-    
-    INTEGRATION,
-    
-    SERVICE;
+public enum StoreBuildParameterType {
+    /**
+     * The manifest.
+     */
+    MANIFEST,
+    /**
+     * Other.
+     */
+    OTHER;
+
 }

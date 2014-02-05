@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.config.model;
 
 import javax.persistence.Column;
@@ -21,32 +20,62 @@ import javax.persistence.Entity;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
+ * The configuration model attribute.
  *
  * @author Andrej Petras
  */
 @Entity(name = "ARM_CONFIG_ATTR")
 public class Attribute extends Persistent {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = 8218977162091953419L;
 
+    /**
+     * The name.
+     */
     @Column(name = "C_NAME")
     private String name;
-    
+
+    /**
+     * The value.
+     */
     @Column(name = "C_VALUE")
     private String value;
 
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name the name.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value.
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Sets the value.
+     *
+     * @param value the value.
+     */
     public void setValue(String value) {
         this.value = value;
     }

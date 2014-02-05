@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.lorislab.armonitor.web.rs.model;
+package org.lorislab.armonitor.web.rs.model.enums;
 
 /**
+ * The agent type.
  *
  * @author Andrej Petras
  */
-public enum SCMSystemType {
-    
-    SUBVERSION;
+public enum AgentType {
+
+    /**
+     * The integration.
+     */
+    INTEGRATION,
+    /**
+     * The service.
+     */
+    SERVICE;
 }

@@ -24,12 +24,20 @@ import org.lorislab.armonitor.rs.model.Request;
 import org.lorislab.armonitor.rs.model.Result;
 
 /**
+ * The monitor process service.
  *
  * @author Andrej Petras
  */
 @Path("monitor")
 public interface MonitorService {
-    
+
+    /**
+     * Sends the build request.
+     *
+     * @param request the request.
+     * @return the result.
+     * @throws Exception if the method fails.
+     */
     @POST
     @Path("request/build")
     @Produces(MediaType.APPLICATION_JSON)

@@ -13,49 +13,94 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.criteria;
 
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
 /**
+ * The agent criteria.
  *
  * @author Andrej Petras
  */
 public class StoreAgentCriteria extends AbstractSearchCriteria {
-    
+
+    /**
+     * The timeout configuration: second.
+     */
     private static final long serialVersionUID = 8700313965472589998L;
 
+    /**
+     * The system.
+     */
     private String system;
 
+    /**
+     * The GUID.
+     */
     private String guid;
 
+    /**
+     * The fetch system flag.
+     */
     private boolean fetchSystem;
 
+    /**
+     * Gets the fetch system flag.
+     *
+     * @return the fetch system flag.
+     */
     public boolean isFetchSystem() {
         return fetchSystem;
     }
 
+    /**
+     * Sets the fetch system flag.
+     *
+     * @param fetchSystem the fetch system flag.
+     */
     public void setFetchSystem(boolean fetchSystem) {
         this.fetchSystem = fetchSystem;
     }
-        
+
+    /**
+     * Gets the GUID.
+     *
+     * @return the GUID.
+     */
     public String getGuid() {
         return guid;
     }
 
+    /**
+     * Sets the GUID.
+     *
+     * @param guid the GUID.
+     */
     public void setGuid(String guid) {
         this.guid = guid;
     }
-        
+
+    /**
+     * Gets the system.
+     *
+     * @return the system.
+     */
     public String getSystem() {
         return system;
     }
 
+    /**
+     * Sets the system.
+     *
+     * @param system the system.
+     */
     public void setSystem(String system) {
         this.system = system;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
         system = null;
@@ -63,9 +108,12 @@ public class StoreAgentCriteria extends AbstractSearchCriteria {
         fetchSystem = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return isEmpty(system, guid);
     }
-    
+
 }
