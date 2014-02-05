@@ -36,6 +36,16 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
 
     private boolean fetchProject;
 
+    private String system;
+
+    public String getSystem() {
+        return system;
+    }
+
+    public void setSystem(String system) {
+        this.system = system;
+    }
+        
     public boolean isFetchProject() {
         return fetchProject;
     }
@@ -83,6 +93,7 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
         guid = null;
         fetchSCM = false;
         fetchProject = false;
+        system = null;
     }
 
     @Override

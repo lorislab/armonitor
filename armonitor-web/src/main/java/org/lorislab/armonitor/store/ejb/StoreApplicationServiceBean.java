@@ -31,6 +31,8 @@ import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreApplication_;
+import org.lorislab.armonitor.store.model.StoreProject_;
+import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
@@ -97,6 +99,10 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
 
         if (criteria.getProjects() != null && !criteria.getProjects().isEmpty()) {
             predicates.add(root.get(StoreApplication_.project).in(criteria.getProjects()));
+        }
+        
+        if (criteria.getSystem()!= null) {
+            predicates.add(cb.in(root.join(StoreApplication_.systems).get(StoreSystem_.guid)).value(criteria.getSystem()));
         }
         
         if (!predicates.isEmpty()) {

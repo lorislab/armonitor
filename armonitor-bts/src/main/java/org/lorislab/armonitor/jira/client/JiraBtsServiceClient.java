@@ -18,6 +18,8 @@ package org.lorislab.armonitor.jira.client;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
 import org.lorislab.armonitor.bts.model.BtsIssue;
 import org.lorislab.armonitor.bts.service.BtsServiceClient;
@@ -34,6 +36,8 @@ import org.lorislab.armonitor.jira.client.services.SearchClient;
  */
 public class JiraBtsServiceClient implements BtsServiceClient {
 
+    private static final Logger LOGGER = Logger.getLogger(JiraBtsServiceClient.class.getName());
+    
     private static final String DEFAULT_RESOLUTION = "Unresolved";
     
     @Override
@@ -80,8 +84,20 @@ public class JiraBtsServiceClient implements BtsServiceClient {
                 jql.append(id);
                 ff = true;
             }
+            jql.append(')');
         }
         
+        // id
+        if (criteria.getId() != null) {
+            if (first) {
+                 jql.append(" and ");
+            }              
+            jql.append("id = ");
+            jql.append(criteria.getId());
+        }
+        
+        
+        LOGGER.log(Level.INFO, "Jira criteria: {0}", jql.toString());
         // create the client
         JIRAClient btsClient = new JIRAClient(criteria.getServer(), criteria.getUser(), criteria.getPassword(), criteria.isAuth());
         SearchClient search = btsClient.createSearchClient();

@@ -25,6 +25,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
@@ -75,7 +76,19 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
         CriteriaQuery<StoreSystemBuild> cq = getBaseEAO().createCriteriaQuery();
         Root<StoreSystemBuild> root = cq.from(StoreSystemBuild.class);
 
-        List<Predicate> predicates = new ArrayList<>();
+        if (criteria.isFetchBuild()) {
+            root.fetch(StoreSystemBuild_.build, JoinType.LEFT);
+        }
+        
+        if (criteria.isFetchSystem()) {
+            root.fetch(StoreSystemBuild_.system, JoinType.LEFT);
+        }
+        
+        List<Predicate> predicates = new ArrayList<>();        
+        if (criteria.getGuid() != null) {
+            predicates.add(cb.equal(root.get(StoreSystemBuild_.guid), criteria.getGuid()));
+        }
+        
         if (criteria.getSystem() != null) {
             predicates.add(cb.equal(root.get(StoreSystemBuild_.system).get(StoreSystem_.guid), criteria.getSystem()));
         }

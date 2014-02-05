@@ -18,6 +18,7 @@ package org.lorislab.armonitor.mail.util;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +59,13 @@ public final class MailUtil {
     
     static {
         CFG.setDefaultEncoding("UTF-8");
-        CFG.setClassForTemplateLoading(MailUtil.class, TEMPLATE_DIR_NAME);        
+        try {
+            CFG.setDirectoryForTemplateLoading(new File("c:\\app\\"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+//        CFG.setClassForTemplateLoading(MailUtil.class, TEMPLATE_DIR_NAME);        
     }
     
     /**

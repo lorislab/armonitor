@@ -17,6 +17,7 @@ package org.lorislab.armonitor.ejb;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -264,18 +265,36 @@ public class ProcessServiceBean {
         if (!createSystemBuild) {
             return;
         }
-
-        try {
+        
             StoreSystemBuild sb = new StoreSystemBuild();
             sb.setBuild(buildOld);
             sb.setSystem(tmp);
             sb.setType(type);
             sb.setDate(new Date());
-            systemBuildService.saveSystemBuild(sb);
-
+            sb = systemBuildService.saveSystemBuild(sb);
+            
+            send(sb.getGuid());
+    }
+    
+    public void sendReportAsync(String guid) {
+        send(guid);
+    }
+    
+    public void sendReport(String guid) {
+        
+        StoreSystemBuildCriteria ssbc = new StoreSystemBuildCriteria();
+        ssbc.setGuid(guid);
+        ssbc.setFetchBuild(true);
+        ssbc.setFetchSystem(true);
+        
+        StoreSystemBuild sb = systemBuildService.getSystemBuild(ssbc);
+        StoreSystem tmp = sb.getSystem();
+        StoreBuild build = sb.getBuild();
+        
+         try {
             // load the application
             StoreApplicationCriteria sac = new StoreApplicationCriteria();
-            sac.setGuid(tmp.getApplication().getGuid());
+            sac.setSystem(tmp.getGuid());
             sac.setFetchSCM(true);
             StoreApplication app = appService.getApplication(sac);
             if (app == null) {
@@ -284,7 +303,7 @@ public class ProcessServiceBean {
 
             // load the project
             StoreProjectCriteria pc = new StoreProjectCriteria();
-            pc.setApplication(tmp.getApplication().getGuid());
+            pc.setApplication(app.getGuid());
             pc.setFetchBTS(true);
             StoreProject project = projectService.getProject(pc);
             if (project == null) {
@@ -327,7 +346,7 @@ public class ProcessServiceBean {
             // create the server link
             String server = scm.getServer() + app.getScmBranches();
             server = server.replaceAll(VERSION_REGEX, build.getMavenVersion());
-
+            
             // get the SCM log
             ScmCriteria criteria = new ScmCriteria();
             criteria.setType(scm.getType().name());
@@ -345,7 +364,7 @@ public class ProcessServiceBean {
 
                 // search issues in the SCM log.
                 for (ScmLog scmLog : scmLogs) {
-                    LOGGER.log(Level.INFO, "REV: " + scmLog.getId());
+//                    LOGGER.log(Level.FINEST, "REV: {0} {1} {2}", new Object[]{ scmLog.getId(), scmLog.getDate(), scmLog.getMessage()});
                     Matcher matcher = searchPattern.matcher(scmLog.getMessage());
                     while (matcher.find()) {
                         String issue = matcher.group();
@@ -370,14 +389,21 @@ public class ProcessServiceBean {
             // get the wrong commits from the BTS
             if (!errors.isEmpty()) {
                 bc.setVersion(null);
-                bc.setProject(null);
-                List<BtsIssue> issues2 = BtsService.getIssues(bc);
-                if (issues2 != null) {
-                    for (BtsIssue issue : issues2) {
-                        Change change = errors.get(issue.getId());
-                        if (change != null) {
-                            change.setIssue(issue);
+                bc.setProject(null);                
+                for (String error : errors.keySet()) {
+                    bc.setId(error);
+                    try {
+                        List<BtsIssue> issues2 = BtsService.getIssues(bc);
+                        if (issues2 != null && !issues2.isEmpty()) {
+                            BtsIssue issue = issues2.get(0);
+                            Change change = errors.get(issue.getId());
+                            if (change != null) {
+                                change.setIssue(issue);
+                            }                        
                         }
+                    } catch (Exception ex) {
+                        LOGGER.log(Level.WARNING, "{0} is not valid issue for this project", error);
+                        LOGGER.log(Level.FINEST, "Error get the BTS issue", ex);
                     }
                 }
             }
@@ -390,11 +416,11 @@ public class ProcessServiceBean {
 
             // notification
             Set<String> users = userService.getUsersEmailsForSystem(tmp.getGuid());
-            List<Mail> mails = createBuildDeployedMails(users, tmp, build, project, changeReport);
+            List<Mail> mails = createBuildDeployedMails(users, tmp, build, project, changeReport, app, sb);
             send(mails);
 
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error: {0}", ex.getMessage());
+            LOGGER.log(Level.SEVERE, "Error: " + ex.getMessage(), ex);
         }
 
     }
@@ -429,32 +455,12 @@ public class ProcessServiceBean {
     /**
      * Send the notification asynchrony.
      *
-     * @param item the serialisable.
-     */
-    public void exec(Serializable item) {
-        if (item != null) {
-            Connection connection = null;
-            try {
-                connection = jmsConnectionFactory.createConnection();
-                javax.jms.Session session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
-                MessageProducer publisher = session.createProducer(queue);
-                connection.start();
-                ObjectMessage message = session.createObjectMessage(item);
-                publisher.send(message);
-            } catch (JMSException exc) {
-                LOGGER.log(Level.SEVERE, "Error by seding the process message.", exc);
-            } finally {
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (JMSException e) {
-                        LOGGER.log(Level.SEVERE, "Error by closing the queue connection.", e);
-                    }
-                }
-            }
-        }
+     * @param item the serialisable items.
+     */    
+    private void send(Serializable item) {
+        send(Arrays.asList(item));
     }
-
+    
     /**
      * Send the notification asynchrony.
      *

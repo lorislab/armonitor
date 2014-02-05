@@ -18,7 +18,6 @@ package org.lorislab.armonitor.mail.ejb;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;

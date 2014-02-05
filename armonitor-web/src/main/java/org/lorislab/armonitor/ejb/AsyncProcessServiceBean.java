@@ -68,6 +68,9 @@ public class AsyncProcessServiceBean implements MessageListener {
                         } else if (object instanceof Mail) {
                             Mail request = (Mail) object;
                             processService.process(request);
+                        } else if (object instanceof String) {
+                            String guid = (String) object;
+                            processService.sendReport(guid);
                         } else {
                             LOGGER.log(Level.SEVERE, "Message content object not supported format!");
                         }

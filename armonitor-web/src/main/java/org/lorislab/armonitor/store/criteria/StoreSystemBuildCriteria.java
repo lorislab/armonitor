@@ -32,6 +32,26 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     
     private String build;
 
+    private boolean fetchSystem;
+    
+    private boolean fetchBuild;
+
+    public boolean isFetchBuild() {
+        return fetchBuild;
+    }
+
+    public void setFetchBuild(boolean fetchBuild) {
+        this.fetchBuild = fetchBuild;
+    }
+
+    public boolean isFetchSystem() {
+        return fetchSystem;
+    }
+
+    public void setFetchSystem(boolean fetchSystem) {
+        this.fetchSystem = fetchSystem;
+    }
+        
     public String getGuid() {
         return guid;
     }
@@ -60,6 +80,8 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     public void reset() {
         system = null;
         build = null;
+        fetchSystem = false;
+        fetchBuild = false;
     }
 
     @Override
