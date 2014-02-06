@@ -48,10 +48,6 @@ public class Arm implements Serializable {
      */
     private String version;
     /**
-     * The release.
-     */
-    private String release;
-    /**
      * The SCM.
      */
     private String scm;

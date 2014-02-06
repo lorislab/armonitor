@@ -30,16 +30,23 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 /**
+ * The subversion service client.
  *
  * @author Andrej Petras
  */
 public class SvnScmServiceClient implements ScmServiceClient {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getType() {
         return "SUBVERSION";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ScmLog> getLog(ScmCriteria criteria) throws Exception {
 

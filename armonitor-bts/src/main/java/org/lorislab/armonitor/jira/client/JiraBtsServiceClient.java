@@ -59,7 +59,7 @@ public class JiraBtsServiceClient implements BtsServiceClient {
      */
     @Override
     public List<BtsIssue> getIssues(BtsCriteria criteria) throws Exception {
-        List<BtsIssue> result = null;
+        List<BtsIssue> result = new ArrayList<>();
 
         boolean first = false;
         StringBuilder jql = new StringBuilder();
@@ -116,11 +116,31 @@ public class JiraBtsServiceClient implements BtsServiceClient {
         SearchCriteria sc = new SearchCriteria();
         sc.setJql(jql.toString());
         sc.setFields(Arrays.asList(FieldNames.STATUS, FieldNames.SUMMARY, FieldNames.ASSIGNEE, FieldNames.RESOLUTION));
+        sc.setMaxResults(100);
 
         // search
-        SearchResult sr = search.search(sc);
+        SearchResult sr;
+        do {
+            sr = search.search(sc);
+
+            List<BtsIssue> items = map(sr);
+            result.addAll(items);
+
+            sc.setStartAt(sc.getStartAt() + sr.getMaxResults());
+        } while (sc.getStartAt() < sr.getTotal());
+
+        return result;
+    }
+
+    /**
+     * Map the search result to the issue model.
+     *
+     * @param sr the search result.
+     * @return the list of issues.
+     */
+    private List<BtsIssue> map(SearchResult sr) {
+        List<BtsIssue> result = new ArrayList<>();
         if (sr != null) {
-            result = new ArrayList<>();
             for (Issue issue : sr.getIssues()) {
                 BtsIssue i = new BtsIssue();
                 i.setId(issue.getKey());
@@ -137,7 +157,6 @@ public class JiraBtsServiceClient implements BtsServiceClient {
                 result.add(i);
             }
         }
-
         return result;
     }
 

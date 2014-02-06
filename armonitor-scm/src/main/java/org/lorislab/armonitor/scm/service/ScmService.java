@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.scm.service;
 
 import java.util.HashMap;
@@ -27,46 +26,72 @@ import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.model.ScmLog;
 
 /**
+ * The SCM service.
  *
  * @author Andrej Petras
  */
 public final class ScmService {
-    
+
+    /**
+     * The logger for this class.
+     */
     private static final Logger LOGGER = Logger.getLogger(ScmService.class.getName());
-    
+    /**
+     * The cache of the service clients.
+     */
     private static final Map<String, ScmServiceClient> CLIENTS = new HashMap<>();
-    
+
+    /**
+     * Loads the service clients.
+     */
     static {
         ServiceLoader<ScmServiceClient> services = ServiceLoader.load(ScmServiceClient.class);
         if (services != null) {
             Iterator<ScmServiceClient> iter = services.iterator();
             while (iter.hasNext()) {
                 ScmServiceClient service = iter.next();
-                LOGGER.log(Level.FINE,"Add SCM service {0}", service.getClass().getName());
+                LOGGER.log(Level.FINE, "Add SCM service {0}", service.getClass().getName());
                 CLIENTS.put(service.getType(), service);
             }
-        }        
-    }  
-    
+        }
+    }
+
+    /**
+     * The default constructor.
+     */
     private ScmService() {
         // empty constructor
     }
-    
-    public static List<ScmLog> getIssues(ScmCriteria criteria) throws Exception {
+
+    /**
+     * Gets the list of issues.
+     *
+     * @param criteria the criteria.
+     * @return the list of logs.
+     * @throws Exception if the method fails.
+     */
+    public static List<ScmLog> getLog(ScmCriteria criteria) throws Exception {
         if (criteria == null) {
             throw new Exception("Missing bug tracking search criteria!");
         }
-        
+
         // check client
-        ScmServiceClient client = isSupported(criteria.getType());            
+        ScmServiceClient client = getClient(criteria.getType());
         return client.getLog(criteria);
     }
 
-    public static ScmServiceClient isSupported(String type) throws Exception {
+    /**
+     * Gets the client by type.
+     *
+     * @param type the type.
+     * @return the service client.
+     * @throws Exception if the method fails.
+     */
+    public static ScmServiceClient getClient(String type) throws Exception {
         ScmServiceClient client = CLIENTS.get(type);
         if (client == null) {
             throw new Exception("The type " + type + " of the scm service is not supported.");
-        } 
+        }
         return client;
     }
 }

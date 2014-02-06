@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,7 +67,6 @@ import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
-import org.lorislab.armonitor.store.model.enums.StoreBTSystemType;
 import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 
 /**
@@ -327,6 +325,8 @@ public class ProcessServiceBean {
             bc.setType(bts.getType().name());
             bc.setVersion(build.getMavenVersion());
             bc.setProject(project.getBtsId());
+            
+            
             List<BtsIssue> issues = BtsService.getIssues(bc);
             if (issues != null) {
                 for (BtsIssue issue : issues) {
@@ -354,7 +354,7 @@ public class ProcessServiceBean {
             criteria.setAuth(scm.isAuth());
             criteria.setUser(scm.getUser());
             criteria.setPassword(scm.getPassword());
-            List<ScmLog> scmLogs = ScmService.getIssues(criteria);
+            List<ScmLog> scmLogs = ScmService.getLog(criteria);
 
             if (scmLogs != null) {
 

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.scm.service;
 
 import java.util.List;
@@ -21,12 +20,25 @@ import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.model.ScmLog;
 
 /**
+ * The SCM service client.
  *
  * @author Andrej Petras
  */
 public interface ScmServiceClient {
-            
+
+    /**
+     * Gets the type.
+     *
+     * @return the type.
+     */
     public String getType();
-    
-    public List<ScmLog> getLog(ScmCriteria criteria) throws Exception;    
+
+    /**
+     * Gets the log.
+     *
+     * @param criteria the criteria.
+     * @return the list of log items.
+     * @throws Exception if the method fails.
+     */
+    public List<ScmLog> getLog(ScmCriteria criteria) throws Exception;
 }
