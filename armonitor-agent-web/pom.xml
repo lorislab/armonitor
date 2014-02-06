@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.lorislab.armonitor</groupId>
 		<artifactId>armonitor</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 		<relativePath>../</relativePath>
 	</parent>
 	
@@ -70,9 +70,7 @@
 								<phase>package</phase>
 								<configuration>
 									<tasks>
-										<copy
-											file="${project.build.directory}/${project.build.finalName}.war"
-											tofile="${server.home.dir}/standalone/deployments/${project.build.finalName}.war" />
+										<copy file="${project.build.directory}/${project.build.finalName}.war" tofile="${server.home.dir}/standalone/deployments/${project.build.finalName}.war" />
 									</tasks>
 								</configuration>
 								<goals>
