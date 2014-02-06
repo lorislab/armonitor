@@ -31,41 +31,53 @@ import org.lorislab.armonitor.jira.client.model.SearchResult;
 import org.lorislab.armonitor.jira.client.services.SearchClient;
 
 /**
+ * The bug tracking JIRA client service.
  *
  * @author Andrej Petras
  */
 public class JiraBtsServiceClient implements BtsServiceClient {
 
+    /**
+     * The logger for this class.
+     */
     private static final Logger LOGGER = Logger.getLogger(JiraBtsServiceClient.class.getName());
-    
+    /**
+     * The default resolution status.
+     */
     private static final String DEFAULT_RESOLUTION = "Unresolved";
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getType() {
         return "JIRA";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<BtsIssue> getIssues(BtsCriteria criteria) throws Exception {
         List<BtsIssue> result = null;
-        
-        boolean first = false;        
-        StringBuilder jql = new StringBuilder();        
-        
+
+        boolean first = false;
+        StringBuilder jql = new StringBuilder();
+
         // version
         if (criteria.getVersion() != null) {
             if (first) {
-                 jql.append(" and ");
+                jql.append(" and ");
             }
             jql.append("fixVersion = \"").append(criteria.getVersion()).append('"');
             first = true;
         }
-        
+
         // project
         if (criteria.getProject() != null) {
             if (first) {
-                 jql.append(" and ");
-            }            
+                jql.append(" and ");
+            }
             jql.append("project = ").append(criteria.getProject());
             first = true;
         }
@@ -73,8 +85,8 @@ public class JiraBtsServiceClient implements BtsServiceClient {
         // ids
         if (criteria.getIds() != null && !criteria.getIds().isEmpty()) {
             if (first) {
-                 jql.append(" and ");
-            }              
+                jql.append(" and ");
+            }
             jql.append("id in (");
             boolean ff = false;
             for (String id : criteria.getIds()) {
@@ -86,17 +98,16 @@ public class JiraBtsServiceClient implements BtsServiceClient {
             }
             jql.append(')');
         }
-        
+
         // id
         if (criteria.getId() != null) {
             if (first) {
-                 jql.append(" and ");
-            }              
+                jql.append(" and ");
+            }
             jql.append("id = ");
             jql.append(criteria.getId());
         }
-        
-        
+
         LOGGER.log(Level.INFO, "Jira criteria: {0}", jql.toString());
         // create the client
         JIRAClient btsClient = new JIRAClient(criteria.getServer(), criteria.getUser(), criteria.getPassword(), criteria.isAuth());
@@ -130,6 +141,9 @@ public class JiraBtsServiceClient implements BtsServiceClient {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getIdPattern(String id) {
         return id + "\\-\\d+";

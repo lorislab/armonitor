@@ -13,144 +13,190 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
-import java.util.Map;
-
 /**
+ * The comment.
  *
  * @author Andrej Petras
  */
 public class Comment {
-  
+
+    /**
+     * The self link.
+     */
     private String self;
-    
+    /**
+     * The id.
+     */
     private String id;
-    
+    /**
+     * The author.
+     */
     private User author;
-    
+    /**
+     * The body.
+     */
     private String body;
-    
+    /**
+     * The update author.
+     */
     private User updateAuthor;
-    
+    /**
+     * The created.
+     */
     private String created;
-    
+    /**
+     * The updated.
+     */
     private String updated;
-    
+    /**
+     * The visibility.
+     */
     private Visibility visibility;
 
     /**
-     * @return the self
+     * Gets the self link.
+     *
+     * @return the self link.
      */
     public String getSelf() {
         return self;
     }
 
     /**
-     * @param self the self to set
+     * Sets the self link.
+     *
+     * @param self the self link.
      */
     public void setSelf(String self) {
         this.self = self;
     }
 
     /**
-     * @return the id
+     * Gets the id.
+     *
+     * @return the id.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
+     * Sets the id.
+     *
+     * @param id the id to set.
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return the author
+     * Gets the author.
+     *
+     * @return the author.
      */
     public User getAuthor() {
         return author;
     }
 
     /**
-     * @param author the author to set
+     * Sets the author.
+     *
+     * @param author the author.
      */
     public void setAuthor(User author) {
         this.author = author;
     }
 
     /**
-     * @return the body
+     * Gets the body.
+     *
+     * @return the body.
      */
     public String getBody() {
         return body;
     }
 
     /**
-     * @param body the body to set
+     * Sets the body.
+     *
+     * @param body the body.
      */
     public void setBody(String body) {
         this.body = body;
     }
 
     /**
-     * @return the updateAuthor
+     * Gets the update author.
+     *
+     * @return the update author.
      */
     public User getUpdateAuthor() {
         return updateAuthor;
     }
 
     /**
-     * @param updateAuthor the updateAuthor to set
+     * Sets the update author.
+     *
+     * @param updateAuthor the update author.
      */
     public void setUpdateAuthor(User updateAuthor) {
         this.updateAuthor = updateAuthor;
     }
 
     /**
-     * @return the created
+     * Gets the created.
+     *
+     * @return the created.
      */
     public String getCreated() {
         return created;
     }
 
     /**
-     * @param created the created to set
+     * Sets the created.
+     *
+     * @param created the created to set.
      */
     public void setCreated(String created) {
         this.created = created;
     }
 
     /**
-     * @return the updated
+     * Gets the updated.
+     *
+     * @return the updated.
      */
     public String getUpdated() {
         return updated;
     }
 
     /**
-     * @param updated the updated to set
+     * Sets the updated.
+     *
+     * @param updated the updated.
      */
     public void setUpdated(String updated) {
         this.updated = updated;
     }
 
     /**
-     * @return the visibility
+     * Gets the visibility.
+     *
+     * @return the visibility.
      */
     public Visibility getVisibility() {
         return visibility;
     }
 
     /**
-     * @param visibility the visibility to set
+     * Sets the visibility.
+     *
+     * @param visibility the visibility.
      */
     public void setVisibility(Visibility visibility) {
         this.visibility = visibility;
     }
-    
-    
+
 }

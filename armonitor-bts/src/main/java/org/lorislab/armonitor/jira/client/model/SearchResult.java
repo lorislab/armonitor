@@ -13,97 +13,126 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 import java.util.List;
 
 /**
+ * The search result.
  *
  * @author Andrej Petras
  */
 public class SearchResult {
-    
+
+    /**
+     * The expand.
+     */
     private String expand;
-    
+    /**
+     * The start at.
+     */
     private int startAt;
-    
+    /**
+     * The maximum results.
+     */
     private int maxResults;
-    
+    /**
+     * The total.
+     */
     private int total;
-    
+    /**
+     * The list of issues.
+     */
     private List<Issue> issues;
 
     /**
-     * @return the expand
+     * Gets the expand.
+     *
+     * @return the expand.
      */
     public String getExpand() {
         return expand;
     }
 
     /**
-     * @param expand the expand to set
+     * Sets the expand.
+     *
+     * @param expand the expand to set.
      */
     public void setExpand(String expand) {
         this.expand = expand;
     }
 
     /**
-     * @return the startAt
+     * Gets the start at.
+     *
+     * @return the start at.
      */
     public int getStartAt() {
         return startAt;
     }
 
     /**
-     * @param startAt the startAt to set
+     * Sets the start at.
+     *
+     * @param startAt the start at.
      */
     public void setStartAt(int startAt) {
         this.startAt = startAt;
     }
 
     /**
-     * @return the maxResults
+     * Gets the maximum results.
+     *
+     * @return the maximum results.
      */
     public int getMaxResults() {
         return maxResults;
     }
 
     /**
-     * @param maxResults the maxResults to set
+     * Sets the maximum results.
+     *
+     * @param maxResults the maximum results.
      */
     public void setMaxResults(int maxResults) {
         this.maxResults = maxResults;
     }
 
     /**
-     * @return the total
+     * Gets the total.
+     *
+     * @return the total.
      */
     public int getTotal() {
         return total;
     }
 
     /**
-     * @param total the total to set
+     * Sets the total.
+     *
+     * @param total the total to set.
      */
     public void setTotal(int total) {
         this.total = total;
     }
 
     /**
-     * @return the issues
+     * Gets the list of issues.
+     *
+     * @return the list of issues.
      */
     public List<Issue> getIssues() {
         return issues;
     }
 
     /**
-     * @param issues the issues to set
+     * Sets the list of issues.
+     *
+     * @param issues the list of issues.
      */
     public void setIssues(List<Issue> issues) {
         this.issues = issues;
     }
-   
-    
-    
+
 }

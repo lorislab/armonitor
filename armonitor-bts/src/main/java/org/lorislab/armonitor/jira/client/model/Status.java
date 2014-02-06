@@ -13,94 +13,124 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 /**
+ * The status.
  *
  * @author Andrej Petras
  */
 public class Status {
-    
+
+    /**
+     * The id.
+     */
     private String id;
-    
+    /**
+     * The self.
+     */
     private String self;
-    
+    /**
+     * The description.
+     */
     private String description;
-    
+    /**
+     * The icon URL.
+     */
     private String iconUrl;
-    
+    /**
+     * The name.
+     */
     private String name;
 
     /**
-     * @return the id
+     * Gets the id.
+     *
+     * @return the id.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
+     * Sets the id.
+     *
+     * @param id the id to set.
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return the self
+     * Gets the self.
+     *
+     * @return the self.
      */
     public String getSelf() {
         return self;
     }
 
     /**
-     * @param self the self to set
+     * Sets the self.
+     *
+     * @param self the self to set.
      */
     public void setSelf(String self) {
         this.self = self;
     }
 
     /**
-     * @return the description
+     * Gets the description.
+     *
+     * @return the description.
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * @param description the description to set
+     * Sets the description.
+     *
+     * @param description the description to set.
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * @return the iconUrl
+     * Gets the icon URL.
+     *
+     * @return the icon URL.
      */
     public String getIconUrl() {
         return iconUrl;
     }
 
     /**
-     * @param iconUrl the iconUrl to set
+     * Sets the icon URL.
+     *
+     * @param iconUrl the icon URL.
      */
     public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
     }
 
     /**
-     * @return the name
+     * Gets the name.
+     *
+     * @return the name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * Sets the name.
+     *
+     * @param name the name to set.
      */
     public void setName(String name) {
         this.name = name;
     }
-        
-    
+
 }

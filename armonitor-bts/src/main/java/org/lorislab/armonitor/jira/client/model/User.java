@@ -13,112 +13,148 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 import java.util.Map;
 
 /**
+ * The user.
  *
  * @author Andrej Petras
  */
 public class User {
-    
+
+    /**
+     * The self.
+     */
     private String self;
-    
+    /**
+     * The name.
+     */
     private String name;
-    
+    /**
+     * The map of avatar URL's.
+     */
     private Map<String, String> avatarUrls;
-    
+    /**
+     * The display name.
+     */
     private String displayName;
-    
+    /**
+     * The active flag.
+     */
     private boolean active;
-    
+    /**
+     * The email address.
+     */
     private String emailAddress;
 
     /**
-     * @return the self
+     * Gets the self.
+     *
+     * @return the self.
      */
     public String getSelf() {
         return self;
     }
 
     /**
-     * @param self the self to set
+     * Sets the self.
+     *
+     * @param self the self to set.
      */
     public void setSelf(String self) {
         this.self = self;
     }
 
     /**
-     * @return the name
+     * Gets the name.
+     *
+     * @return the name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * Sets the name.
+     *
+     * @param name the name to set.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return the avatarUrls
+     * Gets the map of avatar URL's.
+     *
+     * @return the map of avatar URL's.
      */
     public Map<String, String> getAvatarUrls() {
         return avatarUrls;
     }
 
     /**
-     * @param avatarUrls the avatarUrls to set
+     * Sets the map of avatar URL's.
+     *
+     * @param avatarUrls the map of avatar URL's.
      */
     public void setAvatarUrls(Map<String, String> avatarUrls) {
         this.avatarUrls = avatarUrls;
     }
 
     /**
-     * @return the displayName
+     * Gets the display name.
+     *
+     * @return the display name.
      */
     public String getDisplayName() {
         return displayName;
     }
 
     /**
-     * @param displayName the displayName to set
+     * Sets the display name.
+     *
+     * @param displayName the display name.
      */
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
     /**
-     * @return the active
+     * Gets the active flag.
+     *
+     * @return the active flag.
      */
     public boolean isActive() {
         return active;
     }
 
     /**
-     * @param active the active to set
+     * Sets the active flag.
+     *
+     * @param active the active flag.
      */
     public void setActive(boolean active) {
         this.active = active;
     }
 
     /**
-     * @return the emailAddress
+     * Gets the email address.
+     *
+     * @return the email address.
      */
     public String getEmailAddress() {
         return emailAddress;
     }
 
     /**
-     * @param emailAddress the emailAddress to set
+     * Sets the email address.
+     *
+     * @param emailAddress the email address.
      */
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
-    
-    
+
 }

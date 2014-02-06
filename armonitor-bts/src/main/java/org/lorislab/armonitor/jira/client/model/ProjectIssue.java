@@ -13,96 +13,126 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 import java.util.List;
 
 /**
+ * The project issue.
  *
  * @author Andrej Petras
  */
 public class ProjectIssue {
-    
+
+    /**
+     * The self.
+     */
     private String self;
-    
+    /**
+     * The id.
+     */
     private String id;
-    
+    /**
+     * The name.
+     */
     private String name;
-    
+    /**
+     * The subtask flag.
+     */
     private boolean subtask;
-    
+    /**
+     * The list of statuses.
+     */
     private List<Status> statuses;
 
     /**
-     * @return the self
+     * Gets the self.
+     *
+     * @return the self.
      */
     public String getSelf() {
         return self;
     }
 
     /**
-     * @param self the self to set
+     * Sets the self.
+     *
+     * @param self the self to set.
      */
     public void setSelf(String self) {
         this.self = self;
     }
 
     /**
-     * @return the id
+     * Gets the id.
+     *
+     * @return the id.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
+     * Sets the id.
+     *
+     * @param id the id to set.
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return the name
+     * Gets the name.
+     *
+     * @return the name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * Sets the name.
+     *
+     * @param name the name to set.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return the subtask
+     * Gets the subtask flag.
+     *
+     * @return the subtask flag.
      */
     public boolean isSubtask() {
         return subtask;
     }
 
     /**
-     * @param subtask the subtask to set
+     * Sets the subtask flag.
+     *
+     * @param subtask the subtask to set.
      */
     public void setSubtask(boolean subtask) {
         this.subtask = subtask;
     }
 
     /**
-     * @return the statuses
+     * Gets the list of statuses.
+     *
+     * @return the list of statuses.
      */
     public List<Status> getStatuses() {
         return statuses;
     }
 
     /**
-     * @param statuses the statuses to set
+     * Sets the list of statuses.
+     *
+     * @param statuses the list of statuses.
      */
     public void setStatuses(List<Status> statuses) {
         this.statuses = statuses;
     }
-    
-    
+
 }

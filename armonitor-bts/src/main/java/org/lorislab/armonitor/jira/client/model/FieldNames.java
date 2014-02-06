@@ -17,19 +17,30 @@
 package org.lorislab.armonitor.jira.client.model;
 
 /**
- *
+ * The fields name for the search criteria.
+ * 
  * @author Andrej Petras
  */
 public class FieldNames {
-    
+    /**
+     * The resolution.
+     */
     public static String RESOLUTION = "resolution";
-    
+    /**
+     * The fixVersions.
+     */
     public static String FIXVERSIONS = "fixVersions";
-    
+    /**
+     * The assignee.
+     */
     public static String ASSIGNEE = "assignee";
-    
+    /**
+     * The summary.
+     */
     public static String SUMMARY = "summary";
-    
+    /**
+     * The status.
+     */
     public static String STATUS = "status";
     
 }

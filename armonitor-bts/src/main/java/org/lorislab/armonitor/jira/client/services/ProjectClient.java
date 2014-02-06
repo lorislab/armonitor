@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.services;
 
 import java.util.List;
@@ -27,28 +26,52 @@ import org.lorislab.armonitor.jira.client.model.Project;
 import org.lorislab.armonitor.jira.client.model.Version;
 
 /**
+ * The JIRA project client.
  *
  * @author Andrej Petras
  */
 @Path("project")
 public interface ProjectClient {
-    
+
+    /**
+     * Gets the list of all projects.
+     *
+     * @return the list of all projects.
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     List<Project> getProjects();
-       
+
+    /**
+     * Gest the project by
+     *
+     * @param id the project id.
+     * @return the project.
+     */
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Project getProject();
-    
+    Project getProject(@PathParam("id") String id);
+
+    /**
+     * Gets all version of the project.
+     *
+     * @param id the project id.
+     * @return the list of all version for the project.
+     */
     @GET
     @Path("{id}/versions")
     @Produces(MediaType.APPLICATION_JSON)
     List<Version> getVersions(@PathParam("id") String id);
-    
+
+    /**
+     * Gets the list of project issue statuses.
+     *
+     * @param id the project id.
+     * @return the list of project issue statuses.
+     */
     @GET
     @Path("{id}/statuses")
     @Produces(MediaType.APPLICATION_JSON)
-    List<ProjectIssue> getStatuses(@PathParam("id") String id);    
+    List<ProjectIssue> getStatuses(@PathParam("id") String id);
 }

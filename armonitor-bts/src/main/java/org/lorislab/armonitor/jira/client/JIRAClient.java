@@ -26,7 +26,6 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.lorislab.armonitor.jira.client.services.ProjectClient;
 import org.lorislab.armonitor.jira.client.services.SearchClient;
 
-
 /**
  * The JIRA client.
  *
@@ -34,30 +33,57 @@ import org.lorislab.armonitor.jira.client.services.SearchClient;
  */
 public class JIRAClient {
 
+    /**
+     * The HTTPS prefix.
+     */
     private static final String HTTPS = "https";
-    
+    /**
+     * The server.
+     */
     private final String server;
-    
+
+    /**
+     * The client executor.
+     */
     private ClientExecutor executor = ClientRequest.getDefaultExecutor();
-        
+
+    /**
+     * Creates the JIRA client.
+     *
+     * @param server the server URL.
+     * @param username the username.
+     * @param password the password.
+     * @param auth the authentication flag.
+     * @throws Exception if the method fails.
+     */
     public JIRAClient(String server, String username, char[] password, boolean auth) throws Exception {
         this.server = server;
-        
+
         HttpClient httpClient = new DefaultHttpClient();
         if (server.startsWith(HTTPS)) {
             SSLSocketFactory sslSocketFactory = new SSLSocketFactory(new TrustSelfSignedStrategy(), SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
             httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme(HTTPS, 443, sslSocketFactory));
         }
         if (auth) {
-            this.executor = new JiraApacheHttpClient4Executor(username, password, httpClient);          
+            this.executor = new JiraApacheHttpClient4Executor(username, password, httpClient);
         }
     }
-    
+
+    /**
+     * Gets the search client.
+     *
+     * @return the search client.
+     */
     public SearchClient createSearchClient() {
         SearchClient client = ProxyFactory.create(SearchClient.class, server, executor);
-        return client;        
+        return client;
     }
-    
+
+    /**
+     * Gets the project client.
+     *
+     * @return the project client.
+     */
     public ProjectClient createProjectClient() {
         ProjectClient client = ProxyFactory.create(ProjectClient.class, server, executor);
         return client;

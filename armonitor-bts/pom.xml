@@ -19,7 +19,12 @@
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
 			<scope>provided</scope>
-		</dependency>	
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>jaxrs-api</artifactId>			
+			<scope>provided</scope>
+		</dependency>			
 	</dependencies>
 	
 </project>

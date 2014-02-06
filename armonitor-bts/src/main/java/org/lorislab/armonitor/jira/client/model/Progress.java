@@ -13,46 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 /**
+ * The progress.
  *
  * @author Andrej Petras
  */
 public class Progress {
-    
+
+    /**
+     * The progress.
+     */
     private int progress;
-    
+    /**
+     * The total.
+     */
     private int total;
 
     /**
-     * @return the progress
+     * Gets the progress.
+     *
+     * @return the progress.
      */
     public int getProgress() {
         return progress;
     }
 
     /**
-     * @param progress the progress to set
+     * Sets the progress.
+     *
+     * @param progress the progress to set.
      */
     public void setProgress(int progress) {
         this.progress = progress;
     }
 
     /**
-     * @return the total
+     * Gets the total.
+     *
+     * @return the total.
      */
     public int getTotal() {
         return total;
     }
 
     /**
-     * @param total the total to set
+     * Sets the total.
+     *
+     * @param total the total to set.
      */
     public void setTotal(int total) {
         this.total = total;
     }
-    
-    
+
 }

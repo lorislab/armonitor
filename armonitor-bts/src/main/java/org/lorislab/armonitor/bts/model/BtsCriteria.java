@@ -13,145 +13,220 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.bts.model;
 
 import java.io.Serializable;
 import java.util.Set;
 
 /**
+ * The bug tracking criteria.
  *
  * @author Andrej Petras
  */
 public class BtsCriteria implements Serializable {
-    
-    private static final long serialVersionUID = 7340657695893586927L;
-    
-    private String type;
-    
-    private boolean auth;
-    
-    private String server;
-    
-    private String user;
-    
-    private char[] password;   
-    
-    private String version;
-    
-    private String project;
 
+    /**
+     * The UID for this class.
+     */
+    private static final long serialVersionUID = 7340657695893586927L;
+    /**
+     * The type.
+     */
+    private String type;
+    /**
+     * The authentication flag.
+     */
+    private boolean auth;
+    /**
+     * The server URL.
+     */
+    private String server;
+    /**
+     * The user name.
+     */
+    private String user;
+    /**
+     * The password.
+     */
+    private char[] password;
+    /**
+     * The version.
+     */
+    private String version;
+    /**
+     * The project.
+     */
+    private String project;
+    /**
+     * The set of ID's.
+     */
     private Set<String> ids;
 
+    /**
+     * The id.
+     */
     private String id;
 
+    /**
+     * Gets the id.
+     *
+     * @return the id.
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Sets the id.
+     *
+     * @param id the id.
+     */
     public void setId(String id) {
         this.id = id;
     }
-       
+
+    /**
+     * Gets the set of id's.
+     *
+     * @return the set of id's.
+     */
     public Set<String> getIds() {
         return ids;
     }
 
+    /**
+     * Sets the set of id's.
+     *
+     * @param ids the set of id's.
+     */
     public void setIds(Set<String> ids) {
         this.ids = ids;
     }
-        
+
+    /**
+     * Gets the type.
+     *
+     * @return the type.
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Sets the type.
+     *
+     * @param type the type.
+     */
     public void setType(String type) {
         this.type = type;
     }
-    
+
     /**
-     * @return the auth.
+     * Gets the authentication flag.
+     *
+     * @return the authentication flag.
      */
     public boolean isAuth() {
         return auth;
     }
 
     /**
-     * @param auth the auth to set
+     * Sets the authentication flag.
+     *
+     * @param auth the authentication flag.
      */
     public void setAuth(boolean auth) {
         this.auth = auth;
     }
 
     /**
-     * @return the server
+     * Gets the server.
+     *
+     * @return the server.
      */
     public String getServer() {
         return server;
     }
 
     /**
-     * @param server the server to set
+     * Sets the server.
+     *
+     * @param server the server.
      */
     public void setServer(String server) {
         this.server = server;
     }
 
     /**
-     * @return the user
+     * Gets the user.
+     *
+     * @return the user.
      */
     public String getUser() {
         return user;
     }
 
     /**
-     * @param user the user to set
+     * Sets the user.
+     *
+     * @param user the user.
      */
     public void setUser(String user) {
         this.user = user;
     }
 
     /**
-     * @return the password
+     * Gets the password.
+     *
+     * @return the password.
      */
     public char[] getPassword() {
         return password;
     }
 
     /**
-     * @param password the password to set
+     * Sets the password.
+     *
+     * @param password the password.
      */
     public void setPassword(char[] password) {
         this.password = password;
     }
 
     /**
-     * @return the version
+     * Gets the version.
+     *
+     * @return the version.
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * @param version the version to set
+     * Sets the version.
+     *
+     * @param version the version.
      */
     public void setVersion(String version) {
         this.version = version;
     }
 
     /**
-     * @return the project
+     * Gets the project.
+     *
+     * @return the project.
      */
     public String getProject() {
         return project;
     }
 
     /**
-     * @param project the project to set
+     * Sets the project.
+     *
+     * @param project the project.
      */
     public void setProject(String project) {
         this.project = project;
     }
-    
-    
+
 }

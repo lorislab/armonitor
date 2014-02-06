@@ -22,31 +22,59 @@ import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
 /**
+ * The JIRA apache HTTP client executor.
  *
  * @author Andrej Petras
  */
 public class JiraApacheHttpClient4Executor extends ApacheHttpClient4Executor {
 
+    /**
+     * The user name.
+     */
     private final String username;
 
+    /**
+     * The password.
+     */
     private final char[] password;
 
+    /**
+     * The default constructor.
+     *
+     * @param username the user name.
+     * @param password the password.
+     */
     public JiraApacheHttpClient4Executor(String username, char[] password) {
         this.username = username;
         this.password = password;
     }
-    
+
+    /**
+     * The default constructor.
+     *
+     * @param username the user name.
+     * @param password the password.
+     * @param httpClient the HTTP client.
+     */
     public JiraApacheHttpClient4Executor(String username, char[] password, HttpClient httpClient) {
         super(httpClient);
         this.username = username;
         this.password = password;
     }
-        
+
+    /**
+     * Gets the credentials.
+     *
+     * @return the credentials.
+     */
     private String encodeCredentials() {
         byte[] credentials = (this.username + ':' + new String(this.password)).getBytes();
         return new String(Base64.encodeBase64(credentials));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClientResponse execute(ClientRequest request) throws Exception {
         request.header("Authorization", "Basic " + encodeCredentials());

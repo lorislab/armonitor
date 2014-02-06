@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.services;
 
 import javax.ws.rs.Consumes;
@@ -25,15 +24,22 @@ import org.lorislab.armonitor.jira.client.model.SearchCriteria;
 import org.lorislab.armonitor.jira.client.model.SearchResult;
 
 /**
+ * The JIRA search client.
  *
  * @author Andrej Petras
  */
 @Path("search")
 public interface SearchClient {
-    
+
+    /**
+     * Search for issues in the JIRA system by criteria.
+     *
+     * @param criteria the search criteria.
+     * @return the search result.
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     SearchResult search(SearchCriteria criteria);
-    
+
 }

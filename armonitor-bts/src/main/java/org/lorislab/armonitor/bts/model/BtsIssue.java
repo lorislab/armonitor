@@ -13,82 +13,108 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.bts.model;
 
 import java.io.Serializable;
 
 /**
+ * The bug tracking issue.
  *
  * @author Andrej Petras
  */
 public class BtsIssue implements Serializable {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -628009213493313128L;
-    
+    /**
+     * The ID.
+     */
     private String id;
-    
+    /**
+     * The summary.
+     */
     private String summary;
-    
+    /**
+     * The assignee.
+     */
     private String assignee;
-    
+    /**
+     * The resolution status.
+     */
     private String resolution;
 
     /**
-     * @return the id
+     * Gets the ID.
+     *
+     * @return the ID.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
+     * Sets the ID.
+     *
+     * @param id the id to set.
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return the summary
+     * Gets the summary.
+     *
+     * @return the summary.
      */
     public String getSummary() {
         return summary;
     }
 
     /**
-     * @param summary the summary to set
+     * Sets the summary.
+     *
+     * @param summary the summary to set.
      */
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
     /**
-     * @return the assignee
+     * Gets the assignee.
+     *
+     * @return the assignee.
      */
     public String getAssignee() {
         return assignee;
     }
 
     /**
-     * @param assignee the assignee to set
+     * Sets the assignee.
+     *
+     * @param assignee the assignee to set.
      */
     public void setAssignee(String assignee) {
         this.assignee = assignee;
     }
 
     /**
-     * @return the resolution
+     * Gets the resolution status.
+     *
+     * @return the resolution status.
      */
     public String getResolution() {
         return resolution;
     }
 
     /**
-     * @param resolution the resolution to set
+     * Sets the resolution status.
+     *
+     * @param resolution the resolution to set.
      */
     public void setResolution(String resolution) {
         this.resolution = resolution;
     }
-    
-    
+
 }

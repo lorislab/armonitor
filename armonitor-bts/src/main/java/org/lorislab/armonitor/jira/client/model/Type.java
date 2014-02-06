@@ -13,78 +13,102 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 /**
+ * The type.
  *
  * @author Andrej Petras
  */
 public class Type {
-    
+
+    /**
+     * The id.
+     */
     private String id;
-    
+    /**
+     * The name.
+     */
     private String name;
-    
+    /**
+     * The inward.
+     */
     private String inward;
-    
+    /**
+     * The outward.
+     */
     private String outward;
 
     /**
-     * @return the id
+     * Gets the id.
+     *
+     * @return the id.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
+     * Sets the id.
+     *
+     * @param id the id to set.
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return the name
+     * Gets the name.
+     *
+     * @return the name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * Sets the name.
+     *
+     * @param name the name to set.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return the inward
+     * Gets the inward.
+     *
+     * @return the inward.
      */
     public String getInward() {
         return inward;
     }
 
     /**
-     * @param inward the inward to set
+     * Sets the inward.
+     *
+     * @param inward the inward.
      */
     public void setInward(String inward) {
         this.inward = inward;
     }
 
     /**
-     * @return the outward
+     * Sets the outward.
+     *
+     * @return the outward.
      */
     public String getOutward() {
         return outward;
     }
 
     /**
-     * @param outward the outward to set
+     * Sets the outward.
+     *
+     * @param outward the outward.
      */
     public void setOutward(String outward) {
         this.outward = outward;
     }
 
-    
 }

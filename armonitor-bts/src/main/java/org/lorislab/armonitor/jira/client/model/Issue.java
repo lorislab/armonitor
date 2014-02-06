@@ -13,88 +13,124 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 /**
+ * The issue.
  *
  * @author Andrej Petras
  */
 public class Issue {
-    
-    private String expand;
-    
-    private String id;
-    
-    private String self;
-    
-    private String key;
 
+    /**
+     * The list of expand attributes.
+     */
+    private String expand;
+    /**
+     * The id.
+     */
+    private String id;
+    /**
+     * The self.
+     */
+    private String self;
+    /**
+     * The key.
+     */
+    private String key;
+    /**
+     * The fields.
+     */
     private Fields fields;
 
+    /**
+     * Gets the fields.
+     *
+     * @return the fields.
+     */
     public Fields getFields() {
         return fields;
     }
 
+    /**
+     * Sets the fields.
+     *
+     * @param fields the fields.
+     */
     public void setFields(Fields fields) {
         this.fields = fields;
     }
-        
+
     /**
-     * @return the expand
+     * Gets the list of expand attributes.
+     *
+     * @return the list of expand attributes.
      */
     public String getExpand() {
         return expand;
     }
 
     /**
-     * @param expand the expand to set
+     * Sets the list of expand attributes.
+     *
+     * @param expand the list of expand attributes.
      */
     public void setExpand(String expand) {
         this.expand = expand;
     }
 
     /**
-     * @return the id
+     * Gets the id.
+     *
+     * @return the id.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
+     * Sets the id.
+     *
+     * @param id the id.
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return the self
+     * Gets the self.
+     *
+     * @return the self.
      */
     public String getSelf() {
         return self;
     }
 
     /**
-     * @param self the self to set
+     * Sets the self.
+     *
+     * @param self the self to set.
      */
     public void setSelf(String self) {
         this.self = self;
     }
 
     /**
-     * @return the key
+     * Gets the key.
+     *
+     * @return the key.
      */
     public String getKey() {
         return key;
     }
 
     /**
-     * @param key the key to set
+     * Sets the key.
+     *
+     * @param key the key to set.
      */
     public void setKey(String key) {
         this.key = key;
     }
-    
-    
+
 }

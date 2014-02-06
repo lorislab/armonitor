@@ -13,78 +13,102 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 /**
+ * The resolution.
  *
  * @author Andrej Petras
  */
 public class Resolution {
-    
+
+    /**
+     * The self.
+     */
     private String self;
-    
+    /**
+     * The id.
+     */
     private String id;
-    
+    /**
+     * The description.
+     */
     private String description;
-    
+    /**
+     * The name.
+     */
     private String name;
 
     /**
-     * @return the self
+     * Gets the self.
+     *
+     * @return the self.
      */
     public String getSelf() {
         return self;
     }
 
     /**
-     * @param self the self to set
+     * Sets the self.
+     *
+     * @param self the self.
      */
     public void setSelf(String self) {
         this.self = self;
     }
 
     /**
-     * @return the id
+     * Gets the id.
+     *
+     * @return the id.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
+     * Sets the id.
+     *
+     * @param id the id.
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return the description
+     * Gets the description.
+     *
+     * @return the description.
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * @param description the description to set
+     * Sets the description.
+     *
+     * @param description the description.
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * @return the name
+     * Gets the name.
+     *
+     * @return the name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * Sets the name.
+     *
+     * @param name the name.
      */
     public void setName(String name) {
         this.name = name;
     }
-    
-    
+
 }

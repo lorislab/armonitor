@@ -13,55 +13,102 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 /**
  * The project category.
- * 
+ *
  * @author Andrej Petras
  */
 public class ProjectCategory {
-    
+
+    /**
+     * The self.
+     */
     private String self;
-    
+    /**
+     * The id.
+     */
     private String id;
-    
+    /**
+     * The description.
+     */
     private String description;
-    
+    /**
+     * The name.
+     */
     private String name;
 
+    /**
+     * Gets the self.
+     *
+     * @return the self.
+     */
     public String getSelf() {
         return self;
     }
 
+    /**
+     * Sets the self.
+     *
+     * @param self the self to set.
+     */
     public void setSelf(String self) {
         this.self = self;
     }
 
+    /**
+     * Gets the id.
+     *
+     * @return the id.
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Sets the id.
+     *
+     * @param id the id to set.
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Gets the description.
+     *
+     * @return the description.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the description.
+     *
+     * @param description the description.
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name the name to set.
+     */
     public void setName(String name) {
         this.name = name;
     }
-    
-    
+
 }

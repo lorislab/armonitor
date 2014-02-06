@@ -13,54 +13,102 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 /**
+ * The task.
  *
  * @author Andrej Petras
  */
 public class Task {
-    
-    private String id;
-     
-    private Type type;
-    
-    private LinkIssue outwardIssue;
 
+    /**
+     * The id.
+     */
+    private String id;
+    /**
+     * The type.
+     */
+    private Type type;
+    /**
+     * The link outward issue.
+     */
+    private LinkIssue outwardIssue;
+    /**
+     * The link inward issue.
+     */
     private LinkIssue inwardIssue;
 
+    /**
+     * Gets the id.
+     *
+     * @return the id.
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Sets the id.
+     *
+     * @param id the id.
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Gets the type.
+     *
+     * @return the type.
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * Sets the type.
+     *
+     * @param type the type.
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * Gets the outward issue.
+     *
+     * @return the outward issue.
+     */
     public LinkIssue getOutwardIssue() {
         return outwardIssue;
     }
 
+    /**
+     * Sets the outward issue.
+     *
+     * @param outwardIssue the outward issue.
+     */
     public void setOutwardIssue(LinkIssue outwardIssue) {
         this.outwardIssue = outwardIssue;
     }
 
+    /**
+     * Gets the inward issue.
+     *
+     * @return the inward issue.
+     */
     public LinkIssue getInwardIssue() {
         return inwardIssue;
     }
 
+    /**
+     * Sets the inward issue.
+     *
+     * @param inwardIssue the inward issue.
+     */
     public void setInwardIssue(LinkIssue inwardIssue) {
         this.inwardIssue = inwardIssue;
     }
-    
-    
+
 }

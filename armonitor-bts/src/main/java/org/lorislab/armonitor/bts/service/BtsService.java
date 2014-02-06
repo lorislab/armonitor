@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.bts.service;
 
 import java.util.HashMap;
@@ -27,46 +26,80 @@ import org.lorislab.armonitor.bts.model.BtsCriteria;
 import org.lorislab.armonitor.bts.model.BtsIssue;
 
 /**
+ * The bug tracking service.
  *
  * @author Andrej Petras
  */
 public final class BtsService {
-    
+
+    /**
+     * The logger for this class.
+     */
     private static final Logger LOGGER = Logger.getLogger(BtsService.class.getName());
-    
+    /**
+     * The cache of clients.
+     */
     private static final Map<String, BtsServiceClient> CLIENTS = new HashMap<>();
-    
+
+    /**
+     * Loads the clients.
+     */
     static {
         ServiceLoader<BtsServiceClient> services = ServiceLoader.load(BtsServiceClient.class);
         if (services != null) {
             Iterator<BtsServiceClient> iter = services.iterator();
             while (iter.hasNext()) {
                 BtsServiceClient service = iter.next();
-                LOGGER.log(Level.FINE,"Add BTS service {0}", service.getClass().getName());
+                LOGGER.log(Level.FINE, "Add BTS service {0}", service.getClass().getName());
                 CLIENTS.put(service.getType(), service);
             }
-        }        
+        }
     }
-    
+
+    /**
+     * The default constructor.
+     */
     private BtsService() {
         // empty constructor
     }
-    
+
+    /**
+     * Gets the list of issues.
+     *
+     * @param criteria the criteria.
+     * @return the list of issues.
+     * @throws Exception if the method fails.
+     */
     public static List<BtsIssue> getIssues(BtsCriteria criteria) throws Exception {
         if (criteria == null) {
             throw new Exception("Missing bug tracking search criteria!");
         }
-        
+
         // check type
-        BtsServiceClient client = getClient(criteria.getType());                
+        BtsServiceClient client = getClient(criteria.getType());
         return client.getIssues(criteria);
     }
-    
+
+    /**
+     * Gets the pattern for ID.
+     *
+     * @param type the BTS type.
+     * @param id the id.
+     * @return the search pattern.
+     * @throws Exception if the method fails.
+     */
     public static String getIdPattern(String type, String id) throws Exception {
-        BtsServiceClient client = getClient(type);  
+        BtsServiceClient client = getClient(type);
         return client.getIdPattern(id);
     }
-    
+
+    /**
+     * Gets the client for the type.
+     *
+     * @param type the type.
+     * @return the corresponding client.
+     * @throws Exception if the clients does not exists.
+     */
     public static BtsServiceClient getClient(String type) throws Exception {
         BtsServiceClient client = CLIENTS.get(type);
         if (client == null) {
@@ -74,5 +107,5 @@ public final class BtsService {
         }
         return client;
     }
-    
+
 }

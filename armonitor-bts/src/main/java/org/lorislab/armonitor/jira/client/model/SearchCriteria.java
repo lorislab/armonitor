@@ -13,113 +13,152 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 import java.util.List;
 
 /**
+ * The search criteria.
  *
  * @author Andrej Petras
  */
 public class SearchCriteria {
-    
+
+    /**
+     * The JIRA a JQL query string.
+     */
     private String jql;
-    
+    /**
+     * The index of the first issue to return (0-based)
+     */
     private int startAt = 0;
-    
-    private int maxResults = 50;
-    
+    /**
+     * The maximum number of issues to return (defaults to 50). The maximum
+     * allowable value is dictated by the JIRA property
+     * 'jira.search.views.default.max'. If you specify a value that is higher
+     * than this number, your search results will be truncated.
+     */
+    private int maxResults = 200;
+    /**
+     * Whether to validate the JQL query
+     */
     private boolean validateQuery = true;
-    
+    /**
+     * The list of fields to return for each issue. By default, all navigable
+     * fields are returned.
+     */
     private List<String> fields;
-    
+    /**
+     * A comma-separated list of the parameters to expand.
+     */
     private String expand;
 
     /**
-     * @return the jql
+     * Gets the JQL.
+     *
+     * @return the JQL.
      */
     public String getJql() {
         return jql;
     }
 
     /**
-     * @param jql the jql to set
+     * Sets the JQL.
+     *
+     * @param jql the JQL.
      */
     public void setJql(String jql) {
         this.jql = jql;
     }
 
     /**
-     * @return the startAt
+     * Gets the start at index.
+     *
+     * @return the start at index.
      */
     public int getStartAt() {
         return startAt;
     }
 
     /**
-     * @param startAt the startAt to set
+     * Sets the start at index.
+     *
+     * @param startAt the start at index.
      */
     public void setStartAt(int startAt) {
         this.startAt = startAt;
     }
 
     /**
-     * @return the maxResults
+     * Gets the maximum results.
+     *
+     * @return the maximum results.
      */
     public int getMaxResults() {
         return maxResults;
     }
 
     /**
-     * @param maxResults the maxResults to set
+     * Gets the maximum results.
+     *
+     * @param maxResults the maximum results.
      */
     public void setMaxResults(int maxResults) {
         this.maxResults = maxResults;
     }
 
     /**
-     * @return the validateQuery
+     * Gets the validate query flag.
+     *
+     * @return the validate query flag.
      */
     public boolean isValidateQuery() {
         return validateQuery;
     }
 
     /**
-     * @param validateQuery the validateQuery to set
+     * Sets the validate query flag.
+     *
+     * @param validateQuery the validate query flag.
      */
     public void setValidateQuery(boolean validateQuery) {
         this.validateQuery = validateQuery;
     }
 
     /**
-     * @return the fields
+     * Gets the list of fields.
+     *
+     * @return the list of fields.
      */
     public List<String> getFields() {
         return fields;
     }
 
     /**
-     * @param fields the fields to set
+     * Sets the list of fields.
+     *
+     * @param fields the list of fields.
      */
     public void setFields(List<String> fields) {
         this.fields = fields;
     }
 
     /**
-     * @return the expand
+     * Gets the expand parameters.
+     *
+     * @return the expand parameters.
      */
     public String getExpand() {
         return expand;
     }
 
     /**
-     * @param expand the expand to set
+     * Sets the expand parameters.
+     *
+     * @param expand the expand parameters.
      */
     public void setExpand(String expand) {
         this.expand = expand;
     }
- 
-    
-    
+
 }

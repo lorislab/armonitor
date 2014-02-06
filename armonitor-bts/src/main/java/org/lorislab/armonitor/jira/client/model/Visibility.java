@@ -13,34 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.jira.client.model;
 
 /**
+ * The visibility.
  *
  * @author Andrej Petras
  */
 public class Visibility {
-    
+
+    /**
+     * The type.
+     */
     private String type;
-    
+    /**
+     * The value.
+     */
     private String value;
 
+    /**
+     * Gets the type.
+     *
+     * @return the type.
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Sets the type.
+     *
+     * @param type the type.
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value.
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Sets the value.
+     *
+     * @param value the value.
+     */
     public void setValue(String value) {
         this.value = value;
     }
-    
-    
+
 }
