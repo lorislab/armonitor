@@ -137,24 +137,6 @@ public class Arm implements Serializable {
     }
 
     /**
-     * Gets the release.
-     *
-     * @return the release
-     */
-    public String getRelease() {
-        return release;
-    }
-
-    /**
-     * Sets the release.
-     *
-     * @param release the release to set
-     */
-    public void setRelease(String release) {
-        this.release = release;
-    }
-
-    /**
      * Gets the SCM.
      *
      * @return the SCM.

@@ -77,7 +77,6 @@ public final class ObjectMapper {
             version.version = arm.getVersion();
 
             // add release attribtues
-            version.release = arm.getRelease();
             version.scm = arm.getScm();
             version.build = arm.getBuild();
 

@@ -11,6 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<server.home.dir>${JBOSS_ARMONITOR_HOME}</server.home.dir>		
 		<jel.version>0.0.3</jel.version>
+		<jira-jaxrs.version>0.0.1</jira-jaxrs.version>
 	</properties>
 
 	<licenses>
@@ -71,7 +72,7 @@
 				<version>2.3.5.Final</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>					
+			</dependency>								
 			<!-- EJB/Persistence libraries -->
 			<dependency>
 				<groupId>org.jboss.spec</groupId>
@@ -157,7 +158,13 @@
 						<groupId>net.java.dev.jna</groupId>
 					</exclusion>
 				</exclusions>
-			</dependency>												 				
+			</dependency>	
+			<!-- JIRA-JAXRS -->
+			<dependency>
+				<groupId>org.lorislab.jira</groupId>
+				<artifactId>jira-jaxrs</artifactId>	
+				<version>${jira-jaxrs.version}</version>							
+			</dependency>														 				
 		</dependencies>
 	</dependencyManagement>    
     

@@ -38,8 +38,11 @@ import org.lorislab.armonitor.rs.service.MonitorService;
  */
 public final class MonitorClient {
 
+    /**
+     * The agent monitor URL.
+     */
     private static final String APP_URL = "armonitor/rs";
-    
+
     /**
      * The default constructor.
      */
@@ -47,19 +50,27 @@ public final class MonitorClient {
         // empty constructor
     }
 
-    private static MonitorService createService(String url, String username, String password) {
+    /**
+     * Creates the monitor service.
+     *
+     * @param url the URL.
+     * @param username the user name.
+     * @param password the password.
+     * @return the monitor service.
+     */
+    private static MonitorService createService(String url, String username, String password, boolean auth) {
         RegisterBuiltin.register(ResteasyProviderFactory.getInstance());
-        if (username != null) {
+        if (auth) {
             Credentials credentials = new UsernamePasswordCredentials(username, password);
             DefaultHttpClient httpClient = new DefaultHttpClient();
             BasicCredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(AuthScope.ANY, credentials);
             httpClient.setCredentialsProvider(provider);
-            return ProxyFactory.create(MonitorService.class, url, new ApacheHttpClient4Executor(httpClient));        
+            return ProxyFactory.create(MonitorService.class, url, new ApacheHttpClient4Executor(httpClient));
         }
-        return ProxyFactory.create(MonitorService.class, url);        
+        return ProxyFactory.create(MonitorService.class, url);
     }
-    
+
     /**
      * Sends the version for the system <code>key</code> to the ARMONITOR
      * server.
@@ -67,20 +78,21 @@ public final class MonitorClient {
      * @param url the URL.
      * @param user the user name.
      * @param password the password.
+     * @param auth the authentication flag.
      * @param key the system key.
      * @param version the version.
      * @throws java.lang.Exception if the method fails.
      */
-    public static void send(URL url, String user, String password, String key, Version version) throws Exception {
-        try {            
-            
+    public static void send(URL url, String user, String password, boolean auth, String key, Version version) throws Exception {
+        try {
+
             String tmp = url.toString();
             if (!tmp.endsWith("/")) {
                 tmp = tmp + "/";
             }
             tmp = tmp + APP_URL;
-            
-            MonitorService service = createService(tmp, user, password);
+
+            MonitorService service = createService(tmp, user, password, auth);
             Request request = new Request();
             request.version = version;
             request.key = key;
@@ -88,7 +100,7 @@ public final class MonitorClient {
             if (result != null) {
                 if (result.status == null || result.status.equals(Status.ERROR)) {
                     throw new Exception("Error process request: " + result.message);
-                }                
+                }
             }
         } catch (Exception ex) {
             throw new Exception("Error sending the data to the server!", ex);

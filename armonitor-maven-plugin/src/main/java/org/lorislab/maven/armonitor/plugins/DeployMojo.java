@@ -39,7 +39,8 @@ import org.lorislab.armonitor.client.MonitorClient;
 import org.lorislab.armonitor.manifest.util.ManifestLoader;
 
 /**
- *
+ * The deploy goal.
+ * 
  * @author Andrej Petras
  */
 @Mojo(name = "deploy",
@@ -49,8 +50,14 @@ import org.lorislab.armonitor.manifest.util.ManifestLoader;
 @Execute(goal = "deploy", phase = LifecyclePhase.PREPARE_PACKAGE)
 public class DeployMojo extends AbstractMojo {
 
+    /**
+     * The map of the modules and extensions.
+     */
     private static final Map<String, String> MAP = new HashMap<>();
 
+    /**
+     * Load the map of the modules and extensions.
+     */
     static {
         MAP.put("ejb", "jar");
     }
@@ -159,7 +166,7 @@ public class DeployMojo extends AbstractMojo {
 
             if (version != null) {
                 try {
-                    MonitorClient.send(url, user, pass, key, version);
+                    MonitorClient.send(url, user, pass, user != null, key, version);
                 } catch (Exception ex) {
                     throw new MojoExecutionException("Error sending the version data to the server", ex);
                 }

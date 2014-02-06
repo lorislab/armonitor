@@ -20,11 +20,11 @@
 			<artifactId>resteasy-jaxrs</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!-- JIRA-JAXRS -->
 		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>jaxrs-api</artifactId>			
-			<scope>provided</scope>
-		</dependency>			
+			<groupId>org.lorislab.jira</groupId>
+			<artifactId>jira-jaxrs</artifactId>							
+		</dependency>
 	</dependencies>
 	
 </project>

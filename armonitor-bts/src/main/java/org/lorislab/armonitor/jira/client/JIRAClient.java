@@ -23,8 +23,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ProxyFactory;
-import org.lorislab.armonitor.jira.client.services.ProjectClient;
-import org.lorislab.armonitor.jira.client.services.SearchClient;
+import org.lorislab.jira.jaxrs.services.ProjectClient;
+import org.lorislab.jira.jaxrs.services.SearchClient;
 
 /**
  * The JIRA client.

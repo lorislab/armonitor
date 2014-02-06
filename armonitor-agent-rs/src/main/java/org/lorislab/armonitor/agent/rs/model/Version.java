@@ -55,10 +55,6 @@ public class Version {
      */
     public String version;
     /**
-     * The release.
-     */
-    public String release;
-    /**
      * The SCM.
      */
     public String scm;

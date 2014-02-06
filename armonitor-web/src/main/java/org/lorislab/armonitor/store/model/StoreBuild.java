@@ -72,9 +72,6 @@ public class StoreBuild extends Persistent {
     @Column(name = "C_MVN_VERSION")
     private String mavenVersion;
 
-    @Column(name = "C_RELEASE")
-    private String release;
-
     @Column(name = "C_SCM")
     private String scm;
 
@@ -213,20 +210,6 @@ public class StoreBuild extends Persistent {
      */
     public void setMavenVersion(String mavenVersion) {
         this.mavenVersion = mavenVersion;
-    }
-
-    /**
-     * @return the release
-     */
-    public String getRelease() {
-        return release;
-    }
-
-    /**
-     * @param release the release to set
-     */
-    public void setRelease(String release) {
-        this.release = release;
     }
 
     /**

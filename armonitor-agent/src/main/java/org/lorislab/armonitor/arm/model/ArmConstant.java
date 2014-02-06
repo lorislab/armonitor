@@ -53,11 +53,6 @@ public interface ArmConstant {
     public static final String MAVEN_VERSION = "Maven-Version";
     
     /**
-     * The release version.
-     */
-    public static final String RELEASE_VERSION = "Release-Version";
-    
-    /**
      * The release SCM.
      */
     public static final String RELEASE_SCM = "Release-Scm";

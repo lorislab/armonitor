@@ -37,7 +37,7 @@ import org.apache.maven.project.MavenProject;
 import org.lorislab.armonitor.arm.model.ArmConstant;
 
 /**
- * The application release monitor MAVEN plugin.
+ * The application release monitor MAVEN PLUGIN.
  * 
  * @author Andrej Petras
  */
@@ -51,7 +51,7 @@ public class BuildMojo extends AbstractMojo {
     /**
      * The special types for package.
      */
-    private static final Set<String> TYPES = new HashSet<String>();
+    private static final Set<String> TYPES = new HashSet<>();
     
     /**
      * The static block
@@ -78,13 +78,7 @@ public class BuildMojo extends AbstractMojo {
      */
     @Parameter( defaultValue = "" )
     protected String releaseBuild;
-    
-    /**
-     * The release version.
-     */
-    @Parameter( defaultValue = "${project.version}")    
-    protected String releaseVersion;
-    
+
     /**
      * The output directory.
      */
@@ -109,6 +103,7 @@ public class BuildMojo extends AbstractMojo {
      * @throws MojoExecutionException if the execution fails.
      * @throws MojoFailureException if the build process fails.
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
             
@@ -132,7 +127,6 @@ public class BuildMojo extends AbstractMojo {
             Date date = new Date();
             properties.put(ArmConstant.RELEASE_DATE, String.valueOf(date.getTime()));
             
-            properties.put(ArmConstant.RELEASE_VERSION, releaseVersion);
             if (releaseScm == null) {
                 releaseScm = "";
             }
@@ -152,9 +146,15 @@ public class BuildMojo extends AbstractMojo {
                 }
             }
             
-            OutputStream out = new FileOutputStream( file );
-            properties.store(out, "Application release monitor descriptor");
-            out.close();
+            OutputStream out = null;
+            try {
+                out = new FileOutputStream( file );
+                properties.store(out, "Application release monitor descriptor");
+            } finally {
+                if (out != null) {
+                    out.close();
+                }
+            }
             
         } catch (IOException ex) {
             throw new MojoExecutionException("Error creating the armonitor.properties file", ex);

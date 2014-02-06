@@ -23,12 +23,12 @@ import java.util.logging.Logger;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
 import org.lorislab.armonitor.bts.model.BtsIssue;
 import org.lorislab.armonitor.bts.service.BtsServiceClient;
-import org.lorislab.armonitor.jira.client.model.FieldNames;
-import org.lorislab.armonitor.jira.client.model.Fields;
-import org.lorislab.armonitor.jira.client.model.Issue;
-import org.lorislab.armonitor.jira.client.model.SearchCriteria;
-import org.lorislab.armonitor.jira.client.model.SearchResult;
-import org.lorislab.armonitor.jira.client.services.SearchClient;
+import org.lorislab.jira.jaxrs.model.FieldNames;
+import org.lorislab.jira.jaxrs.model.Fields;
+import org.lorislab.jira.jaxrs.model.Issue;
+import org.lorislab.jira.jaxrs.model.SearchCriteria;
+import org.lorislab.jira.jaxrs.model.SearchResult;
+import org.lorislab.jira.jaxrs.services.SearchClient;
 
 /**
  * The bug tracking JIRA client service.
