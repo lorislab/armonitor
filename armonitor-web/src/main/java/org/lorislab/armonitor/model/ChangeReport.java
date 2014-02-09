@@ -17,7 +17,12 @@ package org.lorislab.armonitor.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import org.lorislab.armonitor.store.model.StoreApplication;
+import org.lorislab.armonitor.store.model.StoreProject;
+import org.lorislab.armonitor.store.model.StoreSystemBuild;
 
 /**
  * The change report.
@@ -31,34 +36,115 @@ public class ChangeReport implements Serializable {
      */
     private static final long serialVersionUID = -8226350181208816998L;
     /**
-     * The other changes.
-     */
-    private final List<Change> other = new ArrayList<>();
-    /**
      * The current changes.
      */
     private final List<Change> changes = new ArrayList<>();
-    /**
-     * The error changes.
-     */
-    private final List<Change> errors = new ArrayList<>();
 
     /**
-     * Gets the other changes.
-     *
-     * @return the other changes.
+     * The list of build changes.
      */
-    public List<Change> getOther() {
-        return other;
+    private final List<Change> buildChanges = new ArrayList<>();
+    ;
+
+    /**
+     * The system build.
+     */
+    private StoreSystemBuild systemBuild;
+
+    /**
+     * The application.
+     */
+    private StoreApplication application;
+
+    /**
+     * The project.
+     */
+    private StoreProject project;
+
+    /**
+     * The GUID.
+     */
+    private final String guid;
+
+    /**
+     * The default constructor.
+     *
+     * @param guid the GUID.
+     */
+    public ChangeReport(String guid) {
+        this.guid = guid;
     }
 
     /**
-     * Gets the error changes.
+     * Gets the GUID.
      *
-     * @return the error changes.
+     * @return the GUID.
      */
-    public List<Change> getErrors() {
-        return errors;
+    public String getGuid() {
+        return guid;
+    }
+
+    /**
+     * Gets the project.
+     *
+     * @return the project.
+     */
+    public StoreProject getProject() {
+        return project;
+    }
+
+    /**
+     * Sets the project.
+     *
+     * @param project the project.
+     */
+    public void setProject(StoreProject project) {
+        this.project = project;
+    }
+
+    /**
+     * Gets the application.
+     *
+     * @return the application.
+     */
+    public StoreApplication getApplication() {
+        return application;
+    }
+
+    /**
+     * Sets the application.
+     *
+     * @param application the application.
+     */
+    public void setApplication(StoreApplication application) {
+        this.application = application;
+    }
+
+    /**
+     * Gets the system build.
+     *
+     * @return the system build.
+     */
+    public StoreSystemBuild getSystemBuild() {
+        return systemBuild;
+    }
+
+    /**
+     * Sets the system build.
+     *
+     * @param systemBuild the system build.
+     */
+    public void setSystemBuild(StoreSystemBuild systemBuild) {
+        this.systemBuild = systemBuild;
+    }
+
+    /**
+     * Gets the list of build changes.
+     *
+     * @return the list of build changes.
+     */
+    public List<Change> getBuildChanges() {
+        return buildChanges;
     }
 
     /**

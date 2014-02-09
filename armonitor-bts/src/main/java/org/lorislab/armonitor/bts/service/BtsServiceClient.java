@@ -15,9 +15,8 @@
  */
 package org.lorislab.armonitor.bts.service;
 
-import java.util.List;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
-import org.lorislab.armonitor.bts.model.BtsIssue;
+import org.lorislab.armonitor.bts.model.BtsResult;
 
 /**
  * The bug tracking client service.
@@ -45,8 +44,8 @@ public interface BtsServiceClient {
      * Gets the list of issues.
      *
      * @param criteria the criteria.
-     * @return the list of issues.
+     * @return the bug tracking search result.
      * @throws Exception if the method fails.
      */
-    public List<BtsIssue> getIssues(BtsCriteria criteria) throws Exception;
+    public BtsResult getIssues(BtsCriteria criteria) throws Exception;
 }

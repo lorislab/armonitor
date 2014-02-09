@@ -16,23 +16,22 @@
 
 package org.lorislab.armonitor.log.model;
 
-import javax.jms.JMSException;
-import javax.jms.ObjectMessage;
+import org.lorislab.armonitor.model.ChangeReport;
 import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
 
 /**
- * The message log parameter.
+ * The change report log parameter.
  * 
  * @author Andrej Petras
  */
-public class MessageLogParameter implements InstanceOfLogParameter {
+public class ChangeReportLogParameter implements InstanceOfLogParameter {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean instanceOfClasses(Object parameter) {
-        return parameter instanceof ObjectMessage;
+        return parameter instanceof ChangeReport;
     }
 
     /**
@@ -40,21 +39,15 @@ public class MessageLogParameter implements InstanceOfLogParameter {
      */
     @Override
     public boolean isResult() {
-        return false;
+        return true;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Object getObject(Object parameter) { 
-        ObjectMessage msg = (ObjectMessage) parameter;
-        try {
-            return msg.getObject();        
-        } catch (JMSException ex) {
-            // do nothing
-        }
-        return null;
+    public Object getObject(Object parameter) {   
+        ChangeReport report = (ChangeReport) parameter;
+        return parameter.getClass().getSimpleName() + ":" + report.getGuid();
     }
-    
 }

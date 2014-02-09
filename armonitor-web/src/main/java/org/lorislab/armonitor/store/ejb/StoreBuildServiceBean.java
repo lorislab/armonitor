@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.ejb;
 
 import java.util.ArrayList;
@@ -34,26 +33,48 @@ import org.lorislab.armonitor.store.model.StoreApplication_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
+ * The build service.
  *
  * @author Andrej Petras
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild> {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = 8403472044970132117L;
-    
+
+    /**
+     * Saves the store build.
+     *
+     * @param data the build.
+     * @return the saved build.
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreBuild saveBuild(StoreBuild data) {
         return this.save(data);
     }
-    
+
+    /**
+     * Gets the build by GUID.
+     *
+     * @param guid the GUID.
+     * @return the corresponding build.
+     */
     public StoreBuild getBuild(String guid) {
         StoreBuildCriteria criteria = new StoreBuildCriteria();
         criteria.setGuid(guid);
         return getBuild(guid);
     }
-    
+
+    /**
+     * Gets the build by criteria.
+     *
+     * @param criteria the criteria.
+     * @return the corresponding build.
+     */
     public StoreBuild getBuild(StoreBuildCriteria criteria) {
         StoreBuild result = null;
         List<StoreBuild> tmp = getBuilds(criteria);
@@ -62,11 +83,22 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
         }
         return result;
     }
-    
+
+    /**
+     * Gets all builds.
+     *
+     * @return the list of all builds.
+     */
     public List<StoreBuild> getBuilds() {
         return getBuilds(new StoreBuildCriteria());
     }
 
+    /**
+     * Gets the builds by criteria.
+     *
+     * @param criteria the criteria.
+     * @return the corresponding list of criteria.
+     */
     public List<StoreBuild> getBuilds(StoreBuildCriteria criteria) {
         List<StoreBuild> result = new ArrayList<>();
 
@@ -75,15 +107,19 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
         Root<StoreBuild> root = cq.from(StoreBuild.class);
 
         List<Predicate> predicates = new ArrayList<>();
-    
+
         if (criteria.isFetchParameters()) {
             root.get(StoreBuild_.parameters);
         }
-        
+
         if (criteria.isFetchApplication()) {
             root.get(StoreBuild_.application);
         }
-        
+
+        if (criteria.getMavenVersion() != null) {
+            predicates.add(cb.equal(root.get(StoreBuild_.mavenVersion), criteria.getMavenVersion()));
+        }
+
         if (criteria.getApplication() != null) {
             predicates.add(cb.equal(root.get(StoreBuild_.application).get(StoreApplication_.guid), criteria.getApplication()));
         }
@@ -91,15 +127,15 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
         if (criteria.getGuid() != null) {
             predicates.add(cb.equal(root.get(StoreBuild_.guid), criteria.getGuid()));
         }
-        
+
         if (criteria.getAgent() != null) {
-            predicates.add(cb.equal(root.get(StoreBuild_.agent), criteria.getAgent()));            
+            predicates.add(cb.equal(root.get(StoreBuild_.agent), criteria.getAgent()));
         }
-        
+
         if (criteria.getDate() != null) {
             predicates.add(cb.equal(root.get(StoreBuild_.date), criteria.getDate()));
         }
-        
+
         if (!predicates.isEmpty()) {
             cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }
@@ -111,5 +147,5 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
             // do nothing
         }
         return result;
-    }       
+    }
 }

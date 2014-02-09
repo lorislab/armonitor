@@ -18,8 +18,12 @@ package org.lorislab.armonitor.ejb;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,13 +46,19 @@ import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.agent.ejb.AgentClientServiceBean;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
 import org.lorislab.armonitor.bts.model.BtsIssue;
+import org.lorislab.armonitor.bts.model.BtsResult;
 import org.lorislab.armonitor.bts.service.BtsService;
 import org.lorislab.armonitor.mail.ejb.MailServiceBean;
 import org.lorislab.armonitor.mail.model.Mail;
+import org.lorislab.armonitor.model.ScmLogBuild;
+import org.lorislab.armonitor.model.BuildScmLogs;
+import org.lorislab.armonitor.comparator.BuildScmLogsComparator;
 import org.lorislab.armonitor.model.Change;
+import org.lorislab.armonitor.comparator.ChangeComparator;
 import org.lorislab.armonitor.model.ChangeReport;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.model.ScmLog;
+import org.lorislab.armonitor.scm.model.ScmResult;
 import org.lorislab.armonitor.scm.service.ScmService;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
@@ -263,166 +273,261 @@ public class ProcessServiceBean {
         if (!createSystemBuild) {
             return;
         }
-        
-            StoreSystemBuild sb = new StoreSystemBuild();
-            sb.setBuild(buildOld);
-            sb.setSystem(tmp);
-            sb.setType(type);
-            sb.setDate(new Date());
-            sb = systemBuildService.saveSystemBuild(sb);
-            
-            send(sb.getGuid());
+
+        StoreSystemBuild sb = new StoreSystemBuild();
+        sb.setBuild(buildOld);
+        sb.setSystem(tmp);
+        sb.setType(type);
+        sb.setDate(new Date());
+        sb = systemBuildService.saveSystemBuild(sb);
+
+        send(sb.getGuid());
     }
-    
+
     public void sendReportAsync(String guid) {
         send(guid);
     }
-    
+
+    /**
+     * Creates and send the report to the users.
+     *
+     * @param guid the system build GUID.
+     */
     public void sendReport(String guid) {
-        
-        StoreSystemBuildCriteria ssbc = new StoreSystemBuildCriteria();
-        ssbc.setGuid(guid);
-        ssbc.setFetchBuild(true);
-        ssbc.setFetchSystem(true);
-        
-        StoreSystemBuild sb = systemBuildService.getSystemBuild(ssbc);
-        StoreSystem tmp = sb.getSystem();
-        StoreBuild build = sb.getBuild();
-        
-         try {
-            // load the application
-            StoreApplicationCriteria sac = new StoreApplicationCriteria();
-            sac.setSystem(tmp.getGuid());
-            sac.setFetchSCM(true);
-            StoreApplication app = appService.getApplication(sac);
-            if (app == null) {
-                throw new Exception("Missing the application for the system!");
-            }
-
-            // load the project
-            StoreProjectCriteria pc = new StoreProjectCriteria();
-            pc.setApplication(app.getGuid());
-            pc.setFetchBTS(true);
-            StoreProject project = projectService.getProject(pc);
-            if (project == null) {
-                throw new Exception("Missing project for the application and system!");
-            }
-            StoreBTSystem bts = project.getBts();
-            if (bts == null) {
-                throw new Exception("Missing the bug tracking configuration");
-            }
-
-            Map<String, Change> other = new HashMap<>();
-            Map<String, Change> changes = new HashMap<>();
-            Map<String, Change> errors = new HashMap<>();
-            
-            // update changes from the bug tracking system
-            BtsCriteria bc = new BtsCriteria();
-            bc.setServer(bts.getServer());
-            bc.setUser(bts.getUser());
-            bc.setPassword(bts.getPassword());
-            bc.setAuth(bts.isAuth());
-            bc.setType(bts.getType().name());
-            bc.setVersion(build.getMavenVersion());
-            bc.setProject(project.getBtsId());
-            
-            
-            List<BtsIssue> issues = BtsService.getIssues(bc);
-            if (issues != null) {
-                for (BtsIssue issue : issues) {
-                    Change change = new Change();
-                    change.setId(issue.getId());
-                    change.setIssue(issue);
-                    other.put(change.getId(), change);
-                }
-            }
-
-            // get changes from the SCM
-            StoreSCMSystem scm = app.getScm();
-            if (scm == null) {
-                throw new Exception("Missing the SCM configuration");
-            }
-
-            // create the server link
-            String server = scm.getServer() + app.getScmBranches();
-            server = server.replaceAll(VERSION_REGEX, build.getMavenVersion());
-            
-            // get the SCM log
-            ScmCriteria criteria = new ScmCriteria();
-            criteria.setType(scm.getType().name());
-            criteria.setServer(server);
-            criteria.setAuth(scm.isAuth());
-            criteria.setUser(scm.getUser());
-            criteria.setPassword(scm.getPassword());
-            List<ScmLog> scmLogs = ScmService.getLog(criteria);
-
-            if (scmLogs != null) {
-
-                // create issue id pattern
-                String key = BtsService.getIdPattern(bts.getType().name(), project.getBtsId());
-                Pattern searchPattern = Pattern.compile(key);
-
-                // search issues in the SCM log.
-                for (ScmLog scmLog : scmLogs) {
-//                    LOGGER.log(Level.FINEST, "REV: {0} {1} {2}", new Object[]{ scmLog.getId(), scmLog.getDate(), scmLog.getMessage()});
-                    Matcher matcher = searchPattern.matcher(scmLog.getMessage());
-                    while (matcher.find()) {
-                        String issue = matcher.group();
-                        Change change = other.remove(issue);
-                        if (change != null) {
-                            changes.put(change.getId(), change);
-                        } else {
-                            change = changes.get(issue);
-                            // check the issue
-                            if (change == null) {
-                                change = new Change();
-                                change.setId(issue);
-                                errors.put(issue, change);
-                            }
-                        }
-                        // add SCM log to the change
-                        change.getScmLogs().add(scmLog);
-                    }
-                }
-            }
-
-            // get the wrong commits from the BTS
-            if (!errors.isEmpty()) {
-                bc.setVersion(null);
-                bc.setProject(null);                
-                for (String error : errors.keySet()) {
-                    bc.setId(error);
-                    try {
-                        List<BtsIssue> issues2 = BtsService.getIssues(bc);
-                        if (issues2 != null && !issues2.isEmpty()) {
-                            BtsIssue issue = issues2.get(0);
-                            Change change = errors.get(issue.getId());
-                            if (change != null) {
-                                change.setIssue(issue);
-                            }                        
-                        }
-                    } catch (Exception ex) {
-                        LOGGER.log(Level.WARNING, "{0} is not valid issue for this project", error);
-                        LOGGER.log(Level.FINEST, "Error get the BTS issue", ex);
-                    }
-                }
-            }
-
+        try {
             // create change report
-            ChangeReport changeReport = new ChangeReport();
-            changeReport.getOther().addAll(other.values());
-            changeReport.getChanges().addAll(changes.values());
-            changeReport.getErrors().addAll(errors.values());
+            ChangeReport changeReport = createChangeReport(guid);
+            // notification
+            send(changeReport);
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error: " + ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Sends the report to the users.
+     *
+     * @param report the change report.
+     */
+    public void sendReport(ChangeReport report) {
+        try {
+            // the core data for the report
+            StoreSystemBuild sb = report.getSystemBuild();
+            StoreSystem tmp = sb.getSystem();
+            StoreBuild build = sb.getBuild();
+            StoreProject project = report.getProject();
+            StoreApplication app = report.getApplication();
 
             // notification
             Set<String> users = userService.getUsersEmailsForSystem(tmp.getGuid());
-            List<Mail> mails = createBuildDeployedMails(users, tmp, build, project, changeReport, app, sb);
+            List<Mail> mails = createBuildDeployedMails(users, tmp, build, project, report, app, sb);
             send(mails);
 
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error: " + ex.getMessage(), ex);
         }
+    }
 
+    /**
+     * Creates the change report for the system build.
+     *
+     * @param guid the GUID of the system build.
+     * @return the change report.
+     * @throws Exception if the method fails.
+     */
+    public ChangeReport createChangeReport(String guid) throws Exception {
+        ChangeReport result = new ChangeReport(guid);
+
+        StoreSystemBuildCriteria ssbc = new StoreSystemBuildCriteria();
+        ssbc.setGuid(guid);
+        ssbc.setFetchBuild(true);
+        ssbc.setFetchSystem(true);
+
+        StoreSystemBuild sb = systemBuildService.getSystemBuild(ssbc);
+        if (sb == null) {
+            throw new Exception("No system build found with id: " + guid);
+        }
+        StoreSystem tmp = sb.getSystem();
+        StoreBuild build = sb.getBuild();
+
+        result.setSystemBuild(sb);
+
+        // load the application
+        StoreApplicationCriteria sac = new StoreApplicationCriteria();
+        sac.setSystem(tmp.getGuid());
+        sac.setFetchSCM(true);
+        StoreApplication app = appService.getApplication(sac);
+        if (app == null) {
+            throw new Exception("Missing the application for the system!");
+        }
+        result.setApplication(app);
+
+        // load the project
+        StoreProjectCriteria pc = new StoreProjectCriteria();
+        pc.setApplication(app.getGuid());
+        pc.setFetchBTS(true);
+        StoreProject project = projectService.getProject(pc);
+        if (project == null) {
+            throw new Exception("Missing project for the application and system!");
+        }
+        result.setProject(project);
+
+        StoreBTSystem bts = project.getBts();
+        if (bts == null) {
+            throw new Exception("Missing the bug tracking configuration");
+        }
+
+        Map<String, Change> changes = new HashMap<>();
+        Map<String, Change> buildChanges = new HashMap<>();
+        Set<String> errors = new HashSet<>();
+
+        // update changes from the bug tracking system
+        BtsCriteria bc = new BtsCriteria();
+        bc.setServer(bts.getServer());
+        bc.setUser(bts.getUser());
+        bc.setPassword(bts.getPassword());
+        bc.setAuth(bts.isAuth());
+        bc.setType(bts.getType().name());
+        bc.setVersion(build.getMavenVersion());
+        bc.setProject(project.getBtsId());
+
+        BtsResult btsResult = BtsService.getIssues(bc);
+        List<BtsIssue> issues = btsResult.getIssues();
+        for (BtsIssue issue : issues) {
+            Change change = new Change();
+            change.setId(issue.getId());
+            change.setIssue(issue);
+            changes.put(change.getId(), change);
+        }
+
+        // get changes from the SCM
+        StoreSCMSystem scm = app.getScm();
+        if (scm == null) {
+            throw new Exception("Missing the SCM configuration");
+        }
+
+        // create the server link
+        String server = scm.getServer() + app.getScmBranches();
+        server = server.replaceAll(VERSION_REGEX, build.getMavenVersion());
+
+        // load all builds
+        StoreBuildCriteria sbc = new StoreBuildCriteria();
+        sbc.setApplication(app.getGuid());
+        sbc.setMavenVersion(build.getMavenVersion());
+        List<StoreBuild> builds = buildService.getBuilds(sbc);
+
+        // get the SCM log
+        ScmCriteria criteria = new ScmCriteria();
+        criteria.setType(scm.getType().name());
+        criteria.setServer(server);
+        criteria.setAuth(scm.isAuth());
+        criteria.setUser(scm.getUser());
+        criteria.setPassword(scm.getPassword());
+        criteria.setReadTimeout(20 * 1000);
+        ScmResult scmResult = ScmService.getLog(criteria);
+
+        List<BuildScmLogs> buildScmLogs = new ArrayList<>();
+        for (StoreBuild item : builds) {
+            String id = item.getScm();
+            if (id != null && !id.isEmpty()) {
+                ScmLog log = scmResult.getScmLog(id);
+                if (log != null) {
+                    buildScmLogs.add(new BuildScmLogs(item, log.getDate()));
+                } else {
+                    LOGGER.log(Level.WARNING, "No SCM log found for the [{0}] id. Ignore the build {1}", new Object[]{id, item.getGuid()});
+                }
+            }
+        }
+        //add next release
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, 1);
+        buildScmLogs.add(new BuildScmLogs(null, cal.getTime()));
+        // sort the build log by date
+        Collections.sort(buildScmLogs, BuildScmLogsComparator.INSTANCE);
+
+        List<ScmLog> scmLogs = scmResult.getScmLogs();
+
+        if (scmLogs != null) {
+
+            // create issue id pattern
+            String key = BtsService.getIdPattern(bts.getType().name(), project.getBtsId());
+            Pattern searchPattern = Pattern.compile(key);
+
+            // search issues in the SCM log.
+            for (ScmLog scmLog : scmLogs) {
+                StoreBuild buildForLog = null;
+                if (!buildScmLogs.isEmpty()) {
+                    Iterator<BuildScmLogs> iter = buildScmLogs.iterator();
+                    BuildScmLogs bsl = iter.next();
+                    while (scmLog.getDate().after(bsl.getDate())) {
+                        bsl = iter.next();
+                    }
+                    buildForLog = bsl.getBuild();
+                }
+
+                LOGGER.log(Level.FINEST, "REV: {0} {1} {2}", new Object[]{scmLog.getId(), scmLog.getDate(), scmLog.getMessage()});
+                Matcher matcher = searchPattern.matcher(scmLog.getMessage());
+                while (matcher.find()) {
+                    String issue = matcher.group();
+                    Change change = changes.get(issue);
+                    if (change == null) {
+                        change = new Change();
+                        change.setError(true);
+                        change.setId(issue);
+                        errors.add(issue);
+                        changes.put(issue, change);
+                    }
+
+                    // add SCM log to the change
+                    change.getChanges().add(new ScmLogBuild(buildForLog, scmLog));
+                    
+                    // add change to the current build
+                    if (build.equals(buildForLog)) {
+                        
+                        Change bch = buildChanges.get(issue);
+                        if (bch == null) {
+                            bch = new Change();
+                            bch.setId(issue);
+                            bch.setIssue(change.getIssue());
+                            buildChanges.put(issue, bch);
+                        }
+                        bch.getChanges().add(new ScmLogBuild(buildForLog, scmLog));
+                    }
+                }
+            }
+        }
+
+        // get the wrong commits from the BTS
+        if (!errors.isEmpty()) {
+            bc.setVersion(null);
+            bc.setProject(null);
+            for (String error : errors) {
+                bc.setId(error);
+                try {
+                    BtsResult btsTmp = BtsService.getIssues(bc);
+                    if (!btsTmp.isEmpty()) {
+                        BtsIssue issue = btsTmp.getIssues().get(0);
+                        Change change = changes.get(error);
+                        if (change != null) {
+                            change.setIssue(issue);
+                        }
+                    }
+                } catch (Exception ex) {
+                    LOGGER.log(Level.WARNING, "{0} is not valid issue for this project", error);
+                    LOGGER.log(Level.FINEST, "Error get the BTS issue", ex);
+                }
+            }
+        }
+
+        // create change report
+        result.getChanges().addAll(changes.values());
+        Collections.sort(result.getChanges(), ChangeComparator.INSTANCE);
+
+        result.getBuildChanges().addAll(buildChanges.values());
+        Collections.sort(result.getBuildChanges(), ChangeComparator.INSTANCE);
+
+        return result;
     }
 
     /**
@@ -456,11 +561,11 @@ public class ProcessServiceBean {
      * Send the notification asynchrony.
      *
      * @param item the serialisable items.
-     */    
+     */
     private void send(Serializable item) {
         send(Arrays.asList(item));
     }
-    
+
     /**
      * Send the notification asynchrony.
      *

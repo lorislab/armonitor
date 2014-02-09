@@ -17,13 +17,12 @@ package org.lorislab.armonitor.scm.service;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
-import org.lorislab.armonitor.scm.model.ScmLog;
+import org.lorislab.armonitor.scm.model.ScmResult;
 
 /**
  * The SCM service.
@@ -70,7 +69,7 @@ public final class ScmService {
      * @return the list of logs.
      * @throws Exception if the method fails.
      */
-    public static List<ScmLog> getLog(ScmCriteria criteria) throws Exception {
+    public static ScmResult getLog(ScmCriteria criteria) throws Exception {
         if (criteria == null) {
             throw new Exception("Missing bug tracking search criteria!");
         }
@@ -78,8 +77,8 @@ public final class ScmService {
         // check client
         ScmServiceClient client = getClient(criteria.getType());
         return client.getLog(criteria);
-    }
-
+    }  
+    
     /**
      * Gets the client by type.
      *

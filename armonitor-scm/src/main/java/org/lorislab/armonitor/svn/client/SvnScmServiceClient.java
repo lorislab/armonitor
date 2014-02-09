@@ -15,19 +15,16 @@
  */
 package org.lorislab.armonitor.svn.client;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.model.ScmLog;
+import org.lorislab.armonitor.scm.model.ScmResult;
 import org.lorislab.armonitor.scm.service.ScmServiceClient;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
-import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 /**
  * The subversion service client.
@@ -48,9 +45,9 @@ public class SvnScmServiceClient implements ScmServiceClient {
      * {@inheritDoc}
      */
     @Override
-    public List<ScmLog> getLog(ScmCriteria criteria) throws Exception {
+    public ScmResult getLog(ScmCriteria criteria) throws Exception {
 
-        List<ScmLog> result = new ArrayList<>();
+        ScmResult result = new ScmResult();
 
         long startRevision = 0;
         if (criteria.getStart() != null) {
@@ -64,8 +61,7 @@ public class SvnScmServiceClient implements ScmServiceClient {
         SVNRepository repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(criteria.getServer()));
 
         if (criteria.isAuth()) {
-            ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(criteria.getUser(), new String(criteria.getPassword()));
-            repository.setAuthenticationManager(authManager);
+            repository.setAuthenticationManager(FactoryAuthenticationManager.create(criteria));
         }
 
         String[] path = new String[]{""};
@@ -87,7 +83,7 @@ public class SvnScmServiceClient implements ScmServiceClient {
                 log.setMessage(entry.getMessage());
                 log.setDate(entry.getDate());
 
-                result.add(log);
+                result.addScmLog(log);
 
             }
         }

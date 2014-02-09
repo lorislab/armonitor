@@ -15,9 +15,8 @@
  */
 package org.lorislab.armonitor.scm.service;
 
-import java.util.List;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
-import org.lorislab.armonitor.scm.model.ScmLog;
+import org.lorislab.armonitor.scm.model.ScmResult;
 
 /**
  * The SCM service client.
@@ -37,8 +36,9 @@ public interface ScmServiceClient {
      * Gets the log.
      *
      * @param criteria the criteria.
-     * @return the list of log items.
+     * @return the SCM result.
      * @throws Exception if the method fails.
      */
-    public List<ScmLog> getLog(ScmCriteria criteria) throws Exception;
+    public ScmResult getLog(ScmCriteria criteria) throws Exception;
+         
 }

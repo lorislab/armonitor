@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.lorislab.armonitor.bts.model.BtsIssue;
-import org.lorislab.armonitor.scm.model.ScmLog;
 
 /**
  * The report change.
@@ -40,10 +39,43 @@ public class Change implements Serializable {
      * The issue.
      */
     private BtsIssue issue;
+
     /**
-     * The list of SCM logs.
+     * The error flag.
      */
-    private final List<ScmLog> scmLogs = new ArrayList<>();
+    private boolean error;
+
+    /**
+     * The list of changes.
+     */
+    private final List<ScmLogBuild> changes = new ArrayList<>();
+
+    /**
+     * Gets the error flag.
+     *
+     * @return the error flag.
+     */
+    public boolean isError() {
+        return error;
+    }
+
+    /**
+     * Sets the error flag.
+     *
+     * @param error the error flag.
+     */
+    public void setError(boolean error) {
+        this.error = error;
+    }
+
+    /**
+     * Gets the list of changes.
+     *
+     * @return the list of changes.
+     */
+    public List<ScmLogBuild> getChanges() {
+        return changes;
+    }
 
     /**
      * Gets the issue.
@@ -79,15 +111,6 @@ public class Change implements Serializable {
      */
     public void setId(String id) {
         this.id = id;
-    }
-
-    /**
-     * Gets the SCM logs.
-     *
-     * @return the SCM logs.
-     */
-    public List<ScmLog> getScmLogs() {
-        return scmLogs;
     }
 
 }

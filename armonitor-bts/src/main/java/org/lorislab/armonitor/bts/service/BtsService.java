@@ -17,13 +17,12 @@ package org.lorislab.armonitor.bts.service;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
-import org.lorislab.armonitor.bts.model.BtsIssue;
+import org.lorislab.armonitor.bts.model.BtsResult;
 
 /**
  * The bug tracking service.
@@ -70,7 +69,7 @@ public final class BtsService {
      * @return the list of issues.
      * @throws Exception if the method fails.
      */
-    public static List<BtsIssue> getIssues(BtsCriteria criteria) throws Exception {
+    public static BtsResult getIssues(BtsCriteria criteria) throws Exception {
         if (criteria == null) {
             throw new Exception("Missing bug tracking search criteria!");
         }

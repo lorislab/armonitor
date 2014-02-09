@@ -24,6 +24,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import org.lorislab.armonitor.mail.model.Mail;
+import org.lorislab.armonitor.model.ChangeReport;
 import org.lorislab.armonitor.store.model.StoreSystem;
 
 /**
@@ -68,6 +69,9 @@ public class AsyncProcessServiceBean implements MessageListener {
                         } else if (object instanceof Mail) {
                             Mail request = (Mail) object;
                             processService.process(request);
+                        } else if (object instanceof ChangeReport) {
+                            ChangeReport report = (ChangeReport) object;
+                            processService.sendReport(report);
                         } else if (object instanceof String) {
                             String guid = (String) object;
                             processService.sendReport(guid);
