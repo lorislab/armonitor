@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -27,6 +28,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.SCMSystemServiceBean;
+import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
 import org.lorislab.armonitor.web.rs.model.enums.SCMSystemType;
@@ -40,6 +42,20 @@ public class SCMSystemService {
     
     @EJB
     private SCMSystemServiceBean service;
+    
+    @PUT
+    @Path("{guid}/app/{app}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void addApplication(@PathParam("guid") String guid, @PathParam("app") String app) throws Exception {
+        service.addApplication(guid, app);
+    }
+    
+    @GET
+    @Path("{guid}/app")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<Application> getApplications(@PathParam("guid") String guid) throws Exception {
+        return service.getApplications(guid);
+    }  
     
     @GET
     @Path("types")

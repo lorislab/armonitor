@@ -22,7 +22,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.ws.rs.PathParam;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.criteria.StoreUserCriteria;
 import org.lorislab.armonitor.store.ejb.StoreRoleServiceBean;
@@ -93,7 +92,7 @@ public class UserServiceBean {
         return Mapper.create(StoreUser.class, User.class);
     }
     
-    public User get(@PathParam("guid") String guid) {
+    public User get(String guid) {
         StoreUser tmp = service.getUser(guid);
         return Mapper.map(tmp, User.class);
     }

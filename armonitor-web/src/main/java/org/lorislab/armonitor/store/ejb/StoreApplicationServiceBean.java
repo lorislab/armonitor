@@ -88,6 +88,10 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
             root.fetch(StoreApplication_.project, JoinType.LEFT);
         }
 
+        if (criteria.isFetchSystem()) {
+            root.fetch(StoreApplication_.systems, JoinType.LEFT);
+        }
+        
         List<Predicate> predicates = new ArrayList<>();
 
         if (criteria.getGuid() != null) {

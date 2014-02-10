@@ -25,7 +25,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
@@ -65,9 +64,10 @@ public class StoreSystem extends Persistent {
     /**
      * The agent.
      */
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "system")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "C_AGENT")
     private StoreAgent agent;
-
+    
     /**
      * The set of store system builds.
      */
@@ -102,6 +102,30 @@ public class StoreSystem extends Persistent {
      */
     @Column(name = "C_NOTIFY")
     private boolean notification;
+
+    /**
+     * The service name.
+     */
+    @Column(name = "C_SERVICE")
+    private String service;
+
+    /**
+     * Gets the service name.
+     *
+     * @return the service name.
+     */
+    public String getService() {
+        return service;
+    }
+
+    /**
+     * Sets the service name.
+     *
+     * @param service the service name.
+     */
+    public void setService(String service) {
+        this.service = service;
+    }
 
     /**
      * Gets the notification flag.

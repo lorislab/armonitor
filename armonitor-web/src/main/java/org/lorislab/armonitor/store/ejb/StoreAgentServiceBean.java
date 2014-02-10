@@ -30,6 +30,7 @@ import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreAgentCriteria;
 import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreAgent_;
+import org.lorislab.armonitor.store.model.StoreApplication_;
 import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
@@ -58,12 +59,6 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
         return loadAgent(criteria);
     }
 
-    public StoreAgent loadAgentBySystem(String guid) {
-        StoreAgentCriteria criteria = new StoreAgentCriteria();
-        criteria.setSystem(guid);
-        return loadAgent(criteria);
-    }
-
     public List<StoreAgent> getAgents() {
         return getAgents(new StoreAgentCriteria());
     }
@@ -85,12 +80,12 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
         Root<StoreAgent> root = cq.from(StoreAgent.class);
 
         if (criteria.isFetchSystem()) {
-            root.fetch(StoreAgent_.system, JoinType.LEFT);
+            root.fetch(StoreAgent_.systems, JoinType.LEFT);
         }
 
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.getSystem() != null) {
-            predicates.add(cb.equal(root.get(StoreAgent_.system).get(StoreSystem_.guid), criteria.getSystem()));
+            predicates.add(cb.in(root.join(StoreAgent_.systems).get(StoreSystem_.guid)).value(criteria.getSystem()));
         }
 
         if (criteria.getGuid() != null) {

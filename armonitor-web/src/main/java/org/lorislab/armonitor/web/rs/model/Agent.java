@@ -44,9 +44,5 @@ public class Agent {
      * The user name.
      */
     public String user;
-    /**
-     * The service.
-     */
-    public String service;
 
 }

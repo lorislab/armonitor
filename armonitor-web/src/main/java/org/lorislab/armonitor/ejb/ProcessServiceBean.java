@@ -230,7 +230,7 @@ public class ProcessServiceBean {
             criteria.setEnabled(Boolean.TRUE);
             StoreSystem tmp = systemService.getSystem(criteria);
             if (tmp != null) {
-                StoreBuild build = agentClientService.getAppBuild(system.getAgent());
+                StoreBuild build = agentClientService.getAppBuild(system.getAgent(), system.getService());
                 if (build != null) {
                     process(tmp, build, StoreSystemBuildType.TIMER);
                 } else {

@@ -37,6 +37,7 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         result.enabled = data.isEnabled();
         result.timer = data.isTimer();
         result.notification = data.isNotification();
+        result.service = data.getService();
         return result;
     }
 
@@ -49,6 +50,7 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         entity.setEnabled(data.enabled);
         entity.setTimer(data.timer);
         entity.setNotification(data.notification);
+        entity.setService(data.service);
         return entity;
     }
 

@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -30,6 +31,7 @@ import org.lorislab.armonitor.web.rs.ejb.BTSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
 import org.lorislab.armonitor.web.rs.model.enums.BTSystemType;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
+import org.lorislab.armonitor.web.rs.model.Project;
 
 /**
  *
@@ -40,6 +42,25 @@ public class BTSystemService {
     
     @EJB
     private BTSystemServiceBean service;
+    
+    @GET
+    @Path("{guid}/project")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<Project> getApplications(@PathParam("guid") String guid) throws Exception {
+        return service.getProjects(guid);
+    } 
+    
+    /**
+     * 
+     * @param guid
+     * @param project
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/project/{project}")
+    public void addProject(@PathParam("guid") String guid, @PathParam("project") String project) throws Exception {
+        service.addProject(guid, project);
+    }
     
     @GET
     @Path("types")

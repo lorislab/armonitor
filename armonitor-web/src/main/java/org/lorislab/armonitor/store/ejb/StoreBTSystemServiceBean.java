@@ -16,11 +16,22 @@
 
 package org.lorislab.armonitor.store.ejb;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import org.lorislab.armonitor.store.criteria.StoreBTSystemCriteria;
 import org.lorislab.armonitor.store.model.StoreBTSystem;
+import org.lorislab.armonitor.store.model.StoreBTSystem_;
+import org.lorislab.armonitor.store.model.StoreProject_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
@@ -50,7 +61,55 @@ public class StoreBTSystemServiceBean extends AbstractEntityServiceBean<StoreBTS
         return getById(guid);
     }
     
-    public List<StoreBTSystem> getBTSystems() {
-        return getAll();
+    public StoreBTSystem getBTSystem(StoreBTSystemCriteria criteria) {
+        List<StoreBTSystem> tmp = getBTSystems(criteria);
+        if (tmp != null && !tmp.isEmpty()) {
+            return tmp.get(0);
+        }
+        return null;
     }
+    
+    public List<StoreBTSystem> getBTSystems() {
+        return getBTSystems(new StoreBTSystemCriteria());
+    }
+    
+    /**
+     * Gets the list of bug tracking systems by criteria.
+     *
+     * @param criteria the criteria.
+     * @return the corresponding list of bug tracking systems.
+     */
+    public List<StoreBTSystem> getBTSystems(StoreBTSystemCriteria criteria) {
+        List<StoreBTSystem> result = new ArrayList<>();
+
+        CriteriaBuilder cb = getBaseEAO().getCriteriaBuilder();
+        CriteriaQuery<StoreBTSystem> cq = getBaseEAO().createCriteriaQuery();
+        Root<StoreBTSystem> root = cq.from(StoreBTSystem.class);
+
+        if (criteria.isFetchProject()) {
+            root.fetch(StoreBTSystem_.projects, JoinType.LEFT);
+        }
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (criteria.getGuid() != null) {
+            predicates.add(cb.equal(root.get(StoreBTSystem_.guid), criteria.getGuid()));
+        }
+
+        if (criteria.getProject() != null) {
+            predicates.add(cb.in(root.join(StoreBTSystem_.projects).get(StoreProject_.guid)).value(criteria.getProject()));
+        }
+
+        if (!predicates.isEmpty()) {
+            cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        }
+
+        try {
+            TypedQuery<StoreBTSystem> typeQuery = getBaseEAO().createTypedQuery(cq);
+            result = typeQuery.getResultList();
+        } catch (NoResultException ex) {
+            // do nothing
+        }
+        return result;
+    }    
 }

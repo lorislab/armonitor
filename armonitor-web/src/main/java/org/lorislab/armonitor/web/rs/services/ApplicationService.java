@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -28,6 +29,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.ApplicationServiceBean;
 import org.lorislab.armonitor.web.rs.model.Application;
+import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Project;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
 
@@ -40,6 +42,18 @@ public class ApplicationService {
     
     @EJB
     private ApplicationServiceBean service;
+    
+    @GET
+    @Path("{guid}/sys")
+    public Set<ApplicationSystem> getSystems(@PathParam("guid") String guid) {
+        return service.getSystems(guid);
+    }
+    
+    @PUT
+    @Path("{guid}/sys/{sys}")
+    public void addSystem(@PathParam("guid") String guid, @PathParam("sys") String sys) {
+        service.addSystem(guid, sys);
+    }
     
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,28 +74,14 @@ public class ApplicationService {
     public Project getProject(@PathParam("guid") String guid) throws Exception {
         return service.getProject(guid);
     }
-    
-    @PUT
-    @Path("{guid}/project/{project}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void addProject(@PathParam("guid") String guid, @PathParam("project") String project) throws Exception {
-        service.addProject(guid, project);
-    }
-    
+        
     @GET
     @Path("{guid}/scm")
     @Produces(MediaType.APPLICATION_JSON)
     public SCMSystem getSCMSystem(@PathParam("guid") String guid) throws Exception {
         return service.getSCMSystem(guid);
     }
-    
-    @PUT
-    @Path("{guid}/scm/{scm}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void getSCMSystem(@PathParam("guid") String guid, @PathParam("scm") String scm) throws Exception {
-        service.addSCMSystem(guid, scm);
-    }
-    
+        
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)

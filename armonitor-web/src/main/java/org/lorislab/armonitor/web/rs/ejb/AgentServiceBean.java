@@ -17,6 +17,7 @@ package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -35,7 +36,7 @@ import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 
 /**
  * The agent service.
- * 
+ *
  * @author Andrej Petras
  */
 @Stateless
@@ -43,7 +44,7 @@ import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 public class AgentServiceBean {
 
     private static final Logger LOGGER = Logger.getLogger(AgentServiceBean.class.getName());
-    
+
     @EJB
     private StoreAgentServiceBean service;
 
@@ -54,44 +55,40 @@ public class AgentServiceBean {
         return Mapper.create(StoreAgent.class, Agent.class);
     }
 
-    public ApplicationSystem getSystem(String guid) {
+    public Set<ApplicationSystem> getSystems(String guid) {
         StoreAgentCriteria criteria = new StoreAgentCriteria();
         criteria.setGuid(guid);
         criteria.setFetchSystem(true);
         StoreAgent sys = service.loadAgent(criteria);
         if (sys != null) {
-            return Mapper.map(sys.getSystem(), ApplicationSystem.class);
-        }       
+            return Mapper.map(sys.getSystems(), ApplicationSystem.class);
+        }
         return null;
     }
-    
+
     public void addSystem(String guid, String sys) {
         StoreAgentCriteria criteria = new StoreAgentCriteria();
         criteria.setGuid(guid);
-        criteria.setFetchSystem(true);        
+        criteria.setFetchSystem(true);
         StoreAgent tmp = service.loadAgent(criteria);
         if (tmp != null) {
-            if (tmp.getSystem() == null) {             
-                StoreSystem system = systemService.getSystem(sys);
-                if (system != null) {
-                    tmp.setSystem(system);
-                    service.saveAgent(tmp);
-                } else {
-                    LOGGER.log(Level.WARNING,"Missing system {0}", sys);
-                }
+            StoreSystem system = systemService.getSystem(sys);
+            if (system != null) {
+                system.setAgent(tmp);
+                systemService.saveSystem(system);
             } else {
-                LOGGER.log(Level.WARNING,"The agent {0} has already system", guid);
+                LOGGER.log(Level.WARNING, "The system not found {0}", sys);
             }
         } else {
-            LOGGER.log(Level.WARNING,"Missing agent {0}", guid);
+            LOGGER.log(Level.WARNING, "The agent not found {0}", guid);
         }
     }
-    
+
     public void changePassword(String guid, ChangePasswordRequest reqeust) {
         StoreAgent tmp = service.loadAgent(guid);
         if (tmp != null) {
             char[] password = tmp.getPassword();
-            if (password == null || Arrays.equals(password,reqeust.old.toCharArray())) {
+            if (password == null || Arrays.equals(password, reqeust.old.toCharArray())) {
                 tmp.setPassword(reqeust.p1.toCharArray());
                 service.saveAgent(tmp);
             }
@@ -115,11 +112,6 @@ public class AgentServiceBean {
 
     public Agent get(String guid) throws Exception {
         StoreAgent tmp = service.loadAgent(guid);
-        return Mapper.map(tmp, Agent.class);
-    }
-
-    public Agent getBySystem(String guid) throws Exception {
-        StoreAgent tmp = service.loadAgentBySystem(guid);
         return Mapper.map(tmp, Agent.class);
     }
 

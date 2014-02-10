@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -76,10 +77,10 @@ public class AgentService {
     }
 
     @GET
-    @Path("{guid}/system")
+    @Path("{guid}/sys")
     @Produces(MediaType.APPLICATION_JSON)
-    public ApplicationSystem getSystem(@PathParam("guid") String guid) throws Exception {
-        return service.getSystem(guid);
+    public Set<ApplicationSystem> getSystem(@PathParam("guid") String guid) throws Exception {
+        return service.getSystems(guid);
     }
     
     @PUT
@@ -87,14 +88,7 @@ public class AgentService {
     public void addSystem(@PathParam("guid") String guid, @PathParam("sys") String sys) throws Exception {
         service.addSystem(guid, sys);
     }
-    
-    @GET
-    @Path("system/{guid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Agent getBySystem(@PathParam("guid") String guid) throws Exception {
-        return service.getBySystem(guid);
-    }
-    
+       
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Agent> get() throws Exception {

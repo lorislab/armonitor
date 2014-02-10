@@ -33,6 +33,7 @@ import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreRole;
 import org.lorislab.armonitor.store.model.StoreSystem;
+import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Role;
@@ -51,31 +52,17 @@ public class ApplicationSystemServiceBean {
     private StoreSystemServiceBean service;
 
     @EJB
-    private StoreApplicationServiceBean appService;
-    
-    @EJB
     private StoreRoleServiceBean roleService;
-        
-    public void addApplication(String guid, String app) {
+            
+    public Agent getAgent(String guid) {
         StoreSystemCriteria criteria = new StoreSystemCriteria();
         criteria.setGuid(guid);
-        criteria.setFetchApplication(true);
-        StoreSystem tmp = service.getSystem(criteria);
-        if (tmp != null) {
-            if (tmp.getApplication() == null) {             
-                StoreApplication application = appService.getApplication(app);
-                if (application != null) {
-                    tmp.setApplication(application);
-                    service.saveSystem(tmp);
-                } else {
-                    LOGGER.log(Level.WARNING,"Missing application {0}", app);
-                }
-            } else {
-                LOGGER.log(Level.WARNING,"The system {0} has already application", guid);
-            }
-        } else {
-            LOGGER.log(Level.WARNING,"Missing agent {0}", guid);
-        }
+        criteria.setFetchAgent(true);
+        StoreSystem sys = service.getSystem(criteria);
+        if (sys != null) {
+            return Mapper.map(sys.getAgent(), Agent.class);
+        }       
+        return null;         
     }
     
     public Application getApplication(String guid) {
@@ -112,6 +99,8 @@ public class ApplicationSystemServiceBean {
                 sys.getRoles().add(tmp);
                 service.saveSystem(sys);
             }
+        } else {
+            LOGGER.log(Level.WARNING, "No system found {0}", guid);
         }
     }
 

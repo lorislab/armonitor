@@ -25,9 +25,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
-import org.lorislab.armonitor.store.ejb.StoreBTSystemServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreProjectServiceBean;
-import org.lorislab.armonitor.store.model.StoreBTSystem;
+import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
@@ -47,7 +47,22 @@ public class ProjectServiceBean {
     private StoreProjectServiceBean service;
 
     @EJB
-    private StoreBTSystemServiceBean btsService;
+    private StoreApplicationServiceBean appService;
+
+    public void addApplication(String guid, String app) {
+        StoreApplication tmp = appService.getApplication(app);
+        if (tmp != null) {
+            StoreProject sp = service.getProject(guid);
+            if (sp != null) {
+                tmp.setProject(sp);
+                appService.saveApplication(tmp);
+            } else {
+                LOGGER.log(Level.WARNING, "Project not found {0}", guid);
+            }
+        } else {
+            LOGGER.log(Level.WARNING, "Applicaiton not found application {0}", app);
+        }
+    }
 
     public Set<Application> getApplications(String guid) {
         StoreProjectCriteria criteria = new StoreProjectCriteria();
@@ -57,7 +72,7 @@ public class ProjectServiceBean {
         if (sys != null) {
             return Mapper.map(sys.getApplications(), Application.class);
         }
-        return null;        
+        return null;
     }
 
     public BTSystem getBTSystem(String guid) {
@@ -69,28 +84,6 @@ public class ProjectServiceBean {
             return Mapper.map(sys.getBts(), BTSystem.class);
         }
         return null;
-    }
-
-    public void addBTSystem(String guid, String bts) {
-        StoreProjectCriteria criteria = new StoreProjectCriteria();
-        criteria.setGuid(guid);
-        criteria.setFetchBTS(true);
-        StoreProject tmp = service.getProject(criteria);
-        if (tmp != null) {
-            if (tmp.getBts() == null) {
-                StoreBTSystem system = btsService.getBTSystem(bts);
-                if (system != null) {
-                    tmp.setBts(system);
-                    service.saveProject(tmp);
-                } else {
-                    LOGGER.log(Level.WARNING, "Missing bug tracking system {0}", bts);
-                }
-            } else {
-                LOGGER.log(Level.WARNING, "The application {0} has already bug tracking system", guid);
-            }
-        } else {
-            LOGGER.log(Level.WARNING, "Missing application {0}", guid);
-        }
     }
 
     public Project create() throws Exception {

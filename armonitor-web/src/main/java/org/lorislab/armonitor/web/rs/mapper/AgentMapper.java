@@ -37,7 +37,6 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
         result.guid = data.getGuid();
         result.user = data.getUser();
         result.authentication = data.isAuthentication();
-        result.service = data.getService();
         result.type = null;
         if (data.getType() != null) {
             result.type = AgentType.valueOf(data.getType().name());
@@ -52,7 +51,6 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
     @Override
     public StoreAgent update(StoreAgent entity, Agent data, String profile) {
         entity.setAuthentication(data.authentication);
-        entity.setService(data.service);
         entity.setType(null);
         if (data.type != null) {
             entity.setType(StoreAgentType.valueOf(data.type.name()));

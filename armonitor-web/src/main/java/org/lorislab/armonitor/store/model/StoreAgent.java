@@ -15,6 +15,8 @@
  */
 package org.lorislab.armonitor.store.model;
 
+import java.util.Set;
+import javax.persistence.CascadeType;
 import org.lorislab.armonitor.store.model.enums.StoreAgentType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +24,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
@@ -40,10 +43,9 @@ public class StoreAgent extends Persistent {
      */
     private static final long serialVersionUID = -1986215389250537156L;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "C_SYSTEM")
-    private StoreSystem system;
-
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "agent")
+    private Set<StoreSystem> systems;
+   
     @Column(name = "C_URL")
     private String url;
 
@@ -60,17 +62,14 @@ public class StoreAgent extends Persistent {
     @Column(name = "C_PASSWORD")
     private char[] password;
 
-    @Column(name = "C_SERVICE")
-    private String service;
-
-    public String getService() {
-        return service;
+    public Set<StoreSystem> getSystems() {
+        return systems;
     }
 
-    public void setService(String service) {
-        this.service = service;
+    public void setSystems(Set<StoreSystem> systems) {
+        this.systems = systems;
     }
-
+        
     public boolean isAuthentication() {
         return authentication;
     }
@@ -93,14 +92,6 @@ public class StoreAgent extends Persistent {
 
     public void setPassword(char[] password) {
         this.password = password;
-    }
-
-    public StoreSystem getSystem() {
-        return system;
-    }
-
-    public void setSystem(StoreSystem system) {
-        this.system = system;
     }
 
     public String getUrl() {

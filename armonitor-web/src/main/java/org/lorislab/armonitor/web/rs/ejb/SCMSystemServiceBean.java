@@ -17,13 +17,23 @@ package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
+import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
+import org.lorislab.armonitor.store.criteria.StoreSCMSystemCriteria;
+import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSCMSystemServiceBean;
+import org.lorislab.armonitor.store.model.StoreApplication;
+import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
+import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
 
@@ -35,19 +45,54 @@ import org.lorislab.armonitor.web.rs.model.SCMSystem;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class SCMSystemServiceBean {
 
+    private static final Logger LOGGER = Logger.getLogger(SCMSystemServiceBean.class.getName());
+    
     @EJB
     private StoreSCMSystemServiceBean service;
+
+    @EJB
+    private StoreApplicationServiceBean appService;
+
+    public Set<Application> getApplications(String guid) {
+        StoreSCMSystemCriteria criteria = new StoreSCMSystemCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchApplication(true);
+        StoreSCMSystem sys = service.getSCMSystem(criteria);
+        if (sys != null) {
+            return Mapper.map(sys.getApplications(), Application.class);
+        }
+        return null;
+    }
     
+    public void addApplication(String guid, String app) {
+        StoreApplicationCriteria criteria = new StoreApplicationCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchSCM(true);
+        StoreApplication tmp = appService.getApplication(app);
+        if (tmp != null) {
+            StoreSCMSystem system = service.getSCMSystem(guid);
+            if (system != null) {
+                tmp.setScm(system);
+                appService.saveApplication(tmp);
+            } else {
+                LOGGER.log(Level.WARNING, "Missing SCM system {0}", guid);
+            }
+        } else {
+            LOGGER.log(Level.WARNING, "Missing application {0}", guid);
+        }
+    }
+
     public void changePassword(String guid, ChangePasswordRequest reqeust) {
         StoreSCMSystem tmp = service.getSCMSystem(guid);
         if (tmp != null) {
             char[] password = tmp.getPassword();
-            if (password == null || Arrays.equals(password,reqeust.old.toCharArray())) {
+            if (password == null || Arrays.equals(password, reqeust.old.toCharArray())) {
                 tmp.setPassword(reqeust.p1.toCharArray());
                 service.saveSCMSystem(tmp);
             }
         }
-    }    
+    }
+
     public List<SCMSystem> get() {
         List<StoreSCMSystem> tmp = service.getSCMSystems();
         return Mapper.map(tmp, SCMSystem.class);

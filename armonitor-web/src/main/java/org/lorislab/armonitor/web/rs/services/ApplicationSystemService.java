@@ -28,6 +28,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.ApplicationSystemServiceBean;
+import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Role;
@@ -83,10 +84,11 @@ public class ApplicationSystemService {
         return service.getApplication(guid);
     }
     
-    @PUT
-    @Path("{guid}/app/{app}")
-    public void addApplication(@PathParam("guid") String guid, @PathParam("app") String app) {
-        service.addApplication(guid, app);
+    @GET
+    @Path("{guid}/agent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Agent getAgent(@PathParam("guid") String guid) {
+        return service.getAgent(guid);
     }
     
     @PUT

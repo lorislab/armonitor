@@ -17,15 +17,23 @@ package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.store.criteria.StoreBTSystemCriteria;
+import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
 import org.lorislab.armonitor.store.ejb.StoreBTSystemServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreProjectServiceBean;
 import org.lorislab.armonitor.store.model.StoreBTSystem;
+import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
+import org.lorislab.armonitor.web.rs.model.Project;
 
 /**
  *
@@ -35,20 +43,54 @@ import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class BTSystemServiceBean {
 
+    private static final Logger LOGGER = Logger.getLogger(BTSystemServiceBean.class.getName());
+
     @EJB
     private StoreBTSystemServiceBean service;
+
+    @EJB
+    private StoreProjectServiceBean projectService;
+
+    public Set<Project> getProjects(String guid) {
+        StoreBTSystemCriteria criteria = new StoreBTSystemCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchProject(true);
+        StoreBTSystem sys = service.getBTSystem(criteria);
+        if (sys != null) {
+            return Mapper.map(sys.getProjects(), Project.class);
+        }
+        return null;
+    }    
+    
+    public void addProject(String guid, String project) {
+        StoreProjectCriteria criteria = new StoreProjectCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchBTS(true);
+        StoreProject tmp = projectService.getProject(project);
+        if (tmp != null) {
+            StoreBTSystem system = service.getBTSystem(guid);
+            if (system != null) {
+                tmp.setBts(system);
+                projectService.saveProject(tmp);
+            } else {
+                LOGGER.log(Level.WARNING, "The bug tracking system not found {0}", guid);
+            }
+        } else {
+            LOGGER.log(Level.WARNING, "Project not found {0}", project);
+        }
+    }
 
     public void changePassword(String guid, ChangePasswordRequest reqeust) {
         StoreBTSystem tmp = service.getBTSystem(guid);
         if (tmp != null) {
             char[] password = tmp.getPassword();
-            if (password == null || Arrays.equals(password,reqeust.old.toCharArray())) {
+            if (password == null || Arrays.equals(password, reqeust.old.toCharArray())) {
                 tmp.setPassword(reqeust.p1.toCharArray());
                 service.saveBTSystem(tmp);
             }
         }
     }
-    
+
     public List<BTSystem> get() {
         List<StoreBTSystem> tmp = service.getBTSystems();
         return Mapper.map(tmp, BTSystem.class);

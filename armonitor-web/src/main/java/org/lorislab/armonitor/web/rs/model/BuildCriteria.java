@@ -16,34 +16,19 @@
 package org.lorislab.armonitor.web.rs.model;
 
 /**
- * The application system.
+ * The build criteria.
  *
  * @author Andrej Petras
  */
-public class ApplicationSystem {
+public class BuildCriteria {
 
     /**
-     * The GUID.
+     * The application.
      */
-    public String guid;
+    public String application;
     /**
-     * The name.
+     * Loads the build parameters.
      */
-    public String name;
-    /**
-     * The enable flag.
-     */
-    public boolean enabled;
-    /**
-     * The timer flag.
-     */
-    public boolean timer;
-    /**
-     * The notification flag.
-     */
-    public boolean notification;
-    /**
-     * The service.
-     */
-    public String service;    
+    public boolean params = false;
+
 }

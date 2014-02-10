@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.List;
@@ -26,31 +25,33 @@ import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
 import org.lorislab.armonitor.store.ejb.StoreBuildServiceBean;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.web.rs.model.Build;
+import org.lorislab.armonitor.web.rs.model.BuildCriteria;
 
 /**
+ * The build service.
  *
  * @author Andrej Petras
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class BuildServiceBean {
-    
+
+    /**
+     * The store build service.
+     */
     @EJB
     private StoreBuildServiceBean service;
-    
-    public List<Build> get(boolean parameters) {
-        StoreBuildCriteria criteria = new StoreBuildCriteria();
-        criteria.setFetchParameters(parameters);
-        List<StoreBuild> tmp = service.getBuilds(criteria);
+
+    /**
+     * Gets the list of builds by the criteria.
+     *
+     * @param criteria the criteria.
+     * @return the list of builds corresponding to the criteria.
+     */
+    public List<Build> get(BuildCriteria criteria) {
+        StoreBuildCriteria sc = Mapper.create(criteria, StoreBuildCriteria.class);
+        List<StoreBuild> tmp = service.getBuilds(sc);
         return Mapper.map(tmp, Build.class);
     }
-    
-    public List<Build> getForApp(String guid, boolean parameters) {
-        StoreBuildCriteria criteria = new StoreBuildCriteria();
-        criteria.setFetchParameters(parameters);
-        criteria.setApplication(guid);
-        List<StoreBuild> tmp = service.getBuilds(criteria);
-        return Mapper.map(tmp, Build.class);
-    }
-      
+
 }
