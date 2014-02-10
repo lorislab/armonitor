@@ -20,11 +20,15 @@ import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 
 /**
+ * The application system mapper.
  *
  * @author Andrej Petras
  */
 public class ApplicationSystemMapper implements MapperService<StoreSystem, ApplicationSystem> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationSystem map(StoreSystem data, String profile) {
         ApplicationSystem result = new ApplicationSystem();
@@ -32,17 +36,25 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         result.name = data.getName();
         result.enabled = data.isEnabled();
         result.timer = data.isTimer();
+        result.notification = data.isNotification();
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreSystem update(StoreSystem entity, ApplicationSystem data, String profile) {
         entity.setName(data.name);
         entity.setEnabled(data.enabled);
         entity.setTimer(data.timer);
+        entity.setNotification(data.notification);
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreSystem create(ApplicationSystem data, String profile) {
         StoreSystem result = new StoreSystem();
@@ -51,6 +63,9 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationSystem create(String profile) {
         StoreSystem tmp = new StoreSystem();

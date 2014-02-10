@@ -13,25 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.model;
 
 /**
  * The application.
- * 
+ *
  * @author Andrej Petras
  */
 public class Application {
-    
-    public String guid;
-    
-    public String name;
 
+    /**
+     * The GUID.
+     */
+    public String guid;
+    /**
+     * The name.
+     */
+    public String name;
+    /**
+     * The SCM trunk.
+     */
     public String scmTrunk;
-    
+    /**
+     * The SCM branches.
+     */
     public String scmBranches;
-    
+    /**
+     * The SCM tags.
+     */
     public String scmTags;
-    
+    /**
+     * The enabled flag.
+     */
     public boolean enabled;
 }

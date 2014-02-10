@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.ejb;
 
 import java.util.ArrayList;
@@ -41,29 +40,33 @@ import org.lorislab.armonitor.store.model.StoreUser_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
+ * The user service.
  *
  * @author Andrej Petras
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = 1L;
- 
+
     public StoreUser getUser(String guid) {
         return this.getById(guid);
     }
-    
+
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreUser saveUser(StoreUser user) {
         return this.save(user);
     }
-    
+
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean deleteUser(String guid) {
         return this.deleteUser(guid);
     }
-    
+
     public Set<StoreRole> getRoles(String guid) {
         StoreUserCriteria criteria = new StoreUserCriteria();
         criteria.setGuid(guid);
@@ -71,10 +74,10 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
         StoreUser user = getUser(criteria);
         if (user != null) {
             return user.getRoles();
-        }       
+        }
         return null;
     }
-          
+
     public StoreUser getUser(StoreUserCriteria criteria) {
         StoreUser result = null;
         List<StoreUser> tmp = getUsers(criteria);
@@ -83,22 +86,22 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
         }
         return result;
     }
-    
+
     public List<StoreUser> getUsers() {
         return getUsers(new StoreUserCriteria());
     }
-    
+
     public Set<String> getUsersEmailsForSystem(String system) {
         Set<String> result = new HashSet<>();
-        
+
         CriteriaBuilder cb = getBaseEAO().getCriteriaBuilder();
         CriteriaQuery<String> cq = getBaseEAO().createCriteriaQuery(String.class);
         Root<StoreUser> root = cq.from(StoreUser.class);
-             
-        Subquery<String> sq = cq.subquery(String.class);        
+
+        Subquery<String> sq = cq.subquery(String.class);
         Root<StoreSystem> project = sq.from(StoreSystem.class);
         sq.select(project.join(StoreSystem_.roles).get(StoreRole_.guid)).where(cb.equal(project.get(StoreSystem_.guid), system));
-        
+
         cq.select(root.get(StoreUser_.email));
         cq.where(cb.in(root.join(StoreUser_.roles).get(StoreRole_.guid)).value(sq));
 
@@ -111,12 +114,12 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
         } catch (NoResultException ex) {
             // do nothing
         }
-        
+
         return result;
     }
 
     public List<StoreUser> getUsers(StoreUserCriteria criteria) {
-      List<StoreUser> result = new ArrayList<>();
+        List<StoreUser> result = new ArrayList<>();
 
         CriteriaBuilder cb = getBaseEAO().getCriteriaBuilder();
         CriteriaQuery<StoreUser> cq = getBaseEAO().createCriteriaQuery();
@@ -125,24 +128,24 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
         if (criteria.isFetchRoles()) {
             root.fetch(StoreUser_.roles, JoinType.LEFT);
         }
-     
+
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.getName() != null) {
             predicates.add(cb.equal(root.get(StoreUser_.name), criteria.getName()));
         }
-        
+
         if (criteria.getGuid() != null) {
             predicates.add(cb.equal(root.get(StoreUser_.guid), criteria.getGuid()));
         }
-        
+
         if (criteria.getSystem() != null) {
-            Subquery<String> sq = cq.subquery(String.class);        
+            Subquery<String> sq = cq.subquery(String.class);
             Root<StoreSystem> project = sq.from(StoreSystem.class);
             sq.select(project.join(StoreSystem_.roles).get(StoreRole_.guid)).where(cb.equal(project.get(StoreSystem_.guid), criteria.getSystem()));
             sq.distinct(true);
-            predicates.add(cb.in(root.join(StoreUser_.roles).get(StoreRole_.guid)).value(sq));            
+            predicates.add(cb.in(root.join(StoreUser_.roles).get(StoreRole_.guid)).value(sq));
         }
-        
+
         if (!predicates.isEmpty()) {
             cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }
@@ -153,6 +156,6 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
         } catch (NoResultException ex) {
             // do nothing
         }
-        return result;        
+        return result;
     }
 }

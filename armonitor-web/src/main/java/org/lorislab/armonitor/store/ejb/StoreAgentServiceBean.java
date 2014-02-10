@@ -33,15 +33,18 @@ import org.lorislab.armonitor.store.model.StoreAgent_;
 import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
-
 /**
- *
+ * The agent service.
+ * 
  * @author Andrej Petras
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent> {
 
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -6750263259636685498L;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -60,7 +63,7 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
         criteria.setSystem(guid);
         return loadAgent(criteria);
     }
-    
+
     public List<StoreAgent> getAgents() {
         return getAgents(new StoreAgentCriteria());
     }
@@ -71,9 +74,9 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
         if (tmp != null && !tmp.isEmpty()) {
             result = tmp.get(0);
         }
-        return result;        
+        return result;
     }
-    
+
     public List<StoreAgent> getAgents(StoreAgentCriteria criteria) {
         List<StoreAgent> result = new ArrayList<>();
 
@@ -87,7 +90,7 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
 
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.getSystem() != null) {
-            predicates.add(cb.equal(root.get(StoreAgent_.system).get(StoreSystem_.guid), criteria.getSystem()));            
+            predicates.add(cb.equal(root.get(StoreAgent_.system).get(StoreSystem_.guid), criteria.getSystem()));
         }
 
         if (criteria.getGuid() != null) {

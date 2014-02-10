@@ -20,11 +20,15 @@ import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.web.rs.model.Application;
 
 /**
+ * The application mapper.
  *
  * @author Andrej Petras
  */
 public class ApplicationMapper implements MapperService<StoreApplication, Application> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Application map(StoreApplication data, String profile) {
         Application result = new Application();
@@ -37,6 +41,9 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreApplication update(StoreApplication entity, Application data, String profile) {
         entity.setName(data.name);
@@ -47,6 +54,9 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreApplication create(Application data, String profile) {
         StoreApplication result = new StoreApplication();
@@ -55,6 +65,9 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Application create(String profile) {
         StoreApplication tmp = new StoreApplication();

@@ -22,11 +22,15 @@ import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.enums.AgentType;
 
 /**
+ * The agent mapper.
  *
  * @author Andrej Petras
  */
 public class AgentMapper implements MapperService<StoreAgent, Agent> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Agent map(StoreAgent data, String profile) {
         Agent result = new Agent();
@@ -42,6 +46,9 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreAgent update(StoreAgent entity, Agent data, String profile) {
         entity.setAuthentication(data.authentication);
@@ -55,6 +62,9 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreAgent create(Agent data, String profile) {
         StoreAgent result = new StoreAgent();
@@ -63,6 +73,9 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Agent create(String profile) {
         StoreAgent agent = new StoreAgent();

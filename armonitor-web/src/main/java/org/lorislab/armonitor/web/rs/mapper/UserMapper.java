@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.mapper;
 
 import org.lorislab.armonitor.mapper.MapperService;
@@ -21,11 +20,15 @@ import org.lorislab.armonitor.store.model.StoreUser;
 import org.lorislab.armonitor.web.rs.model.User;
 
 /**
+ * The user mapper.
  *
  * @author Andrej Petras
  */
 public class UserMapper implements MapperService<StoreUser, User> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User map(StoreUser data, String profile) {
         User result = new User();
@@ -36,6 +39,9 @@ public class UserMapper implements MapperService<StoreUser, User> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreUser update(StoreUser entity, User data, String profile) {
         entity.setEmail(data.email);
@@ -44,6 +50,9 @@ public class UserMapper implements MapperService<StoreUser, User> {
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreUser create(User data, String profile) {
         StoreUser result = new StoreUser();
@@ -52,9 +61,12 @@ public class UserMapper implements MapperService<StoreUser, User> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User create(String profile) {
         return map(new StoreUser(), profile);
     }
-    
+
 }

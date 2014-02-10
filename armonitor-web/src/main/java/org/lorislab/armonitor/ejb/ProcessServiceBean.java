@@ -296,7 +296,7 @@ public class ProcessServiceBean {
     public void sendReport(String guid) {
         try {
             // create change report
-            ChangeReport changeReport = createChangeReport(guid);
+            ChangeReport changeReport = createChangeReport(guid);            
             // notification
             send(changeReport);
         } catch (Exception ex) {
@@ -319,9 +319,13 @@ public class ProcessServiceBean {
             StoreApplication app = report.getApplication();
 
             // notification
-            Set<String> users = userService.getUsersEmailsForSystem(tmp.getGuid());
-            List<Mail> mails = createBuildDeployedMails(users, tmp, build, project, report, app, sb);
-            send(mails);
+            if (tmp.isNotification()) {            
+                Set<String> users = userService.getUsersEmailsForSystem(tmp.getGuid());
+                List<Mail> mails = createBuildDeployedMails(users, tmp, build, project, report, app, sb);
+                send(mails);
+            } else {
+                LOGGER.log(Level.WARNING, "The notification for the system {0} is disabled!", tmp.getName());
+            }
 
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error: " + ex.getMessage(), ex);
@@ -423,7 +427,8 @@ public class ProcessServiceBean {
         criteria.setAuth(scm.isAuth());
         criteria.setUser(scm.getUser());
         criteria.setPassword(scm.getPassword());
-        criteria.setReadTimeout(20 * 1000);
+        criteria.setReadTimeout(scm.getReadTimeout());
+        criteria.setConnectionTimeout(scm.getConnectionTimeout());
         ScmResult scmResult = ScmService.getLog(criteria);
 
         List<BuildScmLogs> buildScmLogs = new ArrayList<>();

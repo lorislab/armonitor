@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.mapper;
 
 import org.lorislab.armonitor.mapper.MapperService;
@@ -23,11 +22,15 @@ import org.lorislab.armonitor.web.rs.model.BTSystem;
 import org.lorislab.armonitor.web.rs.model.enums.BTSystemType;
 
 /**
+ * The bug tracking system mapper.
  *
  * @author Andrej Petras
  */
 public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BTSystem map(StoreBTSystem data, String profile) {
         BTSystem result = new BTSystem();
@@ -43,6 +46,9 @@ public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreBTSystem update(StoreBTSystem entity, BTSystem data, String profile) {
         entity.setAuth(data.auth);
@@ -56,6 +62,9 @@ public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreBTSystem create(BTSystem data, String profile) {
         StoreBTSystem result = new StoreBTSystem();
@@ -64,10 +73,13 @@ public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BTSystem create(String profile) {
         StoreBTSystem role = new StoreBTSystem();
         return map(role, profile);
     }
-    
+
 }

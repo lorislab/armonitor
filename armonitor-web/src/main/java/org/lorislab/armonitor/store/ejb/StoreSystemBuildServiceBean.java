@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.ejb;
 
 import java.util.ArrayList;
@@ -36,26 +35,30 @@ import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
- *
+ * The system build service.
+ * 
  * @author Andrej Petras
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<StoreSystemBuild> {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = 3658813042535292506L;
-    
+
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreSystemBuild saveSystemBuild(StoreSystemBuild data) {
         return this.save(data);
     }
-    
+
     public StoreSystemBuild getSystemBuild(String guid) {
         StoreSystemBuildCriteria criteria = new StoreSystemBuildCriteria();
         criteria.setGuid(guid);
         return this.getById(guid);
     }
-    
+
     public StoreSystemBuild getSystemBuild(StoreSystemBuildCriteria criteria) {
         StoreSystemBuild result = null;
         List<StoreSystemBuild> tmp = getSystemBuilds(criteria);
@@ -64,7 +67,7 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
         }
         return result;
     }
-    
+
     public List<StoreSystemBuild> getSystemBuilds() {
         return getSystemBuilds(new StoreSystemBuildCriteria());
     }
@@ -79,24 +82,24 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
         if (criteria.isFetchBuild()) {
             root.fetch(StoreSystemBuild_.build, JoinType.LEFT);
         }
-        
+
         if (criteria.isFetchSystem()) {
             root.fetch(StoreSystemBuild_.system, JoinType.LEFT);
         }
-        
-        List<Predicate> predicates = new ArrayList<>();        
+
+        List<Predicate> predicates = new ArrayList<>();
         if (criteria.getGuid() != null) {
             predicates.add(cb.equal(root.get(StoreSystemBuild_.guid), criteria.getGuid()));
         }
-        
+
         if (criteria.getSystem() != null) {
             predicates.add(cb.equal(root.get(StoreSystemBuild_.system).get(StoreSystem_.guid), criteria.getSystem()));
         }
 
         if (criteria.getBuild() != null) {
-            predicates.add(cb.equal(root.get(StoreSystemBuild_.build).get(StoreBuild_.guid), criteria.getBuild()));            
+            predicates.add(cb.equal(root.get(StoreSystemBuild_.build).get(StoreBuild_.guid), criteria.getBuild()));
         }
-        
+
         if (!predicates.isEmpty()) {
             cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }
@@ -108,5 +111,5 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
             // do nothing
         }
         return result;
-    }         
+    }
 }

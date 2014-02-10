@@ -31,7 +31,9 @@ import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreBTSystemServiceBean extends AbstractEntityServiceBean<StoreBTSystem> {
-    
+    /**
+     * The UID for this class.
+     */    
     private static final long serialVersionUID = -1543513660078529228L;
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)

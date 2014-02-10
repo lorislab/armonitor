@@ -34,6 +34,7 @@ import org.lorislab.armonitor.store.model.StoreProject_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
+ * The project service.
  *
  * @author Andrej Petras
  */
@@ -41,6 +42,9 @@ import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreProjectServiceBean extends AbstractEntityServiceBean<StoreProject> {
 
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -4937927663216469945L;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -55,11 +59,11 @@ public class StoreProjectServiceBean extends AbstractEntityServiceBean<StoreProj
     }
 
     public StoreProject getProject(StoreProjectCriteria criteria) {
-       List<StoreProject> tmp = getProjects(criteria);
-       if (tmp != null && !tmp.isEmpty()) {
-           return tmp.get(0);
-       }
-       return  null;
+        List<StoreProject> tmp = getProjects(criteria);
+        if (tmp != null && !tmp.isEmpty()) {
+            return tmp.get(0);
+        }
+        return null;
     }
 
     public List<StoreProject> getProjects() {
@@ -75,12 +79,12 @@ public class StoreProjectServiceBean extends AbstractEntityServiceBean<StoreProj
 
         if (criteria.isFetchApplication()) {
             root.fetch(StoreProject_.applications, JoinType.LEFT);
-        }        
-        
+        }
+
         if (criteria.isFetchBTS()) {
             root.fetch(StoreProject_.bts, JoinType.LEFT);
-        } 
-        
+        }
+
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.isEnabled() != null) {
             predicates.add(cb.equal(root.get(StoreProject_.enabled), criteria.isEnabled()));
@@ -89,11 +93,11 @@ public class StoreProjectServiceBean extends AbstractEntityServiceBean<StoreProj
         if (criteria.getGuid() != null) {
             predicates.add(cb.equal(root.get(StoreProject_.guid), criteria.getGuid()));
         }
-        
+
         if (criteria.getApplication() != null) {
             predicates.add(cb.in(root.join(StoreProject_.applications).get(StoreApplication_.guid)).value(criteria.getApplication()));
         }
-        
+
         if (!predicates.isEmpty()) {
             cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }

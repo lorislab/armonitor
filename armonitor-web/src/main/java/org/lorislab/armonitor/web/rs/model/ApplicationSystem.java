@@ -13,22 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.model;
 
 /**
  * The application system.
- * 
+ *
  * @author Andrej Petras
  */
 public class ApplicationSystem {
 
+    /**
+     * The GUID.
+     */
     public String guid;
-    
+    /**
+     * The name.
+     */
     public String name;
-
+    /**
+     * The enable flag.
+     */
     public boolean enabled;
-    
+    /**
+     * The timer flag.
+     */
     public boolean timer;
-
+    /**
+     * The notification flag.
+     */
+    public boolean notification;
 }

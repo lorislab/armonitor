@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.mapper;
 
 import org.lorislab.armonitor.mapper.MapperService;
@@ -21,11 +20,15 @@ import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.web.rs.model.Project;
 
 /**
+ * The project mapper.
  *
  * @author Andrej Petras
  */
 public class ProjectMapper implements MapperService<StoreProject, Project> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Project map(StoreProject data, String profile) {
         Project result = new Project();
@@ -36,6 +39,9 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreProject update(StoreProject entity, Project data, String profile) {
         entity.setName(data.name);
@@ -44,6 +50,9 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreProject create(Project data, String profile) {
         StoreProject result = new StoreProject();
@@ -52,10 +61,13 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Project create(String profile) {
         StoreProject role = new StoreProject();
         return map(role, profile);
     }
-    
+
 }

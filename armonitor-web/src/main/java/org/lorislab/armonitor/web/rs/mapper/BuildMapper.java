@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.mapper;
 
 import org.lorislab.armonitor.mapper.MapperService;
@@ -21,23 +20,33 @@ import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.web.rs.model.Build;
 
 /**
+ * The build mapper.
  *
  * @author Andrej Petras
  */
 public class BuildMapper implements MapperService<StoreBuild, Build> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Build map(StoreBuild data, String profile) {
         Build result = new Build();
-        result.guid = data.getGuid();            
+        result.guid = data.getGuid();
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreBuild update(StoreBuild entity, Build data, String profile) {
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreBuild create(Build data, String profile) {
         StoreBuild result = new StoreBuild();
@@ -46,10 +55,13 @@ public class BuildMapper implements MapperService<StoreBuild, Build> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Build create(String profile) {
-        StoreBuild tmp = new StoreBuild();        
+        StoreBuild tmp = new StoreBuild();
         return map(tmp, profile);
     }
-    
+
 }

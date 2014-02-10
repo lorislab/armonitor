@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.util;
 
 import org.apache.http.auth.AuthScope;
@@ -29,16 +28,16 @@ import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 
 /**
  * The default rest client.
- * 
+ *
  * @author Andrej Petras
  */
 public class RestClient {
-    
+
     /**
      * The HTTPS constant.
      */
     private static final String HTTPS = "https";
-    
+
     /**
      * Gets the rest-service client.
      *
@@ -47,19 +46,19 @@ public class RestClient {
      * @param url the server URL.
      * @param username the username.
      * @param password the password.
-     *
+     * @param auth the authentication flag.
      * @exception Exception if the method fails.
-     * 
+     *
      * @return the the rest-service client instance.
      */
     public static <T> T getClient(final Class<T> clazz, String url, boolean auth, String username, char[] password) throws Exception {
-                
+
         DefaultHttpClient httpClient = new DefaultHttpClient();
         if (url.startsWith(HTTPS)) {
             SSLSocketFactory sslSocketFactory = new SSLSocketFactory(new TrustSelfSignedStrategy(), SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
             httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme(HTTPS, 443, sslSocketFactory));
         }
-        
+
         if (auth) {
             BasicCredentialsProvider provider = new BasicCredentialsProvider();
             Credentials credentials = new UsernamePasswordCredentials(username, new String(password));
@@ -68,5 +67,5 @@ public class RestClient {
         }
         return ProxyFactory.create(clazz, url, new ApacheHttpClient4Executor(httpClient));
     }
-    
+
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.mapper;
 
 import org.lorislab.armonitor.mapper.MapperService;
@@ -21,11 +20,15 @@ import org.lorislab.armonitor.store.model.StoreRole;
 import org.lorislab.armonitor.web.rs.model.Role;
 
 /**
+ * The role mapper.
  *
  * @author Andrej Petras
  */
 public class RoleMapper implements MapperService<StoreRole, Role> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Role map(StoreRole data, String profile) {
         Role result = new Role();
@@ -34,12 +37,18 @@ public class RoleMapper implements MapperService<StoreRole, Role> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreRole update(StoreRole entity, Role data, String profile) {
         entity.setName(data.name);
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StoreRole create(Role data, String profile) {
         StoreRole result = new StoreRole();
@@ -48,10 +57,13 @@ public class RoleMapper implements MapperService<StoreRole, Role> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Role create(String profile) {
         StoreRole role = new StoreRole();
         return map(role, profile);
     }
-    
+
 }

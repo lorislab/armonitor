@@ -13,20 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.model;
 
 /**
+ * The project.
  *
  * @author Andrej Petras
  */
 public class Project {
-    
-    public String guid;
-    
-    public String name;
 
+    /**
+     * The GUID.
+     */
+    public String guid;
+    /**
+     * The name.
+     */
+    public String name;
+    /**
+     * The bug tracking id.
+     */
     public String btsId;
-    
+    /**
+     * The enabled flag.
+     */
     public boolean enabled;
 }

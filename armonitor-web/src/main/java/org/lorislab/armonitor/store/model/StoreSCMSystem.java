@@ -41,104 +41,189 @@ public class StoreSCMSystem extends Persistent {
      */
     private static final long serialVersionUID = -2589083311226920375L;
 
+    /**
+     * The set of the applications for this SCM system.
+     */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "scm")
     private Set<StoreApplication> applications;
-
+    /**
+     * The user name.
+     */
     @Column(name = "C_USER")
     private String user;
-
+    /**
+     * The password.
+     */
     @Column(name = "C_PASWORD")
     private char[] password;
-
+    /**
+     * The authentication flag.
+     */
     @Column(name = "C_AUTH")
     private boolean auth;
-
+    /**
+     * The server.
+     */
     @Column(name = "C_SERVER")
     private String server;
-
+    /**
+     * The type.
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "C_TYPE")
     private StoreSCMSystemType type;
 
     /**
-     * @return the applications
+     * The connection timeout
+     */
+    @Column(name = "C_CONN_TIMEOUT")
+    private Integer connectionTimeout;
+
+    /**
+     * The read timeout.
+     */
+    @Column(name = "C_READ_TIMEOUT")
+    private Integer readTimeout;
+
+    /**
+     * Gets the connection timeout.
+     *
+     * @return the connection timeout.
+     */
+    public Integer getConnectionTimeout() {
+        return connectionTimeout;
+    }
+
+    /**
+     * Sets the connection timeout.
+     *
+     * @param connectionTimeout the connection timeout.
+     */
+    public void setConnectionTimeout(Integer connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
+    /**
+     * Gets the read timeout.
+     *
+     * @return the read timeout.
+     */
+    public Integer getReadTimeout() {
+        return readTimeout;
+    }
+
+    /**
+     * Sets the read timeout.
+     *
+     * @param readTimeout the read timeout.
+     */
+    public void setReadTimeout(Integer readTimeout) {
+        this.readTimeout = readTimeout;
+    }
+
+    /**
+     * Gets the set of applications.
+     *
+     * @return the set of applications.
      */
     public Set<StoreApplication> getApplications() {
         return applications;
     }
 
     /**
-     * @param applications the applications to set
+     * Sets the set of applications.
+     *
+     * @param applications the applications to set.
      */
     public void setApplications(Set<StoreApplication> applications) {
         this.applications = applications;
     }
 
     /**
-     * @return the user
+     * Gets the user name.
+     *
+     * @return the user name.
      */
     public String getUser() {
         return user;
     }
 
     /**
-     * @param user the user to set
+     * Sets the user name.
+     *
+     * @param user the user to set.
      */
     public void setUser(String user) {
         this.user = user;
     }
 
     /**
-     * @return the password
+     * Gets the password.
+     *
+     * @return the password.
      */
     public char[] getPassword() {
         return password;
     }
 
     /**
-     * @param password the password to set
+     * Sets the password.
+     *
+     * @param password the password to set.
      */
     public void setPassword(char[] password) {
         this.password = password;
     }
 
     /**
-     * @return the auth
+     * Gets the authentication flag.
+     *
+     * @return the authentication flag.
      */
     public boolean isAuth() {
         return auth;
     }
 
     /**
-     * @param auth the auth to set
+     * Sets the authentication flag.
+     *
+     * @param auth the authentication flag.
      */
     public void setAuth(boolean auth) {
         this.auth = auth;
     }
 
     /**
-     * @return the server
+     * Gets the server.
+     *
+     * @return the server.
      */
     public String getServer() {
         return server;
     }
 
     /**
-     * @param server the server to set
+     * Sets the server.
+     *
+     * @param server the server to set.
      */
     public void setServer(String server) {
         this.server = server;
     }
 
     /**
-     * @return the type
+     * Gets the type.
+     *
+     * @return the type.
      */
     public StoreSCMSystemType getType() {
         return type;
     }
 
     /**
-     * @param type the type to set
+     * Sets the type.
+     *
+     * @param type the type to set.
      */
     public void setType(StoreSCMSystemType type) {
         this.type = type;

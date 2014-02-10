@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.store.ejb;
 
 import java.util.ArrayList;
@@ -35,26 +34,48 @@ import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
+ * The system service.
  *
  * @author Andrej Petras
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSystem> {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -9106271336827485594L;
-    
+
+    /**
+     * Saves the system.
+     *
+     * @param system the system.
+     * @return the saved system.
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public StoreSystem saveSystem(StoreSystem application) {
-        return this.save(application);
+    public StoreSystem saveSystem(StoreSystem system) {
+        return this.save(system);
     }
-    
+
+    /**
+     * Gets the system by GUID.
+     *
+     * @param guid the GUID.
+     * @return the corresponding system.
+     */
     public StoreSystem getSystem(String guid) {
         StoreSystemCriteria criteria = new StoreSystemCriteria();
         criteria.setGuid(guid);
         return getSystem(criteria);
     }
-    
+
+    /**
+     * Gets the system by criteria.
+     *
+     * @param criteria the criteria.
+     * @return the corresponding system.
+     */
     public StoreSystem getSystem(StoreSystemCriteria criteria) {
         StoreSystem result = null;
         List<StoreSystem> tmp = getSystems(criteria);
@@ -63,11 +84,22 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
         }
         return result;
     }
-    
+
+    /**
+     * Gets the list of all systems.
+     *
+     * @return the list of all systems.
+     */
     public List<StoreSystem> getSystems() {
         return getSystems(new StoreSystemCriteria());
     }
-    
+
+    /**
+     * Gets the list of systems by criteria.
+     *
+     * @param criteria the criteria.
+     * @return the list of systems corresponding to the criteria.
+     */
     public List<StoreSystem> getSystems(StoreSystemCriteria criteria) {
         List<StoreSystem> result = new ArrayList<>();
 
@@ -78,15 +110,15 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
         if (criteria.isFetchAgent()) {
             root.fetch(StoreSystem_.agent, JoinType.LEFT);
         }
-        
+
         if (criteria.isFetchApplication()) {
             root.fetch(StoreSystem_.application, JoinType.LEFT);
         }
-        
+
         if (criteria.isFetchRoles()) {
             root.fetch(StoreSystem_.roles, JoinType.LEFT);
         }
-        
+
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.isEnabled() != null) {
             predicates.add(cb.equal(root.get(StoreSystem_.enabled), criteria.isEnabled()));
@@ -95,15 +127,15 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
         if (criteria.getGuid() != null) {
             predicates.add(cb.equal(root.get(StoreSystem_.guid), criteria.getGuid()));
         }
-        
+
         if (criteria.isTimer() != null) {
             predicates.add(cb.equal(root.get(StoreSystem_.timer), criteria.isTimer()));
         }
-        
+
         if (criteria.getApplications() != null && !criteria.getApplications().isEmpty()) {
             predicates.add(root.get(StoreSystem_.application).get(StoreApplication_.guid).in(criteria.getApplications()));
         }
-        
+
         if (!predicates.isEmpty()) {
             cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }
@@ -115,5 +147,5 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
             // do nothing
         }
         return result;
-    }     
+    }
 }

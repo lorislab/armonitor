@@ -13,27 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.model;
 
 import org.lorislab.armonitor.web.rs.model.enums.BTSystemType;
 
 /**
+ * The bug tracking system.
  *
  * @author Andrej Petras
  */
 public class BTSystem {
-    
+
+    /**
+     * The GUID.
+     */
     public String guid;
-    
+    /**
+     * The user.
+     */
     public String user;
-    
+    /**
+     * The authentication flag.
+     */
     public boolean auth;
-    
+    /**
+     * The server.
+     */
     public String server;
-    
+    /**
+     * The link.
+     */
     public String link;
-    
+    /**
+     * The bug tracking system type.
+     */
     public BTSystemType type;
-    
+
 }

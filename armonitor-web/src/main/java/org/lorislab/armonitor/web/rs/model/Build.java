@@ -13,46 +13,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.model;
 
 import java.util.Date;
 import java.util.Map;
 
 /**
+ * The build.
  *
  * @author Andrej Petras
  */
 public class Build {
-    
-    public String guid;
-    
-    public String application;
-    
-    public String agent;
-    
-    public String uid;
-    
-    public Integer ver;
 
+    /**
+     * The GUID.
+     */
+    public String guid;
+    /**
+     * The application.
+     */
+    public String application;
+    /**
+     * The agent.
+     */
+    public String agent;
+    /**
+     * The UID.
+     */
+    public String uid;
+    /**
+     * The version.
+     */
+    public Integer ver;
+    /**
+     * The date.
+     */
     public Date date;
-    
+    /**
+     * The service.
+     */
     public String service;
-        
+    /**
+     * The MAVEN group id.
+     */
     public String groupdId;
-    
+    /**
+     * The MAVEN artifact id.
+     */
     public String artifactId;
-    
+    /**
+     * The MAVEN version.
+     */
     public String mavenVersion;
-    
-    public String release;
-    
+    /**
+     * The SCM.
+     */
     public String scm;
-    
+    /**
+     * The build.
+     */
     public String build;
-    
-    public Map<String,String> manifest;
-    
-    public Map<String,String> other;
-    
+    /**
+     * The manifest parameters.
+     */
+    public Map<String, String> manifest;
+    /**
+     * The other parameters.
+     */
+    public Map<String, String> other;
+
 }

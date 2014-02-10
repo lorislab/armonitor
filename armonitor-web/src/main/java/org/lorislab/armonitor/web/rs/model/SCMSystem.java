@@ -18,18 +18,38 @@ package org.lorislab.armonitor.web.rs.model;
 import org.lorislab.armonitor.web.rs.model.enums.SCMSystemType;
 
 /**
+ * The SCM system.
  *
  * @author Andrej Petras
  */
 public class SCMSystem {
 
+    /**
+     * The GUID.
+     */
     public String guid;
-
+    /**
+     * The user.
+     */
     public String user;
-
+    /**
+     * The authentication flag.
+     */
     public boolean auth;
-
+    /**
+     * The server.
+     */
     public String server;
-
+    /**
+     * The SCM system type.
+     */
     public SCMSystemType type;
+    /**
+     * The read timeout.
+     */
+    public Integer readTimeout;
+    /**
+     * The connection timeout.
+     */
+    public Integer connectionTimeout;
 }
