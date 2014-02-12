@@ -9,3 +9,6 @@ org.lorislab.armonitor.web.rs.mapper.RoleMapper
 org.lorislab.armonitor.web.rs.mapper.SCMSystemMapper
 org.lorislab.armonitor.web.rs.mapper.BTSystemMapper
 org.lorislab.armonitor.web.rs.mapper.ProjectMapper
+org.lorislab.armonitor.web.rs.mapper.DashboardProjectMapper
+org.lorislab.armonitor.web.rs.mapper.DashboardApplicationMapper
+org.lorislab.armonitor.web.rs.mapper.DashboardApplicationSystemMapper

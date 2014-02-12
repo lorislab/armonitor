@@ -24,13 +24,17 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
+import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreApplication_;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreProject_;
+import org.lorislab.armonitor.store.model.StoreSystem;
+import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
@@ -47,17 +51,35 @@ public class StoreProjectServiceBean extends AbstractEntityServiceBean<StoreProj
      */
     private static final long serialVersionUID = -4937927663216469945L;
 
+    /**
+     * Saves the project.
+     *
+     * @param project the project.
+     * @return the saved project.
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreProject saveProject(StoreProject project) {
         return this.save(project);
     }
 
+    /**
+     * Gets the project by GUID.
+     *
+     * @param guid the GUID.
+     * @return the project corresponding to the GUID.
+     */
     public StoreProject getProject(String guid) {
         StoreProjectCriteria criteria = new StoreProjectCriteria();
         criteria.setGuid(guid);
         return getProject(criteria);
     }
 
+    /**
+     * Gets the project by criteria.
+     *
+     * @param criteria the criteria.
+     * @return the project corresponding to the criteria.
+     */
     public StoreProject getProject(StoreProjectCriteria criteria) {
         List<StoreProject> tmp = getProjects(criteria);
         if (tmp != null && !tmp.isEmpty()) {
@@ -66,10 +88,54 @@ public class StoreProjectServiceBean extends AbstractEntityServiceBean<StoreProj
         return null;
     }
 
+    /**
+     * Gets the list of all projects.
+     *
+     * @return the list of all projects.
+     */
     public List<StoreProject> getProjects() {
         return getProjects(new StoreProjectCriteria());
     }
 
+    /**
+     * Gets the projects list for the dashboard.
+     *
+     * @return the projects list for the dashboard.
+     */
+    public List<StoreProject> getDashboardProjects() {
+        List<StoreProject> result = new ArrayList<>();
+
+        CriteriaBuilder cb = getBaseEAO().getCriteriaBuilder();
+        CriteriaQuery<StoreProject> cq = getBaseEAO().createCriteriaQuery();
+        Root<StoreProject> root = cq.from(StoreProject.class);
+
+        cq.distinct(true);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(root.get(StoreProject_.enabled), true));
+
+        Join<StoreProject, StoreApplication> applications = (Join<StoreProject, StoreApplication>) root.fetch(StoreProject_.applications, JoinType.LEFT);
+        predicates.add(cb.equal(applications.get(StoreApplication_.enabled), true));
+
+        Join<StoreApplication, StoreSystem> systems = (Join<StoreApplication, StoreSystem>) applications.fetch(StoreApplication_.systems, JoinType.LEFT);
+        predicates.add(cb.equal(systems.get(StoreSystem_.enabled), true));
+
+        cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        try {
+            TypedQuery<StoreProject> typeQuery = getBaseEAO().createTypedQuery(cq);
+            result = typeQuery.getResultList();
+        } catch (NoResultException ex) {
+            // do nothing
+        }
+        return result;
+    }
+
+    /**
+     * Gets the list of projects by the criteria.
+     *
+     * @param criteria the criteria.
+     * @return the list of projects corresponding to the criteria.
+     */
     public List<StoreProject> getProjects(StoreProjectCriteria criteria) {
         List<StoreProject> result = new ArrayList<>();
 
