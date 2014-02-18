@@ -1,0 +1,15 @@
+<div data-ng-repeat="(pi,p) in getProjects()">
+	<div style="border-bottom: 1px solid #eee;">
+	<h2>{{p.project.name}}</h2>
+	</div>
+	<div data-ng-repeat="(ai,a) in p.applications">
+		<h3>{{a.application.name}}</h3>
+			<div data-ng-repeat="(si,s) in a.systems">
+				<pre class="alert" data-ng-class="{ 'alert-success': s.systemBuild!==null, 'alert-warning': s.systemBuild==null}">
+					Name: {{s.system.name}} 
+					Version: {{s.systemBuild.build.mavenVersion}} {{s.systemBuild.build.build}} {{s.systemBuild.build.scm}}  
+					Date: {{s.systemBuild.systemBuild.date | date:'medium' }}
+				</pre>
+			</div>
+	</div>
+</div>
