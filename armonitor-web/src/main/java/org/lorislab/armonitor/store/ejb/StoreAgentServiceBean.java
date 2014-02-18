@@ -30,7 +30,6 @@ import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreAgentCriteria;
 import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreAgent_;
-import org.lorislab.armonitor.store.model.StoreApplication_;
 import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 

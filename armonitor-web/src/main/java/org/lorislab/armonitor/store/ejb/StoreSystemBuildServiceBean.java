@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.store.ejb;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -24,10 +25,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
+import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuild_;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.store.model.StoreSystemBuild_;
@@ -80,7 +84,11 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
         Root<StoreSystemBuild> root = cq.from(StoreSystemBuild.class);
 
         if (criteria.isFetchBuild()) {
-            root.fetch(StoreSystemBuild_.build, JoinType.LEFT);
+            Fetch<StoreSystemBuild, StoreBuild> bf = root.fetch(StoreSystemBuild_.build, JoinType.LEFT);
+            
+            if (criteria.isFetchBuildParam()) {
+                bf.fetch(StoreBuild_.parameters, JoinType.LEFT);
+            }
         }
 
         if (criteria.isFetchSystem()) {
@@ -88,10 +96,27 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
         }
 
         List<Predicate> predicates = new ArrayList<>();
-        if (criteria.getGuid() != null) {
+        if (criteria.getGuid() != null) {            
             predicates.add(cb.equal(root.get(StoreSystemBuild_.guid), criteria.getGuid()));
         }
 
+        if (criteria.isMaxDate()) {
+            Subquery<Date> sq = cq.subquery(Date.class);
+            Root<StoreSystemBuild> ssb = sq.from(StoreSystemBuild.class);
+            sq.select(cb.greatest(ssb.get(StoreSystemBuild_.date)))
+                    .where(
+                            cb.equal(
+                                    ssb.get(StoreSystemBuild_.system).get(StoreSystem_.guid),
+                                    root.get(StoreSystemBuild_.system).get(StoreSystem_.guid)
+                            )
+                    );
+            predicates.add(cb.equal(root.get(StoreSystemBuild_.date), sq));
+        }
+        
+        if (criteria.getSystems() != null && !criteria.getSystems().isEmpty()) {
+            predicates.add(root.get(StoreSystemBuild_.system).get(StoreSystem_.guid).in(criteria.getSystems()));
+        }
+        
         if (criteria.getSystem() != null) {
             predicates.add(cb.equal(root.get(StoreSystemBuild_.system).get(StoreSystem_.guid), criteria.getSystem()));
         }

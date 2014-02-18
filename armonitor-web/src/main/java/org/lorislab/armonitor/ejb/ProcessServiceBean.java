@@ -281,7 +281,11 @@ public class ProcessServiceBean {
         sb.setDate(new Date());
         sb = systemBuildService.saveSystemBuild(sb);
 
-        send(sb.getGuid());
+        if (tmp.isNotification()) {
+            send(sb.getGuid());
+        } else {
+            LOGGER.log(Level.WARNING, "The notification and the change report for the system {0} is disabled!", tmp.getName());
+        }
     }
 
     public void sendReportAsync(String guid) {
@@ -296,7 +300,7 @@ public class ProcessServiceBean {
     public void sendReport(String guid) {
         try {
             // create change report
-            ChangeReport changeReport = createChangeReport(guid);            
+            ChangeReport changeReport = createChangeReport(guid);
             // notification
             send(changeReport);
         } catch (Exception ex) {
@@ -319,7 +323,7 @@ public class ProcessServiceBean {
             StoreApplication app = report.getApplication();
 
             // notification
-            if (tmp.isNotification()) {            
+            if (tmp.isNotification()) {
                 Set<String> users = userService.getUsersEmailsForSystem(tmp.getGuid());
                 List<Mail> mails = createBuildDeployedMails(users, tmp, build, project, report, app, sb);
                 send(mails);
@@ -486,10 +490,10 @@ public class ProcessServiceBean {
 
                     // add SCM log to the change
                     change.getChanges().add(new ScmLogBuild(buildForLog, scmLog));
-                    
+
                     // add change to the current build
                     if (build.equals(buildForLog)) {
-                        
+
                         Change bch = buildChanges.get(issue);
                         if (bch == null) {
                             bch = new Change();

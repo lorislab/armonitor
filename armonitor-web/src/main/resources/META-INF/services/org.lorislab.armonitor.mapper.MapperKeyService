@@ -1,0 +1,3 @@
+org.lorislab.armonitor.web.rs.mapper.DashboardProjectMapperKey
+org.lorislab.armonitor.web.rs.mapper.DashboardApplicationSystemMapperKey
+org.lorislab.armonitor.web.rs.mapper.DashboardApplicationMapperKey

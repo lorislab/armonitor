@@ -66,7 +66,7 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
     public StoreBuild getBuild(String guid) {
         StoreBuildCriteria criteria = new StoreBuildCriteria();
         criteria.setGuid(guid);
-        return getBuild(guid);
+        return getBuild(criteria);
     }
 
     /**

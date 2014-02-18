@@ -15,32 +15,27 @@
  */
 package org.lorislab.armonitor.web.rs.model;
 
+import java.util.Date;
+import java.util.Map;
+
 /**
- * The dashboard application system.
+ * The dashboard.
  *
  * @author Andrej Petras
  */
-public class DashboardApplicationSystem {
+public class Dashboard {
 
     /**
-     * The GUID.
+     * The size of the projects.
      */
-    public String guid;
+    public int size;
     /**
-     * The application GUID.
+     * The creation date.
      */
-    public String application;
+    public Date date;
     /**
-     * The project GUID.
+     * The map of the dashboard projects.
      */
-    public String project;
+    public Map<String, DashboardProject> projects;
 
-    /**
-     * The application system.
-     */
-    public ApplicationSystem system;
-    /**
-     * THe dashboard system build.
-     */
-    public DashboardSystemBuild systemBuild;
 }

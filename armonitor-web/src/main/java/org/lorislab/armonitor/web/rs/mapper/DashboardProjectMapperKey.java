@@ -13,34 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.armonitor.web.rs.model;
+package org.lorislab.armonitor.web.rs.mapper;
+
+import org.lorislab.armonitor.mapper.MapperKeyService;
+import org.lorislab.armonitor.store.model.StoreProject;
 
 /**
- * The dashboard application system.
+ * The dashboard project mapper key.
  *
  * @author Andrej Petras
  */
-public class DashboardApplicationSystem {
+public class DashboardProjectMapperKey implements MapperKeyService<StoreProject> {
 
     /**
-     * The GUID.
+     * {@inheritDoc}
      */
-    public String guid;
-    /**
-     * The application GUID.
-     */
-    public String application;
-    /**
-     * The project GUID.
-     */
-    public String project;
+    @Override
+    public String getKey(StoreProject data, String profile) {
+        return data.getGuid();
+    }
 
-    /**
-     * The application system.
-     */
-    public ApplicationSystem system;
-    /**
-     * THe dashboard system build.
-     */
-    public DashboardSystemBuild systemBuild;
 }

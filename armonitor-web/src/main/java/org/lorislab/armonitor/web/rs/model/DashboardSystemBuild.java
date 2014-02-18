@@ -16,31 +16,26 @@
 package org.lorislab.armonitor.web.rs.model;
 
 /**
- * The dashboard application system.
+ * The dashboard system build.
  *
  * @author Andrej Petras
  */
-public class DashboardApplicationSystem {
+public class DashboardSystemBuild {
 
     /**
      * The GUID.
      */
     public String guid;
     /**
-     * The application GUID.
+     * The system GUID.
      */
-    public String application;
+    public String system;
     /**
-     * The project GUID.
+     * The system build.
      */
-    public String project;
-
+    public SystemBuild systemBuild;
     /**
-     * The application system.
+     * The build.
      */
-    public ApplicationSystem system;
-    /**
-     * THe dashboard system build.
-     */
-    public DashboardSystemBuild systemBuild;
+    public Build build;
 }

@@ -30,10 +30,6 @@ public class Build {
      */
     public String guid;
     /**
-     * The application.
-     */
-    public String application;
-    /**
      * The agent.
      */
     public String agent;

@@ -36,7 +36,13 @@ public class DashboardApplicationMapper implements MapperService<StoreApplicatio
     public DashboardApplication map(StoreApplication data, String profile) {
         DashboardApplication result = new DashboardApplication();
         result.application = Mapper.map(data, Application.class, profile);
-        result.systems = Mapper.map(data.getSystems(), DashboardApplicationSystem.class, profile);
+        if (result.application != null) {
+            result.guid = result.application.guid;
+        }
+        if (data.getProject() != null) {
+            result.project = data.getProject().getGuid();
+        }
+        result.systems = Mapper.convert(data.getSystems(), DashboardApplicationSystem.class, profile);       
         return result;
     }
 

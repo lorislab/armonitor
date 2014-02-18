@@ -15,14 +15,15 @@
  */
 package org.lorislab.armonitor.web.rs.services;
 
-import java.util.List;
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.web.rs.ejb.DashboardServiceBean;
-import org.lorislab.armonitor.web.rs.model.DashboardProject;
+import org.lorislab.armonitor.web.rs.controller.DashboardController;
+import org.lorislab.armonitor.web.rs.model.Dashboard;
+import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
 
 /**
  * The dashboard rest-service.
@@ -35,8 +36,8 @@ public class DashboardService {
     /**
      * The dashboard service.
      */
-    @EJB
-    private DashboardServiceBean service;
+    @Inject
+    private DashboardController controller;
 
     /**
      * Gets the list of dashboard projects.
@@ -45,7 +46,33 @@ public class DashboardService {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<DashboardProject> getProjects() {
-        return service.getProjects();
+    public Dashboard getDashboard() {
+        return controller.getDashboard();
     }
+
+    /**
+     * Reloads the dashboard data.
+     *
+     * @return the new loaded dashboard data.
+     */
+    @GET
+    @Path("reload")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Dashboard reload() {
+        return controller.reload();
+    }
+
+    /**
+     * Updates the system build in the dashboard object.
+     *
+     * @param sys the system GUID.
+     * @return the dashboard application system.
+     */
+    @GET
+    @Path("sys/{sys}/build")
+    @Produces(MediaType.APPLICATION_JSON)
+    public DashboardApplicationSystem updateSystemBuild(@PathParam("sys") String sys) {
+        return controller.updateSystemBuild(sys);
+    }
+
 }

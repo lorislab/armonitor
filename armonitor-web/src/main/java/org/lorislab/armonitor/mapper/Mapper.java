@@ -18,6 +18,7 @@ package org.lorislab.armonitor.mapper;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,6 +44,10 @@ public final class Mapper {
      * The mapper services cache.
      */
     private static final Map<Class, Map<Class, MapperService>> MAPPER = new HashMap<>();
+    /**
+     * The mapper key services cache.
+     */
+    private static final Map<Class, MapperKeyService> MAPPER_KEY = new HashMap<>();
 
     /**
      * Loads the mapper services.
@@ -57,6 +62,16 @@ public final class Mapper {
                 add(service);
             }
         }
+
+        ServiceLoader<MapperKeyService> keyServices = ServiceLoader.load(MapperKeyService.class);
+        if (keyServices != null) {
+            Iterator<MapperKeyService> iter = keyServices.iterator();
+            while (iter.hasNext()) {
+                MapperKeyService service = iter.next();
+                LOGGER.log(Level.FINE, "Add mapper key service {0}", service.getClass().getName());
+                add(service);
+            }
+        }
     }
 
     /**
@@ -64,6 +79,16 @@ public final class Mapper {
      */
     private Mapper() {
         // empty default constructor.
+    }
+
+    /**
+     * Adds the mapper key service.
+     *
+     * @param mapper the mapper key service.
+     */
+    private static void add(MapperKeyService mapper) {
+        Type[] type = ((ParameterizedType) mapper.getClass().getGenericInterfaces()[0]).getActualTypeArguments();
+        MAPPER_KEY.put((Class) type[0], mapper);
     }
 
     /**
@@ -116,6 +141,51 @@ public final class Mapper {
                         T tmp = map(item, mapper, profile);
                         if (tmp != null) {
                             result.add(tmp);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Converts the collection to the map.
+     *
+     * @param <T> the result type.
+     * @param <E> the input type.
+     * @param data the input collection.
+     * @param clazz the result class.
+     * @return the corresponding map.
+     */
+    public static <T, E> Map<String, T> convert(Collection<E> data, Class<T> clazz) {
+        return convert(data, clazz, null);
+    }
+
+    /**
+     * Converts the collection to the map.
+     *
+     * @param <T> the result type.
+     * @param <E> the input type.
+     * @param data the input collection.
+     * @param clazz the result class.
+     * @param profile the mapper profile.
+     * @return the corresponding map.
+     */
+    public static <T, E> Map<String, T> convert(Collection<E> data, Class<T> clazz, String profile) {
+        Map<String, T> result = null;
+        if (data != null) {
+            result = new HashMap<>();
+            if (!data.isEmpty()) {
+                Class e = data.iterator().next().getClass();
+                MapperService<E, T> mapper = MAPPER.get(e).get(clazz);
+                MapperKeyService<E> mapperKey = MAPPER_KEY.get(e);
+                for (E item : data) {
+                    if (item != null) {
+                        T tmp = map(item, mapper, profile);
+                        if (tmp != null) {
+                            String key = mapperKey.getKey(item, profile);
+                            result.put(key, tmp);
                         }
                     }
                 }

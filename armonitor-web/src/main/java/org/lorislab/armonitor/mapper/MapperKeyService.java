@@ -13,34 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.armonitor.web.rs.model;
+package org.lorislab.armonitor.mapper;
 
 /**
- * The dashboard application system.
+ * The mapper key service.
  *
  * @author Andrej Petras
  */
-public class DashboardApplicationSystem {
+public interface MapperKeyService<E> {
 
     /**
-     * The GUID.
+     * Gets the key from the object.
+     *
+     * @param data the object.
+     * @param profile the mapper profile.
+     * @return the corresponding key.
      */
-    public String guid;
-    /**
-     * The application GUID.
-     */
-    public String application;
-    /**
-     * The project GUID.
-     */
-    public String project;
+    public String getKey(E data, String profile);
 
-    /**
-     * The application system.
-     */
-    public ApplicationSystem system;
-    /**
-     * THe dashboard system build.
-     */
-    public DashboardSystemBuild systemBuild;
 }

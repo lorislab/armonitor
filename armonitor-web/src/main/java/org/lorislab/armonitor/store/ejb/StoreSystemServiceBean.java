@@ -128,6 +128,10 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
             predicates.add(cb.equal(root.get(StoreSystem_.guid), criteria.getGuid()));
         }
 
+        if (criteria.getKey() != null) {
+            predicates.add(cb.equal(root.get(StoreSystem_.key), criteria.getKey()));
+        }
+        
         if (criteria.isTimer() != null) {
             predicates.add(cb.equal(root.get(StoreSystem_.timer), criteria.isTimer()));
         }

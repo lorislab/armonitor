@@ -17,6 +17,7 @@ package org.lorislab.armonitor.web.rs.mapper;
 
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.mapper.MapperService;
+import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
@@ -35,6 +36,17 @@ public class DashboardApplicationSystemMapper implements MapperService<StoreSyst
     public DashboardApplicationSystem map(StoreSystem data, String profile) {
         DashboardApplicationSystem result = new DashboardApplicationSystem();
         result.system = Mapper.map(data, ApplicationSystem.class, profile);
+        if (result.system != null) {
+            result.guid = result.system.guid;
+        }
+        StoreApplication app = data.getApplication();
+        if (app != null) {
+            result.application = app.getGuid();
+            if (app.getProject() != null) {
+                result.project = app.getProject().getGuid();
+            }
+        }
+        result.systemBuild = null;
         return result;
     }
 

@@ -68,6 +68,7 @@ public class VersionMapper implements MapperService<Version, StoreBuild> {
                 param.setType(type);
                 param.setName(entry.getKey());
                 param.setValue(entry.getValue());
+                result.add(param);
             }
         }
         return result;

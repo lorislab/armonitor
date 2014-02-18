@@ -15,7 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.model;
 
-import java.util.Set;
+import java.util.Map;
 
 /**
  * The dashboard project.
@@ -25,11 +25,15 @@ import java.util.Set;
 public class DashboardProject {
 
     /**
+     * The GUID.
+     */
+    public String guid;
+    /**
      * The project.
      */
     public Project project;
     /**
-     * The set of dashboard applications.
+     * The map of dashboard applications.
      */
-    public Set<DashboardApplication> applications;
+    public Map<String, DashboardApplication> applications;
 }

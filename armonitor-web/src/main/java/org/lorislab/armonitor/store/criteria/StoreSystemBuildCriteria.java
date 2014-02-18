@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.store.criteria;
 
+import java.util.Set;
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
 /**
@@ -35,10 +36,40 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
 
     private String build;
 
+    private boolean maxDate;
+    
+    private Set<String> systems;
+    
     private boolean fetchSystem;
 
     private boolean fetchBuild;
 
+    private boolean fetchBuildParam;
+
+    public boolean isFetchBuildParam() {
+        return fetchBuildParam;
+    }
+
+    public void setFetchBuildParam(boolean fetchBuildParam) {
+        this.fetchBuildParam = fetchBuildParam;
+    }
+        
+    public boolean isMaxDate() {
+        return maxDate;
+    }
+
+    public void setMaxDate(Boolean maxDate) {
+        this.maxDate = maxDate;
+    }
+
+    public Set<String> getSystems() {
+        return systems;
+    }
+
+    public void setSystems(Set<String> systems) {
+        this.systems = systems;
+    }
+        
     public boolean isFetchBuild() {
         return fetchBuild;
     }
@@ -86,8 +117,11 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     public void reset() {
         system = null;
         build = null;
+        maxDate = false;
+        systems = null;
         fetchSystem = false;
         fetchBuild = false;
+        fetchBuildParam = false;
     }
 
     /**
@@ -95,7 +129,10 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
      */
     @Override
     public boolean isEmpty() {
-        return isEmpty(system, build);
+        if (maxDate) {
+            return false;
+        }
+        return isEmpty(system, build, systems);
     }
 
 }

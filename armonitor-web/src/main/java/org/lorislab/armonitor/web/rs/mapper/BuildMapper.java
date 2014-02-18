@@ -15,8 +15,11 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.HashMap;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBuild;
+import org.lorislab.armonitor.store.model.StoreBuildParameter;
+import org.lorislab.armonitor.store.model.enums.StoreBuildParameterType;
 import org.lorislab.armonitor.web.rs.model.Build;
 
 /**
@@ -33,6 +36,31 @@ public class BuildMapper implements MapperService<StoreBuild, Build> {
     public Build map(StoreBuild data, String profile) {
         Build result = new Build();
         result.guid = data.getGuid();
+        result.agent = data.getAgent();
+        result.artifactId = data.getArtifactId();
+        result.build = data.getBuild();
+        result.date = data.getDate();
+        result.groupdId = data.getGroupdId();
+        result.mavenVersion = data.getMavenVersion();
+        result.scm = data.getScm();
+        result.service = data.getService();
+        result.uid = data.getUid();
+        result.ver = data.getVer();
+        
+        
+        if (profile != null && profile.equals("dashboard")) {
+            if (data.getParameters() != null) {
+                result.manifest = new HashMap<>();
+                result.other = new HashMap<>();                
+                for (StoreBuildParameter param : data.getParameters()) {
+                    if (param.getType() == StoreBuildParameterType.MANIFEST) {
+                        result.manifest.put(param.getName(), param.getValue());
+                    } else {
+                        result.other.put(param.getName(), param.getValue());
+                    }
+                }
+            }
+        }
         return result;
     }
 
