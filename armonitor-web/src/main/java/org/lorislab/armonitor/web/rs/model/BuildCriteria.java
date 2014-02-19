@@ -30,5 +30,9 @@ public class BuildCriteria {
      * Loads the build parameters.
      */
     public boolean params = false;
+    /**
+     * The MAVEN version.
+     */
+    public String mavenVersion;
 
 }

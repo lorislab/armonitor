@@ -1,0 +1,6 @@
+@import "fontello.css";
+@import "animation.css";
+
+a {
+    color: inherit !important;
+}

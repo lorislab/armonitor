@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -39,6 +40,16 @@ public class DashboardService {
     @Inject
     private DashboardController controller;
 
+    /**
+     * Disables the message info in the dashboard.
+     */
+    @GET
+    @Path("msg")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void disableMsg() {
+        controller.disableMsg();
+    }
+    
     /**
      * Gets the list of dashboard projects.
      *

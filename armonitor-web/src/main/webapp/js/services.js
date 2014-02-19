@@ -2,50 +2,59 @@
 
 /* Services */
 angular.module('armonitor.services', ['ngResource'])
+		.factory('BuildCriteriaService', function() {
+			var app = null;
+			var build = null;
+			
+			return  {
+				app: function() {
+					return app;
+				},
+				build: function() {
+					return build;
+				},
+				criteria: function() {
+					if (build) {
+						return {application: app.guid, params: false, mavenVersion: build.mavenVersion}
+					}	
+					return {application: app.guid, params: false, mavenVersion: null}
+				},
+				set: function(a, b) {
+					app = a;
+					build = b;
+				}
+			};
+		})
+		.factory('BuildRSService', function($resource, config) {
+			return $resource(config.server + '/build', {}, {
+				search: {
+					method: 'POST',
+					isArray: true
+				}
+			});
+		})
 		.factory('DashboardRSService', function($resource, config) {
 			return $resource(config.server + '/db', {}, {
 				get: {
 					method: 'GET',
 					isArray: false
 				},
-				build: {
+				msg: {
+					method: 'GET',
+					url: config.server + '/db/msg',
+					isArray: false
+				},
+				reload: {
+					method: 'GET',
+					url: config.server + '/db/reload',
+					isArray: false					
+				},
+				updateBuild: {
 					method: 'GET',
 					url: config.server + '/db/sys/:sys/build',
 					params: {sys: '@sys'},
 					isArray: false
 				}
 			});
-		})
-		.factory('DashboardService', function(DashboardRSService) {
-			var dashboard = null;
-
-			function _load(callback) {
-				DashboardRSService.get(function(response) {
-					dashboard = response;
-					if (callback) {
-						callback(dashboard.size);
-					}					
-				});
-			}
-
-			_load();
-
-			return {
-				getProjects: function() {
-					if (dashboard) {
-						return dashboard.projects;
-					}
-					return [];
-				},
-				load: function(callback) {
-					_load(callback);
-				},
-				get: function() {
-					return dashboard;
-				},				
-				clear: function() {
-					dashboard = null;
-				}
-			};
-		})
+		})	
 		.value('version', '0.1');

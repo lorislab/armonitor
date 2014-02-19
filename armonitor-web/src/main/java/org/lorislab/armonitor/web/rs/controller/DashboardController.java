@@ -55,6 +55,15 @@ public class DashboardController implements Serializable {
     private Map<String, DashboardApplicationSystem> systems = new HashMap<>();
 
     /**
+     * Disable the message in the dashboard.
+     */
+    public void disableMsg() {
+        if (dashboard != null) {
+            dashboard.msg = true;
+        }
+    }
+
+    /**
      * Updates the system build.
      *
      * @param system the system GUID.
@@ -87,7 +96,11 @@ public class DashboardController implements Serializable {
      * @return the dashboard.
      */
     public Dashboard reload() {
-        dashboard = service.getDashboard();
+        Dashboard tmp = service.getDashboard();
+        if (dashboard != null && tmp != null) {
+            tmp.msg = dashboard.msg;
+        }
+        dashboard = tmp;
         systems = service.updateSystems(dashboard);
         return dashboard;
     }

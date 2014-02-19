@@ -34,6 +34,7 @@ public class BuildCriteriaMapper implements MapperService<StoreBuildCriteria, Bu
         BuildCriteria result = new BuildCriteria();
         result.application = data.getApplication();
         result.params = data.isFetchParameters();
+        result.mavenVersion = data.getMavenVersion();
         return result;
     }
 
@@ -44,6 +45,7 @@ public class BuildCriteriaMapper implements MapperService<StoreBuildCriteria, Bu
     public StoreBuildCriteria update(StoreBuildCriteria entity, BuildCriteria data, String profile) {
         entity.setApplication(data.application);
         entity.setFetchParameters(data.params);
+        entity.setMavenVersion(data.mavenVersion);
         return entity;
     }
 

@@ -25,6 +25,7 @@ import java.util.Map;
  */
 public class Dashboard {
 
+    public boolean msg;
     /**
      * The size of the projects.
      */

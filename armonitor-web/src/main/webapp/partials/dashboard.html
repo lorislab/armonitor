@@ -1,15 +1,71 @@
+
+<h1>Dashboard
+	<small>Overview
+
+
+		<a href="" style="text-align: right; float: right" data-ng-click="reload()">
+			<i class="icon-arrows-cw"></i>
+		</a></small></h1>
+
+<ol class="breadcrumb">
+	<li class="active">
+		<i class="icon-gauge"></i> Dashboard
+	</li>
+</ol>
+
+<div class="alert alert-info alert-dismissable" data-ng-hide="dashboard.msg">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true"  ng-click="closeMsg()">&times;</button>
+	Welcome to Application release monitor by <a class="alert-link" href="http://www.lorislabr.org">lorislab.org</a> community.
+</div>
+
 <div data-ng-repeat="(pi,p) in getProjects()">
-	<div style="border-bottom: 1px solid #eee;">
+
 	<h2>{{p.project.name}}</h2>
-	</div>
 	<div data-ng-repeat="(ai,a) in p.applications">
-		<h3>{{a.application.name}}</h3>
-			<div data-ng-repeat="(si,s) in a.systems">
-				<pre class="alert" data-ng-class="{ 'alert-success': s.systemBuild!==null, 'alert-warning': s.systemBuild===null}">
-					Name: {{s.system.name}} 
-					Version: {{s.systemBuild.build.mavenVersion}} {{s.systemBuild.build.build}} {{s.systemBuild.build.scm}}  
-					Date: {{s.systemBuild.systemBuild.date | date:'medium' }}
-				</pre>
+		<a href="#/builds" data-ng-click="builds(a.application, null)">
+			<h3><i class="icon-beaker"></i> {{a.application.name}}</h3>		
+		</a>
+		<div class="row">
+			<div class="col-lg-4" data-ng-repeat="(si,s) in a.systems">
+				<div class="panel" data-ng-class="{ 'panel-success': s.systemBuild !== null, 'panel-danger': s.systemBuild === null}">
+
+					<div class="panel-heading" style="min-height: 140px">
+						<div class="row">
+							<div class="col-xs-8" style="font-size: 25px;">
+								<a href="">
+								{{s.system.name}}
+								</a>
+							</div>
+							<div class="col-xs-4"	style="text-align: right; float: right">
+								<a href="" data-ng-click="updateBuild(s.guid)" data-popover="Refresh" data-popover-placement="top" data-popover-trigger="mouseenter">
+									<i class="icon-arrows-cw"></i>
+								</a>
+							</div>
+						</div>	
+						<div class="row">
+							<div class="col-xs-4">
+								<i style="font-size: 5em;" data-ng-class="{ 'icon-ok': s.systemBuild !== null, 'icon-attention': s.systemBuild === null}"></i>
+							</div>
+							<div class="col-xs-8" style="text-align: right;">
+								<p style="font-size: 20px;">
+									<a  href="#/builds" data-ng-click="builds(a.application, s.systemBuild.build)">
+										{{s.systemBuild.build.mavenVersion}}
+									</a>
+									<a href="#">
+										{{s.systemBuild.build.build}}  
+									</a>									
+								</p>
+								<p>
+									<i class="icon-fork" style="font-weight: bold"></i>{{s.systemBuild.build.scm}}
+								</p>
+								<p>
+									<i class="icon-clock"></i>{{s.systemBuild.systemBuild.date| date:'medium' }}
+								</p>								
+							</div>
+						</div>						
+					</div>
+				</div>
 			</div>
+		</div>
 	</div>
 </div>
