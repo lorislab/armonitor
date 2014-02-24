@@ -59,34 +59,42 @@ angular.module('armonitor.controllers', [])
 				'groupsOrder': true,
 				'editable': false
 			};
-
 			$scope.builds = [];
 			$scope.app;
+			$scope.build = null;
+			
+			$scope.timelineSelect = function(item) {				
+				if (item) {
+					BuildRSService.get({guid: item.guid}, function(response) {
+						$scope.build = response;
+					});
+				} else {
+					$scope.build = null;
+					$scope.$apply();
+				}
+			};
 
 			$scope.reload = function() {
 				_loadBuilds();
 			};
-
-
+			
 			function _load() {
 				DashboardRSService.getApp({}, function(response) {
 					$scope.app = response;
-
 					if ($scope.app) {
 						_loadBuilds();
 					}
 				});
-
 			}
 
 			function _loadBuilds() {
+				$scope.build = null;
 				DashboardRSService.getDashboardBuilds({}, function(response) {
-					$scope.builds = response;
+					$scope.builds = response;					
 				});
 			}
 
 			_load();
-
 		})
 		.controller('MenuCtrl', function($scope, $location) {
 

@@ -18,3 +18,12 @@ function arrayRemove(array, value) {
     array.splice(index, 1);
   return value;
 }
+
+function isEmptyObject(map) {
+   for(var key in map) {
+      if (map.hasOwnProperty(key)) {
+         return false;
+      }
+   }
+   return true;
+}

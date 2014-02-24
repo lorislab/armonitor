@@ -17,6 +17,83 @@
 <div class="panel panel-default">
 	<div class="panel-heading">Builds <a style="text-align: right; float: right" data-ng-click="reload()"><i class="icon-arrows-cw"></i></a></div>
 	<div class="panel-body" style="padding: 0px !important;">
-		<div data-timeline="builds" data-timeline-options="options" data-timelineSelect="timelineSelect" ></div>
+		<div data-timeline="builds" data-timeline-options="options" ></div>
 	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-6">
+		<div class="panel panel-success" data-ng-show="build">
+			<div class="panel-heading">Maven</div>
+			<div class="panel-body">
+				<table class="table">
+					<tr>
+						<td>GroupId</td>
+						<td>{{build.groupdId}}</td>
+					</tr>
+					<tr>
+						<td>ArtifactId</td>
+						<td>{{build.artifactId}}</td>
+					</tr>
+					<tr>
+						<td>Version</td>
+						<td>{{build.mavenVersion}}</td>
+					</tr>					
+				</table>		
+			</div>
+		</div>
+	</div>	
+	<div class="col-lg-6">
+		<div class="panel panel-success" data-ng-show="build">
+			<div class="panel-heading">Build</div>
+			<div class="panel-body">
+
+				<table class="table">
+					<tr>
+						<td>Time</td>
+						<td>{{build.date| date:'medium'}}</td>
+					</tr>
+					<tr>
+						<td>Release candidate</td>
+						<td>{{build.build}}</td>
+					</tr>
+					<tr>
+						<td>Commit</td>
+						<td>{{build.scm}}</td>
+					</tr>	
+					<tr>
+						<td>Agent version</td>
+						<td>{{build.ver}}</td>
+					</tr>					
+				</table>					
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-6">
+		<div class="panel panel-success" data-ng-show="build">
+			<div class="panel-heading">Manifest</div>
+			<div class="panel-body">
+				<table class="table">
+					<tr data-ng-repeat="(n,v) in build.manifest">
+						<td>{{n}}</td>
+						<td>{{v}}</td>
+					</tr>
+				</table>
+			</div>	
+		</div>	
+	</div>	
+	<div class="col-lg-6">
+		<div class="panel panel-success" data-ng-show="build">
+			<div class="panel-heading">Other</div>
+			<div class="panel-body">
+				<table class="table">
+					<tr data-ng-repeat="(n,v) in build.other">
+						<td>{{n}}</td>
+						<td>{{v}}</td>
+					</tr>
+				</table>
+			</div>	
+		</div>	
+	</div>	
 </div>

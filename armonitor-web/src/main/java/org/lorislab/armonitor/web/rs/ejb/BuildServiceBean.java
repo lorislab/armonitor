@@ -52,7 +52,11 @@ public class BuildServiceBean {
     public List<Build> getBuilds(BuildCriteria criteria) {
         StoreBuildCriteria sc = Mapper.create(criteria, StoreBuildCriteria.class);
         List<StoreBuild> tmp = service.getBuilds(sc);
-        return Mapper.map(tmp, Build.class);
+        String profile = null;
+        if (criteria.params) {
+            profile = "dashboard";
+        }
+        return Mapper.map(tmp, Build.class, profile);
     }
 
     /**
@@ -78,7 +82,7 @@ public class BuildServiceBean {
         bc.setGuid(guid);
         bc.setFetchParameters(true);
         StoreBuild tmp = service.getBuild(bc);
-        return Mapper.map(tmp, Build.class);
+        return Mapper.map(tmp, Build.class, "dashboard");
     }
 
 }

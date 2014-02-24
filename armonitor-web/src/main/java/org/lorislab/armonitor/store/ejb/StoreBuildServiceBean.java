@@ -24,6 +24,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -110,11 +111,11 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
         List<Predicate> predicates = new ArrayList<>();
 
         if (criteria.isFetchParameters()) {
-            root.get(StoreBuild_.parameters);
+            root.fetch(StoreBuild_.parameters, JoinType.LEFT);
         }
 
         if (criteria.isFetchApplication()) {
-            root.get(StoreBuild_.application);
+            root.fetch(StoreBuild_.application, JoinType.LEFT);
         }
 
         if (criteria.getMavenVersion() != null) {

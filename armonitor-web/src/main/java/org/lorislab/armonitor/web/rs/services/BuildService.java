@@ -21,6 +21,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.BuildServiceBean;
@@ -61,8 +62,9 @@ public class BuildService {
      * @return the build.
      */
     @GET
+    @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Build getBuild(String guid) {
+    public Build getBuild(@PathParam("guid") String guid) {
         return service.getBuild(guid);
     }    
 }
