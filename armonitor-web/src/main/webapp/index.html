@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="css/app.css"/>
 		<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
 		<link rel="stylesheet" href="css/bootstrap/bootstrap-theme.min.css"/>
+		<link rel="stylesheet" href="css/timeline/timeline.css"/>
 	</head>
 	<body>
 		<div class="navbar navbar-default navbar-fixed-top">
@@ -21,7 +22,7 @@
 				<div class="navbar-collapse collapse" data-ng-controller="MenuCtrl">
 					<ul class="nav navbar-nav">
 						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard" data-translate="MENU_DASHBOARD">Dashboard</a></li>
-						<li data-ng-class="{ active: active(['/about'])}"><a href="#/about" data-translate="MENU_ABOUT">About</a></li>				
+						<!--<li data-ng-class="{ active: active(['/about'])}"><a href="#/about" data-translate="MENU_ABOUT">About</a></li>-->				
 					</ul>			  				
 				</div>			
 			</div>
@@ -37,6 +38,7 @@
 				<p>&copy; 2013 lorislab.org <a href="https://twitter.com/andrejpetras">Andrej Petras</a> &middot; Released under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
 			</footer>				
 		</div>
+			<script src="lib/timeline/timeline-min.js"></script>
 			<script src="lib/angular/angular.min.js"></script>
 			<script src="lib/angular/angular-route.min.js"></script>
 			<script src="lib/angular/angular-resource.min.js"></script>
@@ -48,5 +50,6 @@
 			<script src="js/controllers.js"></script>
 			<script src="js/filters.js"></script>
 			<script src="js/directives.js"></script>
+			<!--<script src="lib/timeline/timeline.js"></script>-->
 	</body>
 </html>

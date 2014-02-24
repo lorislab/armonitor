@@ -26,12 +26,8 @@ app.provider('config', function() {
 	};
 });
 
-app.config(function(configProvider) {
-	configProvider.setServer("http://localhost:8080/armonitor/rs");
-});
-app.config(function($httpProvider) {
-		$httpProvider.defaults.useXDomain = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+app.config(function (configProvider) {
+	configProvider.setServer("/armonitor/rs");
 });
 app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/dashboard', {templateUrl: 'partials/dashboard.html', controller: 'DashboardCtrl'});

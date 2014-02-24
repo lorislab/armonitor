@@ -13,32 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.lorislab.armonitor.web.rs.model;
 
 /**
- * The build criteria.
- *
+ * The builds criteria.
+ * 
  * @author Andrej Petras
  */
-public class BuildCriteria {
-
+public class BuildsCriteria {
+    /**
+     * The project.
+     */
+    public String project;
     /**
      * The application.
      */
-    public String application;
+    public String app;
     /**
-     * Loads the build parameters.
+     * The version.
      */
-    public boolean params = false;
-    /**
-     * The MAVEN version.
-     */
-    public String mavenVersion;
-    /**
-     * The order by date 
-     * <code>null</code> is not ordering by date.
-     * <code>true</code> ASC.
-     * <code>false</code> DESC.
-     */
-    public Boolean orderByDate;
+    public String version;
 }

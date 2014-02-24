@@ -1,40 +1,38 @@
 'use strict';
 
 /* Services */
-angular.module('armonitor.services', ['ngResource'])
-		.factory('BuildCriteriaService', function() {
-			var app = null;
-			var build = null;
-			
-			return  {
-				app: function() {
-					return app;
-				},
-				build: function() {
-					return build;
-				},
-				criteria: function() {
-					if (build) {
-						return {application: app.guid, params: false, mavenVersion: build.mavenVersion}
-					}	
-					return {application: app.guid, params: false, mavenVersion: null}
-				},
-				set: function(a, b) {
-					app = a;
-					build = b;
-				}
-			};
-		})
+angular.module('armonitor.services', ['ngResource'])		
 		.factory('BuildRSService', function($resource, config) {
 			return $resource(config.server + '/build', {}, {
 				search: {
 					method: 'POST',
 					isArray: true
-				}
+				},
+				get: {
+					method: 'GET',
+					url: config.server + '/build/:guid',
+					params: {guid: '@guid'},					
+					isArray: false
+				}				
 			});
 		})
 		.factory('DashboardRSService', function($resource, config) {
 			return $resource(config.server + '/db', {}, {
+				getApp: {
+					method: 'GET',
+					url: config.server + '/db/app',
+					isArray: false
+				},				
+				getDashboardBuilds: {
+					method: 'GET',
+					url: config.server + '/db/builds',
+					isArray: true
+				},
+				setDashboardBuilds: {
+					method: 'POST',
+					url: config.server + '/db/builds',
+					isArray: false
+				},				
 				get: {
 					method: 'GET',
 					isArray: false
@@ -47,7 +45,7 @@ angular.module('armonitor.services', ['ngResource'])
 				reload: {
 					method: 'GET',
 					url: config.server + '/db/reload',
-					isArray: false					
+					isArray: false
 				},
 				updateBuild: {
 					method: 'GET',
@@ -56,5 +54,5 @@ angular.module('armonitor.services', ['ngResource'])
 					isArray: false
 				}
 			});
-		})	
+		})
 		.value('version', '0.1');

@@ -24,6 +24,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
@@ -140,6 +141,20 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
             cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }
 
+        List<Order> orders = new ArrayList<>();
+        
+        if (criteria.getOrderByDate() != null) {
+            if (criteria.getOrderByDate()) {
+                orders.add( cb.asc(root.get(StoreBuild_.date)));
+            } else {
+                orders.add( cb.desc(root.get(StoreBuild_.date)));
+            }
+        }
+        
+        if (!orders.isEmpty()) {
+            cq.orderBy(orders);
+        }
+        
         try {
             TypedQuery<StoreBuild> typeQuery = getBaseEAO().createTypedQuery(cq);
             result = typeQuery.getResultList();

@@ -15,16 +15,21 @@
  */
 package org.lorislab.armonitor.web.rs.services;
 
+import java.util.List;
 import javax.inject.Inject;
-import javax.ws.rs.DELETE;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.controller.DashboardController;
+import org.lorislab.armonitor.web.rs.model.BuildsCriteria;
 import org.lorislab.armonitor.web.rs.model.Dashboard;
+import org.lorislab.armonitor.web.rs.model.DashboardApplication;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
+import org.lorislab.armonitor.web.rs.model.TimelineBuild;
 
 /**
  * The dashboard rest-service.
@@ -40,6 +45,40 @@ public class DashboardService {
     @Inject
     private DashboardController controller;
 
+    /**
+     * Sets the builds criteria.
+     * @param bc the builds criteria.
+     */
+    @POST
+    @Path("builds")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void setCriteria(BuildsCriteria bc) {    
+        controller.setCriteria(bc);
+    }
+
+    /**
+     * Gets the selected application.
+     * @return the selected application.
+     */
+    @GET
+    @Path("app")
+    @Produces(MediaType.APPLICATION_JSON)
+    public DashboardApplication getApplication() {
+        return controller.getApplication();
+    }    
+    
+    /**
+     * Gets the list of builds by criteria.
+     *
+     * @return the list of builds corresponding to the criteria.
+     */
+    @GET
+    @Path("builds")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<TimelineBuild> getDashboardBuilds() {
+        return controller.getDashboardBuilds();
+    }
+    
     /**
      * Disables the message info in the dashboard.
      */

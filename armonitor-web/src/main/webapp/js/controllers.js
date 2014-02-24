@@ -3,7 +3,7 @@
 /* Controllers */
 
 angular.module('armonitor.controllers', [])
-		.controller('DashboardCtrl', function($scope, DashboardRSService, BuildCriteriaService) {
+		.controller('DashboardCtrl', function($scope, DashboardRSService) {
 
 			$scope.dashboard = null;
 
@@ -15,8 +15,11 @@ angular.module('armonitor.controllers', [])
 
 			_load();
 
+			$scope.appBuilds = function(app) {
+				DashboardRSService.setDashboardBuilds({}, {project: app.project, app: app.guid, version: null});
+			};
 			$scope.builds = function(app, build) {
-				BuildCriteriaService.set(app, build);
+				DashboardRSService.setDashboardBuilds({}, {project: app.project, app: app.guid, version: build.mavenVersion});
 			};
 			$scope.updateBuild = function(sys) {
 				DashboardRSService.updateBuild({sys: sys}, function(res) {
@@ -25,14 +28,14 @@ angular.module('armonitor.controllers', [])
 						var a = p.applications[res.application];
 						a.systems[res.guid] = res;
 					}
-				});					
+				});
 			};
 			$scope.reload = function() {
 				DashboardRSService.reload(function(response) {
 					$scope.dashboard = response;
-				});				
+				});
 			};
-			
+
 			$scope.closeMsg = function() {
 				DashboardRSService.msg();
 				$scope.dashboard.msg = true;
@@ -48,22 +51,42 @@ angular.module('armonitor.controllers', [])
 		.controller('AboutCtrl', function($scope) {
 
 		})
-		.controller('BuildsCtrl', function($scope, BuildCriteriaService, BuildRSService) {
-			
+		.controller('BuildsCtrl', function($scope, DashboardRSService, BuildRSService) {
+
+			$scope.options = {
+				'width': '100%',
+				'height': 'auto',
+				'groupsOrder': true,
+				'editable': false
+			};
+
 			$scope.builds = [];
-			$scope.app = null;
-			$scope.build = null;
-			
+			$scope.app;
+
+			$scope.reload = function() {
+				_loadBuilds();
+			};
+
+
 			function _load() {
-				$scope.app = BuildCriteriaService.app();
-				$scope.build = BuildCriteriaService.build();
-				BuildRSService.search({}, BuildCriteriaService.criteria(), function(response) {
+				DashboardRSService.getApp({}, function(response) {
+					$scope.app = response;
+
+					if ($scope.app) {
+						_loadBuilds();
+					}
+				});
+
+			}
+
+			function _loadBuilds() {
+				DashboardRSService.getDashboardBuilds({}, function(response) {
 					$scope.builds = response;
 				});
 			}
 
 			_load();
-			
+
 		})
 		.controller('MenuCtrl', function($scope, $location) {
 

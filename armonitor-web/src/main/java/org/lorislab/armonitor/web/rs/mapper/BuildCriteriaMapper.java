@@ -35,6 +35,7 @@ public class BuildCriteriaMapper implements MapperService<StoreBuildCriteria, Bu
         result.application = data.getApplication();
         result.params = data.isFetchParameters();
         result.mavenVersion = data.getMavenVersion();
+        result.orderByDate = data.getOrderByDate();
         return result;
     }
 
@@ -46,6 +47,7 @@ public class BuildCriteriaMapper implements MapperService<StoreBuildCriteria, Bu
         entity.setApplication(data.application);
         entity.setFetchParameters(data.params);
         entity.setMavenVersion(data.mavenVersion);
+        entity.setOrderByDate(data.orderByDate);
         return entity;
     }
 

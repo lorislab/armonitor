@@ -18,6 +18,7 @@ package org.lorislab.armonitor.web.rs.services;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -49,8 +50,19 @@ public class BuildService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Build> get(BuildCriteria criteria) {
-        return service.get(criteria);
+    public List<Build> getBuilds(BuildCriteria criteria) {
+        return service.getBuilds(criteria);
     }
 
+    /**
+     * Gets the build by GUID.
+     * 
+     * @param guid the build GUID.
+     * @return the build.
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Build getBuild(String guid) {
+        return service.getBuild(guid);
+    }    
 }

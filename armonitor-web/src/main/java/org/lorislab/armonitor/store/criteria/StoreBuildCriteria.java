@@ -58,6 +58,28 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
      * The MAVEN version.
      */
     private String mavenVersion;
+    /**
+     * The order by date flag.
+     */
+    private Boolean orderByDate;
+
+    /**
+     * Gets the order by date flag.
+     *
+     * @return the order by date flag.
+     */
+    public Boolean getOrderByDate() {
+        return orderByDate;
+    }
+
+    /**
+     * Sets the order by date flag.
+     *
+     * @param orderByDate the order by date flag.
+     */
+    public void setOrderByDate(Boolean orderByDate) {
+        this.orderByDate = orderByDate;
+    }
 
     /**
      * Gets the MAVEN version.
@@ -196,6 +218,7 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
         mavenVersion = null;
         fetchParameters = false;
         fetchApplication = false;
+        orderByDate = null;
     }
 
     /**

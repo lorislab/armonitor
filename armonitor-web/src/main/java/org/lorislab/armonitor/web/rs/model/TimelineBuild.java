@@ -13,32 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.lorislab.armonitor.web.rs.model;
 
+import java.util.Date;
+
 /**
- * The build criteria.
- *
+ * The time line build.
+ * 
  * @author Andrej Petras
  */
-public class BuildCriteria {
-
+public class TimelineBuild {
     /**
-     * The application.
+     * The GUID.
      */
-    public String application;
+    public String guid;
     /**
-     * Loads the build parameters.
+     * The date.
      */
-    public boolean params = false;
+    public Date start;
     /**
-     * The MAVEN version.
+     * The name.
      */
-    public String mavenVersion;
+    public String content;
     /**
-     * The order by date 
-     * <code>null</code> is not ordering by date.
-     * <code>true</code> ASC.
-     * <code>false</code> DESC.
+     * The group.
      */
-    public Boolean orderByDate;
+    public String group;
 }

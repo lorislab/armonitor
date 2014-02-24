@@ -22,7 +22,7 @@
 
 	<h2>{{p.project.name}}</h2>
 	<div data-ng-repeat="(ai,a) in p.applications">
-		<a href="#/builds" data-ng-click="builds(a.application, null)">
+		<a href="#/builds" data-ng-click="appBuilds(a)">
 			<h3><i class="icon-beaker"></i> {{a.application.name}}</h3>		
 		</a>
 		<div class="row">
@@ -48,7 +48,7 @@
 							</div>
 							<div class="col-xs-8" style="text-align: right;">
 								<p style="font-size: 20px;">
-									<a  href="#/builds" data-ng-click="builds(a.application, s.systemBuild.build)">
+									<a  href="#/builds" data-ng-click="builds(a, s.systemBuild.build)">
 										{{s.systemBuild.build.mavenVersion}}
 									</a>
 									<a href="#">

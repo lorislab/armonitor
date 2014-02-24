@@ -1,12 +1,12 @@
 <h1>Builds
-	<small>{{app.name}} <span data-ng-show="build !== null" >({{build.mavenVersion}})</span></small>
+	<small>{{app.application.name}}</small>
 </h1>
 
 <ol class="breadcrumb">
 	<li>
 		<i class="icon-gauge"></i> 
 		<a href="#/dashboard">
-		Dashboard
+			Dashboard
 		</a>
 	</li>
 	<li class="active">
@@ -14,4 +14,9 @@
 	</li>	
 </ol>
 
-{{criteria().application}}
+<div class="panel panel-default">
+	<div class="panel-heading">Builds <a style="text-align: right; float: right" data-ng-click="reload()"><i class="icon-arrows-cw"></i></a></div>
+	<div class="panel-body" style="padding: 0px !important;">
+		<div data-timeline="builds" data-timeline-options="options" data-timelineSelect="timelineSelect" ></div>
+	</div>
+</div>
