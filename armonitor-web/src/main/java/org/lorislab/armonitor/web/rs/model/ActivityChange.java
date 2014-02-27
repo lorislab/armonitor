@@ -14,17 +14,30 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.store.model.enums;
+package org.lorislab.armonitor.web.rs.model;
+
+import java.util.List;
 
 /**
- * THe bug tracking system type.
+ * The activity change.
  * 
  * @author Andrej Petras
  */
-public enum StoreBTSystemType {
-   
+public class ActivityChange {
     /**
-     * The JIRA.
+     * The ID.
      */
-    JIRA;
+    public String id;
+    /**
+     * The error flag.
+     */
+    public boolean error;
+    /**
+     * The link.
+     */
+    public String link;
+    /**
+     * The list of changes.
+     */
+    public List<ActivityChangeLog> changes;
 }

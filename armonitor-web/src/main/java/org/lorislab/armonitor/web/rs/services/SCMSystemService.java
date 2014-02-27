@@ -31,15 +31,18 @@ import org.lorislab.armonitor.web.rs.ejb.SCMSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
-import org.lorislab.armonitor.web.rs.model.enums.SCMSystemType;
 
 /**
- *
+ * The SCM system rest service.
+ * 
  * @author Andrej Petras
  */
 @Path("scm")
 public class SCMSystemService {
-    
+   
+    /**
+     * The SCM system service.
+     */
     @EJB
     private SCMSystemServiceBean service;
     
@@ -60,8 +63,8 @@ public class SCMSystemService {
     @GET
     @Path("types")
     @Produces(MediaType.APPLICATION_JSON)
-    public SCMSystemType[] getTypes() {
-        return SCMSystemType.values();
+    public Set<String> getTypes() {
+        return service.getTypes();
     }
     
     @POST

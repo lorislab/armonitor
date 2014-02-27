@@ -15,6 +15,8 @@
  */
 package org.lorislab.armonitor.mapper;
 
+import java.util.Set;
+
 /**
  * The mapper key service.
  *
@@ -26,9 +28,9 @@ public interface MapperKeyService<E> {
      * Gets the key from the object.
      *
      * @param data the object.
-     * @param profile the mapper profile.
+     * @param profiles the mapper profile.
      * @return the corresponding key.
      */
-    public String getKey(E data, String profile);
+    public String getKey(E data, Set<String> profiles);
 
 }

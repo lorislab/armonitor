@@ -31,7 +31,6 @@ import org.lorislab.armonitor.web.rs.model.DashboardApplication;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.TimelineBuild;
 import org.lorislab.armonitor.web.rs.model.DashboardProject;
-import org.lorislab.armonitor.web.rs.model.DashboardSystemBuild;
 
 /**
  * The dashboard controller.
@@ -142,8 +141,8 @@ public class DashboardController implements Serializable {
     public DashboardApplicationSystem updateSystemBuild(String system) {
         DashboardApplicationSystem result = systems.get(system);
         if (result != null) {
-            DashboardSystemBuild build = service.updateSystemBuild(system);
-            result.systemBuild = build;
+            DashboardApplication app = getApplication(result.project, result.application);
+            service.updateSystemBuild(app, result);
         }
         return result;
     }

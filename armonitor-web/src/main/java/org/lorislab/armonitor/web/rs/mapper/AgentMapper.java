@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.enums.StoreAgentType;
@@ -32,7 +33,7 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
      * {@inheritDoc}
      */
     @Override
-    public Agent map(StoreAgent data, String profile) {
+    public Agent map(StoreAgent data, Set<String> profiles) {
         Agent result = new Agent();
         result.guid = data.getGuid();
         result.user = data.getUser();
@@ -49,7 +50,7 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
      * {@inheritDoc}
      */
     @Override
-    public StoreAgent update(StoreAgent entity, Agent data, String profile) {
+    public StoreAgent update(StoreAgent entity, Agent data, Set<String> profiles) {
         entity.setAuthentication(data.authentication);
         entity.setType(null);
         if (data.type != null) {
@@ -64,10 +65,10 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
      * {@inheritDoc}
      */
     @Override
-    public StoreAgent create(Agent data, String profile) {
+    public StoreAgent create(Agent data, Set<String> profiles) {
         StoreAgent result = new StoreAgent();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -75,9 +76,9 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
      * {@inheritDoc}
      */
     @Override
-    public Agent create(String profile) {
+    public Agent create(Set<String> profiles) {
         StoreAgent agent = new StoreAgent();
-        return map(agent, profile);
+        return map(agent, profiles);
     }
 
 }

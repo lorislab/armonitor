@@ -19,12 +19,9 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.lorislab.armonitor.store.model.enums.StoreSCMSystemType;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
@@ -69,9 +66,8 @@ public class StoreSCMSystem extends Persistent {
     /**
      * The type.
      */
-    @Enumerated(EnumType.STRING)
     @Column(name = "C_TYPE")
-    private StoreSCMSystemType type;
+    private String type;
 
     /**
      * The connection timeout
@@ -84,6 +80,30 @@ public class StoreSCMSystem extends Persistent {
      */
     @Column(name = "C_READ_TIMEOUT")
     private Integer readTimeout;
+
+    /**
+     * The link.
+     */
+    @Column(name = "C_LINK")
+    private String link;
+
+    /**
+     * Gets the link.
+     *
+     * @return the link.
+     */
+    public String getLink() {
+        return link;
+    }
+
+    /**
+     * Sets the link.
+     *
+     * @param link the link.
+     */
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     /**
      * Gets the connection timeout.
@@ -216,7 +236,7 @@ public class StoreSCMSystem extends Persistent {
      *
      * @return the type.
      */
-    public StoreSCMSystemType getType() {
+    public String getType() {
         return type;
     }
 
@@ -225,7 +245,7 @@ public class StoreSCMSystem extends Persistent {
      *
      * @param type the type to set.
      */
-    public void setType(StoreSCMSystemType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

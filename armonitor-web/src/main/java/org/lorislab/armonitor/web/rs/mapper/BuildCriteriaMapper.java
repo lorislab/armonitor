@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
 import org.lorislab.armonitor.web.rs.model.BuildCriteria;
@@ -30,7 +31,7 @@ public class BuildCriteriaMapper implements MapperService<StoreBuildCriteria, Bu
      * {@inheritDoc}
      */
     @Override
-    public BuildCriteria map(StoreBuildCriteria data, String profile) {
+    public BuildCriteria map(StoreBuildCriteria data, Set<String> profiles) {
         BuildCriteria result = new BuildCriteria();
         result.application = data.getApplication();
         result.params = data.isFetchParameters();
@@ -43,7 +44,7 @@ public class BuildCriteriaMapper implements MapperService<StoreBuildCriteria, Bu
      * {@inheritDoc}
      */    
     @Override
-    public StoreBuildCriteria update(StoreBuildCriteria entity, BuildCriteria data, String profile) {
+    public StoreBuildCriteria update(StoreBuildCriteria entity, BuildCriteria data, Set<String> profiles) {
         entity.setApplication(data.application);
         entity.setFetchParameters(data.params);
         entity.setMavenVersion(data.mavenVersion);
@@ -55,9 +56,9 @@ public class BuildCriteriaMapper implements MapperService<StoreBuildCriteria, Bu
      * {@inheritDoc}
      */    
     @Override
-    public StoreBuildCriteria create(BuildCriteria data, String profile) {
+    public StoreBuildCriteria create(BuildCriteria data, Set<String> profiles) {
         StoreBuildCriteria result = new StoreBuildCriteria();
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -65,9 +66,9 @@ public class BuildCriteriaMapper implements MapperService<StoreBuildCriteria, Bu
      * {@inheritDoc}
      */    
     @Override
-    public BuildCriteria create(String profile) {
+    public BuildCriteria create(Set<String> profiles) {
         StoreBuildCriteria tmp = new StoreBuildCriteria();
-        return map(tmp, profile);
+        return map(tmp, profiles);
     }
 
 }

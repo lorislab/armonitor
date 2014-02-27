@@ -24,6 +24,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.bts.service.BtsService;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.criteria.StoreBTSystemCriteria;
 import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
@@ -51,6 +52,10 @@ public class BTSystemServiceBean {
     @EJB
     private StoreProjectServiceBean projectService;
 
+    public Set<String> getTypes() {
+        return BtsService.getTypes();
+    }
+    
     public Set<Project> getProjects(String guid) {
         StoreBTSystemCriteria criteria = new StoreBTSystemCriteria();
         criteria.setGuid(guid);

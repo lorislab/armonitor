@@ -16,22 +16,26 @@
 
 package org.lorislab.armonitor.log.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.lorislab.armonitor.mail.model.MailTemplateResource;
-import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
+import org.lorislab.jel.log.parameters.ClassLogParameter;
 
 /**
  * The mail template resource parameter.
  * 
  * @author Andrej Petras
  */
-public class MailTemplateResourceLogParameter implements InstanceOfLogParameter {
+public class MailTemplateResourceLogParameter implements ClassLogParameter {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean instanceOfClasses(Object parameter) {
-        return parameter instanceof MailTemplateResource;
+    public List<Class<?>> getClasses() {
+        List<Class<?>> result = new ArrayList<>();
+        result.add(MailTemplateResource.class);
+        return result;
     }
 
     /**

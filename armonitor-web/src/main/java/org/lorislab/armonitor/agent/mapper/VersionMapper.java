@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.lorislab.armonitor.agent.rs.model.Version;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBuild;
@@ -36,12 +37,12 @@ public class VersionMapper implements MapperService<Version, StoreBuild> {
      * {@inheritDoc}
      */
     @Override
-    public StoreBuild map(Version data, String profile) {
+    public StoreBuild map(Version data, Set<String> profiles) {
         StoreBuild result = new StoreBuild();
         result.setUid(data.uid);
         result.setBuild(data.build);
         result.setArtifactId(data.artifactId);
-        result.setGroupdId(data.groupdId);
+        result.setGroupId(data.groupdId);
         result.setMavenVersion(data.version);
         result.setDate(data.date);
         result.setScm(data.scm);
@@ -78,7 +79,7 @@ public class VersionMapper implements MapperService<Version, StoreBuild> {
      * {@inheritDoc}
      */
     @Override
-    public Version update(Version entity, StoreBuild data, String profile) {
+    public Version update(Version entity, StoreBuild data, Set<String> profiles) {
         return entity;
     }
 
@@ -86,7 +87,7 @@ public class VersionMapper implements MapperService<Version, StoreBuild> {
      * {@inheritDoc}
      */
     @Override
-    public Version create(StoreBuild data, String profile) {
+    public Version create(StoreBuild data, Set<String> profiles) {
         return new Version();
     }
 
@@ -94,7 +95,7 @@ public class VersionMapper implements MapperService<Version, StoreBuild> {
      * {@inheritDoc}
      */
     @Override
-    public StoreBuild create(String profile) {
+    public StoreBuild create(Set<String> profiles) {
         return new StoreBuild();
     }
 

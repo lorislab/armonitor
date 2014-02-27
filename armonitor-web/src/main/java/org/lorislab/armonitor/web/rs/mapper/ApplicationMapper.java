@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.web.rs.model.Application;
@@ -30,7 +31,7 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
      * {@inheritDoc}
      */
     @Override
-    public Application map(StoreApplication data, String profile) {
+    public Application map(StoreApplication data, Set<String> profiles) {
         Application result = new Application();
         result.guid = data.getGuid();
         result.name = data.getName();
@@ -38,6 +39,7 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         result.scmTrunk = data.getScmTrunk();
         result.scmBranches = data.getScmBranches();
         result.enabled = data.isEnabled();
+        result.repoLink = data.getRepoLink();
         return result;
     }
 
@@ -45,12 +47,13 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
      * {@inheritDoc}
      */
     @Override
-    public StoreApplication update(StoreApplication entity, Application data, String profile) {
+    public StoreApplication update(StoreApplication entity, Application data, Set<String> profiles) {
         entity.setName(data.name);
         entity.setEnabled(data.enabled);
         entity.setScmTrunk(data.scmTrunk);
         entity.setScmBranches(data.scmBranches);
         entity.setScmTags(data.scmTags);
+        entity.setRepoLink(data.repoLink);
         return entity;
     }
 
@@ -58,10 +61,10 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
      * {@inheritDoc}
      */
     @Override
-    public StoreApplication create(Application data, String profile) {
+    public StoreApplication create(Application data, Set<String> profiles) {
         StoreApplication result = new StoreApplication();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -69,9 +72,9 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
      * {@inheritDoc}
      */
     @Override
-    public Application create(String profile) {
+    public Application create(Set<String> profiles) {
         StoreApplication tmp = new StoreApplication();
-        return map(tmp, profile);
+        return map(tmp, profiles);
     }
 
 }

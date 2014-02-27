@@ -19,12 +19,9 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.lorislab.armonitor.store.model.enums.StoreBTSystemType;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
@@ -59,9 +56,8 @@ public class StoreBTSystem extends Persistent {
     @Column(name = "C_LINK")
     private String link;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "C_TYPE")
-    private StoreBTSystemType type;
+    private String type;
 
     /**
      * @return the projects
@@ -150,14 +146,14 @@ public class StoreBTSystem extends Persistent {
     /**
      * @return the btsType
      */
-    public StoreBTSystemType getType() {
+    public String getType() {
         return type;
     }
 
     /**
      * @param btsType the btsType to set
      */
-    public void setType(StoreBTSystemType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

@@ -15,8 +15,6 @@
  */
 package org.lorislab.armonitor.web.rs.model;
 
-import org.lorislab.armonitor.web.rs.model.enums.SCMSystemType;
-
 /**
  * The SCM system.
  *
@@ -43,7 +41,7 @@ public class SCMSystem {
     /**
      * The SCM system type.
      */
-    public SCMSystemType type;
+    public String type;
     /**
      * The read timeout.
      */

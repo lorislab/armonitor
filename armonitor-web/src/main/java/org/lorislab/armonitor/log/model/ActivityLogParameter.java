@@ -18,25 +18,15 @@ package org.lorislab.armonitor.log.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.lorislab.armonitor.model.ChangeReport;
+import org.lorislab.armonitor.web.rs.model.Activity;
 import org.lorislab.jel.log.parameters.ClassLogParameter;
 
 /**
- * The change report log parameter.
+ * The activity log parameter.
  * 
  * @author Andrej Petras
  */
-public class ChangeReportLogParameter implements ClassLogParameter {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Class<?>> getClasses() {
-        List<Class<?>> result = new ArrayList<>();
-        result.add(ChangeReport.class);
-        return result;
-    }
+public class ActivityLogParameter implements ClassLogParameter {
 
     /**
      * {@inheritDoc}
@@ -51,7 +41,17 @@ public class ChangeReportLogParameter implements ClassLogParameter {
      */
     @Override
     public Object getObject(Object parameter) {   
-        ChangeReport report = (ChangeReport) parameter;
-        return parameter.getClass().getSimpleName() + ":" + report.getGuid();
+        Activity report = (Activity) parameter;
+        return parameter.getClass().getSimpleName() + ":" + report.guid;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Class<?>> getClasses() {
+        List<Class<?>> result = new ArrayList<>();
+        result.add(Activity.class);
+        return result;
     }
 }

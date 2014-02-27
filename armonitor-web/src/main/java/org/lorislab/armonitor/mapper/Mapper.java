@@ -18,6 +18,7 @@ package org.lorislab.armonitor.mapper;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -108,16 +109,17 @@ public final class Mapper {
     }
 
     /**
-     * Maps the set of the entities to the set of models.
+     * Creates the set of profiles.
      *
-     * @param <T> the model type.
-     * @param <E> the entity type.
-     * @param data the set of entities.
-     * @param clazz the model class.
-     * @return the set of models.
+     * @param profiles the list of profiles.
+     * @return the set of profiles.
      */
-    public static <T, E> Set<T> map(Set<E> data, Class<T> clazz) {
-        return map(data, clazz, null);
+    private static Set<String> profile(String... profiles) {
+        Set<String> result = new HashSet<>();
+        if (profiles != null) {
+            result = new HashSet<>(Arrays.asList(profiles));
+        }
+        return result;
     }
 
     /**
@@ -127,10 +129,24 @@ public final class Mapper {
      * @param <E> the entity type.
      * @param data the set of entities.
      * @param clazz the model class.
-     * @param profile the mapping profile.
+     * @param profiles the mapping profile.
      * @return the set of models.
      */
-    public static <T, E> Set<T> map(Set<E> data, Class<T> clazz, String profile) {
+    public static <T, E> Set<T> map(Set<E> data, Class<T> clazz, String... profiles) {
+        return map(data, clazz, profile(profiles));
+    }   
+    
+    /**
+     * Maps the ser of the entities to the models.
+     *
+     * @param <T> the model type.
+     * @param <E> the entity type.
+     * @param data the set of entities.
+     * @param clazz the model class.
+     * @param profiles the mapping profile.
+     * @return the set of models.
+     */
+    public static <T, E> Set<T> map(Set<E> data, Class<T> clazz, Set<String> profiles) {
         Set<T> result = null;
         if (data != null) {
             result = new HashSet<>();
@@ -138,7 +154,7 @@ public final class Mapper {
                 MapperService<E, T> mapper = MAPPER.get(data.iterator().next().getClass()).get(clazz);
                 for (E item : data) {
                     if (item != null) {
-                        T tmp = map(item, mapper, profile);
+                        T tmp = map(item, mapper, profiles);
                         if (tmp != null) {
                             result.add(tmp);
                         }
@@ -156,12 +172,13 @@ public final class Mapper {
      * @param <E> the input type.
      * @param data the input collection.
      * @param clazz the result class.
+     * @param profiles the mapper profile.
      * @return the corresponding map.
      */
-    public static <T, E> Map<String, T> convert(Collection<E> data, Class<T> clazz) {
-        return convert(data, clazz, null);
-    }
-
+    public static <T, E> Map<String, T> convert(Collection<E> data, Class<T> clazz, String ... profiles) {
+        return convert(data, clazz, profile(profiles));
+    }   
+    
     /**
      * Converts the collection to the map.
      *
@@ -169,10 +186,10 @@ public final class Mapper {
      * @param <E> the input type.
      * @param data the input collection.
      * @param clazz the result class.
-     * @param profile the mapper profile.
+     * @param profiles the mapper profile.
      * @return the corresponding map.
      */
-    public static <T, E> Map<String, T> convert(Collection<E> data, Class<T> clazz, String profile) {
+    public static <T, E> Map<String, T> convert(Collection<E> data, Class<T> clazz, Set<String> profiles) {
         Map<String, T> result = null;
         if (data != null) {
             result = new HashMap<>();
@@ -182,9 +199,9 @@ public final class Mapper {
                 MapperKeyService<E> mapperKey = MAPPER_KEY.get(e);
                 for (E item : data) {
                     if (item != null) {
-                        T tmp = map(item, mapper, profile);
+                        T tmp = map(item, mapper, profiles);
                         if (tmp != null) {
-                            String key = mapperKey.getKey(item, profile);
+                            String key = mapperKey.getKey(item, profiles);
                             result.put(key, tmp);
                         }
                     }
@@ -201,12 +218,13 @@ public final class Mapper {
      * @param <E> the entity type.
      * @param data the set of entities.
      * @param clazz the model class.
+     * @param profiles the mapping profile.
      * @return the list of models.
      */
-    public static <T, E> List<T> map(List<E> data, Class<T> clazz) {
-        return map(data, clazz, null);
-    }
-
+    public static <T, E> List<T> map(List<E> data, Class<T> clazz, String... profiles) {
+        return map(data, clazz, profile(profiles));
+    }   
+    
     /**
      * Maps the list of the entities to the list of models.
      *
@@ -214,10 +232,10 @@ public final class Mapper {
      * @param <E> the entity type.
      * @param data the set of entities.
      * @param clazz the model class.
-     * @param profile the mapping profile.
+     * @param profiles the mapping profile.
      * @return the list of models.
      */
-    public static <T, E> List<T> map(List<E> data, Class<T> clazz, String profile) {
+    public static <T, E> List<T> map(List<E> data, Class<T> clazz, Set<String> profiles) {
         List<T> result = null;
         if (data != null) {
             result = new ArrayList<>();
@@ -225,7 +243,7 @@ public final class Mapper {
                 MapperService<E, T> mapper = MAPPER.get(data.get(0).getClass()).get(clazz);
                 for (E item : data) {
                     if (item != null) {
-                        T tmp = map(item, mapper, profile);
+                        T tmp = map(item, mapper, profiles);
                         if (tmp != null) {
                             result.add(tmp);
                         }
@@ -243,12 +261,13 @@ public final class Mapper {
      * @param <E> the type of the entity.
      * @param data the entity.
      * @param clazz the class of the model.
+     * @param profiles the mapping profile.
      * @return the model.
      */
-    public static <T, E> T map(E data, Class<T> clazz) {
-        return map(data, clazz, null);
-    }
-
+    public static <T, E> T map(E data, Class<T> clazz, String... profiles) {
+        return map(data, clazz, profile(profiles));
+    }   
+    
     /**
      * Mapping the entity to the model.
      *
@@ -256,14 +275,14 @@ public final class Mapper {
      * @param <E> the type of the entity.
      * @param data the entity.
      * @param clazz the class of the model.
-     * @param profile the mapping profile.
+     * @param profiles the mapping profile.
      * @return the model.
      */
-    public static <T, E> T map(E data, Class<T> clazz, String profile) {
+    public static <T, E> T map(E data, Class<T> clazz, Set<String> profiles) {
         T result = null;
         if (data != null) {
             MapperService<E, T> mapper = MAPPER.get(data.getClass()).get(clazz);
-            result = map(data, mapper, profile);
+            result = map(data, mapper, profiles);
         }
         return result;
     }
@@ -275,43 +294,35 @@ public final class Mapper {
      * @param <E> the type of the entity.
      * @param data the entity.
      * @param mapper the mapper service.
+     * @param profiles the mapping profile.
      * @return the model.
      */
-    public static <T, E> T map(E data, MapperService<E, T> mapper) {
-        return map(data, mapper, null);
-    }
-
-    /**
-     * Mapping the entity to the model.
-     *
-     * @param <T> the type of the model.
-     * @param <E> the type of the entity.
-     * @param data the entity.
-     * @param mapper the mapper service.
-     * @param profile the mapping profile.
-     * @return the model.
-     */
-    public static <T, E> T map(E data, MapperService<E, T> mapper, String profile) {
+    public static <T, E> T map(E data, MapperService<E, T> mapper, String... profiles) {
         T result = null;
         if (mapper != null) {
-            result = mapper.map(data, profile);
+            result = mapper.map(data, profile(profiles));
         }
         return result;
     }
 
     /**
-     * Update the entity by model.
+     * Mapping the entity to the model.
      *
      * @param <T> the type of the model.
      * @param <E> the type of the entity.
-     * @param entity the entity.
-     * @param data the model.
-     * @return the entity.
+     * @param data the entity.
+     * @param mapper the mapper service.
+     * @param profiles the mapping profile.
+     * @return the model.
      */
-    public static <T, E> E update(E entity, T data) {
-        return update(entity, data, null);
+    public static <T, E> T map(E data, MapperService<E, T> mapper, Set<String> profiles) {
+        T result = null;
+        if (mapper != null) {
+            result = mapper.map(data, profiles);
+        }
+        return result;
     }
-
+    
     /**
      * Update the entity by model.
      *
@@ -319,14 +330,14 @@ public final class Mapper {
      * @param <E> the type of the entity.
      * @param entity the entity.
      * @param data the model.
-     * @param profile the mapping profile.
+     * @param profiles the mapping profile.
      * @return the entity.
      */
-    public static <T, E> E update(E entity, T data, String profile) {
+    public static <T, E> E update(E entity, T data, String... profiles) {
         if (entity != null && data != null) {
             MapperService<E, T> mapper = MAPPER.get(entity.getClass()).get(data.getClass());
             if (mapper != null) {
-                entity = mapper.update(entity, data, profile);
+                entity = mapper.update(entity, data, profile(profiles));
             }
         }
         return entity;
@@ -339,28 +350,15 @@ public final class Mapper {
      * @param <E> the type of the entity.
      * @param clazz the entity class.
      * @param data the model.
+     * @param profiles the mapping profile.
      * @return the entity.
      */
-    public static <T, E> E create(T data, Class<E> clazz) {
-        return create(data, clazz, null);
-    }
-
-    /**
-     * Create the entity from the model.
-     *
-     * @param <T> the type of the model.
-     * @param <E> the type of the entity.
-     * @param clazz the entity class.
-     * @param data the model.
-     * @param profile the mapping profile.
-     * @return the entity.
-     */
-    public static <T, E> E create(T data, Class<E> clazz, String profile) {
+    public static <T, E> E create(T data, Class<E> clazz, String... profiles) {
         E result = null;
         if (data != null && clazz != null) {
             MapperService<E, T> mapper = MAPPER.get(clazz).get(data.getClass());
             if (mapper != null) {
-                result = mapper.create(data, profile);
+                result = mapper.create(data, profile(profiles));
             }
         }
         return result;
@@ -373,28 +371,15 @@ public final class Mapper {
      * @param <E> the type of the entity.
      * @param data the model class.
      * @param entity the model.
+     * @param profiles the mapping profile.
      * @return the model.
      */
-    public static <T, E> T create(Class<E> entity, Class<T> data) {
-        return create(entity, data, null);
-    }
-
-    /**
-     * Create the model from the entity.
-     *
-     * @param <T> the type of the model.
-     * @param <E> the type of the entity.
-     * @param data the model class.
-     * @param entity the model.
-     * @param profile the mapping profile.
-     * @return the model.
-     */
-    public static <T, E> T create(Class<E> entity, Class<T> data, String profile) {
+    public static <T, E> T create(Class<E> entity, Class<T> data, String ... profiles) {
         T result = null;
         if (entity != null && data != null) {
             MapperService<E, T> mapper = MAPPER.get(entity).get(data);
             if (mapper != null) {
-                result = mapper.create(profile);
+                result = mapper.create(profile(profiles));
             }
         }
         return result;

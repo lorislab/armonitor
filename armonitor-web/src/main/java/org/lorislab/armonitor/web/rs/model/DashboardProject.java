@@ -29,9 +29,9 @@ public class DashboardProject {
      */
     public String guid;
     /**
-     * The project.
+     * The name.
      */
-    public Project project;
+    public String name;
     /**
      * The map of dashboard applications.
      */

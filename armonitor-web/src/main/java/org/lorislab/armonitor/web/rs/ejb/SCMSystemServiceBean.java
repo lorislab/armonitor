@@ -25,6 +25,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.scm.service.ScmService;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
 import org.lorislab.armonitor.store.criteria.StoreSCMSystemCriteria;
@@ -53,6 +54,10 @@ public class SCMSystemServiceBean {
     @EJB
     private StoreApplicationServiceBean appService;
 
+    public Set<String> getTypes() {
+        return ScmService.getTypes();
+    }
+    
     public Set<Application> getApplications(String guid) {
         StoreSCMSystemCriteria criteria = new StoreSCMSystemCriteria();
         criteria.setGuid(guid);

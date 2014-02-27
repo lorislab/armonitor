@@ -17,10 +17,9 @@ package org.lorislab.armonitor.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.lorislab.armonitor.store.model.StoreApplication;
+import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
 
@@ -44,7 +43,6 @@ public class ChangeReport implements Serializable {
      * The list of build changes.
      */
     private final List<Change> buildChanges = new ArrayList<>();
-    ;
 
     /**
      * The system build.
@@ -62,6 +60,11 @@ public class ChangeReport implements Serializable {
     private StoreProject project;
 
     /**
+     * The build.
+     */
+    private StoreBuild build;
+
+    /**
      * The GUID.
      */
     private final String guid;
@@ -73,6 +76,24 @@ public class ChangeReport implements Serializable {
      */
     public ChangeReport(String guid) {
         this.guid = guid;
+    }
+
+    /**
+     * Gets the build.
+     *
+     * @return the build.
+     */
+    public StoreBuild getBuild() {
+        return build;
+    }
+
+    /**
+     * Sets the build.
+     *
+     * @param build the build.
+     */
+    public void setBuild(StoreBuild build) {
+        this.build = build;
     }
 
     /**

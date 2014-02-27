@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.web.rs.model.TimelineBuild;
@@ -30,7 +31,7 @@ public class TimelineBuildMapper implements MapperService<StoreBuild, TimelineBu
      * {@inheritDoc}
      */
     @Override
-    public TimelineBuild map(StoreBuild data, String profile) {
+    public TimelineBuild map(StoreBuild data, Set<String> profiles) {
         TimelineBuild result = new TimelineBuild();
         result.guid = data.getGuid();
         result.content = data.getBuild();
@@ -43,7 +44,7 @@ public class TimelineBuildMapper implements MapperService<StoreBuild, TimelineBu
      * {@inheritDoc}
      */
     @Override
-    public StoreBuild update(StoreBuild entity, TimelineBuild data, String profile) {
+    public StoreBuild update(StoreBuild entity, TimelineBuild data, Set<String> profiles) {
         return entity;
     }
 
@@ -51,10 +52,10 @@ public class TimelineBuildMapper implements MapperService<StoreBuild, TimelineBu
      * {@inheritDoc}
      */
     @Override
-    public StoreBuild create(TimelineBuild data, String profile) {
+    public StoreBuild create(TimelineBuild data, Set<String> profiles) {
         StoreBuild result = new StoreBuild();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -62,9 +63,9 @@ public class TimelineBuildMapper implements MapperService<StoreBuild, TimelineBu
      * {@inheritDoc}
      */
     @Override
-    public TimelineBuild create(String profile) {
+    public TimelineBuild create(Set<String> profiles) {
         StoreBuild tmp = new StoreBuild();
-        return map(tmp, profile);
+        return map(tmp, profiles);
     }
 
 }

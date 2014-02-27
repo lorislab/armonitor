@@ -57,7 +57,7 @@ public class BuildService {
 
     /**
      * Gets the build by GUID.
-     * 
+     *
      * @param guid the build GUID.
      * @return the build.
      */
@@ -66,5 +66,18 @@ public class BuildService {
     @Produces(MediaType.APPLICATION_JSON)
     public Build getBuild(@PathParam("guid") String guid) {
         return service.getBuild(guid);
-    }    
+    }
+
+    /**
+     * Gets the build link.
+     *
+     * @param guid the build GUID.
+     * @return the link corresponding to the build.
+     */
+    @GET
+    @Path("{guid}/link")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getLink(@PathParam("guid") String guid) {
+        return service.getLink(guid);
+    }
 }

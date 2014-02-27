@@ -33,6 +33,7 @@ import javax.persistence.criteria.Subquery;
 import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuild_;
+import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.store.model.StoreSystemBuild_;
 import org.lorislab.armonitor.store.model.StoreSystem_;
@@ -92,7 +93,11 @@ public class StoreSystemBuildServiceBean extends AbstractEntityServiceBean<Store
         }
 
         if (criteria.isFetchSystem()) {
-            root.fetch(StoreSystemBuild_.system, JoinType.LEFT);
+            Fetch<StoreSystemBuild, StoreSystem> bf =  root.fetch(StoreSystemBuild_.system, JoinType.LEFT);
+            
+            if (criteria.isFetchSystemApplication()) {
+                bf.fetch(StoreSystem_.application, JoinType.LEFT);
+            }
         }
 
         List<Predicate> predicates = new ArrayList<>();

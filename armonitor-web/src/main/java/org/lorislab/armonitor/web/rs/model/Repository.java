@@ -13,18 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.lorislab.armonitor.store.model.enums;
+package org.lorislab.armonitor.web.rs.model;
 
 /**
- * The SCM system type.
- * 
+ * The repository system.
+ *
  * @author Andrej Petras
  */
-public enum StoreSCMSystemType {
-   
+public class Repository {
+
     /**
-     * The subversion type.
+     * The GUID.
      */
-    SUBVERSION;
+    public String guid;
+    /**
+     * The user.
+     */
+    public String user;
+    /**
+     * The authentication flag.
+     */
+    public boolean auth;
+    /**
+     * The server.
+     */
+    public String server;
+    /**
+     * The repository type.
+     */
+    public String type;
+
 }

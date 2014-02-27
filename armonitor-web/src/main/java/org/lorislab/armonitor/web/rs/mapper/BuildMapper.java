@@ -16,11 +16,13 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.HashMap;
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuildParameter;
 import org.lorislab.armonitor.store.model.enums.StoreBuildParameterType;
 import org.lorislab.armonitor.web.rs.model.Build;
+import org.lorislab.armonitor.web.rs.util.LinkUtil;
 
 /**
  * The build mapper.
@@ -33,25 +35,30 @@ public class BuildMapper implements MapperService<StoreBuild, Build> {
      * {@inheritDoc}
      */
     @Override
-    public Build map(StoreBuild data, String profile) {
+    public Build map(StoreBuild data, Set<String> profiles) {
         Build result = new Build();
         result.guid = data.getGuid();
         result.agent = data.getAgent();
         result.artifactId = data.getArtifactId();
         result.build = data.getBuild();
         result.date = data.getDate();
-        result.groupdId = data.getGroupdId();
+        result.groupId = data.getGroupId();
         result.mavenVersion = data.getMavenVersion();
         result.scm = data.getScm();
         result.service = data.getService();
         result.uid = data.getUid();
         result.ver = data.getVer();
-        
-        
-        if (profile != null && profile.equals("dashboard")) {
+
+        if (profiles.contains("link")) {
+            if (data.getApplication() != null) {
+                result.link = LinkUtil.createLink(data.getApplication().getRepoLink(), data);
+            }
+        }
+
+        if (profiles.contains("params")) {
             if (data.getParameters() != null) {
                 result.manifest = new HashMap<>();
-                result.other = new HashMap<>();                
+                result.other = new HashMap<>();
                 for (StoreBuildParameter param : data.getParameters()) {
                     if (param.getType() == StoreBuildParameterType.MANIFEST) {
                         result.manifest.put(param.getName(), param.getValue());
@@ -61,6 +68,7 @@ public class BuildMapper implements MapperService<StoreBuild, Build> {
                 }
             }
         }
+
         return result;
     }
 
@@ -68,7 +76,7 @@ public class BuildMapper implements MapperService<StoreBuild, Build> {
      * {@inheritDoc}
      */
     @Override
-    public StoreBuild update(StoreBuild entity, Build data, String profile) {
+    public StoreBuild update(StoreBuild entity, Build data, Set<String> profiles) {
         return entity;
     }
 
@@ -76,10 +84,10 @@ public class BuildMapper implements MapperService<StoreBuild, Build> {
      * {@inheritDoc}
      */
     @Override
-    public StoreBuild create(Build data, String profile) {
+    public StoreBuild create(Build data, Set<String> profiles) {
         StoreBuild result = new StoreBuild();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -87,9 +95,9 @@ public class BuildMapper implements MapperService<StoreBuild, Build> {
      * {@inheritDoc}
      */
     @Override
-    public Build create(String profile) {
+    public Build create(Set<String> profiles) {
         StoreBuild tmp = new StoreBuild();
-        return map(tmp, profile);
+        return map(tmp, profiles);
     }
 
 }

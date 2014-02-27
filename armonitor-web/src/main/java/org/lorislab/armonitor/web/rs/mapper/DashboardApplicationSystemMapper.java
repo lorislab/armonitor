@@ -15,11 +15,10 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
-import org.lorislab.armonitor.mapper.Mapper;
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreSystem;
-import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
 
 /**
@@ -33,12 +32,10 @@ public class DashboardApplicationSystemMapper implements MapperService<StoreSyst
      * {@inheritDoc}
      */
     @Override
-    public DashboardApplicationSystem map(StoreSystem data, String profile) {
+    public DashboardApplicationSystem map(StoreSystem data, Set<String> profiles) {
         DashboardApplicationSystem result = new DashboardApplicationSystem();
-        result.system = Mapper.map(data, ApplicationSystem.class, profile);
-        if (result.system != null) {
-            result.guid = result.system.guid;
-        }
+        result.guid = data.getGuid();
+        result.name = data.getName();
         StoreApplication app = data.getApplication();
         if (app != null) {
             result.application = app.getGuid();
@@ -54,7 +51,7 @@ public class DashboardApplicationSystemMapper implements MapperService<StoreSyst
      * {@inheritDoc}
      */
     @Override
-    public StoreSystem update(StoreSystem entity, DashboardApplicationSystem data, String profile) {
+    public StoreSystem update(StoreSystem entity, DashboardApplicationSystem data, Set<String> profiles) {
         return entity;
     }
 
@@ -62,7 +59,7 @@ public class DashboardApplicationSystemMapper implements MapperService<StoreSyst
      * {@inheritDoc}
      */
     @Override
-    public StoreSystem create(DashboardApplicationSystem data, String profile) {
+    public StoreSystem create(DashboardApplicationSystem data, Set<String> profiles) {
         return null;
     }
 
@@ -70,9 +67,9 @@ public class DashboardApplicationSystemMapper implements MapperService<StoreSyst
      * {@inheritDoc}
      */
     @Override
-    public DashboardApplicationSystem create(String profile) {
+    public DashboardApplicationSystem create(Set<String> profiles) {
         StoreSystem role = new StoreSystem();
-        return map(role, profile);
+        return map(role, profiles);
     }
 
 }

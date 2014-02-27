@@ -13,72 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.lorislab.armonitor.web.rs.model;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 /**
- * The build.
- *
+ * The activity model.
+ * 
  * @author Andrej Petras
  */
-public class Build {
-
+public class Activity {
     /**
      * The GUID.
      */
     public String guid;
     /**
-     * The agent.
-     */
-    public String agent;
-    /**
-     * The UID.
-     */
-    public String uid;
-    /**
-     * The version.
-     */
-    public Integer ver;
-    /**
-     * The date.
-     */
-    public Date date;
-    /**
-     * The service.
-     */
-    public String service;
-    /**
-     * The MAVEN group id.
-     */
-    public String groupId;
-    /**
-     * The MAVEN artifact id.
-     */
-    public String artifactId;
-    /**
-     * The MAVEN version.
-     */
-    public String mavenVersion;
-    /**
-     * The SCM.
-     */
-    public String scm;
-    /**
      * The build.
      */
-    public String build;
+    public Build build;
     /**
-     * The manifest parameters.
+     * The application.
      */
-    public Map<String, String> manifest;
+    public String app;
     /**
-     * The other parameters.
+     * The application name.
      */
-    public Map<String, String> other;
+    public String appName;
     /**
-     * The link to the repository.
+     * The project.
      */
-    public String link;
+    public String project;
+    /**
+     * The project name.
+     */
+    public String projectName;
+    /**
+     * The list of all changes.
+     */
+    public List<ActivityChange> changes;
+    /**
+     * The list of current build changes.
+     */
+    public List<ActivityChange> buildChanges;
 }

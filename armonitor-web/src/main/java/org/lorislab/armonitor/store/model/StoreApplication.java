@@ -40,14 +40,29 @@ public class StoreApplication extends Persistent {
      */
     private static final long serialVersionUID = -6964092704804204045L;
 
+    /**
+     * The project.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_PROJECT")
     private StoreProject project;
 
+    /**
+     * The repository link.
+     */
+    @Column(name = "C_REPO_LINK")
+    private String repoLink;
+
+    /**
+     * The SCM.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_SCM")
     private StoreSCMSystem scm;
 
+    /**
+     * The name.
+     */
     @Column(name = "C_NAME")
     private String name;
 
@@ -60,6 +75,12 @@ public class StoreApplication extends Persistent {
     @Column(name = "C_SCM_BRANCHES")
     private String scmBranches;
 
+    /**
+     * The SCM repository.
+     */
+    @Column(name = "C_SCM_REPO")
+    private String scmRepo;
+
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
@@ -68,6 +89,42 @@ public class StoreApplication extends Persistent {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")
     private Set<StoreSystem> systems;
+
+    /**
+     * Gets the SCM repository.
+     *
+     * @return the SCM repository.
+     */
+    public String getScmRepo() {
+        return scmRepo;
+    }
+
+    /**
+     * Sets the SCM repository.
+     *
+     * @param scmRepo the SCM repository.
+     */
+    public void setScmRepo(String scmRepo) {
+        this.scmRepo = scmRepo;
+    }
+
+    /**
+     * Gets the repository link.
+     *
+     * @return the repository link.
+     */
+    public String getRepoLink() {
+        return repoLink;
+    }
+
+    /**
+     * Sets the repository link.
+     *
+     * @param repoLink the repository link.
+     */
+    public void setRepoLink(String repoLink) {
+        this.repoLink = repoLink;
+    }
 
     public String getScmBranches() {
         return scmBranches;

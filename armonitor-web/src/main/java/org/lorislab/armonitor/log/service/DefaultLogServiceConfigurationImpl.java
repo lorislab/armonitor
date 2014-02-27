@@ -17,7 +17,9 @@ package org.lorislab.armonitor.log.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.lorislab.armonitor.log.model.ActivityLogParameter;
 import org.lorislab.armonitor.log.model.ChangeReportLogParameter;
+import org.lorislab.armonitor.log.model.DashboardLogParameter;
 import org.lorislab.armonitor.log.model.MailLogParameter;
 import org.lorislab.armonitor.log.model.MailTemplateResourceLogParameter;
 import org.lorislab.armonitor.log.model.MessageLogParameter;
@@ -67,17 +69,18 @@ public class DefaultLogServiceConfigurationImpl implements LogServiceConfigurati
      */
     static {
         CLASS_PARAM.add(new BasicLogParamater());
-
+        CLASS_PARAM.add(new ChangeReportLogParameter());               
+        CLASS_PARAM.add(new DashboardLogParameter());
+        CLASS_PARAM.add(new ActivityLogParameter());
+        CLASS_PARAM.add(new MailTemplateResourceLogParameter());
+        
         INSTANCE_PARAM.add(new MapLogParameter());
         INSTANCE_PARAM.add(new EnumLogParamater());
         INSTANCE_PARAM.add(new CollectionLogParameter());
         INSTANCE_PARAM.add(new PersistentLogParameter());
         INSTANCE_PARAM.add(new WrapperLogParameter());
         INSTANCE_PARAM.add(new MessageLogParameter());
-
         INSTANCE_PARAM.add(new MailLogParameter());
-        INSTANCE_PARAM.add(new MailTemplateResourceLogParameter());
-        INSTANCE_PARAM.add(new ChangeReportLogParameter());        
     }
 
     /**

@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreUser;
 import org.lorislab.armonitor.web.rs.model.User;
@@ -30,7 +31,7 @@ public class UserMapper implements MapperService<StoreUser, User> {
      * {@inheritDoc}
      */
     @Override
-    public User map(StoreUser data, String profile) {
+    public User map(StoreUser data, Set<String> profiles) {
         User result = new User();
         result.guid = data.getGuid();
         result.email = data.getEmail();
@@ -43,7 +44,7 @@ public class UserMapper implements MapperService<StoreUser, User> {
      * {@inheritDoc}
      */
     @Override
-    public StoreUser update(StoreUser entity, User data, String profile) {
+    public StoreUser update(StoreUser entity, User data, Set<String> profiles) {
         entity.setEmail(data.email);
         entity.setLogin(data.login);
         entity.setName(data.name);
@@ -54,10 +55,10 @@ public class UserMapper implements MapperService<StoreUser, User> {
      * {@inheritDoc}
      */
     @Override
-    public StoreUser create(User data, String profile) {
+    public StoreUser create(User data, Set<String> profiles) {
         StoreUser result = new StoreUser();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -65,8 +66,8 @@ public class UserMapper implements MapperService<StoreUser, User> {
      * {@inheritDoc}
      */
     @Override
-    public User create(String profile) {
-        return map(new StoreUser(), profile);
+    public User create(Set<String> profiles) {
+        return map(new StoreUser(), profiles);
     }
 
 }

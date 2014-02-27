@@ -15,6 +15,8 @@
  */
 package org.lorislab.armonitor.web.rs.model;
 
+import java.util.Date;
+
 /**
  * The dashboard system build.
  *
@@ -31,11 +33,27 @@ public class DashboardSystemBuild {
      */
     public String system;
     /**
-     * The system build.
-     */
-    public SystemBuild systemBuild;
+     * The build GUID.
+     */    
+    public String build;    
     /**
-     * The build.
+     * The date.
      */
-    public Build build;
+    public Date date;
+    /**
+     * The build link.
+     */
+    public String link;
+    /**
+     * The release candidate.
+     */
+    public String rc;
+    /**
+     * The version.
+     */
+    public String version;
+    /**
+     * The SCM.
+     */
+    public String scm;
 }

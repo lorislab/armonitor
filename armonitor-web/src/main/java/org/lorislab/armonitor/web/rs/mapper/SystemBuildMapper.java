@@ -16,6 +16,7 @@
 
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.web.rs.model.SystemBuild;
@@ -31,7 +32,7 @@ public class SystemBuildMapper implements MapperService<StoreSystemBuild, System
      * {@inheritDoc}
      */
     @Override
-    public SystemBuild map(StoreSystemBuild data, String profile) {
+    public SystemBuild map(StoreSystemBuild data, Set<String> profiles) {
         SystemBuild result = new SystemBuild();
         result.guid = data.getGuid();
         result.date = data.getDate();      
@@ -42,7 +43,7 @@ public class SystemBuildMapper implements MapperService<StoreSystemBuild, System
      * {@inheritDoc}
      */
     @Override
-    public StoreSystemBuild update(StoreSystemBuild entity, SystemBuild data, String profile) {
+    public StoreSystemBuild update(StoreSystemBuild entity, SystemBuild data, Set<String> profiles) {
         return entity;
     }
 
@@ -50,10 +51,10 @@ public class SystemBuildMapper implements MapperService<StoreSystemBuild, System
      * {@inheritDoc}
      */
     @Override
-    public StoreSystemBuild create(SystemBuild data, String profile) {
+    public StoreSystemBuild create(SystemBuild data, Set<String> profiles) {
         StoreSystemBuild result = new StoreSystemBuild();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -61,8 +62,8 @@ public class SystemBuildMapper implements MapperService<StoreSystemBuild, System
      * {@inheritDoc}
      */
     @Override
-    public SystemBuild create(String profile) {
+    public SystemBuild create(Set<String> profiles) {
         StoreSystemBuild tmp = new StoreSystemBuild();
-        return map(tmp, profile);
+        return map(tmp, profiles);
     }
 }

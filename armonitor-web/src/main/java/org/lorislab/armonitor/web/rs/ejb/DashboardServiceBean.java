@@ -29,7 +29,6 @@ import org.lorislab.armonitor.store.ejb.StoreProjectServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemBuildServiceBean;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
-import org.lorislab.armonitor.web.rs.mapper.DashboardApplicationSystemMapperKey;
 import org.lorislab.armonitor.web.rs.model.Dashboard;
 import org.lorislab.armonitor.web.rs.model.DashboardApplication;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
@@ -56,22 +55,24 @@ public class DashboardServiceBean {
      */
     @EJB
     private StoreSystemBuildServiceBean systemBuildService;
-
+        
     /**
      * Updates the system build.
      *
+     * @param app the application.
      * @param system the system.
-     * @return the dashboard system build.
      */
-    public DashboardSystemBuild updateSystemBuild(String system) {
+    public void updateSystemBuild(DashboardApplication app, DashboardApplicationSystem system) {
         StoreSystemBuildCriteria criteria = new StoreSystemBuildCriteria();
-        criteria.setSystem(system);
+        criteria.setSystem(system.guid);
         criteria.setFetchBuild(true);
         criteria.setFetchBuildParam(true);
         criteria.setFetchSystem(true);
+        criteria.setFetchSystemApplication(true);
         criteria.setMaxDate(Boolean.TRUE);
         StoreSystemBuild ssb = systemBuildService.getSystemBuild(criteria);
-        return Mapper.map(ssb, DashboardSystemBuild.class, "dashboard");
+        DashboardSystemBuild dsb = Mapper.map(ssb, DashboardSystemBuild.class);
+        system.systemBuild = dsb;
     }
 
     /**
@@ -101,7 +102,7 @@ public class DashboardServiceBean {
         Map<String, DashboardApplicationSystem> systems = new HashMap<>();
         if (dashboard.projects != null) {
             for (DashboardProject project : dashboard.projects.values()) {
-                if (project != null && project.applications != null) {
+                if (project != null && project.applications != null) {                    
                     for (DashboardApplication app : project.applications.values()) {
                         systems.putAll(app.systems);
                     }
@@ -114,14 +115,15 @@ public class DashboardServiceBean {
         criteria.setFetchBuild(true);
         criteria.setFetchBuildParam(true);
         criteria.setFetchSystem(true);
+        criteria.setFetchSystemApplication(true);
         criteria.setMaxDate(Boolean.TRUE);
         List<StoreSystemBuild> ssb = systemBuildService.getSystemBuilds(criteria);
-        List<DashboardSystemBuild> builds = Mapper.map(ssb, DashboardSystemBuild.class, "dashboard");
+        List<DashboardSystemBuild> builds = Mapper.map(ssb, DashboardSystemBuild.class);
         if (builds != null) {
             for (DashboardSystemBuild build : builds) {
                 DashboardApplicationSystem das = systems.get(build.system);
                 if (das != null) {
-                    das.systemBuild = build;
+                    das.systemBuild = build;                    
                 }
             }
         }

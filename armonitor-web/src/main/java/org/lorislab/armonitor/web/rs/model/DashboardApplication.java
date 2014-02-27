@@ -33,9 +33,9 @@ public class DashboardApplication {
      */
     public String project;
     /**
-     * The application.
+     * The name.
      */
-    public Application application;
+    public String name;
     /**
      * The set of dashboard application systems.
      */

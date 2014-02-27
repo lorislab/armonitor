@@ -49,7 +49,7 @@ public class AgentClientServiceBean {
     /**
      * The agent REST link
      */
-    private static final String AGENT_SERVICE = "/armonitor-agent/rs";
+    private static final String AGENT_SERVICE = "/rs";
 
     /**
      * Gets all applications build.
@@ -144,12 +144,14 @@ public class AgentClientServiceBean {
         VersionService result = null;
         if (agent != null) {
 
-            String url = agent.getUrl();
+            StringBuilder sb = new StringBuilder();
+            sb.append(agent.getUrl());
+            
             if (StoreAgentType.SERVICE.equals(agent.getType())) {
-                url = url + AGENT_SERVICE;
+                sb.append(AGENT_SERVICE);
             }
             try {
-                result = RestClient.getClient(VersionService.class, url, agent.isAuthentication(), agent.getUser(), agent.getPassword());
+                result = RestClient.getClient(VersionService.class, sb.toString(), agent.isAuthentication(), agent.getUser(), agent.getPassword());
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, "Error creating the version service for the agent " + agent.getGuid(), ex);
             }

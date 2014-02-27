@@ -27,6 +27,7 @@ import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.web.rs.model.Build;
 import org.lorislab.armonitor.web.rs.model.BuildCriteria;
 import org.lorislab.armonitor.web.rs.model.TimelineBuild;
+import org.lorislab.armonitor.web.rs.util.LinkUtil;
 
 /**
  * The build service.
@@ -54,7 +55,7 @@ public class BuildServiceBean {
         List<StoreBuild> tmp = service.getBuilds(sc);
         String profile = null;
         if (criteria.params) {
-            profile = "dashboard";
+            profile = "params";
         }
         return Mapper.map(tmp, Build.class, profile);
     }
@@ -81,8 +82,27 @@ public class BuildServiceBean {
         StoreBuildCriteria bc = new StoreBuildCriteria();
         bc.setGuid(guid);
         bc.setFetchParameters(true);
+        bc.setFetchApplication(true);
         StoreBuild tmp = service.getBuild(bc);
-        return Mapper.map(tmp, Build.class, "dashboard");
+        return Mapper.map(tmp, Build.class, "link", "params");
     }
 
+    /**
+     * Gets the link for the build.
+     * @param guid the build GUID.
+     * @return the link corresponding to the build.
+     */
+    public String getLink(String guid) {
+        String result = null;
+        StoreBuildCriteria bc = new StoreBuildCriteria();
+        bc.setGuid(guid);
+        bc.setFetchApplication(true);
+        StoreBuild tmp = service.getBuild(bc);
+        if (tmp != null && tmp.getApplication() != null) {
+            Build build = Mapper.map(tmp, Build.class);
+            result = LinkUtil.createLink(tmp.getApplication().getRepoLink(), build);
+        }
+        return result;
+    }
+   
 }

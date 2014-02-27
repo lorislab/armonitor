@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.web.rs.model.Project;
@@ -30,7 +31,7 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
      * {@inheritDoc}
      */
     @Override
-    public Project map(StoreProject data, String profile) {
+    public Project map(StoreProject data, Set<String> profiles) {
         Project result = new Project();
         result.guid = data.getGuid();
         result.name = data.getName();
@@ -43,7 +44,7 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
      * {@inheritDoc}
      */
     @Override
-    public StoreProject update(StoreProject entity, Project data, String profile) {
+    public StoreProject update(StoreProject entity, Project data, Set<String> profiles) {
         entity.setName(data.name);
         entity.setBtsId(data.btsId);
         entity.setEnabled(data.enabled);
@@ -54,10 +55,10 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
      * {@inheritDoc}
      */
     @Override
-    public StoreProject create(Project data, String profile) {
+    public StoreProject create(Project data, Set<String> profiles) {
         StoreProject result = new StoreProject();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -65,9 +66,9 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
      * {@inheritDoc}
      */
     @Override
-    public Project create(String profile) {
+    public Project create(Set<String> profiles) {
         StoreProject role = new StoreProject();
-        return map(role, profile);
+        return map(role, profiles);
     }
 
 }

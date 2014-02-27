@@ -46,4 +46,8 @@ public class Application {
      * The enabled flag.
      */
     public boolean enabled;
+    /**
+     * The repository link.
+     */
+    public String repoLink;
 }

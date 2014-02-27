@@ -36,9 +36,9 @@ public class DashboardApplicationSystem {
     public String project;
 
     /**
-     * The application system.
+     * The system name.
      */
-    public ApplicationSystem system;
+    public String name;
     /**
      * THe dashboard system build.
      */

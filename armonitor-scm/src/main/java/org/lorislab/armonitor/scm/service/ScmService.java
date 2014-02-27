@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
@@ -63,6 +64,15 @@ public final class ScmService {
     }
 
     /**
+     * Gets the set of client service types.
+     *
+     * @return the set of client service types.
+     */
+    public static Set<String> getTypes() {
+        return CLIENTS.keySet();
+    }
+
+    /**
      * Gets the list of issues.
      *
      * @param criteria the criteria.
@@ -77,8 +87,8 @@ public final class ScmService {
         // check client
         ScmServiceClient client = getClient(criteria.getType());
         return client.getLog(criteria);
-    }  
-    
+    }
+
     /**
      * Gets the client by type.
      *

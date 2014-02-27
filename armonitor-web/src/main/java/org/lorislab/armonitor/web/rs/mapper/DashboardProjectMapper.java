@@ -15,12 +15,12 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.web.rs.model.DashboardApplication;
 import org.lorislab.armonitor.web.rs.model.DashboardProject;
-import org.lorislab.armonitor.web.rs.model.Project;
 
 /**
  * The dashboard project mapper.
@@ -33,13 +33,11 @@ public class DashboardProjectMapper implements MapperService<StoreProject, Dashb
      * {@inheritDoc}
      */
     @Override
-    public DashboardProject map(StoreProject data, String profile) {
+    public DashboardProject map(StoreProject data, Set<String> profiles) {
         DashboardProject result = new DashboardProject();
-        result.project = Mapper.map(data, Project.class, profile);
-        if (result.project != null) {
-            result.guid = result.project.guid;
-        }
-        result.applications = Mapper.convert(data.getApplications(), DashboardApplication.class, profile);
+        result.guid = data.getGuid();
+        result.name = data.getName();
+        result.applications = Mapper.convert(data.getApplications(), DashboardApplication.class, profiles);
         return result;
     }
 
@@ -47,7 +45,7 @@ public class DashboardProjectMapper implements MapperService<StoreProject, Dashb
      * {@inheritDoc}
      */
     @Override
-    public StoreProject update(StoreProject entity, DashboardProject data, String profile) {
+    public StoreProject update(StoreProject entity, DashboardProject data, Set<String> profiles) {
         return entity;
     }
 
@@ -55,7 +53,7 @@ public class DashboardProjectMapper implements MapperService<StoreProject, Dashb
      * {@inheritDoc}
      */
     @Override
-    public StoreProject create(DashboardProject data, String profile) {
+    public StoreProject create(DashboardProject data, Set<String> profiles) {
         return null;
     }
 
@@ -63,9 +61,9 @@ public class DashboardProjectMapper implements MapperService<StoreProject, Dashb
      * {@inheritDoc}
      */
     @Override
-    public DashboardProject create(String profile) {
+    public DashboardProject create(Set<String> profiles) {
         StoreProject role = new StoreProject();
-        return map(role, profile);
+        return map(role, profiles);
     }
 
 }

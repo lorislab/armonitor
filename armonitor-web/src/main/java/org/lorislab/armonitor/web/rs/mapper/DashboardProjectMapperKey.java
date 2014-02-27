@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperKeyService;
 import org.lorislab.armonitor.store.model.StoreProject;
 
@@ -29,7 +30,7 @@ public class DashboardProjectMapperKey implements MapperKeyService<StoreProject>
      * {@inheritDoc}
      */
     @Override
-    public String getKey(StoreProject data, String profile) {
+    public String getKey(StoreProject data, Set<String> profiles) {
         return data.getGuid();
     }
 

@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreRole;
 import org.lorislab.armonitor.web.rs.model.Role;
@@ -30,7 +31,7 @@ public class RoleMapper implements MapperService<StoreRole, Role> {
      * {@inheritDoc}
      */
     @Override
-    public Role map(StoreRole data, String profile) {
+    public Role map(StoreRole data, Set<String> profiles) {
         Role result = new Role();
         result.guid = data.getGuid();
         result.name = data.getName();
@@ -41,7 +42,7 @@ public class RoleMapper implements MapperService<StoreRole, Role> {
      * {@inheritDoc}
      */
     @Override
-    public StoreRole update(StoreRole entity, Role data, String profile) {
+    public StoreRole update(StoreRole entity, Role data, Set<String> profiles) {
         entity.setName(data.name);
         return entity;
     }
@@ -50,10 +51,10 @@ public class RoleMapper implements MapperService<StoreRole, Role> {
      * {@inheritDoc}
      */
     @Override
-    public StoreRole create(Role data, String profile) {
+    public StoreRole create(Role data, Set<String> profiles) {
         StoreRole result = new StoreRole();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -61,9 +62,9 @@ public class RoleMapper implements MapperService<StoreRole, Role> {
      * {@inheritDoc}
      */
     @Override
-    public Role create(String profile) {
+    public Role create(Set<String> profiles) {
         StoreRole role = new StoreRole();
-        return map(role, profile);
+        return map(role, profiles);
     }
 
 }

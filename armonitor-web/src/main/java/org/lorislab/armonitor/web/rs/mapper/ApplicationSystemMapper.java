@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
@@ -30,7 +31,7 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
      * {@inheritDoc}
      */
     @Override
-    public ApplicationSystem map(StoreSystem data, String profile) {
+    public ApplicationSystem map(StoreSystem data, Set<String> profiles) {
         ApplicationSystem result = new ApplicationSystem();
         result.guid = data.getGuid();
         result.name = data.getName();
@@ -45,7 +46,7 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
      * {@inheritDoc}
      */
     @Override
-    public StoreSystem update(StoreSystem entity, ApplicationSystem data, String profile) {
+    public StoreSystem update(StoreSystem entity, ApplicationSystem data, Set<String> profiles) {
         entity.setName(data.name);
         entity.setEnabled(data.enabled);
         entity.setTimer(data.timer);
@@ -58,10 +59,10 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
      * {@inheritDoc}
      */
     @Override
-    public StoreSystem create(ApplicationSystem data, String profile) {
+    public StoreSystem create(ApplicationSystem data, Set<String> profiles) {
         StoreSystem result = new StoreSystem();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -69,9 +70,9 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
      * {@inheritDoc}
      */
     @Override
-    public ApplicationSystem create(String profile) {
+    public ApplicationSystem create(Set<String> profiles) {
         StoreSystem tmp = new StoreSystem();
-        return map(tmp, profile);
+        return map(tmp, profiles);
     }
 
 }

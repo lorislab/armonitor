@@ -13,18 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.lorislab.armonitor.web.rs.model;
 
-package org.lorislab.armonitor.web.rs.model.enums;
+import java.util.Date;
 
 /**
- * The bug tracking system type.
+ * The activity change log.
  * 
  * @author Andrej Petras
  */
-public enum BTSystemType {
-   
+public class ActivityChangeLog {
+
     /**
-     * The JIRA.
+     * The build.
      */
-    JIRA;
+    public String build;
+    /**
+     * The version.
+     */
+    public String version;
+    /**
+     * The release candidate.
+     */
+    public String rc;
+    /**
+     * The id.
+     */
+    public String id;
+    /**
+     * The user.
+     */
+    public String user;
+    /**
+     * The message.
+     */
+    public String message;
+    /**
+     * The date.
+     */
+    public Date date;
+    /**
+     * The link.
+     */
+    public String link;
 }

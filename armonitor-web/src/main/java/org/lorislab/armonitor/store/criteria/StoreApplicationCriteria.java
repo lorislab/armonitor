@@ -59,6 +59,28 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
      * The system.
      */
     private String system;
+    /**
+     * The build.
+     */
+    private String build;
+
+    /**
+     * Gets the build.
+     *
+     * @return the build.
+     */
+    public String getBuild() {
+        return build;
+    }
+
+    /**
+     * Sets the build.
+     *
+     * @param build the build.
+     */
+    public void setBuild(String build) {
+        this.build = build;
+    }
 
     /**
      * Gets the fetch system flag.
@@ -198,6 +220,7 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
         fetchProject = false;
         system = null;
         fetchSystem = false;
+        build = null;
     }
 
     /**

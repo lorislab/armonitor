@@ -46,9 +46,32 @@ public class Change implements Serializable {
     private boolean error;
 
     /**
+     * The link.
+     */
+    private String link;
+
+    /**
      * The list of changes.
      */
     private final List<ScmLogBuild> changes = new ArrayList<>();
+
+    /**
+     * Sets the link.
+     *
+     * @param link the link.
+     */
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    /**
+     * Gets the link.
+     *
+     * @return the link.
+     */
+    public String getLink() {
+        return link;
+    }
 
     /**
      * Gets the error flag.

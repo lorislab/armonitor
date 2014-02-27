@@ -15,11 +15,10 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
-import org.lorislab.armonitor.store.model.enums.StoreSCMSystemType;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
-import org.lorislab.armonitor.web.rs.model.enums.SCMSystemType;
 
 /**
  * The SCM system mapper.
@@ -32,7 +31,7 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
      * {@inheritDoc}
      */
     @Override
-    public SCMSystem map(StoreSCMSystem data, String profile) {
+    public SCMSystem map(StoreSCMSystem data, Set<String> profiles) {
         SCMSystem result = new SCMSystem();
         result.guid = data.getGuid();
         result.auth = data.isAuth();
@@ -40,10 +39,7 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
         result.user = data.getUser();
         result.readTimeout = data.getReadTimeout();
         result.connectionTimeout = data.getConnectionTimeout();
-        result.type = null;
-        if (data.getType() != null) {
-            result.type = SCMSystemType.valueOf(data.getType().name());
-        }
+        result.type = data.getType();       
         return result;
     }
 
@@ -51,16 +47,13 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
      * {@inheritDoc}
      */
     @Override
-    public StoreSCMSystem update(StoreSCMSystem entity, SCMSystem data, String profile) {
+    public StoreSCMSystem update(StoreSCMSystem entity, SCMSystem data, Set<String> profiles) {
         entity.setAuth(data.auth);
         entity.setServer(data.server);
         entity.setUser(data.user);
         entity.setConnectionTimeout(data.connectionTimeout);
         entity.setReadTimeout(data.readTimeout);
-        entity.setType(null);
-        if (data.type != null) {
-            entity.setType(StoreSCMSystemType.valueOf(data.type.name()));
-        }
+        entity.setType(data.type);       
         return entity;
     }
 
@@ -68,10 +61,10 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
      * {@inheritDoc}
      */
     @Override
-    public StoreSCMSystem create(SCMSystem data, String profile) {
+    public StoreSCMSystem create(SCMSystem data, Set<String> profiles) {
         StoreSCMSystem result = new StoreSCMSystem();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -79,9 +72,9 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
      * {@inheritDoc}
      */
     @Override
-    public SCMSystem create(String profile) {
+    public SCMSystem create(Set<String> profiles) {
         StoreSCMSystem role = new StoreSCMSystem();
-        return map(role, profile);
+        return map(role, profiles);
     }
 
 }

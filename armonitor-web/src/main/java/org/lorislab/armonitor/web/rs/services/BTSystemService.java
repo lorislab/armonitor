@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
@@ -29,29 +28,39 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.BTSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
-import org.lorislab.armonitor.web.rs.model.enums.BTSystemType;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.Project;
 
 /**
+ * The bug tracking system rest service.
  *
  * @author Andrej Petras
  */
 @Path("bts")
 public class BTSystemService {
-    
+
+    /**
+     * The bug tracking system service.
+     */
     @EJB
     private BTSystemServiceBean service;
-    
+
+    /**
+     * Gets the set of project for the bug tracking system.
+     *
+     * @param guid the GUID.
+     * @return the set of project.
+     * @throws Exception if the method fails.
+     */
     @GET
     @Path("{guid}/project")
     @Produces(MediaType.APPLICATION_JSON)
     public Set<Project> getApplications(@PathParam("guid") String guid) throws Exception {
         return service.getProjects(guid);
-    } 
-    
+    }
+
     /**
-     * 
+     *
      * @param guid
      * @param project
      * @throws Exception if the method fails.
@@ -61,28 +70,28 @@ public class BTSystemService {
     public void addProject(@PathParam("guid") String guid, @PathParam("project") String project) throws Exception {
         service.addProject(guid, project);
     }
-    
+
     @GET
     @Path("types")
     @Produces(MediaType.APPLICATION_JSON)
-    public BTSystemType[] getTypes() {
-        return BTSystemType.values();
+    public Set<String> getTypes() {
+        return service.getTypes();
     }
-    
+
     @POST
     @Path("{guid}/password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changePassword(@PathParam("guid") String guid,ChangePasswordRequest reqeust) {
+    public void changePassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) {
         service.changePassword(guid, reqeust);
     }
-    
+
     @PUT
     @Path("{guid}/password")
     @Produces(MediaType.APPLICATION_JSON)
     public ChangePasswordRequest createchangePassword(@PathParam("guid") String guid) {
         return new ChangePasswordRequest();
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<BTSystem> get() {

@@ -29,22 +29,51 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
      * The timeout configuration: second.
      */
     private static final long serialVersionUID = 1180646542774715225L;
-
+    /**
+     * The system build GUID.
+     */
     private String guid;
-
+    /**
+     * The system.
+     */
     private String system;
 
+    /**
+     * The build.
+     */
     private String build;
-
+    /**
+     * The maximal date flag.
+     */
     private boolean maxDate;
-    
+    /**
+     * The set of systems.
+     */
     private Set<String> systems;
-    
+    /**
+     * The fetch system flag.
+     */
     private boolean fetchSystem;
-
+    /**
+     * The fetch build flag.
+     */
     private boolean fetchBuild;
-
+    /**
+     * The fetch build parameters flag.
+     */
     private boolean fetchBuildParam;
+    /**
+     * The fetch system application flag.
+     */
+    private boolean fetchSystemApplication;
+
+    public boolean isFetchSystemApplication() {
+        return fetchSystemApplication;
+    }
+
+    public void setFetchSystemApplication(boolean fetchSystemApplication) {
+        this.fetchSystemApplication = fetchSystemApplication;
+    }
 
     public boolean isFetchBuildParam() {
         return fetchBuildParam;
@@ -53,7 +82,7 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     public void setFetchBuildParam(boolean fetchBuildParam) {
         this.fetchBuildParam = fetchBuildParam;
     }
-        
+
     public boolean isMaxDate() {
         return maxDate;
     }
@@ -69,7 +98,7 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
     public void setSystems(Set<String> systems) {
         this.systems = systems;
     }
-        
+
     public boolean isFetchBuild() {
         return fetchBuild;
     }
@@ -122,6 +151,7 @@ public class StoreSystemBuildCriteria extends AbstractSearchCriteria {
         fetchSystem = false;
         fetchBuild = false;
         fetchBuildParam = false;
+        fetchSystemApplication = false;
     }
 
     /**

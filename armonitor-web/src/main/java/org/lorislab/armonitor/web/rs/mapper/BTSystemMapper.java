@@ -15,11 +15,10 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBTSystem;
-import org.lorislab.armonitor.store.model.enums.StoreBTSystemType;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
-import org.lorislab.armonitor.web.rs.model.enums.BTSystemType;
 
 /**
  * The bug tracking system mapper.
@@ -32,17 +31,14 @@ public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
      * {@inheritDoc}
      */
     @Override
-    public BTSystem map(StoreBTSystem data, String profile) {
+    public BTSystem map(StoreBTSystem data, Set<String> profiles) {
         BTSystem result = new BTSystem();
         result.guid = data.getGuid();
         result.auth = data.isAuth();
         result.link = data.getLink();
         result.server = data.getServer();
         result.user = data.getUser();
-        result.type = null;
-        if (data.getType() != null) {
-            result.type = BTSystemType.valueOf(data.getType().name());
-        }
+        result.type = data.getType();
         return result;
     }
 
@@ -50,15 +46,12 @@ public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
      * {@inheritDoc}
      */
     @Override
-    public StoreBTSystem update(StoreBTSystem entity, BTSystem data, String profile) {
+    public StoreBTSystem update(StoreBTSystem entity, BTSystem data, Set<String> profiles) {
         entity.setAuth(data.auth);
         entity.setLink(data.link);
         entity.setServer(data.server);
         entity.setUser(data.user);
-        entity.setType(null);
-        if (data.type != null) {
-            entity.setType(StoreBTSystemType.valueOf(data.type.name()));
-        }
+        entity.setType(data.type);
         return entity;
     }
 
@@ -66,10 +59,10 @@ public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
      * {@inheritDoc}
      */
     @Override
-    public StoreBTSystem create(BTSystem data, String profile) {
+    public StoreBTSystem create(BTSystem data, Set<String> profiles) {
         StoreBTSystem result = new StoreBTSystem();
         result.setGuid(data.guid);
-        result = update(result, data, profile);
+        result = update(result, data, profiles);
         return result;
     }
 
@@ -77,9 +70,9 @@ public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
      * {@inheritDoc}
      */
     @Override
-    public BTSystem create(String profile) {
+    public BTSystem create(Set<String> profiles) {
         StoreBTSystem role = new StoreBTSystem();
-        return map(role, profile);
+        return map(role, profiles);
     }
 
 }

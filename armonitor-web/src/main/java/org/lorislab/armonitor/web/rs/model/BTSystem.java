@@ -15,8 +15,6 @@
  */
 package org.lorislab.armonitor.web.rs.model;
 
-import org.lorislab.armonitor.web.rs.model.enums.BTSystemType;
-
 /**
  * The bug tracking system.
  *
@@ -47,6 +45,6 @@ public class BTSystem {
     /**
      * The bug tracking system type.
      */
-    public BTSystemType type;
+    public String type;
 
 }

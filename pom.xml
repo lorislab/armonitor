@@ -48,6 +48,7 @@
 		<module>armonitor-agent-web</module>
 		<module>armonitor-bts</module>
 		<module>armonitor-scm</module>		
+
 		<module>armonitor-rs</module>
 		<module>armonitor-web</module>
 	</modules>

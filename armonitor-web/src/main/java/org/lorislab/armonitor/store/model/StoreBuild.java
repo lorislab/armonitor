@@ -64,7 +64,7 @@ public class StoreBuild extends Persistent {
     private String service;
 
     @Column(name = "C_MVN_GROUP_ID")
-    private String groupdId;
+    private String groupId;
 
     @Column(name = "C_MVN_ARTIFACT_ID")
     private String artifactId;
@@ -173,15 +173,15 @@ public class StoreBuild extends Persistent {
     /**
      * @return the groupdId
      */
-    public String getGroupdId() {
-        return groupdId;
+    public String getGroupId() {
+        return groupId;
     }
 
     /**
-     * @param groupdId the groupdId to set
+     * @param groupId the groupdId to set
      */
-    public void setGroupdId(String groupdId) {
-        this.groupdId = groupdId;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     /**

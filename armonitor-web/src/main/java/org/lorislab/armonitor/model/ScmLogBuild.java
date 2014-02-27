@@ -38,16 +38,31 @@ public class ScmLogBuild implements Serializable {
      * The list of SCM logs.
      */
     private final ScmLog scmLog;
+    /**
+     * The link.
+     */
+    private final String link;
 
     /**
      * The default constructor.
      *
      * @param build the build.
      * @param scmLog the SCM log.
+     * @paran link the link.
      */
-    public ScmLogBuild(StoreBuild build, ScmLog scmLog) {
+    public ScmLogBuild(StoreBuild build, ScmLog scmLog, String link) {
         this.build = build;
         this.scmLog = scmLog;
+        this.link = link;
+    }
+
+    /**
+     * Gets the link.
+     *
+     * @return the link.
+     */
+    public String getLink() {
+        return link;
     }
 
     /**

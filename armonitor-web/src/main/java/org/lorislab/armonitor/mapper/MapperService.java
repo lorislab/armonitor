@@ -15,6 +15,8 @@
  */
 package org.lorislab.armonitor.mapper;
 
+import java.util.Set;
+
 /**
  * The mapper service interface.
  *
@@ -28,36 +30,36 @@ public interface MapperService<E, T> {
     /**
      * Maps the entity to the rest model.
      *
-     * @param profile the map profile.
+     * @param profiles the map profile.
      * @param data the entity object.
      * @return the rest model.
      */
-    public T map(E data, String profile);
+    public T map(E data, Set<String> profiles);
 
     /**
      * Updates the entity.
      *
-     * @param profile the map profile.
+     * @param profiles the map profile.
      * @param entity the entity.
      * @param data the rest model.
      * @return the updated entity.
      */
-    public E update(E entity, T data, String profile);
+    public E update(E entity, T data, Set<String> profiles);
 
     /**
      * Creates new entity from rest model.
      *
-     * @param profile the map profile.
+     * @param profiles the map profile.
      * @param data the rest model.
      * @return the created entity.
      */
-    public E create(T data, String profile);
+    public E create(T data, Set<String> profiles);
 
     /**
      * Map new created entity to the rest model.
      *
-     * @param profile the map profile.
+     * @param profiles the map profile.
      * @return the new rest model.
      */
-    public T create(String profile);
+    public T create(Set<String> profiles);
 }

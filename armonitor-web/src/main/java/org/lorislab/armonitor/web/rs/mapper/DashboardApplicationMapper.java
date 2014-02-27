@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.Set;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreApplication;
@@ -33,16 +34,14 @@ public class DashboardApplicationMapper implements MapperService<StoreApplicatio
      * {@inheritDoc}
      */
     @Override
-    public DashboardApplication map(StoreApplication data, String profile) {
+    public DashboardApplication map(StoreApplication data, Set<String> profiles) {
         DashboardApplication result = new DashboardApplication();
-        result.application = Mapper.map(data, Application.class, profile);
-        if (result.application != null) {
-            result.guid = result.application.guid;
-        }
+        result.guid = data.getGuid();
+        result.name = data.getName();
         if (data.getProject() != null) {
             result.project = data.getProject().getGuid();
         }
-        result.systems = Mapper.convert(data.getSystems(), DashboardApplicationSystem.class, profile);       
+        result.systems = Mapper.convert(data.getSystems(), DashboardApplicationSystem.class, profiles);       
         return result;
     }
 
@@ -50,7 +49,7 @@ public class DashboardApplicationMapper implements MapperService<StoreApplicatio
      * {@inheritDoc}
      */
     @Override
-    public StoreApplication update(StoreApplication entity, DashboardApplication data, String profile) {
+    public StoreApplication update(StoreApplication entity, DashboardApplication data, Set<String> profiles) {
         return entity;
     }
 
@@ -58,7 +57,7 @@ public class DashboardApplicationMapper implements MapperService<StoreApplicatio
      * {@inheritDoc}
      */
     @Override
-    public StoreApplication create(DashboardApplication data, String profile) {
+    public StoreApplication create(DashboardApplication data, Set<String> profiles) {
         return null;
     }
 
@@ -66,9 +65,9 @@ public class DashboardApplicationMapper implements MapperService<StoreApplicatio
      * {@inheritDoc}
      */
     @Override
-    public DashboardApplication create(String profile) {
+    public DashboardApplication create(Set<String> profiles) {
         StoreApplication role = new StoreApplication();
-        return map(role, profile);
+        return map(role, profiles);
     }
 
 }

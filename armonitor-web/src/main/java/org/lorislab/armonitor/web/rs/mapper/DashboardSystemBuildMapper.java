@@ -15,12 +15,13 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
-import org.lorislab.armonitor.mapper.Mapper;
+import java.util.Set;
 import org.lorislab.armonitor.mapper.MapperService;
+import org.lorislab.armonitor.store.model.StoreBuild;
+import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
-import org.lorislab.armonitor.web.rs.model.Build;
 import org.lorislab.armonitor.web.rs.model.DashboardSystemBuild;
-import org.lorislab.armonitor.web.rs.model.SystemBuild;
+import org.lorislab.armonitor.web.rs.util.LinkUtil;
 
 /**
  * he dashboard system build mapper.
@@ -33,15 +34,25 @@ public class DashboardSystemBuildMapper implements MapperService<StoreSystemBuil
      * {@inheritDoc}
      */
     @Override
-    public DashboardSystemBuild map(StoreSystemBuild data, String profile) {
+    public DashboardSystemBuild map(StoreSystemBuild data, Set<String> profiles) {
         DashboardSystemBuild result = new DashboardSystemBuild();
-        result.systemBuild = Mapper.map(data, SystemBuild.class, profile);
-        result.build = Mapper.map(data.getBuild(), Build.class, profile);
-        if (result.systemBuild != null) {
-            result.guid = result.systemBuild.guid;
+        result.guid = data.getGuid();
+        result.date = data.getDate();
+        StoreBuild build = data.getBuild();
+        if (build != null) {
+            result.build = build.getGuid();
+            result.rc = build.getBuild();
+            result.version = build.getMavenVersion();
+            result.scm = build.getScm();
         }
-        if (data.getSystem() != null) {
-            result.system = data.getSystem().getGuid();
+        StoreSystem sys = data.getSystem();
+        if (sys != null) {
+            result.system = sys.getGuid();
+            
+            if (sys.getApplication() != null) {
+                String link = sys.getApplication().getRepoLink();
+                result.link = LinkUtil.createLink(link, build);
+            }
         }
         return result;
     }
@@ -50,7 +61,7 @@ public class DashboardSystemBuildMapper implements MapperService<StoreSystemBuil
      * {@inheritDoc}
      */
     @Override
-    public StoreSystemBuild update(StoreSystemBuild entity, DashboardSystemBuild data, String profile) {
+    public StoreSystemBuild update(StoreSystemBuild entity, DashboardSystemBuild data, Set<String> profiles) {
         return entity;
     }
 
@@ -58,7 +69,7 @@ public class DashboardSystemBuildMapper implements MapperService<StoreSystemBuil
      * {@inheritDoc}
      */
     @Override
-    public StoreSystemBuild create(DashboardSystemBuild data, String profile) {
+    public StoreSystemBuild create(DashboardSystemBuild data, Set<String> profiles) {
         return null;
     }
 
@@ -66,8 +77,8 @@ public class DashboardSystemBuildMapper implements MapperService<StoreSystemBuil
      * {@inheritDoc}
      */
     @Override
-    public DashboardSystemBuild create(String profile) {
+    public DashboardSystemBuild create(Set<String> profiles) {
         StoreSystemBuild role = new StoreSystemBuild();
-        return map(role, profile);
+        return map(role, profiles);
     }
 }

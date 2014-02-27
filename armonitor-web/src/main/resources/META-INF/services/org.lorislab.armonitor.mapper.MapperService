@@ -15,3 +15,6 @@ org.lorislab.armonitor.web.rs.mapper.DashboardApplicationMapper
 org.lorislab.armonitor.web.rs.mapper.DashboardApplicationSystemMapper
 org.lorislab.armonitor.web.rs.mapper.DashboardSystemBuildMapper
 org.lorislab.armonitor.web.rs.mapper.TimelineBuildMapper
+org.lorislab.armonitor.web.rs.mapper.ActivityMapper
+org.lorislab.armonitor.web.rs.mapper.ActivityChangeLogMapper
+org.lorislab.armonitor.web.rs.mapper.ActivityChangeMapper
