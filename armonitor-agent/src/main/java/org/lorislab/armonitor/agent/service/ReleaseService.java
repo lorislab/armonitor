@@ -29,27 +29,18 @@ public interface ReleaseService {
     /**
      * Gets the release information of the agent.
      *
-     * @param criteria the criteria.
+     * @param manifest the manifest flag.
      * 
      * @return the release information of the agent.
      */
-    SearchResultItem getAgentRelease(SearchCriteria criteria);
+    SearchResultItem getAgentRelease(boolean manifest);
 
     /**
-     * Gets the release information of the application.
+     * Gets the release information of the application or all.
      *
      * @param criteria the criteria.
      * 
-     * @return the release information of the application.
+     * @return the list of release information of the applications.
      */
-    SearchResultItem getApplicationRelease(SearchCriteria criteria);
-    
-    /**
-     * Gets the release information of the application.
-     *
-     * @param criteria the criteria.
-     * 
-     * @return the release information of the application.
-     */
-    List<SearchResultItem> getAllReleases(SearchCriteria criteria);    
+    List<SearchResultItem> getRelease(SearchCriteria criteria);       
 }

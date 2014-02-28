@@ -72,7 +72,7 @@ public final class ObjectMapper {
             version.date = arm.getDate();
 
             // add maven attributes
-            version.groupdId = arm.getGroupId();
+            version.groupId = arm.getGroupId();
             version.artifactId = arm.getArtifactId();
             version.version = arm.getVersion();
 

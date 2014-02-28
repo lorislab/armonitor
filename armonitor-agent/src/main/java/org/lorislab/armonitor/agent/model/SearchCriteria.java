@@ -28,11 +28,6 @@ public class SearchCriteria {
     private boolean manifest = false;
 
     /**
-     * The ARM properties.
-     */
-    private final boolean arm = true;
-
-    /**
      * The service name.
      */
     private String service = null;
@@ -53,16 +48,7 @@ public class SearchCriteria {
      */
     public void setService(String service) {
         this.service = service;
-    }
-
-    /**
-     * Gets the ARM.
-     *
-     * @return the ARM.
-     */
-    public boolean isArm() {
-        return arm;
-    }
+    }   
 
     /**
      * Gets the manifest.

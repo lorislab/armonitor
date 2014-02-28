@@ -55,20 +55,18 @@ public class AgentClientServiceBean {
      * Gets all applications build.
      *
      * @param agent the agent.
-     * @param service the service name.
      * @return the list of applications build.
      */
-    public List<StoreBuild> getAppBuilds(StoreAgent agent, String service) {
+    public List<StoreBuild> getBuilds(StoreAgent agent) {
         List<StoreBuild> result = new ArrayList<>();
 
         try {
             VersionService client = createClientService(agent);
             Request request = new Request();
             request.manifest = true;
-            request.service = service;
             request.uid = UUID.randomUUID().toString();
 
-            List<Version> versions = client.getAllVersion(request);
+            List<Version> versions = client.getVersion(request);
             if (versions != null) {
 
                 for (Version version : versions) {
@@ -88,20 +86,14 @@ public class AgentClientServiceBean {
      * Gets the agent service build.
      *
      * @param agent the agent.
-     * @param service the service name.
      * @return the agent service build.
      */
-    public StoreBuild getAgentBuild(StoreAgent agent, String service) {
+    public StoreBuild getAgentBuild(StoreAgent agent) {
         StoreBuild result = null;
 
         try {
             VersionService client = createClientService(agent);
-            Request request = new Request();
-            request.manifest = true;
-            request.service = service;
-            request.uid = UUID.randomUUID().toString();
-
-            Version version = client.getAgentVersion(request);
+            Version version = client.getAgentVersion(true);
             result = Mapper.map(version, StoreBuild.class);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error reading the version of the agent " + agent.getGuid(), ex);
@@ -116,7 +108,7 @@ public class AgentClientServiceBean {
      * @param service the service name.
      * @return the build of the application.
      */
-    public StoreBuild getAppBuild(StoreAgent agent, String service) {
+    public StoreBuild getBuild(StoreAgent agent, String service) {
         StoreBuild result = null;
 
         try {
@@ -126,7 +118,11 @@ public class AgentClientServiceBean {
             request.service = service;
             request.uid = UUID.randomUUID().toString();
 
-            Version version = client.getAppVersion(request);
+            List<Version> versions = client.getVersion(request);
+            Version version = null;
+            if (versions != null && !versions.isEmpty()) {
+                version = versions.get(0);
+            }
             result = Mapper.map(version, StoreBuild.class);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error reading the application version for the the agent " + agent.getGuid(), ex);

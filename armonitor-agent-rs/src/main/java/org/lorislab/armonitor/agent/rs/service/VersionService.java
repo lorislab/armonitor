@@ -17,9 +17,11 @@ package org.lorislab.armonitor.agent.rs.service;
 
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.agent.rs.model.Request;
 import org.lorislab.armonitor.agent.rs.model.Version;
@@ -35,27 +37,13 @@ public interface VersionService {
     /**
      * Gets the agent version.
      *
-     * @param request the request.
+     * @param manifest the manifest flag.
      * @return the version of the agent.
      * @throws Exception if the method fails.
      */
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    Version getAgentVersion(Request request) throws Exception;
-
-    /**
-     * Gets the version of the application.
-     *
-     * @param request the request.
-     * @return the version of the application.
-     * @throws Exception if the method fails.
-     */
-    @POST
-    @Path("app")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    Version getAppVersion(Request request) throws Exception;
+    Version getAgentVersion(@QueryParam("manifest") boolean manifest) throws Exception;
 
     /**
      * Gets all versions.
@@ -65,8 +53,7 @@ public interface VersionService {
      * @throws Exception if the method fails.
      */
     @POST
-    @Path("all")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    List<Version> getAllVersion(Request request) throws Exception;
+    List<Version> getVersion(Request request) throws Exception;
 }

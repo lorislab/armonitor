@@ -42,7 +42,7 @@ public class VersionMapper implements MapperService<Version, StoreBuild> {
         result.setUid(data.uid);
         result.setBuild(data.build);
         result.setArtifactId(data.artifactId);
-        result.setGroupId(data.groupdId);
+        result.setGroupId(data.groupId);
         result.setMavenVersion(data.version);
         result.setDate(data.date);
         result.setScm(data.scm);

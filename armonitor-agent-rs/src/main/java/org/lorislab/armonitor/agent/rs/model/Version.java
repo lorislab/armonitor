@@ -45,7 +45,7 @@ public class Version {
     /**
      * The MAVEN group id.
      */
-    public String groupdId;
+    public String groupId;
     /**
      * The MAVEN artifact id.
      */

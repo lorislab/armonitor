@@ -35,17 +35,15 @@ public class ReleaseServiceImpl implements ReleaseService {
      * {@inheritDoc}
      */
     @Override
-    public SearchResultItem getAgentRelease(SearchCriteria request) {
+    public SearchResultItem getAgentRelease(boolean manifest) {
         SearchResultItem result = new SearchResultItem();
 
         // load arm model
-        if (request.isArm()) {
-            Arm arm = ArmLoader.loadArmFromJar(ReleaseServiceImpl.class);
-            result.setArm(arm);
-        }
+        Arm arm = ArmLoader.loadArmFromJar(ReleaseServiceImpl.class);
+        result.setArm(arm);
         
         // load manifest 
-        if (request.isManifest()) {    
+        if (manifest) {    
             Map<String,String> tmp = ManifestLoader.loadManifestFromJarToMap(ReleaseServiceImpl.class); 
             result.setManifest(tmp);
         }
@@ -57,35 +55,22 @@ public class ReleaseServiceImpl implements ReleaseService {
      * {@inheritDoc}
      */
     @Override
-    public SearchResultItem getApplicationRelease(SearchCriteria request) {
-        SearchResultItem result = new SearchResultItem();
+    public List<SearchResultItem> getRelease(SearchCriteria request) {
+        List<SearchResultItem> result = new ArrayList<>();
 
+        SearchResultItem item = new SearchResultItem();
+        result.add(item);
+        
         // load arm model
-        if (request.isArm()) {
-            Arm arm = ArmLoader.loadArmFrom(ReleaseServiceImpl.class);
-            result.setArm(arm);
-        }
+        Arm arm = ArmLoader.loadArmFrom(ReleaseServiceImpl.class);
+        item.setArm(arm);
         
         // load manifest 
         if (request.isManifest()) {
             Map<String,String> tmp = ManifestLoader.loadManifestFromToMap(ReleaseServiceImpl.class);            
-            result.setManifest(tmp);
+            item.setManifest(tmp);
         }
         
         return result;
     }
-
-    /**
-     * {@inheritDoc}
-     */    
-    @Override
-    public List<SearchResultItem> getAllReleases(SearchCriteria criteria) {
-        List<SearchResultItem> result = new ArrayList<>();
-        SearchResultItem item = getApplicationRelease(criteria);
-        if (item != null) {
-            result.add(item);
-        }
-        return result;
-    }
-
 }
