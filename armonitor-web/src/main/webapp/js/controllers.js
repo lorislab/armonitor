@@ -8,6 +8,7 @@ angular.module('armonitor.controllers', [])
 			$scope.dashboard = null;
 
 			function _load() {
+				$scope.dashboard = null;
 				DashboardRSService.get(function(response) {
 					$scope.dashboard = response;
 				});
@@ -18,8 +19,8 @@ angular.module('armonitor.controllers', [])
 			$scope.appBuilds = function(app) {
 				DashboardRSService.setDashboardBuilds({}, {project: app.project, app: app.guid, version: null});
 			};
-			$scope.builds = function(app, build) {
-				DashboardRSService.setDashboardBuilds({}, {project: app.project, app: app.guid, version: build.mavenVersion});
+			$scope.builds = function(app, version) {
+				DashboardRSService.setDashboardBuilds({}, {project: app.project, app: app.guid, version: version});
 			};
 			$scope.updateBuild = function(sys) {
 				DashboardRSService.updateBuild({sys: sys}, function(res) {
@@ -31,6 +32,7 @@ angular.module('armonitor.controllers', [])
 				});
 			};
 			$scope.reload = function() {
+				$scope.dashboard = null;
 				DashboardRSService.reload(function(response) {
 					$scope.dashboard = response;
 				});
@@ -48,6 +50,26 @@ angular.module('armonitor.controllers', [])
 				return [];
 			};
 		})
+		.controller('ActivityCtrl', function($scope, $routeParams, ActivityRSService) {
+
+			$scope.activity = null;
+
+			function _load() {
+				$scope.activity = null;
+				ActivityRSService.get({guid: $routeParams.guid}, function(response) {
+					$scope.activity = response;
+				});
+			}
+
+			_load();
+
+			$scope.reload = function() {
+				$scope.activity = null;
+				ActivityRSService.reload({guid: $routeParams.guid}, function(response) {
+					$scope.activity = response;
+				});
+			};
+		})
 		.controller('AboutCtrl', function($scope) {
 
 		})
@@ -62,14 +84,35 @@ angular.module('armonitor.controllers', [])
 			$scope.builds = [];
 			$scope.app;
 			$scope.build = null;
+			$scope.other = false;
+			$scope.manifest = false;
+
+			function _check(item) {
+				var found = false, name;
+				if (item) {
+					for (name in item) {
+						if (item.hasOwnProperty(name)) {
+							found = true;
+							break;
+						}
+					}
+				}
+				return found;
+			}
 			
-			$scope.timelineSelect = function(item) {				
+			$scope.timelineSelect = function(item) {
 				if (item) {
 					BuildRSService.get({guid: item.guid}, function(response) {
 						$scope.build = response;
+						if ($scope.build) {
+							$scope.other = _check($scope.build.other);
+							$scope.manifest = _check($scope.build.manifest);
+						}
 					});
 				} else {
 					$scope.build = null;
+					$scope.other = false;
+					$scope.manifest = false;
 					$scope.$apply();
 				}
 			};
@@ -77,7 +120,7 @@ angular.module('armonitor.controllers', [])
 			$scope.reload = function() {
 				_loadBuilds();
 			};
-			
+
 			function _load() {
 				DashboardRSService.getApp({}, function(response) {
 					$scope.app = response;
@@ -90,7 +133,7 @@ angular.module('armonitor.controllers', [])
 			function _loadBuilds() {
 				$scope.build = null;
 				DashboardRSService.getDashboardBuilds({}, function(response) {
-					$scope.builds = response;					
+					$scope.builds = response;
 				});
 			}
 

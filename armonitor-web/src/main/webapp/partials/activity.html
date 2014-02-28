@@ -1,0 +1,106 @@
+<h1>Activity
+	<small data-ng-show="activity">{{activity.projectName}} / {{activity.appName}} / {{activity.build.mavenVersion}} {{activity.build.build}}
+		<a href="" style="text-align: right; float: right" data-ng-click="reload()"><i class="icon-arrows-cw"></i></a>
+	</small>	
+	<small data-ng-show="!activity" style="text-align: right; float: right">
+		<i class="icon-arrows-cw animate-spin"></i>
+	</small>
+</h1>
+
+<ol class="breadcrumb">
+	<li>
+		<i class="icon-gauge"></i> 
+		<a href="#/dashboard">
+			Dashboard
+		</a>
+	</li>
+	<li class="active">
+		<i class="icon-rocket"></i> Activity
+	</li>	
+</ol>
+
+<div data-ng-show="activity">
+
+	<div class="panel panel-default">
+		<div class="panel-heading">{{activity.build.mavenVersion}} {{activity.build.build}}</div>
+		<div class="panel-body">
+			<h4 data-ng-hide="activity.buildChanges" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
+			<table class="table" data-ng-show="activity.buildChanges">
+				<tbody  data-ng-repeat="c in activity.buildChanges">
+					<tr style="font-weight: bold">
+						<td style="max-width: 20px;">
+							<span data-ng-show="c.error && !c.not" class="label label-warning" data-popover="This issue is not {{activity.build.mavenVersion}} issue!" data-popover-placement="right" data-popover-trigger="mouseenter">!</span>
+							<span data-ng-show="c.not" class="label label-danger" data-popover="This is not a issue!" data-popover-placement="right" data-popover-trigger="mouseenter">!</span>
+							<span data-ng-hide="c.error" class="label label-success">-</span>
+						</td>
+						<td style="min-width: 110px;">
+							<a href="{{c.link}}" data-ng-show="c.link">{{c.id}}</a>
+							<span data-ng-show="c.not">{{c.id}}</span>
+						</td>
+						<td style="min-width: 140px;">{{c.resolution}}</td>
+						<td style="min-width: 160px;">{{c.assignee}}</td>
+						<td>{{c.summary}}</td>
+					</tr>
+					<tr data-ng-repeat="s in c.changes">
+						<td></td>
+						<td data-ng-show="s.rc"><h6><a href="#/activity/{{s.build}}">{{s.rc}}</a></h6></td>
+						<td data-ng-hide="s.rc"><h6>***</h6></td>
+						<td><h6>{{s.date | date:'yyyy-MM-dd HH:mm:ss'}}</h6></td>
+						<td><h6>{{s.user}}</h6></td>
+						<td><h6>
+								<a data-ng-show="s.link" href="{{s.link}}">{{s.id}}</a>
+								<span data-ng-hide="s.link">{{s.id}}</span>
+								: {{s.message}}
+						</h6></td>
+					</tr>
+					<tr data-ng-hide="c.changes.length">
+						<td colspan="4"></td>
+						<td><h6><span class="label label-info">No changes</span></h6></td>
+					</tr>	
+				</tbody >				
+			</table>			
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">{{activity.build.mavenVersion}}</div>
+		<div class="panel-body">
+			<h4 data-ng-hide="activity.changes" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
+			<table class="table" data-ng-show="activity.changes">
+				<tbody  data-ng-repeat="c in activity.changes">
+					<tr style="font-weight: bold">
+						<td style="max-width: 20px;">
+							<span data-ng-show="c.error && !c.not" class="label label-warning" data-popover="This issue is not {{activity.build.mavenVersion}} issue!" data-popover-placement="right" data-popover-trigger="mouseenter">!</span>
+							<span data-ng-show="c.not" class="label label-danger" data-popover="This is not a issue!" data-popover-placement="right" data-popover-trigger="mouseenter">!</span>
+							<span data-ng-hide="c.error" class="label label-success">-</span>
+						</td>
+						<td style="min-width: 110px;">
+							<a href="{{c.link}}" data-ng-show="c.link">{{c.id}}</a>
+							<span data-ng-show="c.not">{{c.id}}</span>
+						</td>
+						<td style="min-width: 140px;">{{c.resolution}}</td>
+						<td style="min-width: 160px;">{{c.assignee}}</td>
+						<td>{{c.summary}}</td>
+					</tr>
+					<tr data-ng-repeat="s in c.changes">
+						<td></td>
+						<td data-ng-show="s.rc"><h6><a href="#/activity/{{s.build}}">{{s.rc}}</a></h6></td>
+						<td data-ng-hide="s.rc"><h6>***</h6></td>
+						<td><h6>{{s.date | date:'yyyy-MM-dd HH:mm:ss'}}</h6></td>
+						<td><h6>{{s.user}}</h6></td>
+						<td><h6>
+								<a data-ng-show="s.link" href="{{s.link}}">{{s.id}}</a>
+								<span data-ng-hide="s.link">{{s.id}}</span>
+								: {{s.message}}
+							</h6>
+						</td>
+					</tr>
+					<tr data-ng-hide="c.changes.length">
+						<td colspan="4"></td>
+						<td><h6><span class="label label-info">No changes</span></h6></td>
+					</tr>	
+				</tbody >				
+			</table>			
+		</div>
+	</div>	
+</div>

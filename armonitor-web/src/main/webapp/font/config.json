@@ -13,27 +13,15 @@
       "src": "fontawesome"
     },
     {
-      "uid": "e82cedfa1d5f15b00c5a81c9bd731ea2",
-      "css": "info-circled",
-      "code": 59398,
-      "src": "fontawesome"
-    },
-    {
-      "uid": "7034e4d22866af82bef811f52fb1ba46",
-      "css": "code",
-      "code": 59396,
+      "uid": "f5999a012fc3752386635ec02a858447",
+      "css": "download-cloud",
+      "code": 59404,
       "src": "fontawesome"
     },
     {
       "uid": "c76b7947c957c9b78b11741173c8349b",
       "css": "attention",
       "code": 59394,
-      "src": "fontawesome"
-    },
-    {
-      "uid": "0d08dbb1dd648a43bdea81b7e6c9e036",
-      "css": "location",
-      "code": 59399,
       "src": "fontawesome"
     },
     {

@@ -21,15 +21,15 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row" data-ng-show="build">
 	<div class="col-lg-6">
-		<div class="panel panel-success" data-ng-show="build">
+		<div class="panel panel-success" >
 			<div class="panel-heading">Maven</div>
 			<div class="panel-body">
 				<table class="table">
 					<tr>
 						<td>GroupId</td>
-						<td>{{build.groupdId}}</td>
+						<td>{{build.groupId}}</td>
 					</tr>
 					<tr>
 						<td>ArtifactId</td>
@@ -41,10 +41,16 @@
 					</tr>					
 				</table>		
 			</div>
+			<a href="{{build.link}}" data-ng-show="build.link">
+				<div class="panel-footer">Download
+					<div style="text-align: right; float: right"><i class="icon-download-cloud"></i></div>
+				</div>
+			</a>
+			<div class="panel-footer" data-ng-show="!(build.link)">&nbsp;</div>
 		</div>
 	</div>	
 	<div class="col-lg-6">
-		<div class="panel panel-success" data-ng-show="build">
+		<div class="panel panel-success">
 			<div class="panel-heading">Build</div>
 			<div class="panel-body">
 
@@ -67,14 +73,21 @@
 					</tr>					
 				</table>					
 			</div>
+			
+			<a href="#/activity/{{build.guid}}">
+				<div class="panel-footer">Activity
+					<div style="text-align: right; float: right"><i class="icon-fork"></i></div>
+				</div>
+			</a>			
 		</div>
 	</div>
 
 	<div class="col-lg-6">
-		<div class="panel panel-success" data-ng-show="build">
-			<div class="panel-heading">Manifest</div>
-			<div class="panel-body">
-				<table class="table">
+		<div class="panel panel-success">
+			<div class="panel-heading">Manifest</div>			
+			<div class="panel-body" >
+				<h4 data-ng-hide="manifest" style="text-align: center;"><span class="label label-info">No information</span ></h4>
+				<table class="table" data-ng-show="manifest">
 					<tr data-ng-repeat="(n,v) in build.manifest">
 						<td>{{n}}</td>
 						<td>{{v}}</td>
@@ -84,10 +97,11 @@
 		</div>	
 	</div>	
 	<div class="col-lg-6">
-		<div class="panel panel-success" data-ng-show="build">
+		<div class="panel panel-success">
 			<div class="panel-heading">Other</div>
 			<div class="panel-body">
-				<table class="table">
+				<h4 data-ng-hide="other" style="text-align: center;"><span class="label label-info">No information</span ></h4>
+				<table class="table" data-ng-show="other">
 					<tr data-ng-repeat="(n,v) in build.other">
 						<td>{{n}}</td>
 						<td>{{v}}</td>

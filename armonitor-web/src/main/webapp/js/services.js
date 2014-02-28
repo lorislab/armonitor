@@ -1,7 +1,23 @@
 'use strict';
 
 /* Services */
-angular.module('armonitor.services', ['ngResource'])		
+angular.module('armonitor.services', ['ngResource'])	
+		.factory('ActivityRSService', function($resource, config) {
+			return $resource(config.server + '/ac', {}, {
+				reload: {
+					method: 'GET',
+					url: config.server + '/ac/build/:guid/reload',
+					params: {guid: '@guid'},					
+					isArray: false
+				},
+				get: {
+					method: 'GET',
+					url: config.server + '/ac/build/:guid',
+					params: {guid: '@guid'},					
+					isArray: false
+				}				
+			});
+		})
 		.factory('BuildRSService', function($resource, config) {
 			return $resource(config.server + '/build', {}, {
 				search: {
@@ -54,5 +70,4 @@ angular.module('armonitor.services', ['ngResource'])
 					isArray: false
 				}
 			});
-		})
-		.value('version', '0.1');
+		});

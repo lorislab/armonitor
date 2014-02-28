@@ -67,9 +67,13 @@
 									
 								</td>							
 								<td align="left" style="width:100px;border:0px;padding:0px;height:20px;text-decoration:none;font-weight:bold;color:#670C07;padding-bottom:2px;padding-top:2px;padding-left:2px;">
-									<a href="${StoreProject.bts.link}${change.id}" style="text-decoration:none;font-weight:bold;color:#670C07;font-size:14px;">
+									<#if change.link??>									
+									<a href="${change.link}" style="text-decoration:none;font-weight:bold;color:#670C07;font-size:14px;">
 										${change.id}
-									</a> 									
+									</a> 
+									<#else>
+										<span style="text-decoration:none;font-weight:bold;color:#670C07;font-size:14px;">${change.id}</span>
+									</#if>									
 								</td>																																
 								<td align="left" style="width:100px;border:0px;color:#670C07;padding:0px;height:20px;font-size:14px;padding-bottom:2px;padding-top:2px;padding-left:2px;">
 									<#if change.issue??>
@@ -181,9 +185,13 @@
 									
 								</td>							
 								<td align="left" style="width:100px;border:0px;padding:0px;height:20px;text-decoration:none;font-weight:bold;color:#670C07;padding-bottom:2px;padding-top:2px;padding-left:2px;">
-									<a href="${StoreProject.bts.link}${change.id}" style="text-decoration:none;font-weight:bold;color:#670C07;font-size:14px;">
+									<#if change.link??>									
+									<a href="${change.link}" style="text-decoration:none;font-weight:bold;color:#670C07;font-size:14px;">
 										${change.id}
-									</a> 									
+									</a> 
+									<#else>
+										<span style="text-decoration:none;font-weight:bold;color:#670C07;font-size:14px;">${change.id}</span>
+									</#if>									
 								</td>																																
 								<td align="left" style="width:100px;border:0px;color:#670C07;padding:0px;height:20px;font-size:14px;padding-bottom:2px;padding-top:2px;padding-left:2px;">
 									<#if change.issue??>
