@@ -44,7 +44,10 @@ public class Change implements Serializable {
      * The error flag.
      */
     private boolean error;
-
+    /**
+     * The not issue flag.
+     */
+    private boolean notIssue;
     /**
      * The link.
      */
@@ -54,6 +57,24 @@ public class Change implements Serializable {
      * The list of changes.
      */
     private final List<ScmLogBuild> changes = new ArrayList<>();
+
+    /**
+     * Sets the not issue flag.
+     *
+     * @param notIssue the not issue flag.
+     */
+    public void setNotIssue(boolean notIssue) {
+        this.notIssue = notIssue;
+    }
+
+    /**
+     * Gets the not issue flag.
+     *
+     * @return the not issue flag.
+     */
+    public boolean isNotIssue() {
+        return notIssue;
+    }
 
     /**
      * Sets the link.

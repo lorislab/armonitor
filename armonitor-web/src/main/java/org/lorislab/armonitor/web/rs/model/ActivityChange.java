@@ -33,9 +33,25 @@ public class ActivityChange {
      */
     public boolean error;
     /**
+     * The not issue flag.
+     */
+    public boolean not;
+    /**
      * The link.
      */
     public String link;
+    /**
+     * The assignee.
+     */
+    public String assignee;
+    /**
+     * The summary.
+     */
+    public String summary;
+    /**
+     * The resolution.
+     */
+    public String resolution;    
     /**
      * The list of changes.
      */

@@ -317,6 +317,14 @@ public class ReportServiceBean {
                         }                        
                     }
                 } catch (Exception ex) {
+                    Change change = changes.get(error);
+                    if (change != null) {
+                        change.setNotIssue(true);
+                    }
+                    change = buildChanges.get(error);
+                    if (change != null) {
+                        change.setNotIssue(true);
+                    }
                     LOGGER.log(Level.WARNING, "{0} is not valid issue for this project", error);
                     LOGGER.log(Level.FINEST, "Error get the BTS issue", ex);
                 }

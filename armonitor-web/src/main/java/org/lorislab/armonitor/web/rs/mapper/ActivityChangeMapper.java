@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.lorislab.armonitor.bts.model.BtsIssue;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.model.Change;
@@ -35,6 +36,13 @@ public class ActivityChangeMapper implements MapperService<Change, ActivityChang
         result.id = data.getId();
         result.error = data.isError();
         result.link = data.getLink();
+        result.not = data.isNotIssue();
+        BtsIssue i = data.getIssue();
+        if (i != null) {
+            result.assignee = i.getAssignee();
+            result.resolution = i.getResolution();
+            result.summary = i.getSummary();
+        }
         result.changes = Mapper.map(data.getChanges(), ActivityChangeLog.class, profiles);
         return result;
     }
