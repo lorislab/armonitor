@@ -5,7 +5,7 @@
 	<groupId>org.lorislab.armonitor</groupId>
 	<artifactId>armonitor</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
