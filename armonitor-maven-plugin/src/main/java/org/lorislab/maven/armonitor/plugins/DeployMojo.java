@@ -112,6 +112,12 @@ public class DeployMojo extends AbstractMojo {
     private String deployFile;
 
     /**
+     * The external path of the file to deploy.
+     */
+    @Parameter(defaultValue = "", required = false, property = "armonitor.deploy.file")
+    private String exDeployFile;
+    
+    /**
      * The extension of the file to deploy.
      */
     @Parameter(defaultValue = "${project.packaging}", required = true)
@@ -144,6 +150,12 @@ public class DeployMojo extends AbstractMojo {
         }
 
         String tmp = deployFile + "." + extension;
+        if (exDeployFile != null && !exDeployFile.isEmpty()) {
+            tmp = exDeployFile;
+            getLog().info("Deploy the external file: " + tmp);
+        } else {
+            getLog().info("Deploy the current build file: " + tmp);
+        }
         File file = new File(tmp);
         if (file.exists()) {
 
@@ -151,6 +163,9 @@ public class DeployMojo extends AbstractMojo {
             try {
                 URL fileUrl = file.toURI().toURL();
                 Arm arm = ArmLoader.loadArmFromJar(file);
+                if (arm == null) {
+                    getLog().warn("No ARM properties file found in the file: " + tmp);
+                }
                 Map<String, String> map = ManifestLoader.loadManifestToMap(fileUrl);
 
                 if (arm != null && map != null) {
