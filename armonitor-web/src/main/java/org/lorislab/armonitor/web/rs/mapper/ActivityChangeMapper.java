@@ -25,11 +25,15 @@ import org.lorislab.armonitor.web.rs.model.ActivityChange;
 import org.lorislab.armonitor.web.rs.model.ActivityChangeLog;
 
 /**
- *
+ * The activity change mapper.
+ * 
  * @author Andrej Petras
  */
 public class ActivityChangeMapper implements MapperService<Change, ActivityChange> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActivityChange map(Change data, Set<String> profiles) {
         ActivityChange result = new ActivityChange();
@@ -42,21 +46,32 @@ public class ActivityChangeMapper implements MapperService<Change, ActivityChang
             result.assignee = i.getAssignee();
             result.resolution = i.getResolution();
             result.summary = i.getSummary();
+            result.type = i.getType();
+            result.parent = i.getParent();
         }
         result.changes = Mapper.map(data.getChanges(), ActivityChangeLog.class, profiles);
         return result;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Change update(Change entity, ActivityChange data, Set<String> profiles) {
         return entity;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Change create(ActivityChange data, Set<String> profiles) {
         return null;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActivityChange create(Set<String> profiles) {
         return null;

@@ -22,20 +22,27 @@
 <div data-ng-show="activity">
 
 	<div class="panel panel-default">
-		<div class="panel-heading">{{activity.build.mavenVersion}} {{activity.build.build}}</div>
+		<div class="panel-heading">
+			<button type="button" style="float: right" class="btn btn-xs" data-ng-class="{'btn-success': subtask, 'btn-danger': !subtask}" ng-model="subtask" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+				sub-task
+		    </button>
+			{{activity.build.mavenVersion}} {{activity.build.build}}
+		</div>
+			
 		<div class="panel-body">
 			<h4 data-ng-hide="activity.buildChanges" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
 			<table class="table" data-ng-show="activity.buildChanges">
-				<tbody  data-ng-repeat="c in activity.buildChanges">
+				<tbody  data-ng-repeat="c in activity.buildChanges | filter:search | filterSize:bcSizeUpdate">
 					<tr style="font-weight: bold">
 						<td style="max-width: 20px;">
-							<span data-ng-show="c.error && !c.not" class="label label-warning" data-popover="This issue is not {{activity.build.mavenVersion}} issue!" data-popover-placement="right" data-popover-trigger="mouseenter">!</span>
-							<span data-ng-show="c.not" class="label label-danger" data-popover="This is not a issue!" data-popover-placement="right" data-popover-trigger="mouseenter">!</span>
-							<span data-ng-hide="c.error" class="label label-success">-</span>
+							<span data-ng-show="c.error && !c.not" class="label label-warning" data-tooltip="This {{c.type.toLowerCase()}} is not for {{activity.build.mavenVersion}}!" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
+							<span data-ng-show="c.not" class="label label-danger" data-tooltip="This is not a issue!" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">!</span>
+							<span data-ng-show="!c.error && !c.not && !c.parent" class="label label-success" data-tooltip="{{c.type}}" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
+							<span data-ng-show="!c.error && !c.not && c.parent" class="label label-success" data-tooltip="{{c.type}} of {{c.parent}}" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
 						</td>
 						<td style="min-width: 110px;">
 							<a href="{{c.link}}" data-ng-show="c.link">{{c.id}}</a>
-							<span data-ng-show="c.not">{{c.id}}</span>
+							<span data-ng-hide="c.link">{{c.id}}</span>
 						</td>
 						<td style="min-width: 140px;">{{c.resolution}}</td>
 						<td style="min-width: 160px;">{{c.assignee}}</td>
@@ -60,23 +67,32 @@
 				</tbody >				
 			</table>			
 		</div>
+		<div class="panel-footer">
+			<div style="text-align: center">{{bcSize}} / {{activity.buildChanges.length}}</div>
+		</div>
 	</div>
 
 	<div class="panel panel-default">
-		<div class="panel-heading">{{activity.build.mavenVersion}}</div>
+		<div class="panel-heading">
+			<button type="button" style="float: right" class="btn btn-xs" data-ng-class="{'btn-success': subtask, 'btn-danger': !subtask}" ng-model="subtask" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+				sub-task
+		    </button>
+			{{activity.build.mavenVersion}}
+		</div>
 		<div class="panel-body">
 			<h4 data-ng-hide="activity.changes" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
 			<table class="table" data-ng-show="activity.changes">
-				<tbody  data-ng-repeat="c in activity.changes">
+				<tbody  data-ng-repeat="c in activity.changes | filter:search | filterSize:cSizeUpdate">
 					<tr style="font-weight: bold">
 						<td style="max-width: 20px;">
-							<span data-ng-show="c.error && !c.not" class="label label-warning" data-popover="This issue is not {{activity.build.mavenVersion}} issue!" data-popover-placement="right" data-popover-trigger="mouseenter">!</span>
-							<span data-ng-show="c.not" class="label label-danger" data-popover="This is not a issue!" data-popover-placement="right" data-popover-trigger="mouseenter">!</span>
-							<span data-ng-hide="c.error" class="label label-success">-</span>
+							<span data-ng-show="c.error && !c.not" class="label label-warning" data-tooltip="This {{c.type.toLowerCase()}} is not for {{activity.build.mavenVersion}}!" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
+							<span data-ng-show="c.not" class="label label-danger" data-tooltip="This is not a issue!" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">!</span>
+							<span data-ng-show="!c.error && !c.not && !c.parent" class="label label-success" data-tooltip="{{c.type}}" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
+							<span data-ng-show="!c.error && !c.not && c.parent" class="label label-success" data-tooltip="{{c.type}} of {{c.parent}}" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
 						</td>
 						<td style="min-width: 110px;">
 							<a href="{{c.link}}" data-ng-show="c.link">{{c.id}}</a>
-							<span data-ng-show="c.not">{{c.id}}</span>
+							<span data-ng-hide="c.link">{{c.id}}</span>
 						</td>
 						<td style="min-width: 140px;">{{c.resolution}}</td>
 						<td style="min-width: 160px;">{{c.assignee}}</td>
@@ -102,5 +118,8 @@
 				</tbody >				
 			</table>			
 		</div>
+		<div class="panel-footer">
+			<div style="text-align: center">{{cSize}} / {{activity.changes.length}}</div>			
+		</div>		
 	</div>	
 </div>

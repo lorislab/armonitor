@@ -53,7 +53,10 @@ angular.module('armonitor.controllers', [])
 		.controller('ActivityCtrl', function($scope, $routeParams, ActivityRSService) {
 
 			$scope.activity = null;
-
+			$scope.subtask = true;
+			$scope.bcSize = 0;
+			$scope.cSize = 0;
+			
 			function _load() {
 				$scope.activity = null;
 				ActivityRSService.get({guid: $routeParams.guid}, function(response) {
@@ -63,12 +66,24 @@ angular.module('armonitor.controllers', [])
 
 			_load();
 
+			$scope.bcSizeUpdate = function(size) {
+				$scope.bcSize = size;
+			};
+			
+			$scope.cSizeUpdate = function(size) {
+				$scope.cSize = size;
+			};
+			
 			$scope.reload = function() {
 				$scope.activity = null;
 				ActivityRSService.reload({guid: $routeParams.guid}, function(response) {
 					$scope.activity = response;
 				});
 			};
+			
+			$scope.search = function(row) {
+				return !!(($scope.subtask || row.parent === null));
+			};			
 		})
 		.controller('AboutCtrl', function($scope) {
 

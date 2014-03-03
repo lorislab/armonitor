@@ -53,6 +53,14 @@ public class ActivityChange {
      */
     public String resolution;    
     /**
+     * The type.
+     */
+    public String type;
+    /**
+     * The parent.
+     */
+    public String parent;
+    /**
      * The list of changes.
      */
     public List<ActivityChangeLog> changes;

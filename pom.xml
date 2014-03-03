@@ -11,7 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<server.home.dir>${JBOSS_ARMONITOR_HOME}</server.home.dir>		
 		<jel.version>0.0.3</jel.version>
-		<jira-jaxrs.version>0.0.1</jira-jaxrs.version>
+		<jira-jaxrs.version>0.0.3</jira-jaxrs.version>
 	</properties>
 
 	<licenses>

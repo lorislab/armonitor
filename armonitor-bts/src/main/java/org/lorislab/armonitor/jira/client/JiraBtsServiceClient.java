@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.jira.client;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
@@ -45,6 +46,11 @@ public class JiraBtsServiceClient implements BtsServiceClient {
      */
     private static final String DEFAULT_RESOLUTION = "Unresolved";
 
+    /**
+     * The search fields.
+     */
+    private static final List<String> FIELDS = Arrays.asList(FieldNames.STATUS, FieldNames.SUMMARY, FieldNames.ASSIGNEE, FieldNames.RESOLUTION, FieldNames.PARENT, FieldNames.ISSUETYPE);
+    
     /**
      * {@inheritDoc}
      */
@@ -114,7 +120,7 @@ public class JiraBtsServiceClient implements BtsServiceClient {
 
         SearchCriteria sc = new SearchCriteria();
         sc.setJql(jql.toString());
-        sc.setFields(Arrays.asList(FieldNames.STATUS, FieldNames.SUMMARY, FieldNames.ASSIGNEE, FieldNames.RESOLUTION));
+        sc.setFields(FIELDS);
         sc.setMaxResults(100);
 
         // search
@@ -133,8 +139,16 @@ public class JiraBtsServiceClient implements BtsServiceClient {
                     i.setResolution(fields.getResolution().getName());
                 } else {
                     i.setResolution(DEFAULT_RESOLUTION);
-                }
+                }                
                 i.setSummary(fields.getSummary());
+                
+                if (fields.getParent() != null) {
+                    i.setParent(fields.getParent().getKey());
+                }
+                
+                if (fields.getIssuetype() != null) {
+                    i.setType(fields.getIssuetype().getName());                    
+                }
                 result.addIssue(i);
             }
 

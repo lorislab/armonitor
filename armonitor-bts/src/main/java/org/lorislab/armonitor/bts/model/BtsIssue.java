@@ -46,6 +46,16 @@ public class BtsIssue implements Serializable {
     private String resolution;
 
     /**
+     * The type.
+     */
+    private String type;
+
+    /**
+     * The parent.
+     */
+    private String parent;
+
+    /**
      * Gets the ID.
      *
      * @return the ID.
@@ -61,6 +71,42 @@ public class BtsIssue implements Serializable {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * Gets the parent.
+     *
+     * @return the parent.
+     */
+    public String getParent() {
+        return parent;
+    }
+
+    /**
+     * Sets the parent.
+     *
+     * @param parent the parent.
+     */
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
+    /**
+     * Gets the type.
+     *
+     * @return the type.
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Sets the type.
+     *
+     * @param type the type.
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**
