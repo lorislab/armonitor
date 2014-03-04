@@ -9,7 +9,7 @@
             <!-- Update database flag. Only for development -->
             <!--<property name="hibernate.hbm2ddl.auto" value="update" />-->
             <!-- Show SQL statment. Only for development -->
-            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.show_sql" value="false" />
             <!-- Hibernate database dialect -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSixDialect"/>
             <!-- Import the default configuration -->

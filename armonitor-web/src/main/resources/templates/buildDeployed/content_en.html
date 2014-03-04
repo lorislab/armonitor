@@ -16,10 +16,10 @@
 	  <table background="" style="padding:0px;border:0px;width:100%;color:#606060;font-size:20px;margin-bottom:15px;margin-top:15px;">
         <tr style="padding:0px;border:0px;">
           <td style="padding:0px;border:0px;vertical-align:middle">
-			  <span style="vertical-align:middle;margin-left:3px">
+			  <span style="vertical-align:middle;margin-left:3px;text-decoration:none;">
 				<strong>
-					${StoreApplication.name}
-				</strong> (${StoreSystem.name})
+					<a href="${MailConfig.server}/#/appbuild/${StoreApplication.guid}" style="text-decoration:none;">${StoreApplication.name}</a>
+				</strong> / <a href="${MailConfig.server}/#/systembuild/${StoreSystem.guid}" style="text-decoration:none;">${StoreSystem.name}</a>
 			  </span>
 		  </td>
         </tr>
@@ -35,8 +35,8 @@
 						<img height="25" src="${MailConfig.url}/${Mail.template}/success.png" width="25">
 					</div>		
 					<span style="display:inline-block;margin-top:12px;vertical-align:middle">
-						<span style="font-weight:bold;text-decoration:underline;color:#32a32d">
-							${StoreBuild.mavenVersion!"x.x.x"} ${StoreBuild.build!"rc.x"}
+						<span style="font-weight:bold;color:#32a32d">
+							<a href="${MailConfig.server}/#/versionbuild/${StoreApplication.guid}/${StoreBuild.mavenVersion}" style="text-decoration:none;">${StoreBuild.mavenVersion!"x.x.x"}</a> <a href="${MailConfig.server}/#/activity/${StoreBuild.guid}" style="text-decoration:none;">${StoreBuild.build!"rc.x"}</a>
 						</span>
 					</span>
 					<img height="45" src="${MailConfig.url}/${Mail.template}/arrow-success.png" style="float: right;">
@@ -63,7 +63,11 @@
 								<td align="left" style="border:0px;color:#808080;padding:0px;height:20px;font-size:12px;padding-bottom:2px;padding-top:2px;padding-left:2px;">
 								<#if change.error>
 									<span style="text-decoration:none;font-weight:bold;color:#FF0000;font-size:14px;" >!</span>
-								</#if>								
+								<#else>
+									<#if change.issue??>
+									    <span style="text-decoration:none;font-weight:bold;color:#32a32d;font-size:14px;" >${change.issue.type?substring(0, 1)}</span>										
+									</#if>	
+								</#if>							
 									
 								</td>							
 								<td align="left" style="width:100px;border:0px;padding:0px;height:20px;text-decoration:none;font-weight:bold;color:#670C07;padding-bottom:2px;padding-top:2px;padding-left:2px;">
@@ -151,7 +155,7 @@
                 <td style="border:0px;width:200px;padding:0px 20px 0px 0px;vertical-align:middle;border-top:1px solid #808080;border-bottom:1px solid #adadad;border-left:1px solid #606060;border-top-left-radius:5px">
 					<span style="display:inline-block;margin-top:12px;vertical-align:middle">
 						<span style="font-weight:bold;color:#32a32d;margin-left:15px;">
-							Changes for release ${StoreBuild.mavenVersion!"x.x.x"}
+							Changes for release <a href="${MailConfig.server}/#/versionbuild/${StoreApplication.guid}/${StoreBuild.mavenVersion}" style="text-decoration:none;">${StoreBuild.mavenVersion!"x.x.x"}</a>
 						</span>
 					</span>
 					<img height="45" src="${MailConfig.url}/${Mail.template}/arrow-success.png" style="float: right;">
@@ -177,10 +181,10 @@
 								<td align="left" style="border:0px;color:#808080;padding:0px;height:20px;font-size:12px;padding-bottom:2px;padding-top:2px;padding-left:2px;">
 								<#if change.error>
 									<span style="text-decoration:none;font-weight:bold;color:#FF0000;font-size:14px;" >!</span>
-								<#elseif change.changes?has_content>
-								
 								<#else>
-									<span style="text-decoration:none;font-weight:bold;color:#32a32d;font-size:14px;" >?</span>
+									<#if change.issue??>
+									    <span style="text-decoration:none;font-weight:bold;color:#32a32d;font-size:14px;" >${change.issue.type?substring(0, 1)}</span>										
+									</#if>	
 								</#if>								
 									
 								</td>							
@@ -263,8 +267,6 @@
 	<div align="left" style="border:0px;color:#808080;padding:0px;height:15px;font-size:12px;padding-top:2px;padding-left:2px;">
 			<span style="text-decoration:none;font-weight:bold;color:#FF0000;font-size:14px;" >!</span>
 			<span style="text-decoration:none;color:#FF0000;font-size:10px;" >This issues are not planned for this release!</span>
-			<span style="text-decoration:none;font-weight:bold;color:#32a32d;font-size:14px;" >?</span>
-			<span style="text-decoration:none;color:#32a32d;font-size:10px;" >No changes found!</span>
 			<span style="text-decoration:none;font-weight:bold;color:#808080;font-size:14px;" >*</span>
 			<span style="text-decoration:none;color:#808080;font-size:10px;" >Change for next build.</span>			
 	</div>	

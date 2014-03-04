@@ -27,7 +27,7 @@ app.provider('config', function() {
 });
 
 app.config(function(configProvider) {
-	configProvider.setServer("http://localhost:8080/armonitor/rs");
+	configProvider.setServer("/armonitor/rs");
 });
 app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/dashboard', {templateUrl: 'partials/dashboard.html', controller: 'DashboardCtrl'});

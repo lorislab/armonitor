@@ -25,6 +25,10 @@ import java.util.Locale;
 public class MailConfig {
 
     /**
+     * The server.
+     */
+    private String server = "http://localhost:8080/armonitor";
+    /**
      * The server resource URL.
      */
     private String url = "http://localhost:8080/armonitor/rs/mail/public";
@@ -54,8 +58,26 @@ public class MailConfig {
     private String transferEncoding = "quoted-printable";
 
     /**
+     * Gets the server.
+     *
+     * @return the server.
+     */
+    public String getServer() {
+        return server;
+    }
+
+    /**
+     * Sets the server.
+     *
+     * @param server the server.
+     */
+    public void setServer(String server) {
+        this.server = server;
+    }
+
+    /**
      * Gets the URL.
-     * 
+     *
      * @return the URL.
      */
     public String getUrl() {
@@ -64,7 +86,7 @@ public class MailConfig {
 
     /**
      * Sets the URL.
-     * 
+     *
      * @param url the URL to set.
      */
     public void setUrl(String url) {
@@ -73,7 +95,7 @@ public class MailConfig {
 
     /**
      * Gets the enabled.
-     * 
+     *
      * @return the enabled.
      */
     public boolean isEnabled() {
@@ -82,7 +104,7 @@ public class MailConfig {
 
     /**
      * Sets the enabled.
-     * 
+     *
      * @param enabled the enabled to set.
      */
     public void setEnabled(boolean enabled) {
@@ -91,7 +113,7 @@ public class MailConfig {
 
     /**
      * Gets the locale.
-     * 
+     *
      * @return the locale.
      */
     public Locale getLocale() {
@@ -100,7 +122,7 @@ public class MailConfig {
 
     /**
      * Sets the locale.
-     * 
+     *
      * @param locale the locale to set.
      */
     public void setLocale(Locale locale) {
@@ -109,7 +131,7 @@ public class MailConfig {
 
     /**
      * Gets the from.
-     * 
+     *
      * @return the from.
      */
     public String getFrom() {
@@ -118,7 +140,7 @@ public class MailConfig {
 
     /**
      * Sets the from.
-     * 
+     *
      * @param from the from to set.
      */
     public void setFrom(String from) {
@@ -127,7 +149,7 @@ public class MailConfig {
 
     /**
      * Gets the content type.
-     * 
+     *
      * @return the contentType.
      */
     public String getContentType() {
@@ -136,7 +158,7 @@ public class MailConfig {
 
     /**
      * Sets the content type.
-     * 
+     *
      * @param contentType the contentType to set.
      */
     public void setContentType(String contentType) {
@@ -145,7 +167,7 @@ public class MailConfig {
 
     /**
      * Gets the content char-set.
-     * 
+     *
      * @return the contentCharset.
      */
     public String getContentCharset() {
@@ -154,7 +176,7 @@ public class MailConfig {
 
     /**
      * Sets the content char-set.
-     * 
+     *
      * @param contentCharset the contentCharset to set
      */
     public void setContentCharset(String contentCharset) {
@@ -163,7 +185,7 @@ public class MailConfig {
 
     /**
      * Gets the transfer encoding.
-     * 
+     *
      * @return the transferEncoding.
      */
     public String getTransferEncoding() {
@@ -172,12 +194,11 @@ public class MailConfig {
 
     /**
      * Sets the transfer encoding.
-     * 
+     *
      * @param transferEncoding the transferEncoding to set.
      */
     public void setTransferEncoding(String transferEncoding) {
         this.transferEncoding = transferEncoding;
     }
-    
-    
+
 }

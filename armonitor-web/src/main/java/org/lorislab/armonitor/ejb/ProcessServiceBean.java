@@ -281,18 +281,18 @@ public class ProcessServiceBean {
         try {
             // the core data for the report
             StoreSystemBuild sb = report.getSystemBuild();
-            StoreSystem tmp = sb.getSystem();
+            StoreSystem system = sb.getSystem();
             StoreBuild build = sb.getBuild();
             StoreProject project = report.getProject();
             StoreApplication app = report.getApplication();
 
             // notification
-            if (tmp.isNotification()) {
-                Set<String> users = userService.getUsersEmailsForSystem(tmp.getGuid());
-                List<Mail> mails = createBuildDeployedMails(users, tmp, build, project, report, app, sb);
+            if (system.isNotification()) {
+                Set<String> users = userService.getUsersEmailsForSystem(system.getGuid());
+                List<Mail> mails = createBuildDeployedMails(users, system, build, project, report, app, sb);
                 send(mails);
             } else {
-                LOGGER.log(Level.WARNING, "The notification for the system {0} is disabled!", tmp.getName());
+                LOGGER.log(Level.WARNING, "The notification for the system {0} is disabled!", system.getName());
             }
 
         } catch (Exception ex) {
