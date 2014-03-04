@@ -15,9 +15,13 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.mapper.MapperService;
+import org.lorislab.armonitor.model.Change;
 import org.lorislab.armonitor.model.ChangeReport;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreProject;
@@ -40,8 +44,9 @@ public class ActivityMapper implements MapperService<ChangeReport, Activity> {
     public Activity map(ChangeReport data, Set<String> profiles) {
         Activity result = new Activity();
         result.guid = data.getGuid();
-        result.changes = Mapper.map(data.getChanges(), ActivityChange.class, profiles);
-        result.buildChanges = Mapper.map(data.getBuildChanges(), ActivityChange.class, profiles);        
+        result.types = new HashSet<>();
+        result.changes = map(data.getChanges(), result.types, profiles);                
+        result.buildChanges = map(data.getBuildChanges(), result.types, profiles);        
         result.build = Mapper.map(data.getBuild(), Build.class, profiles);
         
         StoreApplication app = data.getApplication();
@@ -61,6 +66,30 @@ public class ActivityMapper implements MapperService<ChangeReport, Activity> {
         return result;
     }
 
+    /**
+     * Maps the activity changes.
+     * @param changes the changes.
+     * @param types the set of types.
+     * @param profiles the mapping profiles set.
+     * @return the list of activity changes.
+     */
+    private List<ActivityChange> map(List<Change> changes, Set<String> types, Set<String> profiles) {
+        List<ActivityChange> result =  null;
+        if (changes != null) {
+            result = new ArrayList<>(changes.size());
+            for (Change change : changes) {
+                ActivityChange tmp = Mapper.map(change, ActivityChange.class, profiles);
+                if (tmp != null) {
+                    if (tmp.type != null) {
+                        types.add(tmp.type);
+                    }
+                    result.add(tmp);
+                }
+            }
+        }
+        return result;
+    }
+    
     /**
      * {@inheritDoc}
      */

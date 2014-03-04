@@ -40,7 +40,7 @@ public class DashboardApplicationSystem {
      */
     public String name;
     /**
-     * THe dashboard system build.
+     * The dashboard system build.
      */
     public DashboardSystemBuild systemBuild;
 }

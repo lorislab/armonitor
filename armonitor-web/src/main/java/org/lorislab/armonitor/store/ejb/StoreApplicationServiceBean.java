@@ -24,12 +24,15 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreApplication_;
+import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuild_;
 import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
@@ -81,6 +84,8 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
         CriteriaQuery<StoreApplication> cq = getBaseEAO().createCriteriaQuery();
         Root<StoreApplication> root = cq.from(StoreApplication.class);
 
+        List<Predicate> predicates = new ArrayList<>();
+        
         if (criteria.isFetchSCM()) {
             root.fetch(StoreApplication_.scm, JoinType.LEFT);
         }
@@ -93,8 +98,16 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
             root.fetch(StoreApplication_.systems, JoinType.LEFT);
         }
         
-        List<Predicate> predicates = new ArrayList<>();
-
+        if (criteria.isFetchBuilds()) {
+            Fetch<StoreApplication, StoreBuild> fb = root.fetch(StoreApplication_.builds, JoinType.LEFT);
+            
+            if (criteria.getFetchBuildsVersion() != null) {
+                Join<StoreApplication, StoreBuild> jb = (Join<StoreApplication, StoreBuild>) fb;
+                predicates.add(cb.equal(jb.get(StoreBuild_.mavenVersion), criteria.getFetchBuildsVersion()));
+            }
+        }
+        
+        
         if (criteria.getGuid() != null) {
             predicates.add(cb.equal(root.get(StoreApplication_.guid), criteria.getGuid()));
         }

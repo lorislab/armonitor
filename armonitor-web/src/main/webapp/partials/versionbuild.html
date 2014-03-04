@@ -1,0 +1,24 @@
+<h1>Version builds
+	<small>{{ver.projectName}} / {{ver.name}} / {{version}} </small>
+</h1>
+
+<ol class="breadcrumb">
+	<li>
+		<i class="icon-gauge"></i> 
+		<a href="#/dashboard">
+			Dashboard
+		</a>
+	</li>
+	<li class="active">
+		<i class="icon-rocket"></i> Version builds
+	</li>	
+</ol>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Version builds <a style="text-align: right; float: right" data-ng-click="reload()"><i class="icon-arrows-cw"></i></a></div>
+	<div class="panel-body" style="padding: 0px !important;">
+		<div data-timeline="ver.builds" data-timeline-options="{'width': '100%','height': 'auto','groupsOrder': true,'editable': false}" ></div>
+	</div>
+</div>
+
+<div data-buildinfo></div>

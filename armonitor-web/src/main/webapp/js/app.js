@@ -32,8 +32,10 @@ app.config(function(configProvider) {
 app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/dashboard', {templateUrl: 'partials/dashboard.html', controller: 'DashboardCtrl'});
 		$routeProvider.when('/about', {templateUrl: 'partials/about.html', controller: 'AboutCtrl'});
-		$routeProvider.when('/builds', {templateUrl: 'partials/builds.html', controller: 'BuildsCtrl'});
 		$routeProvider.when('/activity/:guid', {templateUrl: 'partials/activity.html', controller: 'ActivityCtrl'});
+		$routeProvider.when('/systembuild/:guid', {templateUrl: 'partials/systembuild.html', controller: 'SystemBuildCtrl'});
+		$routeProvider.when('/appbuild/:guid', {templateUrl: 'partials/appbuild.html', controller: 'ApplicationBuildCtrl'});
+		$routeProvider.when('/versionbuild/:app/:ver', {templateUrl: 'partials/versionbuild.html', controller: 'VersionBuildCtrl'});
 		$routeProvider.otherwise({redirectTo: '/dashboard'});
 	}]);
 

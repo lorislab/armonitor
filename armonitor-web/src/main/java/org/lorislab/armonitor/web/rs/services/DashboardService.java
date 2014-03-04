@@ -43,41 +43,7 @@ public class DashboardService {
      * The dashboard service.
      */
     @Inject
-    private DashboardController controller;
-
-    /**
-     * Sets the builds criteria.
-     * @param bc the builds criteria.
-     */
-    @POST
-    @Path("builds")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void setCriteria(BuildsCriteria bc) {    
-        controller.setCriteria(bc);
-    }
-
-    /**
-     * Gets the selected application.
-     * @return the selected application.
-     */
-    @GET
-    @Path("app")
-    @Produces(MediaType.APPLICATION_JSON)
-    public DashboardApplication getApplication() {
-        return controller.getApplication();
-    }    
-    
-    /**
-     * Gets the list of builds by criteria.
-     *
-     * @return the list of builds corresponding to the criteria.
-     */
-    @GET
-    @Path("builds")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<TimelineBuild> getDashboardBuilds() {
-        return controller.getDashboardBuilds();
-    }
+    private DashboardController controller;  
     
     /**
      * Disables the message info in the dashboard.

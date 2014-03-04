@@ -119,7 +119,7 @@ public class StoreProjectServiceBean extends AbstractEntityServiceBean<StoreProj
 
         Join<StoreApplication, StoreSystem> systems = (Join<StoreApplication, StoreSystem>) applications.fetch(StoreApplication_.systems, JoinType.LEFT);
         predicates.add(cb.equal(systems.get(StoreSystem_.enabled), true));
-
+        
         cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         try {
             TypedQuery<StoreProject> typeQuery = getBaseEAO().createTypedQuery(cq);

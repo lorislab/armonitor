@@ -26,7 +26,6 @@ import org.lorislab.armonitor.store.ejb.StoreBuildServiceBean;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.web.rs.model.Build;
 import org.lorislab.armonitor.web.rs.model.BuildCriteria;
-import org.lorislab.armonitor.web.rs.model.TimelineBuild;
 import org.lorislab.armonitor.web.rs.util.LinkUtil;
 
 /**
@@ -58,18 +57,6 @@ public class BuildServiceBean {
             profile = "params";
         }
         return Mapper.map(tmp, Build.class, profile);
-    }
-
-    /**
-     * Gets the list of builds by the criteria.
-     *
-     * @param criteria the criteria.
-     * @return the list of builds corresponding to the criteria.
-     */
-    public List<TimelineBuild> getDashboardBuilds(BuildCriteria criteria) {
-        StoreBuildCriteria sc = Mapper.create(criteria, StoreBuildCriteria.class);
-        List<StoreBuild> tmp = service.getBuilds(sc);
-        return Mapper.map(tmp, TimelineBuild.class);
     }
 
     /**

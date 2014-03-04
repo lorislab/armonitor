@@ -4,6 +4,12 @@
 
 
 angular.module('armonitor.directives', [])
+		.directive('buildinfo', function() {
+			return {
+				restrict: 'EA',
+				templateUrl: 'partials/include/buildinfo.html'
+			};
+		})
 		.directive('timeline', function() {
 
 			return {
@@ -20,7 +26,7 @@ angular.module('armonitor.directives', [])
 							$scope.$parent.timelineSelect($scope.model[sel[0].row]);
 						} else {
 							$scope.$parent.timelineSelect(null);
-						}						
+						}
 					});
 
 					$scope.$watch('model', function(newVal, oldVal) {

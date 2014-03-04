@@ -82,7 +82,7 @@ public class SvnScmServiceClient implements ScmServiceClient {
                 log.setUser(entry.getAuthor());
                 log.setMessage(entry.getMessage());
                 log.setDate(entry.getDate());
-
+                
                 result.addScmLog(log);
 
             }

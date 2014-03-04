@@ -4,3 +4,7 @@
 a {
     color: inherit !important;
 }
+
+.link-simple {
+	text-decoration: none !important;
+}

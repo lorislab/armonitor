@@ -16,49 +16,22 @@
 
 package org.lorislab.armonitor.web.rs.model;
 
-import java.util.List;
 import java.util.Set;
 
 /**
- * The activity model.
+ * The dashboard version builds.
  * 
  * @author Andrej Petras
  */
-public class Activity {
-    /**
-     * The GUID.
-     */
+public class DashboardVersionBuilds {
+
     public String guid;
-    /**
-     * The build.
-     */
-    public Build build;
-    /**
-     * The application.
-     */
-    public String app;
-    /**
-     * The application name.
-     */
-    public String appName;
-    /**
-     * The project.
-     */
+    
+    public String name;
+    
     public String project;
-    /**
-     * The project name.
-     */
+    
     public String projectName;
-    /**
-     * The list of all changes.
-     */
-    public List<ActivityChange> changes;
-    /**
-     * The list of current build changes.
-     */
-    public List<ActivityChange> buildChanges;
-    /**
-     * The activity change types.
-     */
-    public Set<String> types;
+    
+    public Set<TimelineBuild> builds;
 }

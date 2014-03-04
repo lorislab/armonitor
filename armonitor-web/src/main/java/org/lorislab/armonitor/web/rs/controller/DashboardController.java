@@ -17,19 +17,14 @@ package org.lorislab.armonitor.web.rs.controller;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import org.lorislab.armonitor.web.rs.ejb.BuildServiceBean;
 import org.lorislab.armonitor.web.rs.ejb.DashboardServiceBean;
-import org.lorislab.armonitor.web.rs.model.BuildCriteria;
-import org.lorislab.armonitor.web.rs.model.BuildsCriteria;
 import org.lorislab.armonitor.web.rs.model.Dashboard;
 import org.lorislab.armonitor.web.rs.model.DashboardApplication;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
-import org.lorislab.armonitor.web.rs.model.TimelineBuild;
 import org.lorislab.armonitor.web.rs.model.DashboardProject;
 
 /**
@@ -53,12 +48,6 @@ public class DashboardController implements Serializable {
     private DashboardServiceBean service;
 
     /**
-     * The build service.
-     */
-    @EJB
-    private BuildServiceBean buildService;
-
-    /**
      * The dashboard.
      */
     private Dashboard dashboard;
@@ -66,45 +55,6 @@ public class DashboardController implements Serializable {
      * The map of the dashboard application systems.
      */
     private Map<String, DashboardApplicationSystem> systems = new HashMap<>();
-    /**
-     * The builds criteria.
-     */
-    private BuildsCriteria criteria;
-
-    /**
-     * Gets the dashboard application.
-     *
-     * @return the dashboard application.
-     */
-    public DashboardApplication getApplication() {
-        return getApplication(criteria.project, criteria.app);
-    }
-
-    /**
-     * Sets the builds criteria.
-     *
-     * @param bc the builds criteria.
-     */
-    public void setCriteria(BuildsCriteria bc) {
-        criteria = bc;
-    }
-
-    /**
-     * Gets the time line builds.
-     *
-     * @return the time line builds.
-     */
-    public List<TimelineBuild> getDashboardBuilds() {
-        if (criteria != null) {
-            BuildCriteria tmp = new BuildCriteria();
-            tmp.application = criteria.app;
-            tmp.params = false;
-            tmp.mavenVersion = criteria.version;
-            tmp.orderByDate = true;
-            return buildService.getDashboardBuilds(tmp);
-        }
-        return null;
-    }
 
     /**
      * Gets the dashboard application.

@@ -21,18 +21,21 @@
 
 <div data-ng-show="activity">
 
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<button type="button" style="float: right" class="btn btn-xs" data-ng-class="{'btn-success': subtask, 'btn-danger': !subtask}" ng-model="subtask" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
-				sub-task
-		    </button>
-			{{activity.build.mavenVersion}} {{activity.build.build}}
+	<div style="text-align: right; padding-bottom: 10px">
+		<div class="btn-group">
+			<button data-ng-repeat="b in stypes" type="button" class="btn btn-sm" data-ng-click="updateTypes(b.id)" data-ng-class="{'btn-success': b.select, 'btn-default': !b.select}" data-ng-model="b.select" btn-checkbox>{{b.id}}</button>
 		</div>
-			
+	</div>
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">{{activity.build.mavenVersion}} {{activity.build.build}}
+			<div style="float: right">{{bcSize}} / {{activity.buildChanges.length}}</div>
+		</div>
+
 		<div class="panel-body">
 			<h4 data-ng-hide="activity.buildChanges" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
 			<table class="table" data-ng-show="activity.buildChanges">
-				<tbody  data-ng-repeat="c in activity.buildChanges | filter:search | filterSize:bcSizeUpdate">
+				<tbody  data-ng-repeat="c in activity.buildChanges| filter:search | filterSize:bcSizeUpdate">
 					<tr style="font-weight: bold">
 						<td style="max-width: 20px;">
 							<span data-ng-show="c.error && !c.not" class="label label-warning" data-tooltip="This {{c.type.toLowerCase()}} is not for {{activity.build.mavenVersion}}!" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
@@ -52,13 +55,13 @@
 						<td></td>
 						<td data-ng-show="s.rc"><h6><a href="#/activity/{{s.build}}">{{s.rc}}</a></h6></td>
 						<td data-ng-hide="s.rc"><h6>***</h6></td>
-						<td><h6>{{s.date | date:'yyyy-MM-dd HH:mm:ss'}}</h6></td>
+						<td><h6>{{s.date| date:'yyyy-MM-dd HH:mm:ss'}}</h6></td>
 						<td><h6>{{s.user}}</h6></td>
 						<td><h6>
 								<a data-ng-show="s.link" href="{{s.link}}">{{s.id}}</a>
 								<span data-ng-hide="s.link">{{s.id}}</span>
 								: {{s.message}}
-						</h6></td>
+							</h6></td>
 					</tr>
 					<tr data-ng-hide="c.changes.length">
 						<td colspan="4"></td>
@@ -67,22 +70,19 @@
 				</tbody >				
 			</table>			
 		</div>
-		<div class="panel-footer">
-			<div style="text-align: center">{{bcSize}} / {{activity.buildChanges.length}}</div>
+		<div class="panel-footer">&nbsp;
+			<div style="float: right">{{bcSize}} / {{activity.buildChanges.length}}</div>
 		</div>
 	</div>
 
 	<div class="panel panel-default">
-		<div class="panel-heading">
-			<button type="button" style="float: right" class="btn btn-xs" data-ng-class="{'btn-success': subtask, 'btn-danger': !subtask}" ng-model="subtask" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
-				sub-task
-		    </button>
-			{{activity.build.mavenVersion}}
+		<div class="panel-heading">{{activity.build.mavenVersion}}
+			<div style="float: right">{{cSize}} / {{activity.changes.length}}</div>	
 		</div>
 		<div class="panel-body">
 			<h4 data-ng-hide="activity.changes" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
 			<table class="table" data-ng-show="activity.changes">
-				<tbody  data-ng-repeat="c in activity.changes | filter:search | filterSize:cSizeUpdate">
+				<tbody  data-ng-repeat="c in activity.changes| filter:search | filterSize:cSizeUpdate">
 					<tr style="font-weight: bold">
 						<td style="max-width: 20px;">
 							<span data-ng-show="c.error && !c.not" class="label label-warning" data-tooltip="This {{c.type.toLowerCase()}} is not for {{activity.build.mavenVersion}}!" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
@@ -102,7 +102,7 @@
 						<td></td>
 						<td data-ng-show="s.rc"><h6><a href="#/activity/{{s.build}}">{{s.rc}}</a></h6></td>
 						<td data-ng-hide="s.rc"><h6>***</h6></td>
-						<td><h6>{{s.date | date:'yyyy-MM-dd HH:mm:ss'}}</h6></td>
+						<td><h6>{{s.date| date:'yyyy-MM-dd HH:mm:ss'}}</h6></td>
 						<td><h6>{{s.user}}</h6></td>
 						<td><h6>
 								<a data-ng-show="s.link" href="{{s.link}}">{{s.id}}</a>
@@ -118,8 +118,8 @@
 				</tbody >				
 			</table>			
 		</div>
-		<div class="panel-footer">
-			<div style="text-align: center">{{cSize}} / {{activity.changes.length}}</div>			
+		<div class="panel-footer">&nbsp;
+			<div style="float: right">{{cSize}} / {{activity.changes.length}}</div>			
 		</div>		
 	</div>	
 </div>

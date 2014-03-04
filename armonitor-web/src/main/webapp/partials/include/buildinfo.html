@@ -1,0 +1,84 @@
+<div data-ng-show="build">
+	<div style="text-align: right;">
+		<h3><a href="{{build.link}}" data-ng-show="build.link" class="link-simple"><span class="label label-primary"><i class="icon-download-cloud"></i>Download</span></a>
+			<a href="#/activity/{{build.guid}}" class="link-simple"><span class="label label-success"><i class="icon-fork"></i>Activity</span></a></h3>
+	</div>
+	<div class="row" >
+		<div class="col-lg-6">
+			<div class="panel panel-success" >
+				<div class="panel-heading">Maven</div>
+				<div class="panel-body">
+					<table class="table">
+						<tr>
+							<td>GroupId</td>
+							<td>{{build.groupId}}</td>
+						</tr>
+						<tr>
+							<td>ArtifactId</td>
+							<td>{{build.artifactId}}</td>
+						</tr>
+						<tr>
+							<td>Version</td>
+							<td>{{build.mavenVersion}}</td>
+						</tr>					
+					</table>		
+				</div>
+			</div>
+		</div>	
+		<div class="col-lg-6">
+			<div class="panel panel-success">
+				<div class="panel-heading">Build</div>
+				<div class="panel-body">
+
+					<table class="table">
+						<tr>
+							<td>Time</td>
+							<td>{{build.date| date:'medium'}}</td>
+						</tr>
+						<tr>
+							<td>Release candidate</td>
+							<td>{{build.build}}</td>
+						</tr>
+						<tr>
+							<td>Commit</td>
+							<td>{{build.scm}}</td>
+						</tr>	
+						<tr>
+							<td>Agent version</td>
+							<td>{{build.ver}}</td>
+						</tr>					
+					</table>					
+				</div>	
+			</div>
+		</div>
+
+		<div class="col-lg-6">
+			<div class="panel panel-success">
+				<div class="panel-heading">Manifest</div>			
+				<div class="panel-body" >
+					<h4 data-ng-hide="manifest" style="text-align: center;"><span class="label label-info">No information</span ></h4>
+					<table class="table" data-ng-show="manifest">
+						<tr data-ng-repeat="(n,v) in build.manifest">
+							<td>{{n}}</td>
+							<td>{{v}}</td>
+						</tr>
+					</table>
+				</div>	
+			</div>	
+		</div>	
+		<div class="col-lg-6">
+			<div class="panel panel-success">
+				<div class="panel-heading">Other</div>
+				<div class="panel-body">
+					<h4 data-ng-hide="other" style="text-align: center;"><span class="label label-info">No information</span ></h4>
+					<table class="table" data-ng-show="other">
+						<tr data-ng-repeat="(n,v) in build.other">
+							<td>{{n}}</td>
+							<td>{{v}}</td>
+						</tr>
+					</table>
+				</div>	
+			</div>	
+		</div>
+	</div>
+</div>

@@ -26,7 +26,7 @@ import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 public class StoreSystemCriteria extends AbstractSearchCriteria {
 
     /**
-     * The timeout configuration: second.
+     * The UID for this class.
      */
     private static final long serialVersionUID = -3270039293034055465L;
 
@@ -45,6 +45,29 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
     private boolean fetchApplication;
 
     private boolean fetchRoles;
+
+    /**
+     * The fetch application project flag.
+     */
+    private boolean fetchApplicationProject;
+
+    /**
+     * Gets the fetch application project flag.
+     *
+     * @return the fetch application project flag.
+     */
+    public boolean isFetchApplicationProject() {
+        return fetchApplicationProject;
+    }
+
+    /**
+     * Sets the fetch application project flag.
+     *
+     * @param fetchApplicationProject the fetch application project flag.
+     */
+    public void setFetchApplicationProject(boolean fetchApplicationProject) {
+        this.fetchApplicationProject = fetchApplicationProject;
+    }
 
     public boolean isFetchRoles() {
         return fetchRoles;
@@ -122,6 +145,7 @@ public class StoreSystemCriteria extends AbstractSearchCriteria {
         fetchApplication = false;
         key = null;
         fetchRoles = false;
+        fetchApplicationProject = false;
     }
 
     /**

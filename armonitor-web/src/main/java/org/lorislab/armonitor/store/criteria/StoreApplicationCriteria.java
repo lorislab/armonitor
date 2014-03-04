@@ -56,6 +56,14 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
      */
     private boolean fetchSystem;
     /**
+     * The fetch builds flag.
+     */
+    private boolean fetchBuilds;
+    /**
+     * The fetch builds version.
+     */
+    private String fetchBuildsVersion;
+    /**
      * The system.
      */
     private String system;
@@ -63,6 +71,24 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
      * The build.
      */
     private String build;
+
+    /**
+     * Gets the fetch builds version.
+     *
+     * @return the fetch builds version.
+     */
+    public String getFetchBuildsVersion() {
+        return fetchBuildsVersion;
+    }
+
+    /**
+     * Sets the fetch builds version.
+     *
+     * @param buildVersion the fetch builds version.
+     */
+    public void setFetchBuildsVersion(String fetchBuildsVersion) {
+        this.fetchBuildsVersion = fetchBuildsVersion;
+    }
 
     /**
      * Gets the build.
@@ -80,6 +106,24 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
      */
     public void setBuild(String build) {
         this.build = build;
+    }
+
+    /**
+     * Gets the fetch builds flag.
+     *
+     * @return the fetch builds flag.
+     */
+    public boolean isFetchBuilds() {
+        return fetchBuilds;
+    }
+
+    /**
+     * Sets the fetch builds flag.
+     *
+     * @param fetchBuilds the fetch builds flag.
+     */
+    public void setFetchBuilds(boolean fetchBuilds) {
+        this.fetchBuilds = fetchBuilds;
     }
 
     /**
@@ -221,6 +265,7 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
         system = null;
         fetchSystem = false;
         build = null;
+        fetchBuildsVersion = null;
     }
 
     /**
@@ -228,7 +273,7 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
      */
     @Override
     public boolean isEmpty() {
-        return isEmpty(enabled, projects, guid);
+        return isEmpty(enabled, projects, guid, system, build, fetchBuildsVersion);
     }
 
 }
