@@ -23,6 +23,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
@@ -57,6 +58,18 @@ public class StoreUser extends Persistent {
     private boolean login;
 
     /**
+     * The user enabled flag.
+     */
+    @Column(name = "C_ENABLED")
+    private boolean enabled;
+
+    /**
+     * The user password.
+     */
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.REFRESH)
+    private StorePassword password;
+
+    /**
      * The set of roles.
      */
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -66,6 +79,42 @@ public class StoreUser extends Persistent {
             inverseJoinColumns = {
                 @JoinColumn(name = "C_ROLE")})
     private Set<StoreRole> roles;
+
+    /**
+     * Sets the enabled flag.
+     *
+     * @return the enabled flag.
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Sets the enabled flag.
+     *
+     * @param enabled the enabled flag.
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
+     * Gets the user password.
+     *
+     * @return the user password.
+     */
+    public StorePassword getPassword() {
+        return password;
+    }
+
+    /**
+     * The user password.
+     *
+     * @param password the user password.
+     */
+    public void setPassword(StorePassword password) {
+        this.password = password;
+    }
 
     /**
      * Gets the login flag.

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.ejb;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -24,10 +24,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.criteria.StoreUserCriteria;
+import org.lorislab.armonitor.store.ejb.StorePasswordServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreRoleServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreUserServiceBean;
+import org.lorislab.armonitor.store.model.StorePassword;
 import org.lorislab.armonitor.store.model.StoreRole;
 import org.lorislab.armonitor.store.model.StoreUser;
+import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.Role;
 import org.lorislab.armonitor.web.rs.model.User;
 
@@ -38,13 +41,16 @@ import org.lorislab.armonitor.web.rs.model.User;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class UserServiceBean {
-    
+
     @EJB
     private StoreUserServiceBean service;
-    
+
     @EJB
     private StoreRoleServiceBean roleService;
-    
+
+    @EJB
+    private StorePasswordServiceBean passwordService;
+
     public Set<Role> getRoles(String guid) {
         StoreUserCriteria criteria = new StoreUserCriteria();
         criteria.setGuid(guid);
@@ -52,10 +58,10 @@ public class UserServiceBean {
         StoreUser user = service.getUser(criteria);
         if (user != null) {
             return Mapper.map(user.getRoles(), Role.class);
-        }       
+        }
         return null;
     }
-    
+
     public void addRole(String guid, String role) {
         StoreUserCriteria criteria = new StoreUserCriteria();
         criteria.setGuid(guid);
@@ -82,21 +88,22 @@ public class UserServiceBean {
                 service.saveUser(user);
             }
         }
-    }    
-    public List<User> get() {
-       List<StoreUser> tmp = service.getUsers();
-       return Mapper.map(tmp, User.class);
     }
-    
+
+    public List<User> get() {
+        List<StoreUser> tmp = service.getUsers();
+        return Mapper.map(tmp, User.class);
+    }
+
     public User create() {
         return Mapper.create(StoreUser.class, User.class);
     }
-    
+
     public User get(String guid) {
         StoreUser tmp = service.getUser(guid);
         return Mapper.map(tmp, User.class);
     }
-    
+
     public User save(User user) {
         StoreUser tmp = service.getUser(user.guid);
         if (tmp != null) {
@@ -107,5 +114,25 @@ public class UserServiceBean {
         tmp = service.saveUser(tmp);
         User result = Mapper.map(tmp, User.class);
         return result;
-    }    
+    }
+
+    public void changePassword(String guid, ChangePasswordRequest reqeust) {
+        StoreUser user = service.getUser(guid);
+        if (user != null) {
+            StorePassword tmp = passwordService.getPasswordForUser(guid);
+            if (tmp != null) {
+                char[] password = tmp.getPassword();
+                if (password == null || Arrays.equals(password, reqeust.old.toCharArray())) {
+                    tmp.setPassword(reqeust.p1.toCharArray());
+                    passwordService.savePassword(tmp);
+                }
+            } else {
+                tmp = new StorePassword();
+                tmp.setUser(user);
+                tmp.setPassword(reqeust.p1.toCharArray());                
+                passwordService.savePassword(tmp);
+            }            
+        }
+    }
+
 }

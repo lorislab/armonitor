@@ -39,6 +39,9 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         result.timer = data.isTimer();
         result.notification = data.isNotification();
         result.service = data.getService();
+        result.domain = data.getDomain();
+        result.link = data.getLink();
+        result.clazz = data.getClassification();
         return result;
     }
 
@@ -52,6 +55,9 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         entity.setTimer(data.timer);
         entity.setNotification(data.notification);
         entity.setService(data.service);
+        entity.setLink(data.link);
+        entity.setDomain(data.domain);
+        entity.setClassification(data.clazz);
         return entity;
     }
 

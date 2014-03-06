@@ -15,14 +15,18 @@
  */
 package org.lorislab.armonitor.store.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
  * The user password model.
- * 
+ *
  * @author Andrej Petras
  */
 @Entity
@@ -37,70 +41,49 @@ public class StorePassword extends Persistent {
     /**
      * The main password.
      */
-    @Column(name = "C_PASSWORD1")
-    private char[] password1;
-    /**
-     * The second password.
-     */
-    @Column(name = "C_PASSWORD2")
-    private char[] password2;
+    @Column(name = "C_PASSWORD")
+    private char[] password;
     /**
      * The user GUID.
      */
-    @Column(name = "C_USER")
-    private String userGuid;
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "C_USER")
+    private StoreUser user;
+
+    /**
+     * Gets the user.
+     *
+     * @return the user.
+     */
+    public StoreUser getUser() {
+        return user;
+    }
+
+    /**
+     * Sets the user.
+     *
+     * @param user
+     */
+    public void setUser(StoreUser user) {
+        this.user = user;
+    }
 
     /**
      * Gets the main password.
      *
      * @return the main password.
      */
-    public char[] getPassword1() {
-        return password1;
+    public char[] getPassword() {
+        return password;
     }
 
     /**
      * Sets the main password.
      *
-     * @param password1 the main password.
+     * @param password the main password.
      */
-    public void setPassword1(char[] password1) {
-        this.password1 = password1;
+    public void setPassword(char[] password) {
+        this.password = password;
     }
 
-    /**
-     * Gets the second password.
-     *
-     * @return the second password.
-     */
-    public char[] getPassword2() {
-        return password2;
-    }
-
-    /**
-     * Sets the second password.
-     *
-     * @param password2 the second password.
-     */
-    public void setPassword2(char[] password2) {
-        this.password2 = password2;
-    }
-
-    /**
-     * Gets the user GUID.
-     *
-     * @return the user GUID.
-     */
-    public String getUserGuid() {
-        return userGuid;
-    }
-
-    /**
-     * Sets the user GUID.
-     *
-     * @param userGuid the user GUID.
-     */
-    public void setUserGuid(String userGuid) {
-        this.userGuid = userGuid;
-    }
 }

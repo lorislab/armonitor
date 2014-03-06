@@ -36,6 +36,9 @@ public class DashboardApplicationSystemMapper implements MapperService<StoreSyst
         DashboardApplicationSystem result = new DashboardApplicationSystem();
         result.guid = data.getGuid();
         result.name = data.getName();
+        result.link = data.getLink();
+        result.domain = data.getDomain();
+        result.clazz = data.getClassification();
         StoreApplication app = data.getApplication();
         if (app != null) {
             result.application = app.getGuid();

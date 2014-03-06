@@ -40,6 +40,18 @@ public class DashboardApplicationSystem {
      */
     public String name;
     /**
+     * The domain.
+     */
+    public String domain;
+    /**
+     * The link.
+     */
+    public String link;
+    /**
+     * The classification.
+     */
+    public String clazz;    
+    /**
      * The dashboard system build.
      */
     public DashboardSystemBuild systemBuild;

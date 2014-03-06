@@ -50,4 +50,8 @@ public class Application {
      * The repository link.
      */
     public String repoLink;
+    /**
+     * The type.
+     */
+    public String type;
 }

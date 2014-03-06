@@ -84,12 +84,40 @@ public class StoreApplication extends Persistent {
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
+    /**
+     * The type.
+     */
+    @Column(name = "C_TYPE")
+    private String type;
+    
+    /**
+     * The application builds.
+     */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")
     private Set<StoreBuild> builds;
 
+    /**
+     * Set of application systems.
+     */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")
     private Set<StoreSystem> systems;
 
+    /**
+     * Gets the type.
+     * @return the type.
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Sets the type.
+     * @param type the type.
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+    
     /**
      * Gets the SCM repository.
      *

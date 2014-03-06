@@ -67,7 +67,19 @@ public class StoreSystem extends Persistent {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_AGENT")
     private StoreAgent agent;
-    
+
+    /**
+     * The system domain.
+     */
+    @Column(name = "C_DOMAIN")
+    private String domain;
+
+    /**
+     * The system link.
+     */
+    @Column(name = "C_LINK")
+    private String link;
+
     /**
      * The set of store system builds.
      */
@@ -108,6 +120,66 @@ public class StoreSystem extends Persistent {
      */
     @Column(name = "C_SERVICE")
     private String service;
+
+    /**
+     * The system classification.
+     */
+    @Column(name = "C_CLASS")
+    private String classification;
+
+    /**
+     * Gets the system classification.
+     *
+     * @return the system classification.
+     */
+    public String getClassification() {
+        return classification;
+    }
+
+    /**
+     * Sets the system classification.
+     *
+     * @param classification the system classification.
+     */
+    public void setClassification(String classification) {
+        this.classification = classification;
+    }
+
+    /**
+     * Gets the domain.
+     *
+     * @return the domain.
+     */
+    public String getDomain() {
+        return domain;
+    }
+
+    /**
+     * Sets the domain.
+     *
+     * @param domain the domain.
+     */
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    /**
+     * Gets the link.
+     *
+     * @return the link.
+     */
+    public String getLink() {
+        return link;
+    }
+
+    /**
+     * Sets the link.
+     *
+     * @param link the link.
+     */
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     /**
      * Gets the service name.

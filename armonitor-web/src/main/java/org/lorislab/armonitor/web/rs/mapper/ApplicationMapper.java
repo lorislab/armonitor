@@ -40,6 +40,7 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         result.scmBranches = data.getScmBranches();
         result.enabled = data.isEnabled();
         result.repoLink = data.getRepoLink();
+        result.type = data.getType();
         return result;
     }
 
@@ -54,6 +55,7 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         entity.setScmBranches(data.scmBranches);
         entity.setScmTags(data.scmTags);
         entity.setRepoLink(data.repoLink);
+        entity.setType(data.type);
         return entity;
     }
 

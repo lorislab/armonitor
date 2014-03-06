@@ -28,6 +28,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.UserServiceBean;
+import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.Role;
 import org.lorislab.armonitor.web.rs.model.User;
 
@@ -97,4 +98,18 @@ public class UserService {
     public User save(User user) {
         return service.save(user);
     }
+    
+    @POST
+    @Path("{guid}/password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void changePassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) {
+        service.changePassword(guid, reqeust);
+    }
+    
+    @PUT
+    @Path("{guid}/password")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ChangePasswordRequest createchangePassword(@PathParam("guid") String guid) {
+        return new ChangePasswordRequest();
+    }    
 }

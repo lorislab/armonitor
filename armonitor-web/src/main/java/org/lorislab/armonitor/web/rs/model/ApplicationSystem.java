@@ -46,4 +46,16 @@ public class ApplicationSystem {
      * The service.
      */
     public String service;    
+    /**
+     * The domain.
+     */
+    public String domain;
+    /**
+     * The link.
+     */
+    public String link;
+    /**
+     * The classification.
+     */
+    public String clazz;
 }
