@@ -92,8 +92,8 @@
 					<td><h6>${log.scmLog.user}</h6></td>
 					<td>
 						<h6>
-							<#if log.scmLog.link??>
-							<a href="${log.scmLog.link}" style="text-decoration:none;">${log.scmLog.id}</a>
+							<#if log.link??>
+							<a href="${log.link}" style="text-decoration:none;">${log.scmLog.id}</a>
 							<#else>${log.scmLog.id}</#if>								
 							: ${log.scmLog.message}
 						</h6>
