@@ -35,20 +35,30 @@
 
 						<div class="panel-heading" style="min-height: 140px">
 							<div class="row">
-								<div class="col-xs-8" style="font-size: 25px;">
+								<div class="col-xs-10" style="font-size: 25px;">
 									<a href="#/systembuild/{{s.guid}}">
 										{{s.name}}
 									</a>
+									<a href="{{s.link}}" style="font-size: 20px;" data-ng-show="s.link"><i class="icon-link-ext-alt"></i></a>
 								</div>
-								<div class="col-xs-4"	style="text-align: right; float: right">
+								<div class="col-xs-2"	style="text-align: right; float: right">
 									<a href="" data-ng-click="updateBuild(s.guid)" data-ng-show="s.systemBuild" data-popover="Refresh" data-popover-placement="top" data-popover-trigger="mouseenter">
 										<i class="icon-arrows-cw"></i>
 									</a>
 								</div>
 							</div>	
 							<div class="row">
-								<div class="col-xs-4">
-									<i style="font-size: 5em;" data-ng-class="{ 'icon-ok': s.systemBuild !== null, 'icon-attention': s.systemBuild === null}"></i>
+								<div class="col-xs-12" style="font-size: 15px;">
+									<span data-ng-show="s.domain">{{s.domain}} / </span>
+									<span data-ng-show="s.clazz">{{s.clazz}}</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-4" style="font-size: 5em;">
+									<a href="#/activity/{{s.systemBuild.build}}" data-ng-show="s.systemBuild">
+										<i class="icon-ok" ></i>
+									</a>
+									<i class="icon-attention" data-ng-hide="s.systemBuild"></i>
 								</div>
 								<div class="col-xs-8" style="text-align: right;">
 									<p style="font-size: 20px;">

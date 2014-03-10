@@ -13,6 +13,18 @@
       "src": "fontawesome"
     },
     {
+      "uid": "e15f0d620a7897e2035c18c80142f6d9",
+      "css": "link-ext",
+      "code": 59396,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "e35de5ea31cd56970498e33efbcb8e36",
+      "css": "link-ext-alt",
+      "code": 59398,
+      "src": "fontawesome"
+    },
+    {
       "uid": "f5999a012fc3752386635ec02a858447",
       "css": "download-cloud",
       "code": 59404,
