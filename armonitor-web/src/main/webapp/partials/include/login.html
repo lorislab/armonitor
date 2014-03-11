@@ -1,39 +1,41 @@
 
 
 <div class="modal-body">
-		<div class="panel panel-info" >
-			<div class="panel-heading">
-				<button type="button" class="close" data-ng-click="cancel()" aria-hidden="true">&times;</button>
-				<div class="panel-title">Sign In</div>				
-			</div>     
+	<div class="panel panel-info" >
+		<div class="panel-heading">
+			<button type="button" class="close" data-ng-click="cancel()" aria-hidden="true">&times;</button>
+			<div class="panel-title">Sign In</div>				
+		</div>     
 
-			<div style="padding-top:30px" class="panel-body" >
+		<div style="padding-top: 20px" class="panel-body" >
 
-				<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-				<div style="margin-bottom: 25px" class="input-group">
-					<span class="input-group-addon"><i class="icon-user"></i></span>
-					<input type="text" class="form-control" placeholder="email" data-ng-model="data.email" >                                        
-				</div>
+				<span class="label label-danger col-sm-12" data-ng-show="msg.error" style="margin-bottom: 20px;">
+					The user or password is wrong.
+				</span>
 
-				<div style="margin-bottom: 25px" class="input-group">
-					<span class="input-group-addon"><i class="icon-lock"></i></span>
-					<input type="password" class="form-control" placeholder="password" data-ng-model="data.password">
-				</div>
 
-				
-			</div>  
+			<div style="margin-bottom: 20px" class="input-group">
+				<span class="input-group-addon"><i class="icon-user"></i></span>
+				<input type="text" class="form-control" placeholder="email" data-ng-model="data.email" > 
+			</div>
 
-			<div class="panel-footer">	
-				<div class="row">
+			<div style="margin-bottom: 15px" class="input-group">
+				<span class="input-group-addon"><i class="icon-lock"></i></span>
+				<input type="password" class="form-control" placeholder="password" data-ng-model="data.password">
+			</div>				
+		</div>  
+
+		<div class="panel-footer">	
+			<div class="row">
 				<div class="col-lg-8" style="font-size: 80%; top: 10px;">
 					<a href="#">Forgot password?</a>
 				</div>
 				<div class="col-lg-4" style="text-align: right;">
-					<button type="button" class="btn btn-info" data-ng-click="login()"><i class="icon-login"></i> Login</button>
-				</div>
+					<button type="button" class="btn btn-info" data-ng-click="login()"><i class="icon-login"></i> Sign in</button>
 				</div>
 			</div>
 		</div>
+	</div>
 </div>
 

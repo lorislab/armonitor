@@ -2,31 +2,82 @@
 
 /* Services */
 angular.module('armonitor.services', ['ngResource'])
-		.factory('CommonService', function($rootScope, LoginRSService) {
-			
+		.factory('UserAdminService', function($resource, config) {
+			return $resource(config.server + '/user', {}, {
+				save: {
+					method: 'POST',
+					url: config.server + '/user',
+					isArray: false
+				},
+				pswd: {
+					method: 'POST',
+					url: config.server + '/user/:guid/password',
+					params: {guid: '@guid'},
+					isArray: false
+				}				
+			});
+		})
+		.factory('CommonService', function(SecurityRSService, $location) {
+
+			var _base_roles = ["admin", "base"];
 			var _user = null;
-	
+			var _roles = null;
+
 			function _startup() {
-				LoginRSService.get(function(response) {
+				SecurityRSService.get(function(response) {
 					if (response.guid) {
-						_user = response;		
+						_user = response;
+						_load_roles();
 					}
 				});
 			}
-			
+
+			function _load_roles() {
+				SecurityRSService.roles({}, _base_roles, function(response) {
+					_roles = response;
+				});
+			}
+
 			_startup();
-			
+
 			return {
-				login: function(user) {
-					_user = user;
+				update: function(data, callback) {
+					SecurityRSService.save({}, data, function(response) {
+						if (response.guid) {
+							_user = response;
+							if (callback) {
+								callback(_user);
+							}
+						}
+					});
+				},
+				login: function(data, callback) {
+					SecurityRSService.login({}, data, function(response) {
+						if (response.guid) {
+							_user = response;
+							_load_roles();
+							if (callback) {
+								callback(_user);
+							}
+						}
+					}, function(response) {
+						if (callback) {
+							callback(_user);
+						}
+					});
 				},
 				logout: function() {
-					LoginRSService.logout(function(response) {
+					SecurityRSService.logout(function(response) {
+						$location.url('/');
 						_user = null;
+						_roles = null;
 					});
 				},
 				user: function() {
 					return _user;
+				},
+				roles: function() {
+					return _roles;
 				},
 				check: function(item) {
 					var found = false, name;
@@ -42,40 +93,40 @@ angular.module('armonitor.services', ['ngResource'])
 				}
 			};
 		})
-//		.factory('LoginService2', function($http, config) {
-//			var _config = {
-//				headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
-//			};
-//			return {
-//				login: function(username, password, listener) {					
-//					$http.post('j_security_check', {j_username: username, j_password: password}, _config).success(function(data) {
-//						var response = (data === 'AUTHENTICATION_SUCCESS');
-//						if (listener) {
-//							listener(response);
-//						}
-//					});
-//				}
-//			};
-//		})		
-		.factory('LoginRSService', function($resource, config) {
+		.factory('SecurityRSService', function($resource, config) {
 			return $resource(config.server + '/sec', {}, {
+				pswd: {
+					method: 'POST',
+					url: config.server + '/password',
+					isArray: false
+				},				
 				user: {
 					method: 'GET',
-					url: config.server + '/sec',					
-					isArray: false					
+					url: config.server + '/sec',
+					isArray: false
+				},
+				save: {
+					method: 'POST',
+					url: config.server + '/sec',
+					isArray: false
 				},
 				logout: {
 					url: config.server + '/sec/logout',
 					method: 'GET',
 					isArray: false
 				},
+				roles: {
+					method: 'POST',
+					url: config.server + '/sec/roles',
+					isArray: false
+				},
 				login: {
 					method: 'POST',
-					url: config.server + '/sec',
+					url: config.server + '/sec/login',
 					isArray: false
 				}
 			});
-		})		
+		})
 		.factory('VersionBuildRSService', function($resource, config) {
 			return $resource(config.server + '/dvb', {}, {
 				reload: {

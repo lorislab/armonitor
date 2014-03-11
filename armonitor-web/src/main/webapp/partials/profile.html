@@ -13,3 +13,70 @@
 		<i class="icon-user"></i> Profile
 	</li>	
 </ol>
+
+<div>
+	<tabset >
+		<tab heading="Profile">
+			<form class="form-horizontal" data-ng-submit="save()">
+				<fieldset>
+					<div class="control-group" style="padding-top: 20px">
+						<label class="control-label" for="email">Email</label>
+						<div class="controls">
+							<input id="email" type="text" class="form-control" placeholder="Email" data-ng-model="user.email" required="true" readonly="true">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="name">Name</label>
+						<div class="controls">
+							<input id="name" type="text" class="form-control" placeholder="Name" data-ng-model="user.name" required pattern=".{3,10}" title="3 to 10 characters">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="save"></label>
+						<div class="controls">
+							<button id="save" type="submit" class="btn btn-success" >Save</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>			
+		</tab>
+		<tab heading="Password" >
+			<form class="form-horizontal" data-ng-submit="changepswd()">		
+				<fieldset>
+					
+					<div class="control-group" style="padding-top: 20px">
+						<label class="control-label" for="p">Current password</label>
+						<div class="controls">
+							<input id="p" class="form-control" type="password" data-ng-model="pswd.o" pattern=".{5,20}" title="5 to 20 characters">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="np">New password</label>
+						<div class="controls">
+							<input id="np" class="form-control" type="password" required="" data-ng-model="pswd.n" pattern=".{5,20}" title="5 to 20 characters">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="np">Confirm password</label>
+						<div class="controls">
+							<input id="np" class="form-control" type="password" required="" data-ng-model="pswd.c" pattern=".{5,20}" title="5 to 20 characters">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="cp"></label>
+						<div class="controls">
+							<button id="cp" class="btn btn-success" type="submit" >Change password</button>
+							<span class="label label-danger" data-ng-show="error.validation">The password are not same.</span>
+							<span class="label label-danger" data-ng-show="error.request">Wrong password.</span>
+						</div>												
+					</div>
+				</fieldset>
+			</form>			
+		</tab>
+	</tabset>
+</div>

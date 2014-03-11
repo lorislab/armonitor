@@ -36,7 +36,7 @@ app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/systembuild/:guid', {templateUrl: 'partials/systembuild.html', controller: 'SystemBuildCtrl'});
 		$routeProvider.when('/appbuild/:guid', {templateUrl: 'partials/appbuild.html', controller: 'ApplicationBuildCtrl'});
 		$routeProvider.when('/versionbuild/:app/:ver', {templateUrl: 'partials/versionbuild.html', controller: 'VersionBuildCtrl'});
-		$routeProvider.when('/profile/:guid', {templateUrl: 'partials/profile.html', controller: 'ProfileCtrl'});
+		$routeProvider.when('/profile', {templateUrl: 'partials/profile.html', controller: 'ProfileCtrl'});
 		$routeProvider.otherwise({redirectTo: '/dashboard'});
 	}]);
 

@@ -17,17 +17,14 @@
 package org.lorislab.armonitor.web.rs.controller;
 
 import java.io.Serializable;
-import java.util.logging.Level;
+import java.security.Principal;
 import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
-import org.lorislab.armonitor.mapper.Mapper;
-import org.lorislab.armonitor.store.criteria.StoreUserCriteria;
-import org.lorislab.armonitor.store.ejb.StoreUserServiceBean;
-import org.lorislab.armonitor.store.model.StoreUser;
-import org.lorislab.armonitor.web.rs.model.LoginRequest;
+import org.lorislab.armonitor.web.rs.ejb.UserServiceBean;
+import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.User;
 
 /**
@@ -43,6 +40,9 @@ public class SecurityController implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(SecurityController.class.getName());
         
     private User user;
+        
+    @EJB
+    private UserServiceBean service;
     
     public User getUser() {
         return user;
@@ -51,5 +51,20 @@ public class SecurityController implements Serializable {
     public User setUser(User user) {
         this.user = user;
         return this.user;
+    }
+    
+    public User saveUser(User data) {
+        if (data != null && data.guid != null && user != null) {
+            if (data.guid.equals(user.guid)) {
+                user = service.save(data);
+            }           
+        }
+        return user;
+    }
+
+    public void changePassword(ChangePasswordRequest reqeust) throws Exception {
+        if (user != null) {
+            service.changePassword(user.guid, reqeust);
+        }
     }
 }

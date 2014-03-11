@@ -24,14 +24,14 @@
 					<ul class="nav navbar-nav navbar-left">
 						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard" data-translate="MENU_DASHBOARD"><i class="icon-gauge"></i> Dashboard</a></li>
 						<!--<li data-ng-class="{ active: active(['/about'])}"><a href="#/about" data-translate="MENU_ABOUT">About</a></li>-->				
-						<li><a href="#" data-ng-show="user"><i class="icon-cog-alt"></i> Administrator</a></li>
+						<li><a href="#" data-ng-show="roles.admin"><i class="icon-cog-alt"></i> Administrator</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">						
-						<li><button type="button" data-ng-hide="user" class="btn btn-info navbar-btn" ng-click="login()"><i class="icon-login"></i> Sign in</button></li>
+						<li><a href="" data-ng-hide="user" ng-click="login()"><i class="icon-login"></i> Sign in</a></li>
 						<li data-ng-show="user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> {{user.name}} <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="#/profile/{{user.guid}}"><i class="icon-user"></i> Profile</a></li>								
+								<li><a href="#/profile"><i class="icon-user"></i> Profile</a></li>								
 								<li class="divider"></li>
 								<li><a href="" data-ng-click="logout()"><i class="icon-logout"></i> Logout</a></li>
 							</ul>						

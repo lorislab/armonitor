@@ -2,19 +2,28 @@
 
 /* Controllers */
 angular.module('armonitor.controllers', [])
-		.controller('LoginModalCtrl', function($scope,  $modalInstance, LoginRSService) {
-			
+		.controller('LoginModalCtrl', function($scope, $modalInstance, CommonService) {
+
+			$scope.msg = {
+				error: false
+			};
+
 			$scope.data = {
 				email: null,
 				password: null
 			};
 
 			$scope.login = function() {
+				$scope.msg.error = false;
 				$scope.data.email = 'andrej@ajka-andrej.com';
 				$scope.data.password = 'test';
-				LoginRSService.login({}, $scope.data, function(response) {
-					$modalInstance.close(response);						
-				});				
+				CommonService.login($scope.data, function(user) {
+					if (user) {
+						$modalInstance.close(user);
+					} else {
+						$scope.msg.error = true;
+					}
+				});
 			};
 
 			$scope.cancel = function() {
@@ -24,14 +33,14 @@ angular.module('armonitor.controllers', [])
 		.controller('DashboardCtrl', function($scope, DashboardRSService) {
 
 			$scope.dashboard = null;
-			
+
 			function _load() {
 				$scope.dashboard = null;
 				DashboardRSService.get(function(response) {
 					$scope.dashboard = response;
 				});
 			}
-			
+
 			_load();
 
 			$scope.updateBuild = function(sys) {
@@ -259,24 +268,70 @@ angular.module('armonitor.controllers', [])
 		.controller('AboutCtrl', function($scope) {
 
 		})
-		.controller('ProfileCtrl', function($scope, CommonService) {
+		.controller('ProfileCtrl', function($scope, CommonService, SecurityRSService) {
+
+			$scope.user = angular.copy(CommonService.user());
+
+			if (!($scope.user)) {
+				CommonService.logout();
+			}
 			
-			$scope.user = CommonService.user();
+			$scope.error = {
+				request: false,
+				validation: false
+			};
+			
+			$scope.pswd = {
+				o: null,
+				n: null,
+				c: null
+			};
+
+			$scope.save = function() {
+				CommonService.update($scope.user, function(response) {
+
+				});
+			};
+
+			$scope.changepswd = function() {
+				$scope.error = {request: false,validation: false};
+				
+				if ($scope.pswd.n && $scope.pswd.c && ($scope.pswd.n === $scope.pswd.c)) {
+					SecurityRSService.pswd({guid: $scope.user.guid}, {old: $scope.pswd.o, p1: $scope.pswd.n}, function(response) {
+						CommonService.logout();
+					}, function(error) {
+						$scope.error = {request: true,validation: false};
+						$scope.pswd = { o: null, n: null, c: null };
+					});
+				} else {
+					$scope.error = {request: false,validation: true};
+				}
+			};
 
 		})
 		.controller('MenuCtrl', function($scope, $location, $modal, CommonService) {
-			
-			
+
+
 			$scope.user = null;
-			
-			$scope.$watch(function() { return CommonService.user();	}, function(newVal, oldVal) {
+
+			$scope.roles = null;
+
+			$scope.$watch(function() {
+				return CommonService.user();
+			}, function(newVal, oldVal) {
 				$scope.user = newVal;
-			});	
+			});
+
+			$scope.$watch(function() {
+				return CommonService.roles();
+			}, function(newVal, oldVal) {
+				$scope.roles = newVal;
+			});
 
 			$scope.logout = function() {
 				CommonService.logout();
 			};
-			
+
 			$scope.login = function() {
 
 				var modalInstance = $modal.open({
@@ -285,12 +340,12 @@ angular.module('armonitor.controllers', [])
 				});
 
 				modalInstance.result.then(function(user) {
-					CommonService.login(user);
+					// login
 				}, function() {
 					// close modal
 				});
 			};
-			
+
 			$scope.active = function(data) {
 				var tmp = $location.path();
 				var r = false;

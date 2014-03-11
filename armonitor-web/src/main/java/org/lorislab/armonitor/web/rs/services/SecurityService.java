@@ -27,11 +27,13 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.controller.SecurityController;
 import org.lorislab.armonitor.web.rs.ejb.SecurityServiceBean;
+import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.LoginRequest;
 import org.lorislab.armonitor.web.rs.model.User;
 
@@ -65,6 +67,20 @@ public class SecurityService {
     }
     
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public User saveUser(User user) {
+        return controller.saveUser(user);
+    }
+
+    @POST
+    @Path("password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void changePassword(ChangePasswordRequest reqeust) throws Exception {
+        controller.changePassword(reqeust);
+    }    
+    @POST
+    @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public User login(LoginRequest request, @Context HttpServletRequest httpRequest) {

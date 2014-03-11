@@ -102,14 +102,8 @@ public class UserService {
     @POST
     @Path("{guid}/password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changePassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) {
+    public void changePassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) throws Exception {
         service.changePassword(guid, reqeust);
     }
     
-    @PUT
-    @Path("{guid}/password")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ChangePasswordRequest createchangePassword(@PathParam("guid") String guid) {
-        return new ChangePasswordRequest();
-    }    
 }

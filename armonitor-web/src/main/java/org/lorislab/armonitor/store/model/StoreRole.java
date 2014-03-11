@@ -41,6 +41,30 @@ public class StoreRole extends Persistent {
     private String name;
 
     /**
+     * The system flag.
+     */
+    @Column(name = "C_SYSTEM")
+    private boolean system;
+
+    /**
+     * Gets the system flag.
+     *
+     * @return the system flag.
+     */
+    public boolean isSystem() {
+        return system;
+    }
+
+    /**
+     * Sets the system flag.
+     *
+     * @param system the system flag.
+     */
+    public void setSystem(boolean system) {
+        this.system = system;
+    }
+
+    /**
      * Gets the role name.
      *
      * @return the role name.

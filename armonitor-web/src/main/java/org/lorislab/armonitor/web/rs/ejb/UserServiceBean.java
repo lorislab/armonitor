@@ -116,7 +116,7 @@ public class UserServiceBean {
         return result;
     }
 
-    public void changePassword(String guid, ChangePasswordRequest reqeust) {
+    public void changePassword(String guid, ChangePasswordRequest reqeust) throws Exception {
         StoreUser user = service.getUser(guid);
         if (user != null) {
             StorePassword tmp = passwordService.getPasswordForUser(guid);
@@ -125,6 +125,8 @@ public class UserServiceBean {
                 if (password == null || Arrays.equals(password, reqeust.old.toCharArray())) {
                     tmp.setPassword(reqeust.p1.toCharArray());
                     passwordService.savePassword(tmp);
+                } else {
+                    throw new Exception("Wrong password");
                 }
             } else {
                 tmp = new StorePassword();
