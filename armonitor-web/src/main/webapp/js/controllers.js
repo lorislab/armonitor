@@ -2,17 +2,36 @@
 
 /* Controllers */
 angular.module('armonitor.controllers', [])
+		.controller('LoginModalCtrl', function($scope,  $modalInstance, LoginRSService) {
+			
+			$scope.data = {
+				email: null,
+				password: null
+			};
+
+			$scope.login = function() {
+				$scope.data.email = 'andrej@ajka-andrej.com';
+				$scope.data.password = 'test';
+				LoginRSService.login({}, $scope.data, function(response) {
+					$modalInstance.close(response);						
+				});				
+			};
+
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+		})
 		.controller('DashboardCtrl', function($scope, DashboardRSService) {
 
 			$scope.dashboard = null;
-	
+			
 			function _load() {
 				$scope.dashboard = null;
 				DashboardRSService.get(function(response) {
 					$scope.dashboard = response;
 				});
 			}
-
+			
 			_load();
 
 			$scope.updateBuild = function(sys) {
@@ -42,16 +61,16 @@ angular.module('armonitor.controllers', [])
 				}
 				return [];
 			};
-		})	
+		})
 		.controller('VersionBuildCtrl', function($scope, $routeParams, VersionBuildRSService, BuildRSService, CommonService) {
-			
-			$scope.ver = null;	
+
+			$scope.ver = null;
 			$scope.version = null;
 			$scope.build = null;
 			$scope.other = false;
 			$scope.manifest = false;
-						
-			
+
+
 			function _load() {
 				$scope.app = null;
 				$scope.build = null;
@@ -59,8 +78,8 @@ angular.module('armonitor.controllers', [])
 					$scope.ver = response;
 					$scope.version = $routeParams.ver;
 				});
-			}		
-			
+			}
+
 			$scope.reload = function() {
 				$scope.ver = null;
 				$scope.build = null;
@@ -69,7 +88,7 @@ angular.module('armonitor.controllers', [])
 					$scope.version = $routeParams.ver;
 				});
 			};
-			
+
 			$scope.timelineSelect = function(item) {
 				if (item) {
 					BuildRSService.get({guid: item.guid}, function(response) {
@@ -86,24 +105,24 @@ angular.module('armonitor.controllers', [])
 					$scope.$apply();
 				}
 			};
-			
+
 			_load();
-		})			
+		})
 		.controller('ApplicationBuildCtrl', function($scope, $routeParams, ApplicationBuildRSService, BuildRSService, CommonService) {
-			
+
 			$scope.app = null;
 			$scope.build = null;
 			$scope.other = false;
 			$scope.manifest = false;
-			
+
 			function _load() {
 				$scope.app = null;
 				$scope.build = null;
 				ApplicationBuildRSService.get({guid: $routeParams.guid}, function(response) {
 					$scope.app = response;
 				});
-			}		
-			
+			}
+
 			$scope.reload = function() {
 				$scope.app = null;
 				$scope.build = null;
@@ -111,7 +130,7 @@ angular.module('armonitor.controllers', [])
 					$scope.app = response;
 				});
 			};
-			
+
 			$scope.timelineSelect = function(item) {
 				if (item) {
 					BuildRSService.get({guid: item.guid}, function(response) {
@@ -128,24 +147,24 @@ angular.module('armonitor.controllers', [])
 					$scope.$apply();
 				}
 			};
-			
+
 			_load();
-		})		
+		})
 		.controller('SystemBuildCtrl', function($scope, $routeParams, SystemBuildRSService, BuildRSService, CommonService) {
-			
+
 			$scope.system = null;
 			$scope.build = null;
 			$scope.other = false;
 			$scope.manifest = false;
-			
+
 			function _load() {
 				$scope.system = null;
 				$scope.build = null;
 				SystemBuildRSService.get({guid: $routeParams.guid}, function(response) {
 					$scope.system = response;
 				});
-			}		
-			
+			}
+
 			$scope.reload = function() {
 				$scope.system = null;
 				$scope.build = null;
@@ -153,7 +172,7 @@ angular.module('armonitor.controllers', [])
 					$scope.system = response;
 				});
 			};
-			
+
 			$scope.timelineSelect = function(item) {
 				if (item) {
 					BuildRSService.get({guid: item.guid}, function(response) {
@@ -170,17 +189,17 @@ angular.module('armonitor.controllers', [])
 					$scope.$apply();
 				}
 			};
-			
+
 			_load();
 		})
 		.controller('ActivityCtrl', function($scope, $routeParams, ActivityRSService) {
 
 			$scope.activity = null;
 			$scope.bcSize = 0;
-			$scope.cSize = 0;			
-			$scope.stypes = [];			
+			$scope.cSize = 0;
+			$scope.stypes = [];
 			$scope.ftypes = [];
-			
+
 			function _load() {
 				_clear();
 				ActivityRSService.get({guid: $routeParams.guid}, function(response) {
@@ -193,30 +212,30 @@ angular.module('armonitor.controllers', [])
 				$scope.ftypes = [];
 				$scope.activity = null;
 			}
-			
+
 			function _result(response) {
-					$scope.activity = response;
-					if ($scope.activity) {
-						$scope.ftypes = $scope.activity.types;
-						if ($scope.ftypes) {
-							var t;
-							for (t in $scope.ftypes) {
-								$scope.stypes.push({"id": $scope.ftypes[t], "select": true});
-							}
+				$scope.activity = response;
+				if ($scope.activity) {
+					$scope.ftypes = $scope.activity.types;
+					if ($scope.ftypes) {
+						var t;
+						for (t in $scope.ftypes) {
+							$scope.stypes.push({"id": $scope.ftypes[t], "select": true});
 						}
 					}
+				}
 			}
-			
+
 			_load();
 
 			$scope.bcSizeUpdate = function(size) {
 				$scope.bcSize = size;
 			};
-			
+
 			$scope.cSizeUpdate = function(size) {
 				$scope.cSize = size;
 			};
-			
+
 			$scope.updateTypes = function(t) {
 				var i = $scope.ftypes.indexOf(t);
 				if (i === -1) {
@@ -225,23 +244,53 @@ angular.module('armonitor.controllers', [])
 					$scope.ftypes.splice(i, 1);
 				}
 			};
-			
+
 			$scope.reload = function() {
 				_clear();
 				ActivityRSService.reload({guid: $routeParams.guid}, function(response) {
 					_result(response);
 				});
 			};
-			
+
 			$scope.search = function(row) {
 				return !!(($scope.ftypes.indexOf(row.type) !== -1) || row.type === null);
-			};			
+			};
 		})
 		.controller('AboutCtrl', function($scope) {
 
-		})	
-		.controller('MenuCtrl', function($scope, $location) {
+		})
+		.controller('ProfileCtrl', function($scope, CommonService) {
+			
+			$scope.user = CommonService.user();
 
+		})
+		.controller('MenuCtrl', function($scope, $location, $modal, CommonService) {
+			
+			
+			$scope.user = null;
+			
+			$scope.$watch(function() { return CommonService.user();	}, function(newVal, oldVal) {
+				$scope.user = newVal;
+			});	
+
+			$scope.logout = function() {
+				CommonService.logout();
+			};
+			
+			$scope.login = function() {
+
+				var modalInstance = $modal.open({
+					templateUrl: 'partials/include/login.html',
+					controller: 'LoginModalCtrl'
+				});
+
+				modalInstance.result.then(function(user) {
+					CommonService.login(user);
+				}, function() {
+					// close modal
+				});
+			};
+			
 			$scope.active = function(data) {
 				var tmp = $location.path();
 				var r = false;

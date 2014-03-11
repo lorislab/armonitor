@@ -134,6 +134,10 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
             predicates.add(cb.equal(root.get(StoreUser_.name), criteria.getName()));
         }
 
+        if (criteria.getEmail() != null) {
+            predicates.add(cb.equal(root.get(StoreUser_.email), criteria.getEmail()));
+        }
+        
         if (criteria.getGuid() != null) {
             predicates.add(cb.equal(root.get(StoreUser_.guid), criteria.getGuid()));
         }

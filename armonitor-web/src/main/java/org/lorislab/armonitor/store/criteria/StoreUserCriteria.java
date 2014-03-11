@@ -37,6 +37,8 @@ public class StoreUserCriteria extends AbstractSearchCriteria {
 
     private String system;
 
+    private String email;
+    
     /**
      * {@inheritDoc}
      */
@@ -45,6 +47,7 @@ public class StoreUserCriteria extends AbstractSearchCriteria {
         name = null;
         guid = null;
         system = null;
+        email = null;
         fetchRoles = false;
     }
 
@@ -53,9 +56,17 @@ public class StoreUserCriteria extends AbstractSearchCriteria {
      */
     @Override
     public boolean isEmpty() {
-        return isEmpty(name, guid, system);
+        return isEmpty(name, guid, system, email);
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     public String getSystem() {
         return system;
     }

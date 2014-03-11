@@ -27,7 +27,7 @@ app.provider('config', function() {
 });
 
 app.config(function(configProvider) {
-	configProvider.setServer("/armonitor/rs");
+	configProvider.setServer("http://localhost:8080/armonitor/rs");
 });
 app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/dashboard', {templateUrl: 'partials/dashboard.html', controller: 'DashboardCtrl'});
@@ -36,6 +36,7 @@ app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/systembuild/:guid', {templateUrl: 'partials/systembuild.html', controller: 'SystemBuildCtrl'});
 		$routeProvider.when('/appbuild/:guid', {templateUrl: 'partials/appbuild.html', controller: 'ApplicationBuildCtrl'});
 		$routeProvider.when('/versionbuild/:app/:ver', {templateUrl: 'partials/versionbuild.html', controller: 'VersionBuildCtrl'});
+		$routeProvider.when('/profile/:guid', {templateUrl: 'partials/profile.html', controller: 'ProfileCtrl'});
 		$routeProvider.otherwise({redirectTo: '/dashboard'});
 	}]);
 

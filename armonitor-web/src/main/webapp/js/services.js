@@ -2,8 +2,32 @@
 
 /* Services */
 angular.module('armonitor.services', ['ngResource'])
-		.factory('CommonService', function() {
+		.factory('CommonService', function($rootScope, LoginRSService) {
+			
+			var _user = null;
+	
+			function _startup() {
+				LoginRSService.get(function(response) {
+					if (response.guid) {
+						_user = response;		
+					}
+				});
+			}
+			
+			_startup();
+			
 			return {
+				login: function(user) {
+					_user = user;
+				},
+				logout: function() {
+					LoginRSService.logout(function(response) {
+						_user = null;
+					});
+				},
+				user: function() {
+					return _user;
+				},
 				check: function(item) {
 					var found = false, name;
 					if (item) {
@@ -18,6 +42,40 @@ angular.module('armonitor.services', ['ngResource'])
 				}
 			};
 		})
+//		.factory('LoginService2', function($http, config) {
+//			var _config = {
+//				headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+//			};
+//			return {
+//				login: function(username, password, listener) {					
+//					$http.post('j_security_check', {j_username: username, j_password: password}, _config).success(function(data) {
+//						var response = (data === 'AUTHENTICATION_SUCCESS');
+//						if (listener) {
+//							listener(response);
+//						}
+//					});
+//				}
+//			};
+//		})		
+		.factory('LoginRSService', function($resource, config) {
+			return $resource(config.server + '/sec', {}, {
+				user: {
+					method: 'GET',
+					url: config.server + '/sec',					
+					isArray: false					
+				},
+				logout: {
+					url: config.server + '/sec/logout',
+					method: 'GET',
+					isArray: false
+				},
+				login: {
+					method: 'POST',
+					url: config.server + '/sec',
+					isArray: false
+				}
+			});
+		})		
 		.factory('VersionBuildRSService', function($resource, config) {
 			return $resource(config.server + '/dvb', {}, {
 				reload: {

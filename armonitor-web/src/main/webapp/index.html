@@ -21,36 +21,48 @@
 					<span class="navbar-brand" data-translate="APP_NAME">Release monitor</span>			  
 				</div>
 				<div class="navbar-collapse collapse" data-ng-controller="MenuCtrl">
-					<ul class="nav navbar-nav">
-						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard" data-translate="MENU_DASHBOARD">Dashboard</a></li>
+					<ul class="nav navbar-nav navbar-left">
+						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard" data-translate="MENU_DASHBOARD"><i class="icon-gauge"></i> Dashboard</a></li>
 						<!--<li data-ng-class="{ active: active(['/about'])}"><a href="#/about" data-translate="MENU_ABOUT">About</a></li>-->				
-					</ul>			  				
-				</div>			
+						<li><a href="#" data-ng-show="user"><i class="icon-cog-alt"></i> Administrator</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">						
+						<li><button type="button" data-ng-hide="user" class="btn btn-info navbar-btn" ng-click="login()"><i class="icon-login"></i> Sign in</button></li>
+						<li data-ng-show="user">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> {{user.name}} <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#/profile/{{user.guid}}"><i class="icon-user"></i> Profile</a></li>								
+								<li class="divider"></li>
+								<li><a href="" data-ng-click="logout()"><i class="icon-logout"></i> Logout</a></li>
+							</ul>						
+						</li>
+					</ul>					
+				</div>
 			</div>
 		</div>
 		<div style="margin-top: 50px"></div>
-		
+
 		<div class="container marketing">
-			
+
 			<div data-ng-view></div>
-			
+
 			<hr style="margin-top: 20px"/>	
 			<footer>
 				<p>&copy; 2013 lorislab.org &middot; Released under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
 			</footer>				
 		</div>
-			<script src="lib/timeline/timeline-min.js"></script>
-			<script src="lib/angular/angular.min.js"></script>
-			<script src="lib/angular/angular-route.min.js"></script>
-			<script src="lib/angular/angular-resource.min.js"></script>
-			<script src="lib/angular-translate/angular-translate.min.js"></script>
-			<script src="lib/angular-translate/angular-translate-loader-static-files.min.js"></script>		
-			<script src="lib/ui-boostrap/ui-bootstrap.min.js"></script>
-			<script src="js/app.js"></script>
-			<script src="js/services.js"></script>
-			<script src="js/controllers.js"></script>
-			<script src="js/filters.js"></script>
-			<script src="js/directives.js"></script>
-			<!--<script src="lib/timeline/timeline.js"></script>-->
+		<script src="lib/timeline/timeline-min.js"></script>
+		<script src="lib/angular/angular.min.js"></script>
+		<script src="lib/angular/angular-route.min.js"></script>
+		<script src="lib/angular/angular-resource.min.js"></script>
+		<script src="lib/angular-translate/angular-translate.min.js"></script>
+		<script src="lib/angular-translate/angular-translate-loader-static-files.min.js"></script>		
+		<script src="lib/ui-boostrap/ui-bootstrap.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/services.js"></script>
+		<script src="js/controllers.js"></script>
+		<script src="js/filters.js"></script>
+		<script src="js/directives.js"></script>
+		<!--<script src="lib/timeline/timeline.js"></script>-->
 	</body>
 </html>
