@@ -2,6 +2,103 @@
 
 /* Services */
 angular.module('armonitor.services', ['ngResource'])
+		.factory('TimerAdminService', function($resource, config) {
+			return $resource(config.server + '/ad/timer', {}, {
+				start: {
+					method: 'GET',
+					url: config.server + '/ad/timer/start',
+					isArray: false
+				},					
+				stop: {
+					method: 'GET',
+					url: config.server + '/ad/timer/stop',
+					isArray: false
+				},				
+				status: {
+					method: 'GET',
+					url: config.server + '/ad/timer/status',
+					isArray: false
+				},				
+				save: {
+					method: 'POST',
+					url: config.server + '/ad/timer/cf',
+					isArray: false
+				},
+				get: {
+					method: 'GET',
+					url: config.server + '/ad/timer/cf',
+					isArray: false
+				}				
+			});
+		})	
+		.factory('SCMAdminService', function($resource, config) {
+			return $resource(config.server + '/ad/scm', {}, {
+				create: {
+					method: 'PUT',
+					url: config.server + '/ad/scm',
+					isArray: false
+				},				
+				save: {
+					method: 'POST',
+					url: config.server + '/ad/scm',
+					isArray: false
+				},
+				get: {
+					method: 'GET',
+					url: config.server + '/ad/scm/:guid',
+					params: {guid: '@guid'},
+					isArray: false
+				},	
+				pswd: {
+					method: 'POST',
+					url: config.server + '/ad/scm/:guid/password',
+					params: {guid: '@guid'},
+					isArray: false
+				},					
+				types: {
+					method: 'GET',
+					url: config.server + '/ad/scm/types',
+					isArray: true
+				},	
+				apps: {
+					method: 'GET',
+					url: config.server + '/ad/scm/:guid/app',
+					params: {guid: '@guid'},
+					isArray: true
+				},		
+				app: {
+					method: 'GET',
+					url: config.server + '/ad/scm/:guid/app/:app',
+					params: {guid: '@guid', app: '@app'},
+					isArray: false
+				},	
+				add: {
+					method: 'PUT',
+					url: config.server + '/ad/scm/:guid/app/:app',
+					params: {guid: '@guid', app: '@app'},
+					isArray: false
+				},				
+				all: {
+					method: 'GET',
+					url: config.server + '/ad/scm',
+					isArray: true
+				}				
+			});
+		})		
+		.factory('MailAdminService', function($resource, config) {
+			return $resource(config.server + '/ad/mail', {}, {
+				save: {
+					method: 'POST',
+					url: config.server + '/ad/mail/cf',
+					isArray: false
+				},
+				get: {
+					method: 'GET',
+					url: config.server + '/ad/mail/cf',
+					isArray: false
+				}				
+			});
+		})		
 		.factory('UserAdminService', function($resource, config) {
 			return $resource(config.server + '/user', {}, {
 				save: {

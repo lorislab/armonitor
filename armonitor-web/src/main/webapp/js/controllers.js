@@ -2,6 +2,152 @@
 
 /* Controllers */
 angular.module('armonitor.controllers', [])
+		.controller('BTSAdminCtrl', function($scope) {	})
+		.controller('ProjectsAdminCtrl', function($scope) {	})
+		.controller('SCMAdminCtrl', function($scope, SCMAdminService) {
+
+			$scope.all = null;
+			$scope.filter = null;
+			$scope.selected = null;
+			$scope.types = null;
+			$scope.apps = null;
+			
+			$scope.validation = false;
+
+			$scope.pswd = {
+				o: null,
+				n: null,
+				c: null
+			};
+			
+			function _startup() {
+				SCMAdminService.all({}, function(response) {
+					$scope.all = response;
+				});
+			}
+
+			_startup();
+
+			$scope.reload = function() {
+				_startup();
+			};
+			
+			$scope.clear = function() {
+				$scope.filter = null;
+			};
+
+			$scope.search = function(row) {
+				if ($scope.filter) {
+					var tmp = $scope.filter || '';
+					return !!((row.user.indexOf(tmp) !== -1 || row.server.indexOf(tmp) !== -1));
+				}
+				return true;
+			};
+
+			$scope.switch = function(item) {
+				if (!$scope.types) {
+					SCMAdminService.types({}, function(response) {
+						$scope.types = response;
+					});						
+				}
+				SCMAdminService.get({guid: item.guid}, function(response) {
+					$scope.selected = response;
+					if ($scope.selected) {
+						SCMAdminService.apps({guid: item.guid}, function(response) {
+							$scope.apps = response;
+						});
+					}
+				});				
+			};
+			
+			$scope.close = function() {
+				$scope.selected = null;
+			};
+			
+			$scope.save = function() {
+				SCMAdminService.save({}, $scope.selected, function(response) {
+					$scope.data = response;
+				});
+			};
+			
+			$scope.changepswd = function() {
+				$scope.validation = false;
+
+				if ($scope.pswd.n && $scope.pswd.c && ($scope.pswd.n === $scope.pswd.c)) {
+					SCMAdminService.pswd({guid: $scope.user.guid}, {old: $scope.pswd.o, p1: $scope.pswd.n}, function(response) {
+						
+					});
+				} else {
+					$scope.validation = true;
+				}
+			};
+		})
+		.controller('TimerAdminCtrl', function($scope, TimerAdminService) {
+
+			$scope.data = null;
+			$scope.error = false;
+			$scope.status = null;
+
+			function _startup() {
+				TimerAdminService.get({}, function(response) {
+					$scope.data = response;
+					_status();
+				});
+			}
+
+			function _status() {
+				$scope.status = null;
+				TimerAdminService.status({}, function(response, status) {
+					$scope.status = response;
+				});
+			}
+
+			_startup();
+
+			$scope.save = function() {
+				$scope.error = false;
+				TimerAdminService.save({}, $scope.data, function(response) {
+					$scope.data = response;
+					_status();
+				}, function(response) {
+					$scope.error = true;
+				});
+			};
+
+			$scope.start = function() {
+				TimerAdminService.start({}, function(response, status) {
+					$scope.status = response;
+				});
+			};
+
+			$scope.stop = function() {
+				TimerAdminService.stop({}, function(response, status) {
+					$scope.status = response;
+				});
+			};
+		})
+		.controller('MailAdminCtrl', function($scope, MailAdminService) {
+
+			$scope.data = null;
+			$scope.error = false;
+
+			function _startup() {
+				MailAdminService.get({}, function(response) {
+					$scope.data = response;
+				});
+			}
+
+			_startup();
+
+			$scope.save = function() {
+				$scope.error = false;
+				MailAdminService.save({}, $scope.data, function(response) {
+					$scope.data = response;
+				}, function(response) {
+					$scope.error = true;
+				});
+			};
+		})
 		.controller('LoginModalCtrl', function($scope, $modalInstance, CommonService) {
 
 			$scope.msg = {
@@ -268,6 +414,18 @@ angular.module('armonitor.controllers', [])
 		.controller('AboutCtrl', function($scope) {
 
 		})
+		.controller('ServicesCtrl', function($scope) {
+
+			$scope.menu = 'timer';
+
+			$scope.change = function(item) {
+				$scope.menu = item;
+			};
+
+			$scope.page = function() {
+				return 'partials/admin/services/' + $scope.menu + '.html';
+			};
+		})
 		.controller('ProfileCtrl', function($scope, CommonService, SecurityRSService) {
 
 			$scope.user = angular.copy(CommonService.user());
@@ -275,12 +433,9 @@ angular.module('armonitor.controllers', [])
 			if (!($scope.user)) {
 				CommonService.logout();
 			}
-			
-			$scope.error = {
-				request: false,
-				validation: false
-			};
-			
+
+			$scope.validation = false;
+
 			$scope.pswd = {
 				o: null,
 				n: null,
@@ -294,17 +449,14 @@ angular.module('armonitor.controllers', [])
 			};
 
 			$scope.changepswd = function() {
-				$scope.error = {request: false,validation: false};
-				
+				$scope.validation = false;
+
 				if ($scope.pswd.n && $scope.pswd.c && ($scope.pswd.n === $scope.pswd.c)) {
 					SecurityRSService.pswd({guid: $scope.user.guid}, {old: $scope.pswd.o, p1: $scope.pswd.n}, function(response) {
 						CommonService.logout();
-					}, function(error) {
-						$scope.error = {request: true,validation: false};
-						$scope.pswd = { o: null, n: null, c: null };
 					});
 				} else {
-					$scope.error = {request: false,validation: true};
+					$scope.validation = true;
 				}
 			};
 
@@ -348,10 +500,10 @@ angular.module('armonitor.controllers', [])
 
 			$scope.active = function(data) {
 				var tmp = $location.path();
-				var r = false;
-				for (var i = 0; i < data.length && !r; i++) {
-					r = (tmp.indexOf(data[i]) === 0);
-				}
-				return r;
+//				var r = false;
+//				for (var i = 0; i < data.length && !r; i++) {
+//					r = (tmp.indexOf(data[i]) === 0);
+//				}
+				return tmp.indexOf(data) !== -1;
 			};
 		});

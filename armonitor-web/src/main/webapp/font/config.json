@@ -19,6 +19,12 @@
       "src": "fontawesome"
     },
     {
+      "uid": "31972e4e9d080eaa796290349ae6c1fd",
+      "css": "users",
+      "code": 59416,
+      "src": "fontawesome"
+    },
+    {
       "uid": "12f4ece88e46abd864e40b35e05b11cd",
       "css": "ok",
       "code": 59393,
@@ -97,9 +103,57 @@
       "src": "fontawesome"
     },
     {
+      "uid": "ce06b5805120d0c2f8d60cd3f1a4fdb5",
+      "css": "play",
+      "code": 59423,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "b624a1e512819d410ddbee84e6918b9d",
+      "css": "stop",
+      "code": 59422,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "ab656e280958018a7859eba9a1eabbc7",
+      "css": "award",
+      "code": 59420,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "500fc1f109021e4b1de4deda2f7ed399",
+      "css": "laptop",
+      "code": 59421,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "5ccf1ed249fd9d723ec1ce8629a9f507",
+      "css": "suitcase",
+      "code": 59419,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "dd6c6b221a1088ff8a9b9cd32d0b3dd5",
+      "css": "check",
+      "code": 59412,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "4b900d04e8ab8c82f080c1cfbac5772c",
+      "css": "check-empty",
+      "code": 59413,
+      "src": "fontawesome"
+    },
+    {
       "uid": "f4445feb55521283572ee88bc304f928",
       "css": "floppy",
       "code": 59411,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "f2aa28a2548ed3d2be718d087b65ee21",
+      "css": "key",
+      "code": 59418,
       "src": "fontawesome"
     },
     {
@@ -115,6 +169,12 @@
       "src": "fontawesome"
     },
     {
+      "uid": "7432077e6a2d6aa19984ca821bb6bbda",
+      "css": "bug",
+      "code": 59415,
+      "src": "fontawesome"
+    },
+    {
       "uid": "0f444c61b0d2c9966016d7ddb12f5837",
       "css": "beaker",
       "code": 59403,
@@ -125,6 +185,18 @@
       "css": "gauge",
       "code": 59397,
       "src": "fontawesome"
+    },
+    {
+      "uid": "9e8430ce95f56720ae8e7afba291df88",
+      "css": "user-md",
+      "code": 59417,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "e8239f8188c76c925be4bd1bbcc013ac",
+      "css": "erase",
+      "code": 59414,
+      "src": "entypo"
     }
   ]
 }

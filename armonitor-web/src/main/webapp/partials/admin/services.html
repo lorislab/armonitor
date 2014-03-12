@@ -1,0 +1,24 @@
+<h1>Services
+	<small>configuration</small>
+</h1>
+
+<ol class="breadcrumb">
+	<li  class="active">
+		<i class="icon-cog-alt"></i> Settings
+	</li>
+	<li class="active">
+		<i class="icon-laptop"></i> Services
+	</li>	
+</ol>
+
+<div class="row">
+	<div class="col-lg-2">
+		<ul class="nav nav-pills nav-stacked navbar-default nav-stacked">
+			<li data-ng-class="{ active: menu === 'timer'}"><a href="" data-ng-click="change('timer')"><i class="icon-clock"></i> Timer service</a></li>			
+			<li data-ng-class="{ active: menu === 'mail'}"><a href="" data-ng-click="change('mail')"><i class="icon-mail-alt"></i> Mail service</a></li>
+		</ul>	
+	</div>
+	<div class="col-lg-10">
+		<div ng-include="page()"></div>
+	</div>
+</div>

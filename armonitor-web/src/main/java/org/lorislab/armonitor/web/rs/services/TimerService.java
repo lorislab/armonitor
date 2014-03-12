@@ -16,7 +16,6 @@
 
 package org.lorislab.armonitor.web.rs.services;
 
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Timer;
 import javax.ws.rs.Consumes;
@@ -28,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.timer.ejb.TimerServiceBean;
 import org.lorislab.armonitor.timer.model.TimerConfig;
+import org.lorislab.armonitor.web.rs.model.TimerStatus;
 
 /**
  *
@@ -45,7 +45,7 @@ public class TimerService {
     @Path("start")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Date start() {
+    public TimerStatus start() {
         timerService.start();
         return status();
     }
@@ -53,7 +53,7 @@ public class TimerService {
     @Path("stop")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Date stop() {
+    public TimerStatus stop() {
         timerService.stop();
         return status();
     }
@@ -61,12 +61,14 @@ public class TimerService {
     @Path("status")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Date status() {
+    public TimerStatus status() {
+        TimerStatus result = new TimerStatus();        
         Timer timer = timerService.getTimer();
         if (timer != null) {
-            return timer.getNextTimeout();
+            result.run = true;
+            result.next = timer.getNextTimeout();
         }
-        return null;
+        return result;
     }
     
     @Path("cf")

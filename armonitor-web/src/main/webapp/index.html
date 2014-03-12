@@ -23,8 +23,23 @@
 				<div class="navbar-collapse collapse" data-ng-controller="MenuCtrl">
 					<ul class="nav navbar-nav navbar-left">
 						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard" data-translate="MENU_DASHBOARD"><i class="icon-gauge"></i> Dashboard</a></li>
-						<!--<li data-ng-class="{ active: active(['/about'])}"><a href="#/about" data-translate="MENU_ABOUT">About</a></li>-->				
-						<li data-ng-class="{ active: active(['/admin'])}"><a href="#/admin" data-ng-show="roles.admin"><i class="icon-cog-alt"></i> Settings</a></li>
+						<li data-ng-class="{ active: active(['/settings'])}" data-ng-show="user">
+							<a href="#" class="dropdown-toggle"  data-toggle="dropdown"><i class="icon-cog-alt"></i> Settings <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#/settings/services"><i class="icon-laptop"></i> Services</a></li>
+								<li class="divider"></li>
+								<li><a href="#/settings/scm"><i class="icon-fork"></i> SCM systems</a></li>
+								<li><a href="#/settings/bts"><i class="icon-bug"></i> BTS systems</a></li>
+								<li class="divider"></li>
+								<li><a href="#/settings/projects"><i class="icon-award"></i> Projects</a></li>
+								<li><a href="#/settings/bts"><i class="icon-beaker"></i> Applications</a></li>
+								<li><a href="#/settings/bts"><i class="icon-suitcase"></i> Systems</a></li>
+								<li><a href="#/settings/bts"><i class="icon-user-md"></i> Agents</a></li>
+								<li class="divider"></li>
+								<li><a href="#/settings/users"><i class="icon-users"></i> Users</a></li>								
+								<li><a href="#/settings/roles"><i class="icon-key"></i> Roles</a></li>		
+							</ul>
+						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">						
 						<li><a href="" data-ng-hide="user" ng-click="login()"><i class="icon-login"></i> Sign in</a></li>

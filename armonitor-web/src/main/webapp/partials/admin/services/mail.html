@@ -1,0 +1,86 @@
+<div data-ng-controller="MailAdminCtrl">
+	<h2>Mail service
+		<small>configuration</small>
+	</h2>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<form class="form-horizontal" data-ng-submit="save()">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label" for="enabled"></label>
+						<div class="controls">
+							<label class="enabled">
+								<input type="checkbox" id="enabled" data-ng-model="data.enabled"> Enable email notification
+							</label>							
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="server">Server URL</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="icon-pencil"></i></span>
+							<input id="server" type="text" class="form-control" placeholder="Server URL" data-ng-model="data.server" data-ng-readonly="!data.enabled" required>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="url">Reource URL</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="icon-pencil"></i></span>
+							<input id="url" type="text" class="form-control" placeholder="E-mail resource URL" data-ng-model="data.url" data-ng-readonly="!data.enabled" required>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="locale">Email language</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="icon-pencil"></i></span>
+							<input id="locale" type="text" class="form-control" placeholder="E-mail language" data-ng-model="data.locale" data-ng-readonly="!data.enabled" required>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="from">From email</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="icon-pencil"></i></span>
+							<input id="from" type="text" class="form-control" placeholder="From email address" data-ng-model="data.from" data-ng-readonly="!data.enabled" required>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="contentType">Content type</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="icon-pencil"></i></span>
+							<input id="contentType" type="text" class="form-control" placeholder="Email content type" data-ng-model="data.contentType" data-ng-readonly="!data.enabled" required>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="transferEncoding">Transfer encoding</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="icon-pencil"></i></span>
+							<input id="transferEncoding" type="text" class="form-control" placeholder="Email transfer encoding" data-ng-model="data.transferEncoding" data-ng-readonly="!data.enabled" required>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="contentCharset">Content char set</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="icon-pencil"></i></span>
+							<input id="contentCharset" type="text" class="form-control" placeholder="Email content char set" data-ng-model="data.contentCharset" data-ng-readonly="!data.enabled" required>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="save"></label>
+						<div class="controls">
+							<button id="save" type="submit" class="btn btn-success" ><i class="icon-floppy"></i> Save</button>
+							<span class="label label-danger" data-ng-show="error"><i class="icon-attention"></i> Error by saving the mail configuration.</span>
+						</div>
+					</div>
+				</fieldset>
+			</form>	
+		</div>
+	</div>	
+</div>
