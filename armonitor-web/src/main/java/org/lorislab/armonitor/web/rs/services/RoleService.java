@@ -32,7 +32,7 @@ import org.lorislab.armonitor.web.rs.model.Role;
  *
  * @author Andrej Petras
  */
-@Path("role")
+@Path("ad/role")
 public class RoleService {
 
     @EJB

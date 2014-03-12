@@ -80,23 +80,24 @@ public class ActivityMapper implements MapperService<ChangeReport, Activity> {
             for (Change change : changes) {
                 ActivityChange tmp = Mapper.map(change, ActivityChange.class, profiles);
                 if (tmp != null) {
-                    if (tmp.type != null) {
-                        types.add(tmp.type);
+                    if (tmp.type == null) {
+                        tmp.type = "Error";
                     }
+                    types.add(tmp.type);
                     result.add(tmp);
                 }
             }
         }
         return result;
-    }
-    
+    }      
+
     /**
      * {@inheritDoc}
      */
     @Override
     public ChangeReport update(ChangeReport entity, Activity data, Set<String> profiles) {
         return entity;
-    }
+}
 
     /**
      * {@inheritDoc}

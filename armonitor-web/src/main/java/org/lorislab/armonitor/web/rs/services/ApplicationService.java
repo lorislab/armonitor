@@ -37,7 +37,7 @@ import org.lorislab.armonitor.web.rs.model.SCMSystem;
  *
  * @author Andrej Petras
  */
-@Path("app")
+@Path("ad/app")
 public class ApplicationService {
     
     @EJB

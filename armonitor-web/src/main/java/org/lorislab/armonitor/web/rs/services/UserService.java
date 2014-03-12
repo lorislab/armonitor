@@ -36,7 +36,7 @@ import org.lorislab.armonitor.web.rs.model.User;
  *
  * @author Andrej Petras
  */
-@Path("user")
+@Path("ad/user")
 public class UserService {
 
     @EJB

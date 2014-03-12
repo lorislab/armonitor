@@ -27,7 +27,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -53,7 +52,7 @@ public class SecurityService {
     private SecurityServiceBean service;
     
     @POST
-    @Path("roles")
+    @Path("pr/roles")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String,Boolean> isUserInRole(Set<String> roles) {
@@ -61,12 +60,14 @@ public class SecurityService {
     }
     
     @GET
+    @Path("pr")
     @Produces(MediaType.APPLICATION_JSON)
     public User getUser() {
         return controller.getUser();
     }
     
     @POST
+    @Path("pr")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public User saveUser(User user) {
@@ -74,7 +75,7 @@ public class SecurityService {
     }
 
     @POST
-    @Path("password")
+    @Path("pr/password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changePassword(ChangePasswordRequest reqeust) throws Exception {
         controller.changePassword(reqeust);
@@ -100,7 +101,7 @@ public class SecurityService {
     }
 
     @GET
-    @Path("logout")
+    @Path("pr/logout")
     public void logout(@Context HttpServletRequest httpRequest) {
         String guid = null;
         try {

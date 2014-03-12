@@ -37,7 +37,7 @@ import org.lorislab.armonitor.web.rs.model.SCMSystem;
  * 
  * @author Andrej Petras
  */
-@Path("scm")
+@Path("ad/scm")
 public class SCMSystemService {
    
     /**

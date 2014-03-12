@@ -23,7 +23,7 @@
 
 	<div style="text-align: right; padding-bottom: 10px">
 		<div class="btn-group">
-			<button data-ng-repeat="b in stypes" type="button" class="btn btn-sm" data-ng-click="updateTypes(b.id)" data-ng-class="{'btn-success': b.select, 'btn-default': !b.select}" data-ng-model="b.select" btn-checkbox>{{b.id}}</button>
+			<button data-ng-repeat="b in stypes" type="button" class="btn btn-sm" data-ng-click="updateTypes(b.id)" data-ng-class="{'btn-success': b.select && b.id !== 'Error', 'btn-default': !b.select, 'btn-danger': b.select && b.id === 'Error'}" data-ng-model="b.select" btn-checkbox>{{b.id}}</button>
 		</div>
 	</div>
 	

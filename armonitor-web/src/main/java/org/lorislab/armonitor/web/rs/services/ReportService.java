@@ -26,7 +26,7 @@ import org.lorislab.armonitor.ejb.ProcessServiceBean;
  *
  * @author Andrej Petras
  */
-@Path("report")
+@Path("ad/report")
 public class ReportService {
    
     @EJB

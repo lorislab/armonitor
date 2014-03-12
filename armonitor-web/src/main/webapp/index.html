@@ -24,7 +24,7 @@
 					<ul class="nav navbar-nav navbar-left">
 						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard" data-translate="MENU_DASHBOARD"><i class="icon-gauge"></i> Dashboard</a></li>
 						<!--<li data-ng-class="{ active: active(['/about'])}"><a href="#/about" data-translate="MENU_ABOUT">About</a></li>-->				
-						<li><a href="#" data-ng-show="roles.admin"><i class="icon-cog-alt"></i> Administrator</a></li>
+						<li data-ng-class="{ active: active(['/admin'])}"><a href="#/admin" data-ng-show="roles.admin"><i class="icon-cog-alt"></i> Settings</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">						
 						<li><a href="" data-ng-hide="user" ng-click="login()"><i class="icon-login"></i> Sign in</a></li>
@@ -46,9 +46,9 @@
 
 			<div data-ng-view></div>
 
-			<hr style="margin-top: 20px"/>	
-			<footer>
-				<p>&copy; 2013 lorislab.org &middot; Released under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
+			<hr style="margin-top: 20px;"/>	
+			<footer style="text-align: center">
+				<p>&copy; 2013 <a href="http://www.lorislab.org" class="link-simple"><span class="label label-success">lorislab.org</span></a> &middot; Released under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
 			</footer>				
 		</div>
 		<script src="lib/timeline/timeline-min.js"></script>
@@ -63,6 +63,5 @@
 		<script src="js/controllers.js"></script>
 		<script src="js/filters.js"></script>
 		<script src="js/directives.js"></script>
-		<!--<script src="lib/timeline/timeline.js"></script>-->
 	</body>
 </html>

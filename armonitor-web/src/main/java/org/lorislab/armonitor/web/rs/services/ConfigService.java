@@ -25,7 +25,7 @@ import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
  *
  * @author Andrej Petras
  */
-@Path("cf")
+@Path("ad/cf")
 public class ConfigService {
     
     @EJB

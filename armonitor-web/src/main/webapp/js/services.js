@@ -24,7 +24,7 @@ angular.module('armonitor.services', ['ngResource'])
 			var _roles = null;
 
 			function _startup() {
-				SecurityRSService.get(function(response) {
+				SecurityRSService.user(function(response) {
 					if (response.guid) {
 						_user = response;
 						_load_roles();
@@ -97,27 +97,27 @@ angular.module('armonitor.services', ['ngResource'])
 			return $resource(config.server + '/sec', {}, {
 				pswd: {
 					method: 'POST',
-					url: config.server + '/password',
+					url: config.server + '/sec/pr/password',
 					isArray: false
 				},				
 				user: {
 					method: 'GET',
-					url: config.server + '/sec',
+					url: config.server + '/sec/pr',
 					isArray: false
 				},
 				save: {
 					method: 'POST',
-					url: config.server + '/sec',
+					url: config.server + '/sec/pr',
 					isArray: false
 				},
 				logout: {
-					url: config.server + '/sec/logout',
+					url: config.server + '/sec/pr/logout',
 					method: 'GET',
 					isArray: false
 				},
 				roles: {
 					method: 'POST',
-					url: config.server + '/sec/roles',
+					url: config.server + '/sec/pr/roles',
 					isArray: false
 				},
 				login: {

@@ -37,7 +37,7 @@ import org.lorislab.armonitor.web.rs.model.Role;
  *
  * @author Andrej Petras
  */
-@Path("sys")
+@Path("ad/sys")
 public class ApplicationSystemService {
 
     @EJB

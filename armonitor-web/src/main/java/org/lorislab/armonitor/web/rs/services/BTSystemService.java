@@ -36,7 +36,7 @@ import org.lorislab.armonitor.web.rs.model.Project;
  *
  * @author Andrej Petras
  */
-@Path("bts")
+@Path("ad/bts")
 public class BTSystemService {
 
     /**

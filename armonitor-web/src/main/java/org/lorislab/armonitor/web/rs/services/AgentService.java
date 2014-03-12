@@ -36,7 +36,7 @@ import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
  * 
  * @author Andrej Petras
  */
-@Path("agent")
+@Path("ad/agent")
 public class AgentService {
 
     @EJB

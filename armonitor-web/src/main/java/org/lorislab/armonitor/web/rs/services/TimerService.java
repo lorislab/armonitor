@@ -33,7 +33,7 @@ import org.lorislab.armonitor.timer.model.TimerConfig;
  *
  * @author Andrej Petras
  */
-@Path("timer")
+@Path("ad/timer")
 public class TimerService {
     
     @EJB

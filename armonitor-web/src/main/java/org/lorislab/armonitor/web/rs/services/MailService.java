@@ -34,7 +34,7 @@ import org.lorislab.armonitor.mail.model.MailTemplateResource;
  * 
  * @author Andrej Petras
  */
-@Path("mail")
+@Path("ad/mail")
 public class MailService {
     
     @EJB
