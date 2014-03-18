@@ -28,6 +28,7 @@ import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.mail.ejb.MailServiceBean;
 import org.lorislab.armonitor.mail.model.MailConfig;
 import org.lorislab.armonitor.mail.model.MailTemplateResource;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The mail rest-service.
@@ -35,6 +36,7 @@ import org.lorislab.armonitor.mail.model.MailTemplateResource;
  * @author Andrej Petras
  */
 @Path("ad/mail")
+@CdiServiceMethod
 public class MailService {
     
     @EJB

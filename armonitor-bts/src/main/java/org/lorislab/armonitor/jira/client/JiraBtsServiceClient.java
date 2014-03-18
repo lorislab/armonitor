@@ -61,6 +61,15 @@ public class JiraBtsServiceClient implements BtsServiceClient {
 
     /**
      * {@inheritDoc}
+     */    
+    @Override
+    public String getName() {
+        return "Jira";
+    }
+
+    
+    /**
+     * {@inheritDoc}
      */
     @Override
     public BtsResult getIssues(BtsCriteria criteria) throws Exception {

@@ -17,6 +17,7 @@ package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +53,7 @@ public class BTSystemServiceBean {
     @EJB
     private StoreProjectServiceBean projectService;
 
-    public Set<String> getTypes() {
+    public Map<String, String> getTypes() {
         return BtsService.getTypes();
     }
     

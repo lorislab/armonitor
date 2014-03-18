@@ -17,9 +17,12 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -27,10 +30,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.lorislab.armonitor.web.rs.controller.MessageController;
 import org.lorislab.armonitor.web.rs.ejb.SCMSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
+import org.lorislab.armonitor.web.rs.resources.Messages;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The SCM system rest service.
@@ -38,6 +44,7 @@ import org.lorislab.armonitor.web.rs.model.SCMSystem;
  * @author Andrej Petras
  */
 @Path("ad/scm")
+@CdiServiceMethod
 public class SCMSystemService {
    
     /**
@@ -45,6 +52,9 @@ public class SCMSystemService {
      */
     @EJB
     private SCMSystemServiceBean service;
+    
+    @Inject
+    private MessageController msg;
     
     @PUT
     @Path("{guid}/app/{app}")
@@ -63,47 +73,56 @@ public class SCMSystemService {
     @GET
     @Path("types")
     @Produces(MediaType.APPLICATION_JSON)
-    public Set<String> getTypes() {
+    public Map<String, String> getTypes() throws Exception {
         return service.getTypes();
     }
     
     @POST
     @Path("{guid}/password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changePassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) {
+    public void changePassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) throws Exception {
         service.changePassword(guid, reqeust);
     }
     
     @PUT
     @Path("{guid}/password")
     @Produces(MediaType.APPLICATION_JSON)
-    public ChangePasswordRequest createchangePassword(@PathParam("guid") String guid) {
+    public ChangePasswordRequest createchangePassword(@PathParam("guid") String guid) throws Exception {
         return new ChangePasswordRequest();
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<SCMSystem> get() {
+    public List<SCMSystem> get() throws Exception {
         return service.get();
     }
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public SCMSystem create() {
+    public SCMSystem create() throws Exception {
         return service.create();
     }
 
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public SCMSystem get(@PathParam("guid") String guid) {
+    public SCMSystem get(@PathParam("guid") String guid) throws Exception {
         return service.get(guid);
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public SCMSystem save(SCMSystem scm) {
-        return service.save(scm);
+    public SCMSystem save(SCMSystem scm) throws Exception {
+        SCMSystem result = service.save(scm);
+        msg.addMessage(Messages.SCM_SAVE, scm.guid, scm.server);
+        return result;
+    }
+    
+    @DELETE
+    @Path("{guid}")
+    public void delete(@PathParam("guid") String guid) throws Exception {
+        service.delete(guid);
+        msg.addMsgRef(Messages.SCM_DELETE, guid);        
     }
 }

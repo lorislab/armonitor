@@ -27,12 +27,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.RoleServiceBean;
 import org.lorislab.armonitor.web.rs.model.Role;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  *
  * @author Andrej Petras
  */
 @Path("ad/role")
+@CdiServiceMethod
 public class RoleService {
 
     @EJB

@@ -23,6 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.controller.DashboardVersionBuildsController;
 import org.lorislab.armonitor.web.rs.model.DashboardVersionBuilds;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The dashboard version builds rest-service.
@@ -30,6 +31,7 @@ import org.lorislab.armonitor.web.rs.model.DashboardVersionBuilds;
  * @author Andrej Petras
  */
 @Path("dvb")
+@CdiServiceMethod
 public class DashboardVersionBuildsService {
 
     /**

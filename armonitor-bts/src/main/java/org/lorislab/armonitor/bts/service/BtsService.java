@@ -42,6 +42,11 @@ public final class BtsService {
     private static final Map<String, BtsServiceClient> CLIENTS = new HashMap<>();
 
     /**
+     * The clients type map.
+     */
+    private static final Map<String, String> TYPES = new HashMap<>();
+      
+    /**
      * Loads the clients.
      */
     static {
@@ -52,6 +57,7 @@ public final class BtsService {
                 BtsServiceClient service = iter.next();
                 LOGGER.log(Level.FINE, "Add BTS service {0}", service.getClass().getName());
                 CLIENTS.put(service.getType(), service);
+                TYPES.put(service.getType(), service.getName());
             }
         }
     }
@@ -68,10 +74,10 @@ public final class BtsService {
      *
      * @return the set of client service types.
      */
-    public static Set<String> getTypes() {
-        return CLIENTS.keySet();
+    public static Map<String, String> getTypes() {
+        return TYPES;
     }
-
+ 
     /**
      * Gets the list of issues.
      *

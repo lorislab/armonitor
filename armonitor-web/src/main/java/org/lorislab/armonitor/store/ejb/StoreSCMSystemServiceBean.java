@@ -67,7 +67,7 @@ public class StoreSCMSystemServiceBean extends AbstractEntityServiceBean<StoreSC
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean deleteSCMSystem(String guid) {
-        return this.delete(this);
+        return this.delete(guid);
     }
 
     /**

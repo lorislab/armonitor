@@ -34,6 +34,8 @@ import org.lorislab.armonitor.web.rs.model.DashboardApplication;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.DashboardProject;
 import org.lorislab.armonitor.web.rs.model.DashboardSystemBuild;
+import org.lorislab.armonitor.web.rs.resources.Errors;
+import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
  * The dashboard service.
@@ -55,39 +57,51 @@ public class DashboardServiceBean {
      */
     @EJB
     private StoreSystemBuildServiceBean systemBuildService;
-        
+
     /**
      * Updates the system build.
      *
      * @param app the application.
      * @param system the system.
+     *
+     * @throws ServiceException if the method fails.
      */
-    public void updateSystemBuild(DashboardApplication app, DashboardApplicationSystem system) {
-        StoreSystemBuildCriteria criteria = new StoreSystemBuildCriteria();
-        criteria.setSystem(system.guid);
-        criteria.setFetchBuild(true);
-        criteria.setFetchBuildParam(true);
-        criteria.setFetchSystem(true);
-        criteria.setFetchSystemApplication(true);
-        criteria.setMaxDate(Boolean.TRUE);
-        StoreSystemBuild ssb = systemBuildService.getSystemBuild(criteria);
-        DashboardSystemBuild dsb = Mapper.map(ssb, DashboardSystemBuild.class);
-        system.systemBuild = dsb;
+    public void updateSystemBuild(DashboardApplication app, DashboardApplicationSystem system) throws ServiceException {
+        try {
+            StoreSystemBuildCriteria criteria = new StoreSystemBuildCriteria();
+            criteria.setSystem(system.guid);
+            criteria.setFetchBuild(true);
+            criteria.setFetchBuildParam(true);
+            criteria.setFetchSystem(true);
+            criteria.setFetchSystemApplication(true);
+            criteria.setMaxDate(Boolean.TRUE);
+            StoreSystemBuild ssb = systemBuildService.getSystemBuild(criteria);
+            DashboardSystemBuild dsb = Mapper.map(ssb, DashboardSystemBuild.class);
+            system.systemBuild = dsb;
+        } catch (Exception ex) {
+            throw new ServiceException(Errors.DASHBOARD_UPDATE_SYSTEM_BUILD_ERROR);
+        }
     }
 
     /**
      * Gets the list of dashboard projects.
      *
      * @return the list of dashboard projects.
+     *
+     * @throws ServiceException if the method fails.
      */
-    public Dashboard getDashboard() {
-
-        Dashboard result = new Dashboard();
-        List<StoreProject> tmp = service.getDashboardProjects();
-        result.projects = Mapper.convert(tmp, DashboardProject.class);
-        result.date = new Date();
-        if (tmp != null) {
-            result.size = tmp.size();
+    public Dashboard getDashboard() throws ServiceException {
+        Dashboard result;
+        try {
+            result = new Dashboard();
+            List<StoreProject> tmp = service.getDashboardProjects();
+            result.projects = Mapper.convert(tmp, DashboardProject.class);
+            result.date = new Date();
+            if (tmp != null) {
+                result.size = tmp.size();
+            }            
+        } catch (Exception ex) {
+            throw new ServiceException(Errors.DASHBOARD_LOAD_ERROR, null, ex);            
         }
         return result;
     }
@@ -97,12 +111,14 @@ public class DashboardServiceBean {
      *
      * @param dashboard the dashboard.
      * @return the map of the dashboard application systems.
+     *
+     * @throws Exception if the method fails.
      */
-    public Map<String, DashboardApplicationSystem> updateSystems(Dashboard dashboard) {
+    public Map<String, DashboardApplicationSystem> updateSystems(Dashboard dashboard) throws Exception {
         Map<String, DashboardApplicationSystem> systems = new HashMap<>();
         if (dashboard.projects != null) {
             for (DashboardProject project : dashboard.projects.values()) {
-                if (project != null && project.applications != null) {                    
+                if (project != null && project.applications != null) {
                     for (DashboardApplication app : project.applications.values()) {
                         systems.putAll(app.systems);
                     }
@@ -123,7 +139,7 @@ public class DashboardServiceBean {
             for (DashboardSystemBuild build : builds) {
                 DashboardApplicationSystem das = systems.get(build.system);
                 if (das != null) {
-                    das.systemBuild = build;                    
+                    das.systemBuild = build;
                 }
             }
         }

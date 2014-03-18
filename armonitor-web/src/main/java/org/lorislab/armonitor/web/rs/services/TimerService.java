@@ -28,12 +28,15 @@ import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.timer.ejb.TimerServiceBean;
 import org.lorislab.armonitor.timer.model.TimerConfig;
 import org.lorislab.armonitor.web.rs.model.TimerStatus;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
- *
+ * The timer rest service.
+ * 
  * @author Andrej Petras
  */
 @Path("ad/timer")
+@CdiServiceMethod
 public class TimerService {
     
     @EJB
@@ -45,7 +48,7 @@ public class TimerService {
     @Path("start")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public TimerStatus start() {
+    public TimerStatus start() throws Exception {
         timerService.start();
         return status();
     }
@@ -53,7 +56,7 @@ public class TimerService {
     @Path("stop")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public TimerStatus stop() {
+    public TimerStatus stop() throws Exception {
         timerService.stop();
         return status();
     }
@@ -61,7 +64,7 @@ public class TimerService {
     @Path("status")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public TimerStatus status() {
+    public TimerStatus status() throws Exception {
         TimerStatus result = new TimerStatus();        
         Timer timer = timerService.getTimer();
         if (timer != null) {
@@ -74,7 +77,7 @@ public class TimerService {
     @Path("cf")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public TimerConfig getConfig() {
+    public TimerConfig getConfig() throws Exception {
         return configService.getConfiguration(TimerConfig.class);
     }
     
@@ -82,7 +85,7 @@ public class TimerService {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public TimerConfig setConfig(TimerConfig jiraConfig) {
+    public TimerConfig setConfig(TimerConfig jiraConfig) throws Exception {
         return configService.setConfiguration(jiraConfig);
     }    
 }

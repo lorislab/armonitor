@@ -30,6 +30,7 @@ import org.lorislab.armonitor.web.rs.ejb.AgentServiceBean;
 import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The agent rest-service.
@@ -37,6 +38,7 @@ import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
  * @author Andrej Petras
  */
 @Path("ad/agent")
+@CdiServiceMethod
 public class AgentService {
 
     @EJB

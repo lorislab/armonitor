@@ -31,12 +31,14 @@ import org.lorislab.armonitor.web.rs.ejb.UserServiceBean;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.Role;
 import org.lorislab.armonitor.web.rs.model.User;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  *
  * @author Andrej Petras
  */
 @Path("ad/user")
+@CdiServiceMethod
 public class UserService {
 
     @EJB

@@ -10,8 +10,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<server.home.dir>${JBOSS_ARMONITOR_HOME}</server.home.dir>		
-		<jel.version>0.0.3</jel.version>
-		<jira-jaxrs.version>0.0.3</jira-jaxrs.version>
 	</properties>
 
 	<licenses>
@@ -58,14 +56,11 @@
 			<!-- JEL -->
 			<dependency>
 				<groupId>org.lorislab.jel</groupId>
-				<artifactId>ejb</artifactId>
-				<version>${jel.version}</version>
+				<artifactId>jel-bom</artifactId>
+				<version>0.0.4-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>				
 			</dependency>			
-			<dependency>
-				<groupId>org.lorislab.jel</groupId>
-				<artifactId>base</artifactId>				
-				<version>${jel.version}</version>
-			</dependency>	
 			<!-- RESTEASY -->
 			<dependency>
 				<groupId>org.jboss.resteasy</groupId>
@@ -164,7 +159,7 @@
 			<dependency>
 				<groupId>org.lorislab.jira</groupId>
 				<artifactId>jira-jaxrs</artifactId>	
-				<version>${jira-jaxrs.version}</version>							
+				<version>0.0.3</version>							
 			</dependency>														 				
 		</dependencies>
 	</dependencyManagement>    
@@ -185,10 +180,40 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
-			</plugin>       
+			</plugin> 
+			<plugin>
+				<groupId>org.lorislab.maven</groupId>
+				<artifactId>messagebundles-plugin</artifactId>			
+			</plugin>			      
 		</plugins>    
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>com.google.code.maven-replacer-plugin</groupId>
+					<artifactId>replacer</artifactId>
+					<version>1.5.2</version>
+				</plugin>				
+				<plugin>
+					<groupId>com.samaxes.maven</groupId>
+					<artifactId>minify-maven-plugin</artifactId>
+					<version>1.7.2</version>
+				</plugin>				
+				<plugin>
+					<groupId>org.lorislab.maven</groupId>
+					<artifactId>messagebundles-plugin</artifactId>
+					<version>1.0.1</version>
+					<executions>
+						<execution>
+							<phase>compile</phase>
+							<goals>
+								<goal>default</goal>
+							</goals>
+							<configuration>
+								<language>en</language>
+							</configuration>
+						</execution>
+					</executions>					
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-ejb-plugin</artifactId>

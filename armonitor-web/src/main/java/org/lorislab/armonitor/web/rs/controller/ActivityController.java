@@ -21,6 +21,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.lorislab.armonitor.web.rs.ejb.ActivityServiceBean;
 import org.lorislab.armonitor.web.rs.model.Activity;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The activity session controller.
@@ -29,6 +30,7 @@ import org.lorislab.armonitor.web.rs.model.Activity;
  */
 @Named
 @SessionScoped
+@CdiServiceMethod
 public class ActivityController implements Serializable {
 
     /**

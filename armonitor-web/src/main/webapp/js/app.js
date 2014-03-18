@@ -37,8 +37,12 @@ app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/appbuild/:guid', {templateUrl: 'partials/appbuild.html', controller: 'ApplicationBuildCtrl'});
 		$routeProvider.when('/versionbuild/:app/:ver', {templateUrl: 'partials/versionbuild.html', controller: 'VersionBuildCtrl'});
 		$routeProvider.when('/profile', {templateUrl: 'partials/profile.html', controller: 'ProfileCtrl'});
-		$routeProvider.when('/settings', {templateUrl: 'partials/admin/services.html', controller: 'ServicesCtrl'});
-		$routeProvider.when('/settings/scm', {templateUrl: 'partials/admin/scm.html', controller: 'SCMAdminCtrl'});		
+		$routeProvider.when('/settings', {templateUrl: 'partials/admin/services.html', controller: 'ServicesCtrl'});		
+		$routeProvider.when('/settings/timer', {templateUrl: 'partials/admin/services/timer.html', controller: 'TimerAdminCtrl'});
+		$routeProvider.when('/settings/mail', {templateUrl: 'partials/admin/services/mail.html', controller: 'MailAdminCtrl'});
+		$routeProvider.when('/settings/scm', {templateUrl: 'partials/admin/scm/search.html', controller: 'SCMSearchAdminCtrl'});		
+		$routeProvider.when('/settings/scm/edit', {templateUrl: 'partials/admin/scm/edit.html', controller: 'SCMAdminCtrl'});
+		$routeProvider.when('/settings/scm/edit/:guid', {templateUrl: 'partials/admin/scm/edit.html', controller: 'SCMAdminCtrl'});
 		$routeProvider.when('/settings/bts', {templateUrl: 'partials/admin/bts.html', controller: 'BTSAdminCtrl'});		
 		$routeProvider.when('/settings/projects', {templateUrl: 'partials/admin/projects.html', controller: 'ProjectsAdminCtrl'});		
 		$routeProvider.when('/settings/services', {templateUrl: 'partials/admin/services.html', controller: 'ServicesCtrl'});
@@ -59,3 +63,27 @@ app.config(['$translateProvider', function($translateProvider) {
 		});
 		$translateProvider.preferredLanguage('en');
 	}]);
+
+// register the interceptor during module config
+app.config(function($httpProvider) {
+
+	$httpProvider.responseInterceptors.push(function($q, ErrorService) {
+
+		return function(promise) {
+
+			var _ok = function(value) {
+				return value;
+			};
+
+			var _error = function(value) {
+				if (value.status === 400) {					
+					ErrorService.error(value.data);					
+				}
+				return $q.reject(value);
+			};
+
+			return promise.then(_ok, _error);
+
+		};
+	});
+});

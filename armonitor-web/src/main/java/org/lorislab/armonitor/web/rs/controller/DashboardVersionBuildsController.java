@@ -21,8 +21,8 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.lorislab.armonitor.web.rs.ejb.DashboardVersionBuildsServiceBean;
-import org.lorislab.armonitor.web.rs.model.DashboardAppBuilds;
 import org.lorislab.armonitor.web.rs.model.DashboardVersionBuilds;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The dashboard version builds service controller.
@@ -31,6 +31,7 @@ import org.lorislab.armonitor.web.rs.model.DashboardVersionBuilds;
  */
 @Named
 @SessionScoped
+@CdiServiceMethod
 public class DashboardVersionBuildsController implements Serializable {
 
     /**

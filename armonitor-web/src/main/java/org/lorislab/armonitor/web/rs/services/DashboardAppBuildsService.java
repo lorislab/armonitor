@@ -23,6 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.controller.DashboardAppBuildsController;
 import org.lorislab.armonitor.web.rs.model.DashboardAppBuilds;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The dashboard application builds rest-service.
@@ -30,6 +31,7 @@ import org.lorislab.armonitor.web.rs.model.DashboardAppBuilds;
  * @author Andrej Petras
  */
 @Path("dab")
+@CdiServiceMethod
 public class DashboardAppBuildsService {
 
     /**

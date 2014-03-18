@@ -27,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.ejb.BuildServiceBean;
 import org.lorislab.armonitor.web.rs.model.Build;
 import org.lorislab.armonitor.web.rs.model.BuildCriteria;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The build rest-service.
@@ -34,6 +35,7 @@ import org.lorislab.armonitor.web.rs.model.BuildCriteria;
  * @author Andrej Petras
  */
 @Path("build")
+@CdiServiceMethod
 public class BuildService {
 
     /**

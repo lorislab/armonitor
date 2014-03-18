@@ -8,17 +8,17 @@ angular.module('armonitor.services', ['ngResource'])
 					method: 'GET',
 					url: config.server + '/ad/timer/start',
 					isArray: false
-				},					
+				},
 				stop: {
 					method: 'GET',
 					url: config.server + '/ad/timer/stop',
 					isArray: false
-				},				
+				},
 				status: {
 					method: 'GET',
 					url: config.server + '/ad/timer/status',
 					isArray: false
-				},				
+				},
 				save: {
 					method: 'POST',
 					url: config.server + '/ad/timer/cf',
@@ -28,16 +28,22 @@ angular.module('armonitor.services', ['ngResource'])
 					method: 'GET',
 					url: config.server + '/ad/timer/cf',
 					isArray: false
-				}				
+				}
 			});
-		})	
+		})
 		.factory('SCMAdminService', function($resource, config) {
 			return $resource(config.server + '/ad/scm', {}, {
+				delete: {
+					method: 'DELETE',
+					url: config.server + '/ad/scm/:guid',
+					params: {guid: '@guid'},
+					isArray: false
+				},
 				create: {
 					method: 'PUT',
 					url: config.server + '/ad/scm',
 					isArray: false
-				},				
+				},
 				save: {
 					method: 'POST',
 					url: config.server + '/ad/scm',
@@ -48,43 +54,43 @@ angular.module('armonitor.services', ['ngResource'])
 					url: config.server + '/ad/scm/:guid',
 					params: {guid: '@guid'},
 					isArray: false
-				},	
+				},
 				pswd: {
 					method: 'POST',
 					url: config.server + '/ad/scm/:guid/password',
 					params: {guid: '@guid'},
 					isArray: false
-				},					
+				},
 				types: {
 					method: 'GET',
 					url: config.server + '/ad/scm/types',
-					isArray: true
-				},	
+					isArray: false
+				},
 				apps: {
 					method: 'GET',
 					url: config.server + '/ad/scm/:guid/app',
 					params: {guid: '@guid'},
 					isArray: true
-				},		
+				},
 				app: {
 					method: 'GET',
 					url: config.server + '/ad/scm/:guid/app/:app',
 					params: {guid: '@guid', app: '@app'},
 					isArray: false
-				},	
+				},
 				add: {
 					method: 'PUT',
 					url: config.server + '/ad/scm/:guid/app/:app',
 					params: {guid: '@guid', app: '@app'},
 					isArray: false
-				},				
+				},
 				all: {
 					method: 'GET',
 					url: config.server + '/ad/scm',
 					isArray: true
-				}				
+				}
 			});
-		})		
+		})
 		.factory('MailAdminService', function($resource, config) {
 			return $resource(config.server + '/ad/mail', {}, {
 				save: {
@@ -96,9 +102,9 @@ angular.module('armonitor.services', ['ngResource'])
 					method: 'GET',
 					url: config.server + '/ad/mail/cf',
 					isArray: false
-				}				
+				}
 			});
-		})		
+		})
 		.factory('UserAdminService', function($resource, config) {
 			return $resource(config.server + '/user', {}, {
 				save: {
@@ -111,16 +117,54 @@ angular.module('armonitor.services', ['ngResource'])
 					url: config.server + '/user/:guid/password',
 					params: {guid: '@guid'},
 					isArray: false
-				}				
+				}
 			});
 		})
-		.factory('CommonService', function(SecurityRSService, $location) {
+		.factory('MessageService', function($resource, config) {
+			return $resource(config.server + '/msg', {}, {
+				trashItem: {
+					method: 'GET',
+					url: config.server + '/msg/trash/:id',
+					params: {id: '@id'},
+					isArray: false
+				},				
+				trash: {
+					method: 'GET',
+					url: config.server + '/msg/trash',
+					isArray: false
+				},	
+				close: {
+					method: 'GET',
+					url: config.server + '/msg/close',
+					isArray: false
+				},				
+				info: {
+					method: 'GET',
+					url: config.server + '/msg/info',
+					isArray: false
+				},
+				get: {
+					method: 'GET',
+					url: config.server + '/msg',
+					isArray: true
+				}
+			});
+		})
+		.factory('CommonService', function($location, SecurityRSService, MessageService) {
 
 			var _base_roles = ["admin", "base"];
 			var _user = null;
 			var _roles = null;
+			var _info = null;
+			
+			function _loadMsgInfo() {
+				MessageService.info({}, function(response) {
+					_info = response;
+				});
+			}
 
 			function _startup() {
+				_loadMsgInfo();
 				SecurityRSService.user(function(response) {
 					if (response.guid) {
 						_user = response;
@@ -137,7 +181,18 @@ angular.module('armonitor.services', ['ngResource'])
 
 			_startup();
 
-			return {
+			return {				
+				info: function() {
+					return _info;
+				},
+				updateMsg: function() {
+					_loadMsgInfo();
+				},
+				closeMsg: function() {
+					MessageService.close({}, function(response) {
+						_info = response;
+					});					
+				},
 				update: function(data, callback) {
 					SecurityRSService.save({}, data, function(response) {
 						if (response.guid) {
@@ -165,6 +220,7 @@ angular.module('armonitor.services', ['ngResource'])
 				},
 				logout: function() {
 					SecurityRSService.logout(function(response) {
+						_loadMsgInfo();
 						$location.url('/');
 						_user = null;
 						_roles = null;
@@ -196,7 +252,7 @@ angular.module('armonitor.services', ['ngResource'])
 					method: 'POST',
 					url: config.server + '/sec/pr/password',
 					isArray: false
-				},				
+				},
 				user: {
 					method: 'GET',
 					url: config.server + '/sec/pr',
@@ -301,6 +357,21 @@ angular.module('armonitor.services', ['ngResource'])
 					isArray: false
 				}
 			});
+		})
+		.factory('ErrorService', function() {
+			var data = [];
+
+			return {
+				errors: function() {
+					return data;
+				},
+				close: function(index) {
+					data.splice(index, 1);
+				},
+				error: function(item) {
+					data.push(item);
+				}
+			};
 		})
 		.factory('DashboardRSService', function($resource, config) {
 			return $resource(config.server + '/db', {}, {

@@ -14,28 +14,24 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.services;
-
-import javax.ejb.EJB;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
-import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
+package org.lorislab.armonitor.web.rs.model;
 
 /**
- *
+ * The message size.
+ * 
  * @author Andrej Petras
  */
-@Path("ad/cf")
-@CdiServiceMethod
-public class ConfigService {
-    
-    @EJB
-    private ConfigurationServiceBean service;
-    
-    @GET
-    @Path("reload")
-    public void reload() {    
-        service.reload();
-    }
+public class MessageInfo {
+    /**
+     * The message list status
+     */
+    public MessageType status;
+    /**
+     * The last message.
+     */
+    public Message msg;
+    /**
+     * The message size.
+     */
+    public int size;
 }

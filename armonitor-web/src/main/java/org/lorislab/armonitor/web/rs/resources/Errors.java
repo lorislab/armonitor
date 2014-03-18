@@ -14,28 +14,21 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.services;
+package org.lorislab.armonitor.web.rs.resources;
 
-import javax.ejb.EJB;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
-import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
+import org.lorislab.jel.base.resources.annotations.ResourceKey;
 
 /**
- *
+ * The error keys.
+ * 
  * @author Andrej Petras
  */
-@Path("ad/cf")
-@CdiServiceMethod
-public class ConfigService {
+@ResourceKey
+public enum Errors {
     
-    @EJB
-    private ConfigurationServiceBean service;
+    SCM_DELETE_ERROR,
     
-    @GET
-    @Path("reload")
-    public void reload() {    
-        service.reload();
-    }
+    DASHBOARD_LOAD_ERROR,
+    
+    DASHBOARD_UPDATE_SYSTEM_BUILD_ERROR;
 }

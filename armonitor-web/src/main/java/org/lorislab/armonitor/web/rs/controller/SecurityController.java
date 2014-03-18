@@ -17,15 +17,14 @@
 package org.lorislab.armonitor.web.rs.controller;
 
 import java.io.Serializable;
-import java.security.Principal;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import org.lorislab.armonitor.web.rs.ejb.UserServiceBean;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.User;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  *
@@ -33,6 +32,7 @@ import org.lorislab.armonitor.web.rs.model.User;
  */
 @Named
 @SessionScoped
+@CdiServiceMethod
 public class SecurityController implements Serializable {
     
     private static final long serialVersionUID = 3414127937239625590L;

@@ -3,7 +3,12 @@
 	<head>
 		<meta charset="utf-8">
 		<title data-translate="APP_NAME">Application release monitor</title>
+		<!--DEV-CSS-->
+		<link rel="stylesheet" href="css/fontello.css"/>
+		<link rel="stylesheet" href="css/animation.css"/>
 		<link rel="stylesheet" href="css/app.css"/>
+		<!--DEV-CSS-->
+		<!--PROD-BEGIN<link rel="stylesheet" href="css/armonitor.min.css"/>PROD-END-->
 		<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
 		<link rel="stylesheet" href="css/bootstrap/bootstrap-theme.min.css"/>
 		<link rel="stylesheet" href="css/timeline/timeline.css"/>
@@ -21,12 +26,13 @@
 					<span class="navbar-brand" data-translate="APP_NAME">Release monitor</span>			  
 				</div>
 				<div class="navbar-collapse collapse" data-ng-controller="MenuCtrl">
-					<ul class="nav navbar-nav navbar-left">
-						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard" data-translate="MENU_DASHBOARD"><i class="icon-gauge"></i> Dashboard</a></li>
+					<ul class="nav navbar-nav navbar-left">						
+						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard" data-translate="MENU_DASHBOARD">Dashboard</a></li>
 						<li data-ng-class="{ active: active(['/settings'])}" data-ng-show="user">
 							<a href="#" class="dropdown-toggle"  data-toggle="dropdown"><i class="icon-cog-alt"></i> Settings <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="#/settings/services"><i class="icon-laptop"></i> Services</a></li>
+								<li><a href="#/settings/mail"><i class="icon-mail-alt"></i> Mail service</a></li>
+								<li><a href="#/settings/timer"><i class="icon-clock"></i> Timer service</a></li>																
 								<li class="divider"></li>
 								<li><a href="#/settings/scm"><i class="icon-fork"></i> SCM systems</a></li>
 								<li><a href="#/settings/bts"><i class="icon-bug"></i> BTS systems</a></li>
@@ -42,6 +48,12 @@
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">						
+						<li><a href="">
+							<i class="icon-bell" data-ng-show="info.size === 0"></i>
+							<i class="icon-bell-alt" data-ng-hide="info.size === 0"></i>
+							<span class="label" data-ng-class="{'label-info': info.status === 'INFO', 'label-danger': info.status === 'ERROR'}">{{info.size}}</span>
+							</a>
+						</li>
 						<li><a href="" data-ng-hide="user" ng-click="login()"><i class="icon-login"></i> Sign in</a></li>
 						<li data-ng-show="user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> {{user.name}} <b class="caret"></b></a>
@@ -59,6 +71,24 @@
 
 		<div class="container marketing">
 
+			<div data-ng-controller="ErrorCtrl">
+				<div style="margin-top: 10px" data-ng-show="errors.length > 0">
+					<div class="alert alert-danger alert-dismissable" data-ng-repeat="e in errors">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true"  ng-click="close($index)">&times;</button>
+						<i class="icon-attention"></i><b>Oh snap! </b>{{e.message}}
+					</div>
+				</div>
+			</div>	
+			
+			<div data-ng-controller="MenuCtrl">
+				<div style="margin-top: 10px" data-ng-show="info.msg">
+					<div class="alert alert-info alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true"  ng-click="close()">&times;</button>
+						<i class="icon-bell-alt"></i> {{info.msg.message}}
+					</div>
+				</div>
+			</div>			
+
 			<div data-ng-view></div>
 
 			<hr style="margin-top: 20px;"/>	
@@ -73,10 +103,13 @@
 		<script src="lib/angular-translate/angular-translate.min.js"></script>
 		<script src="lib/angular-translate/angular-translate-loader-static-files.min.js"></script>		
 		<script src="lib/ui-boostrap/ui-bootstrap.min.js"></script>
+		<!--DEV-JS-->
 		<script src="js/app.js"></script>
 		<script src="js/services.js"></script>
 		<script src="js/controllers.js"></script>
 		<script src="js/filters.js"></script>
 		<script src="js/directives.js"></script>
+		<!--DEV-JS-->
+		<!--PROD-BEGIN<script src="js/armonitor.min.js"></script>PROD-END-->				
 	</body>
 </html>

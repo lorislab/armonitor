@@ -32,12 +32,14 @@ import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Role;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  *
  * @author Andrej Petras
  */
 @Path("ad/sys")
+@CdiServiceMethod
 public class ApplicationSystemService {
 
     @EJB

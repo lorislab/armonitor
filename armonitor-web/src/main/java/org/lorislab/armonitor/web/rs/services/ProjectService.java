@@ -30,6 +30,7 @@ import org.lorislab.armonitor.web.rs.ejb.ProjectServiceBean;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
 import org.lorislab.armonitor.web.rs.model.Project;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The project rest-service.
@@ -37,6 +38,7 @@ import org.lorislab.armonitor.web.rs.model.Project;
  * @author Andrej Petras
  */
 @Path("ad/project")
+@CdiServiceMethod
 public class ProjectService {
 
     /**

@@ -45,6 +45,15 @@ public class SvnScmServiceClient implements ScmServiceClient {
      * {@inheritDoc}
      */
     @Override
+    public String getName() {
+        return "Subversion";
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ScmResult getLog(ScmCriteria criteria) throws Exception {
 
         ScmResult result = new ScmResult();

@@ -17,6 +17,7 @@ package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,16 +28,16 @@ import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.scm.service.ScmService;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
-import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
 import org.lorislab.armonitor.store.criteria.StoreSCMSystemCriteria;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSCMSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
-import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
+import org.lorislab.armonitor.web.rs.resources.Errors;
+import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
  *
@@ -54,7 +55,7 @@ public class SCMSystemServiceBean {
     @EJB
     private StoreApplicationServiceBean appService;
 
-    public Set<String> getTypes() {
+    public Map<String, String> getTypes() {
         return ScmService.getTypes();
     }
     
@@ -123,5 +124,13 @@ public class SCMSystemServiceBean {
         tmp = service.saveSCMSystem(tmp);
         result = Mapper.map(tmp, SCMSystem.class);
         return result;
+    }
+
+    public void delete(String guid) throws ServiceException {
+        try {
+            service.deleteSCMSystem(guid);
+        } catch (Exception ex) {
+            throw new ServiceException(Errors.SCM_DELETE_ERROR, guid, ex, guid);
+        }
     }
 }

@@ -33,6 +33,13 @@ public interface ScmServiceClient {
     public String getType();
 
     /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
+    public String getName();
+
+    /**
      * Gets the log.
      *
      * @param criteria the criteria.
@@ -40,5 +47,5 @@ public interface ScmServiceClient {
      * @throws Exception if the method fails.
      */
     public ScmResult getLog(ScmCriteria criteria) throws Exception;
-         
+
 }

@@ -42,6 +42,11 @@ public final class ScmService {
     private static final Map<String, ScmServiceClient> CLIENTS = new HashMap<>();
 
     /**
+     * The clients type map.
+     */
+    private static final Map<String, String> TYPES = new HashMap<>();
+    
+    /**
      * Loads the service clients.
      */
     static {
@@ -52,6 +57,7 @@ public final class ScmService {
                 ScmServiceClient service = iter.next();
                 LOGGER.log(Level.FINE, "Add SCM service {0}", service.getClass().getName());
                 CLIENTS.put(service.getType(), service);
+                TYPES.put(service.getType(), service.getName());
             }
         }
     }
@@ -68,8 +74,8 @@ public final class ScmService {
      *
      * @return the set of client service types.
      */
-    public static Set<String> getTypes() {
-        return CLIENTS.keySet();
+    public static Map<String, String> getTypes() {
+        return TYPES;
     }
 
     /**

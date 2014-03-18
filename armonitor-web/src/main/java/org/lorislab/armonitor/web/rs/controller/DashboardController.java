@@ -26,6 +26,7 @@ import org.lorislab.armonitor.web.rs.model.Dashboard;
 import org.lorislab.armonitor.web.rs.model.DashboardApplication;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.DashboardProject;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The dashboard controller.
@@ -34,6 +35,7 @@ import org.lorislab.armonitor.web.rs.model.DashboardProject;
  */
 @Named
 @SessionScoped
+@CdiServiceMethod
 public class DashboardController implements Serializable {
 
     /**
@@ -62,8 +64,10 @@ public class DashboardController implements Serializable {
      * @param project the project.
      * @param application the application.
      * @return the dashboard application.
+     * 
+     * @throws Exception if the method fails.
      */
-    private DashboardApplication getApplication(String project, String application) {
+    private DashboardApplication getApplication(String project, String application) throws Exception {
         if (dashboard != null) {
             DashboardProject p = dashboard.projects.get(project);
             if (p != null) {
@@ -75,6 +79,8 @@ public class DashboardController implements Serializable {
 
     /**
      * Disable the message in the dashboard.
+     * 
+     * @throws Exception if the method fails.
      */
     public void disableMsg() {
         if (dashboard != null) {
@@ -87,8 +93,10 @@ public class DashboardController implements Serializable {
      *
      * @param system the system GUID.
      * @return the updated dashboard application system.
+     * 
+     * @throws Exception if the method fails.
      */
-    public DashboardApplicationSystem updateSystemBuild(String system) {
+    public DashboardApplicationSystem updateSystemBuild(String system) throws Exception {
         DashboardApplicationSystem result = systems.get(system);
         if (result != null) {
             DashboardApplication app = getApplication(result.project, result.application);
@@ -101,8 +109,10 @@ public class DashboardController implements Serializable {
      * Gets the dashboard.
      *
      * @return the dashboard.
+     * 
+     * @throws Exception if the method fails.
      */
-    public Dashboard getDashboard() {
+    public Dashboard getDashboard() throws Exception {
         if (dashboard == null) {
             return reload();
         }
@@ -113,8 +123,10 @@ public class DashboardController implements Serializable {
      * Reloads the dashboard.
      *
      * @return the dashboard.
+     * 
+     * @throws Exception if the method fails.
      */
-    public Dashboard reload() {
+    public Dashboard reload() throws Exception {
         Dashboard tmp = service.getDashboard();
         if (dashboard != null && tmp != null) {
             tmp.msg = dashboard.msg;

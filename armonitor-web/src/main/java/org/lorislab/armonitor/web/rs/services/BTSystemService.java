@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -30,6 +31,7 @@ import org.lorislab.armonitor.web.rs.ejb.BTSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.Project;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The bug tracking system rest service.
@@ -37,6 +39,7 @@ import org.lorislab.armonitor.web.rs.model.Project;
  * @author Andrej Petras
  */
 @Path("ad/bts")
+@CdiServiceMethod
 public class BTSystemService {
 
     /**
@@ -74,7 +77,7 @@ public class BTSystemService {
     @GET
     @Path("types")
     @Produces(MediaType.APPLICATION_JSON)
-    public Set<String> getTypes() {
+    public Map<String,String> getTypes() {
         return service.getTypes();
     }
 

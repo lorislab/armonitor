@@ -21,12 +21,14 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import org.lorislab.armonitor.ejb.ProcessServiceBean;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  *
  * @author Andrej Petras
  */
 @Path("ad/report")
+@CdiServiceMethod
 public class ReportService {
    
     @EJB

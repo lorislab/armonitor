@@ -41,6 +41,13 @@ public interface BtsServiceClient {
     public String getType();
 
     /**
+     * Gets the client name.
+     *
+     * @return the client name.
+     */
+    public String getName();
+
+    /**
      * Gets the list of issues.
      *
      * @param criteria the criteria.

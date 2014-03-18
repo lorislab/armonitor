@@ -39,7 +39,8 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
         result.user = data.getUser();
         result.readTimeout = data.getReadTimeout();
         result.connectionTimeout = data.getConnectionTimeout();
-        result.type = data.getType();       
+        result.type = data.getType();    
+        result.n = data.isNew();
         return result;
     }
 

@@ -35,12 +35,14 @@ import org.lorislab.armonitor.web.rs.ejb.SecurityServiceBean;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.LoginRequest;
 import org.lorislab.armonitor.web.rs.model.User;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  *
  * @author Andrej Petras
  */
 @Path("sec")
+@CdiServiceMethod
 public class SecurityService {
 
     private static final Logger LOGGER = Logger.getLogger(SecurityService.class.getName());
@@ -50,6 +52,9 @@ public class SecurityService {
     
     @EJB
     private SecurityServiceBean service;
+    
+    @Context
+    private HttpServletRequest httpRequest;
     
     @POST
     @Path("pr/roles")
@@ -84,7 +89,7 @@ public class SecurityService {
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User login(LoginRequest request, @Context HttpServletRequest httpRequest) {
+    public User login(LoginRequest request) {
         User result = controller.getUser();
         if (result == null) {
             User tmp = service.getUser(request);
@@ -102,7 +107,7 @@ public class SecurityService {
 
     @GET
     @Path("pr/logout")
-    public void logout(@Context HttpServletRequest httpRequest) {
+    public void logout() {
         String guid = null;
         try {
             User user = controller.getUser();
@@ -110,6 +115,7 @@ public class SecurityService {
                 controller.setUser(null);
                 guid = user.guid;
             }
+            httpRequest.getSession().invalidate();
             httpRequest.logout();
         } catch (ServletException ex) {
             LOGGER.log(Level.SEVERE, "Error logout the user " + guid, ex);

@@ -1,5 +1,18 @@
+<h2>Source code systems
+	<small>configuration</small>
+</h2>
 
-
+<ol class="breadcrumb">
+	<li>
+		<i class="icon-cog-alt"></i> 
+		<a href="#/settings">
+			Settings
+		</a>
+	</li>
+	<li class="active">
+		<i class="icon-fork"></i> SCM systems	
+	</li>	
+</ol>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -8,6 +21,7 @@
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button" data-ng-click="clear()"><i class="icon-erase"></i></button>
 				<button class="btn btn-default" type="button" data-ng-click="reload()"><i class="icon-arrows-cw"></i></button>
+				<a class="btn btn-default" href="#/settings/scm/edit" ><i class="icon-doc-text"></i></a>
 			</span>				
 		</div>			
 	</div>
@@ -26,12 +40,12 @@
 		<tbody>
 			<tr data-ng-repeat="item in all| filter:search">
 				<td>
-					<a href="" data-ng-click="switch (item)"><span class="icon-pencil"></span></a>
+					<a href="#/settings/scm/edit/{{item.guid}}"><span class="icon-pencil"></span></a>
 				</td>					
 				<td><i data-ng-class="{'icon-check': item.auth, 'icon-check-empty': !item.auth}"></i></td>
 				<td>{{item.user}}</td>
 				<td>{{item.server}}</td>
-				<td>{{item.type}}</td>
+				<td>{{types[item.type]}}</td>
 				<td>{{item.readTimeout}}</td>
 				<td>{{item.connectionTimeout}}</td>
 			</tr>

@@ -50,4 +50,9 @@ public class SCMSystem {
      * The connection timeout.
      */
     public Integer connectionTimeout;
+    
+    /**
+     * The new flag
+     */
+    public boolean n;
 }

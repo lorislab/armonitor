@@ -1,72 +1,83 @@
-<div data-ng-controller="TimerAdminCtrl">
-	<h2>Timer service
-		<small>configuration</small>
-	</h2>
-	<div class="row">
-		<div class="col-lg-12">
-			<div data-ng-show="status.run">
-				Next timer execution <span class="label label-info">{{status.next| date:'medium'}}</span>
-			</div>
-			<div data-ng-hide="status.run">
-				The timer is stopped.
-			</div>
-			<form class="form-horizontal" data-ng-submit="save()">
-				<fieldset>
-					<div class="control-group">
-						<label class="control-label" for="start"></label>
-						<div class="controls">
-							<label class="enabled">
-								<input type="checkbox" id="start" data-ng-model="data.start"> Automatically start the timer
-							</label>							
-						</div>
-					</div>
-					
-					<div class="control-group">
-						<label class="control-label" for="enabled"></label>
-						<div class="controls">
-							<label class="enabled">
-								<input type="checkbox" id="enabled" data-ng-model="data.enabled"> Enable timer execution
-							</label>							
-						</div>
-					</div>
-					
-					<div class="control-group">
-						<label class="control-label" for="hour">Hours</label>
-						<div class="input-group">
-							<span class="input-group-addon"><i class="icon-pencil"></i></span>
-							<input id="hour" type="text" class="form-control" placeholder="Hour timer interval" data-ng-model="data.hour" required>
-						</div>
-					</div>
+<h1>Timer service
+	<small>configuration</small>
+</h1>
 
-					<div class="control-group">
-						<label class="control-label" for="minute">Minutes</label>
-						<div class="input-group">
-							<span class="input-group-addon"><i class="icon-pencil"></i></span>
-							<input id="minute" type="text" class="form-control" placeholder="Minutes timer interval" data-ng-model="data.minute" required>
-						</div>
-					</div>
-					
-					<div class="control-group">
-						<label class="control-label" for="second">Seconds</label>
-						<div class="input-group">
-							<span class="input-group-addon"><i class="icon-pencil"></i></span>
-							<input id="second" type="text" class="form-control" placeholder="Seconds timer interval" data-ng-model="data.second" required>
-						</div>
-					</div>
-															
-					<div class="control-group">
-						<label class="control-label" for="save"></label>
-						<div class="controls">
-							<button id="save" type="submit" class="btn btn-success" ><i class="icon-floppy"></i> Save</button>
-							<span class="label label-danger" data-ng-show="error"><i class="icon-attention"></i> Error by saving the timer configuration.</span>
-							<span style="float: right">
-								<button type="button" class="btn btn-success" data-ng-disabled="status.run || !data.start" data-ng-click="start()"><i class="icon-play"></i> Start</button>
-								<button type="button" class="btn btn-danger" data-ng-disabled="!status.run" data-ng-click="stop()"><i class="icon-stop"></i> Stop</button>
-							</span>
-						</div>
-					</div>
-				</fieldset>
-			</form>	
+<ol class="breadcrumb">
+	<li>
+		<i class="icon-cog-alt"></i> 
+		<a href="#/settings">
+			Settings
+		</a>
+	</li>
+	<li class="active">
+		<i class="icon-clock"></i> Timer service
+	</li>	
+</ol>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div data-ng-show="status.run">
+			Next timer execution <span class="label label-info">{{status.next| date:'medium'}}</span>
 		</div>
-	</div>	
+		<div data-ng-hide="status.run">
+			The timer is stopped.
+		</div>
+		<form class="form-horizontal" data-ng-submit="save()">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label" for="start"></label>
+					<div class="controls">
+						<label class="enabled">
+							<input type="checkbox" id="start" data-ng-model="data.start"> Automatically start the timer
+						</label>							
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="enabled"></label>
+					<div class="controls">
+						<label class="enabled">
+							<input type="checkbox" id="enabled" data-ng-model="data.enabled"> Enable timer execution
+						</label>							
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="hour">Hours</label>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="icon-pencil"></i></span>
+						<input id="hour" type="text" class="form-control" placeholder="Hour timer interval" data-ng-model="data.hour" required>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="minute">Minutes</label>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="icon-pencil"></i></span>
+						<input id="minute" type="text" class="form-control" placeholder="Minutes timer interval" data-ng-model="data.minute" required>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="second">Seconds</label>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="icon-pencil"></i></span>
+						<input id="second" type="text" class="form-control" placeholder="Seconds timer interval" data-ng-model="data.second" required>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="save"></label>
+					<div class="controls">
+						<button id="save" type="submit" class="btn btn-success" ><i class="icon-floppy"></i> Save</button>
+						<span class="label label-danger" data-ng-show="error"><i class="icon-attention"></i> Error by saving the timer configuration.</span>
+						<span style="float: right">
+							<button type="button" class="btn btn-success" data-ng-disabled="status.run || !data.start" data-ng-click="start()"><i class="icon-play"></i> Start</button>
+							<button type="button" class="btn btn-danger" data-ng-disabled="!status.run" data-ng-click="stop()"><i class="icon-stop"></i> Stop</button>
+						</span>
+					</div>
+				</div>
+			</fieldset>
+		</form>	
+	</div>
 </div>

@@ -32,12 +32,14 @@ import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Project;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  *
  * @author Andrej Petras
  */
 @Path("ad/app")
+@CdiServiceMethod
 public class ApplicationService {
     
     @EJB

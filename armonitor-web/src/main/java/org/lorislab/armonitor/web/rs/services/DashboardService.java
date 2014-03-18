@@ -15,21 +15,16 @@
  */
 package org.lorislab.armonitor.web.rs.services;
 
-import java.util.List;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.controller.DashboardController;
-import org.lorislab.armonitor.web.rs.model.BuildsCriteria;
 import org.lorislab.armonitor.web.rs.model.Dashboard;
-import org.lorislab.armonitor.web.rs.model.DashboardApplication;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
-import org.lorislab.armonitor.web.rs.model.TimelineBuild;
+import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
  * The dashboard rest-service.
@@ -37,6 +32,7 @@ import org.lorislab.armonitor.web.rs.model.TimelineBuild;
  * @author Andrej Petras
  */
 @Path("db")
+@CdiServiceMethod
 public class DashboardService {
 
     /**
@@ -47,11 +43,13 @@ public class DashboardService {
     
     /**
      * Disables the message info in the dashboard.
+     * 
+     * @throws Exception if the method fails.
      */
     @GET
     @Path("msg")
     @Produces(MediaType.APPLICATION_JSON)
-    public void disableMsg() {
+    public void disableMsg() throws Exception {
         controller.disableMsg();
     }
     
@@ -59,10 +57,12 @@ public class DashboardService {
      * Gets the list of dashboard projects.
      *
      * @return the list of dashboard projects.
+     * 
+     * @throws Exception if the method fails.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Dashboard getDashboard() {
+    public Dashboard getDashboard() throws Exception {
         return controller.getDashboard();
     }
 
@@ -70,11 +70,13 @@ public class DashboardService {
      * Reloads the dashboard data.
      *
      * @return the new loaded dashboard data.
+     * 
+     * @throws Exception if the method fails.
      */
     @GET
     @Path("reload")
     @Produces(MediaType.APPLICATION_JSON)
-    public Dashboard reload() {
+    public Dashboard reload() throws Exception {
         return controller.reload();
     }
 
@@ -83,11 +85,13 @@ public class DashboardService {
      *
      * @param sys the system GUID.
      * @return the dashboard application system.
+     * 
+     * @throws Exception if the method fails.
      */
     @GET
     @Path("sys/{sys}/build")
     @Produces(MediaType.APPLICATION_JSON)
-    public DashboardApplicationSystem updateSystemBuild(@PathParam("sys") String sys) {
+    public DashboardApplicationSystem updateSystemBuild(@PathParam("sys") String sys) throws Exception {
         return controller.updateSystemBuild(sys);
     }
 

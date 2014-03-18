@@ -14,28 +14,43 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.services;
+package org.lorislab.armonitor.web.rs.model;
 
-import javax.ejb.EJB;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
-import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
- *
+ * The message.
+ * 
  * @author Andrej Petras
  */
-@Path("ad/cf")
-@CdiServiceMethod
-public class ConfigService {
-    
-    @EJB
-    private ConfigurationServiceBean service;
-    
-    @GET
-    @Path("reload")
-    public void reload() {    
-        service.reload();
-    }
+public class Message {    
+    /**
+     * The message id.
+     */
+    public String id;    
+    /**
+     * The date.
+     */
+    public Date date;
+    /**
+     * The message type.
+     */
+    public MessageType type;
+    /**
+     * The exception key.
+     */
+    public Enum<?> key;
+    /**
+     * The object reference.
+     */
+    public Serializable ref;
+    /**
+     * The message.
+     */
+    public String message;
+    /**
+     * The parameters.
+     */
+    public Serializable[] params;     
 }
