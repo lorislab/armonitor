@@ -37,6 +37,7 @@ public class UserMapper implements MapperService<StoreUser, User> {
         result.email = data.getEmail();
         result.login = data.isLogin();
         result.name = data.getName();
+        result.n = data.isNew();
         return result;
     }
 

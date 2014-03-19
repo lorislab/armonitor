@@ -37,6 +37,7 @@ import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Role;
+import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
  *
@@ -166,4 +167,8 @@ public class ApplicationSystemServiceBean {
         }        
         return result;
     }
+    
+    public void delete(String guid) throws ServiceException {
+        service.deleteSystem(guid);
+    }     
 }

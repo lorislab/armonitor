@@ -1,399 +1,287 @@
 'use strict';
 
 /* Services */
-angular.module('armonitor.services', ['ngResource'])
-		.factory('TimerAdminService', function($resource, config) {
-			return $resource(config.server + '/ad/timer', {}, {
-				start: {
-					method: 'GET',
-					url: config.server + '/ad/timer/start',
-					isArray: false
-				},
-				stop: {
-					method: 'GET',
-					url: config.server + '/ad/timer/stop',
-					isArray: false
-				},
-				status: {
-					method: 'GET',
-					url: config.server + '/ad/timer/status',
-					isArray: false
-				},
-				save: {
-					method: 'POST',
-					url: config.server + '/ad/timer/cf',
-					isArray: false
-				},
-				get: {
-					method: 'GET',
-					url: config.server + '/ad/timer/cf',
-					isArray: false
-				}
-			});
-		})
-		.factory('SCMAdminService', function($resource, config) {
-			return $resource(config.server + '/ad/scm', {}, {
-				delete: {
-					method: 'DELETE',
-					url: config.server + '/ad/scm/:guid',
-					params: {guid: '@guid'},
-					isArray: false
-				},
-				create: {
-					method: 'PUT',
-					url: config.server + '/ad/scm',
-					isArray: false
-				},
-				save: {
-					method: 'POST',
-					url: config.server + '/ad/scm',
-					isArray: false
-				},
-				get: {
-					method: 'GET',
-					url: config.server + '/ad/scm/:guid',
-					params: {guid: '@guid'},
-					isArray: false
-				},
-				pswd: {
-					method: 'POST',
-					url: config.server + '/ad/scm/:guid/password',
-					params: {guid: '@guid'},
-					isArray: false
-				},
-				types: {
-					method: 'GET',
-					url: config.server + '/ad/scm/types',
-					isArray: false
-				},
-				apps: {
-					method: 'GET',
-					url: config.server + '/ad/scm/:guid/app',
-					params: {guid: '@guid'},
-					isArray: true
-				},
-				app: {
-					method: 'GET',
-					url: config.server + '/ad/scm/:guid/app/:app',
-					params: {guid: '@guid', app: '@app'},
-					isArray: false
-				},
-				add: {
-					method: 'PUT',
-					url: config.server + '/ad/scm/:guid/app/:app',
-					params: {guid: '@guid', app: '@app'},
-					isArray: false
-				},
-				all: {
-					method: 'GET',
-					url: config.server + '/ad/scm',
-					isArray: true
-				}
-			});
-		})
-		.factory('MailAdminService', function($resource, config) {
-			return $resource(config.server + '/ad/mail', {}, {
-				save: {
-					method: 'POST',
-					url: config.server + '/ad/mail/cf',
-					isArray: false
-				},
-				get: {
-					method: 'GET',
-					url: config.server + '/ad/mail/cf',
-					isArray: false
-				}
-			});
-		})
-		.factory('UserAdminService', function($resource, config) {
-			return $resource(config.server + '/user', {}, {
-				save: {
-					method: 'POST',
-					url: config.server + '/user',
-					isArray: false
-				},
-				pswd: {
-					method: 'POST',
-					url: config.server + '/user/:guid/password',
-					params: {guid: '@guid'},
-					isArray: false
-				}
-			});
-		})
-		.factory('MessageService', function($resource, config) {
-			return $resource(config.server + '/msg', {}, {
-				trashItem: {
-					method: 'GET',
-					url: config.server + '/msg/trash/:id',
-					params: {id: '@id'},
-					isArray: false
-				},				
-				trash: {
-					method: 'GET',
-					url: config.server + '/msg/trash',
-					isArray: false
-				},	
-				close: {
-					method: 'GET',
-					url: config.server + '/msg/close',
-					isArray: false
-				},				
-				info: {
-					method: 'GET',
-					url: config.server + '/msg/info',
-					isArray: false
-				},
-				get: {
-					method: 'GET',
-					url: config.server + '/msg',
-					isArray: true
-				}
-			});
-		})
-		.factory('CommonService', function($location, SecurityRSService, MessageService) {
+services.factory('MessageService', function($resource, config) {
+	return $resource(config.server + '/msg', {}, {
+		trashItem: {
+			method: 'GET',
+			url: config.server + '/msg/trash/:id',
+			params: {id: '@id'},
+			isArray: false
+		},
+		trash: {
+			method: 'GET',
+			url: config.server + '/msg/trash',
+			isArray: false
+		},
+		close: {
+			method: 'GET',
+			url: config.server + '/msg/close',
+			isArray: false
+		},
+		info: {
+			method: 'GET',
+			url: config.server + '/msg/info',
+			isArray: false
+		},
+		get: {
+			method: 'GET',
+			url: config.server + '/msg',
+			isArray: true
+		}
+	});
+});
+services.factory('CommonService', function($location, SecurityRSService, MessageService) {
 
-			var _base_roles = ["admin", "base"];
-			var _user = null;
-			var _roles = null;
-			var _info = null;
-			
-			function _loadMsgInfo() {
-				MessageService.info({}, function(response) {
-					_info = response;
-				});
-			}
+	var _base_roles = ["admin", "base"];
+	var _user = null;
+	var _roles = null;
+	var _info = null;
 
-			function _startup() {
-				_loadMsgInfo();
-				SecurityRSService.user(function(response) {
-					if (response.guid) {
-						_user = response;
-						_load_roles();
-					}
-				});
-			}
-
-			function _load_roles() {
-				SecurityRSService.roles({}, _base_roles, function(response) {
-					_roles = response;
-				});
-			}
-
-			_startup();
-
-			return {				
-				info: function() {
-					return _info;
-				},
-				updateMsg: function() {
-					_loadMsgInfo();
-				},
-				closeMsg: function() {
-					MessageService.close({}, function(response) {
-						_info = response;
-					});					
-				},
-				update: function(data, callback) {
-					SecurityRSService.save({}, data, function(response) {
-						if (response.guid) {
-							_user = response;
-							if (callback) {
-								callback(_user);
-							}
-						}
-					});
-				},
-				login: function(data, callback) {
-					SecurityRSService.login({}, data, function(response) {
-						if (response.guid) {
-							_user = response;
-							_load_roles();
-							if (callback) {
-								callback(_user);
-							}
-						}
-					}, function(response) {
-						if (callback) {
-							callback(_user);
-						}
-					});
-				},
-				logout: function() {
-					SecurityRSService.logout(function(response) {
-						_loadMsgInfo();
-						$location.url('/');
-						_user = null;
-						_roles = null;
-					});
-				},
-				user: function() {
-					return _user;
-				},
-				roles: function() {
-					return _roles;
-				},
-				check: function(item) {
-					var found = false, name;
-					if (item) {
-						for (name in item) {
-							if (item.hasOwnProperty(name)) {
-								found = true;
-								break;
-							}
-						}
-					}
-					return found;
-				}
-			};
-		})
-		.factory('SecurityRSService', function($resource, config) {
-			return $resource(config.server + '/sec', {}, {
-				pswd: {
-					method: 'POST',
-					url: config.server + '/sec/pr/password',
-					isArray: false
-				},
-				user: {
-					method: 'GET',
-					url: config.server + '/sec/pr',
-					isArray: false
-				},
-				save: {
-					method: 'POST',
-					url: config.server + '/sec/pr',
-					isArray: false
-				},
-				logout: {
-					url: config.server + '/sec/pr/logout',
-					method: 'GET',
-					isArray: false
-				},
-				roles: {
-					method: 'POST',
-					url: config.server + '/sec/pr/roles',
-					isArray: false
-				},
-				login: {
-					method: 'POST',
-					url: config.server + '/sec/login',
-					isArray: false
-				}
-			});
-		})
-		.factory('VersionBuildRSService', function($resource, config) {
-			return $resource(config.server + '/dvb', {}, {
-				reload: {
-					method: 'GET',
-					url: config.server + '/dvb/:app/:ver/reload',
-					params: {app: '@app', ver: '@ver'},
-					isArray: false
-				},
-				get: {
-					method: 'GET',
-					url: config.server + '/dvb/:app/:ver',
-					params: {app: '@app', ver: '@ver'},
-					isArray: false
-				}
-			});
-		})
-		.factory('ApplicationBuildRSService', function($resource, config) {
-			return $resource(config.server + '/dab', {}, {
-				reload: {
-					method: 'GET',
-					url: config.server + '/dab/:guid/reload',
-					params: {guid: '@guid'},
-					isArray: false
-				},
-				get: {
-					method: 'GET',
-					url: config.server + '/dab/:guid',
-					params: {guid: '@guid'},
-					isArray: false
-				}
-			});
-		})
-		.factory('SystemBuildRSService', function($resource, config) {
-			return $resource(config.server + '/dsb', {}, {
-				reload: {
-					method: 'GET',
-					url: config.server + '/dsb/:guid/reload',
-					params: {guid: '@guid'},
-					isArray: false
-				},
-				get: {
-					method: 'GET',
-					url: config.server + '/dsb/:guid',
-					params: {guid: '@guid'},
-					isArray: false
-				}
-			});
-		})
-		.factory('ActivityRSService', function($resource, config) {
-			return $resource(config.server + '/ac', {}, {
-				reload: {
-					method: 'GET',
-					url: config.server + '/ac/build/:guid/reload',
-					params: {guid: '@guid'},
-					isArray: false
-				},
-				get: {
-					method: 'GET',
-					url: config.server + '/ac/build/:guid',
-					params: {guid: '@guid'},
-					isArray: false
-				}
-			});
-		})
-		.factory('BuildRSService', function($resource, config) {
-			return $resource(config.server + '/build', {}, {
-				search: {
-					method: 'POST',
-					isArray: true
-				},
-				get: {
-					method: 'GET',
-					url: config.server + '/build/:guid',
-					params: {guid: '@guid'},
-					isArray: false
-				}
-			});
-		})
-		.factory('ErrorService', function() {
-			var data = [];
-
-			return {
-				errors: function() {
-					return data;
-				},
-				close: function(index) {
-					data.splice(index, 1);
-				},
-				error: function(item) {
-					data.push(item);
-				}
-			};
-		})
-		.factory('DashboardRSService', function($resource, config) {
-			return $resource(config.server + '/db', {}, {
-				get: {
-					method: 'GET',
-					isArray: false
-				},
-				msg: {
-					method: 'GET',
-					url: config.server + '/db/msg',
-					isArray: false
-				},
-				reload: {
-					method: 'GET',
-					url: config.server + '/db/reload',
-					isArray: false
-				},
-				updateBuild: {
-					method: 'GET',
-					url: config.server + '/db/sys/:sys/build',
-					params: {sys: '@sys'},
-					isArray: false
-				}
-			});
+	function _loadMsgInfo() {
+		MessageService.info({}, function(response) {
+			_info = response;
 		});
+	}
+
+	function _startup() {
+		_loadMsgInfo();
+		SecurityRSService.user(function(response) {
+			if (response.guid) {
+				_user = response;
+				_load_roles();
+			}
+		});
+	}
+
+	function _load_roles() {
+		SecurityRSService.roles({}, _base_roles, function(response) {
+			_roles = response;
+		});
+	}
+
+	_startup();
+
+	return {
+		info: function() {
+			return _info;
+		},
+		updateMsg: function() {
+			_loadMsgInfo();
+		},
+		closeMsg: function() {
+			MessageService.close({}, function(response) {
+				_info = response;
+			});
+		},
+		update: function(data, callback) {
+			SecurityRSService.save({}, data, function(response) {
+				if (response.guid) {
+					_user = response;
+					if (callback) {
+						callback(_user);
+					}
+				}
+			});
+		},
+		login: function(data, callback) {
+			SecurityRSService.login({}, data, function(response) {
+				if (response.guid) {
+					_user = response;
+					_load_roles();
+					if (callback) {
+						callback(_user);
+					}
+				}
+			}, function(response) {
+				if (callback) {
+					callback(_user);
+				}
+			});
+		},
+		logout: function() {
+			SecurityRSService.logout(function(response) {
+				_loadMsgInfo();
+				$location.url('/');
+				_user = null;
+				_roles = null;
+			});
+		},
+		user: function() {
+			return _user;
+		},
+		roles: function() {
+			return _roles;
+		},
+		check: function(item) {
+			var found = false, name;
+			if (item) {
+				for (name in item) {
+					if (item.hasOwnProperty(name)) {
+						found = true;
+						break;
+					}
+				}
+			}
+			return found;
+		}
+	};
+});
+services.factory('SecurityRSService', function($resource, config) {
+	return $resource(config.server + '/sec', {}, {
+		pswd: {
+			method: 'POST',
+			url: config.server + '/sec/pr/password',
+			isArray: false
+		},
+		user: {
+			method: 'GET',
+			url: config.server + '/sec/pr',
+			isArray: false
+		},
+		save: {
+			method: 'POST',
+			url: config.server + '/sec/pr',
+			isArray: false
+		},
+		logout: {
+			url: config.server + '/sec/pr/logout',
+			method: 'GET',
+			isArray: false
+		},
+		roles: {
+			method: 'POST',
+			url: config.server + '/sec/pr/roles',
+			isArray: false
+		},
+		login: {
+			method: 'POST',
+			url: config.server + '/sec/login',
+			isArray: false
+		}
+	});
+});
+
+services.factory('VersionBuildRSService', function($resource, config) {
+	return $resource(config.server + '/dvb', {}, {
+		reload: {
+			method: 'GET',
+			url: config.server + '/dvb/:app/:ver/reload',
+			params: {app: '@app', ver: '@ver'},
+			isArray: false
+		},
+		get: {
+			method: 'GET',
+			url: config.server + '/dvb/:app/:ver',
+			params: {app: '@app', ver: '@ver'},
+			isArray: false
+		}
+	});
+});
+
+services.factory('ApplicationBuildRSService', function($resource, config) {
+	return $resource(config.server + '/dab', {}, {
+		reload: {
+			method: 'GET',
+			url: config.server + '/dab/:guid/reload',
+			params: {guid: '@guid'},
+			isArray: false
+		},
+		get: {
+			method: 'GET',
+			url: config.server + '/dab/:guid',
+			params: {guid: '@guid'},
+			isArray: false
+		}
+	});
+});
+
+services.factory('SystemBuildRSService', function($resource, config) {
+	return $resource(config.server + '/dsb', {}, {
+		reload: {
+			method: 'GET',
+			url: config.server + '/dsb/:guid/reload',
+			params: {guid: '@guid'},
+			isArray: false
+		},
+		get: {
+			method: 'GET',
+			url: config.server + '/dsb/:guid',
+			params: {guid: '@guid'},
+			isArray: false
+		}
+	});
+});
+
+services.factory('ActivityRSService', function($resource, config) {
+	return $resource(config.server + '/ac', {}, {
+		reload: {
+			method: 'GET',
+			url: config.server + '/ac/build/:guid/reload',
+			params: {guid: '@guid'},
+			isArray: false
+		},
+		get: {
+			method: 'GET',
+			url: config.server + '/ac/build/:guid',
+			params: {guid: '@guid'},
+			isArray: false
+		}
+	});
+});
+
+services.factory('BuildRSService', function($resource, config) {
+	return $resource(config.server + '/build', {}, {
+		search: {
+			method: 'POST',
+			isArray: true
+		},
+		get: {
+			method: 'GET',
+			url: config.server + '/build/:guid',
+			params: {guid: '@guid'},
+			isArray: false
+		}
+	});
+});
+
+services.factory('ErrorService', function() {
+	var data = [];
+
+	return {
+		errors: function() {
+			return data;
+		},
+		close: function(index) {
+			data.splice(index, 1);
+		},
+		error: function(item) {
+			data.push(item);
+		}
+	};
+});
+
+services.factory('DashboardRSService', function($resource, config) {
+	return $resource(config.server + '/db', {}, {
+		get: {
+			method: 'GET',
+			isArray: false
+		},
+		msg: {
+			method: 'GET',
+			url: config.server + '/db/msg',
+			isArray: false
+		},
+		reload: {
+			method: 'GET',
+			url: config.server + '/db/reload',
+			isArray: false
+		},
+		updateBuild: {
+			method: 'GET',
+			url: config.server + '/db/sys/:sys/build',
+			params: {sys: '@sys'},
+			isArray: false
+		}
+	});
+});

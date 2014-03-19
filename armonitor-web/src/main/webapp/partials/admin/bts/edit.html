@@ -1,0 +1,141 @@
+<h2>Bug tracking systems
+	<small>configuration</small>
+</h2>
+
+<ol class="breadcrumb">
+	<li>
+		<i class="icon-cog-alt"></i> 
+		<a href="#/settings">
+			Settings
+		</a>
+	</li>
+	<li>
+		<i class="icon-bug"></i>
+		<a href="#/settings/bts">
+			BTS systems
+		</a>		
+	</li>	
+	<li class="active">
+		<i class="icon-bug"></i><span data-ng-hide="data.n"> {{data.server}}</span><span data-ng-show="data.n"> - - - - - - - - - -</span>
+	</li>		
+</ol>
+
+<div class="row">
+	<div class="col-lg-12">
+
+		<tabset>
+			<tab>
+				<tab-heading>
+					<i class="icon-bug"></i> SCM system
+				</tab-heading>		
+
+				<form class="form-horizontal" data-ng-submit="save()">
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label" for="auth"></label>
+							<div class="controls">
+								<label class="enabled">
+									<input type="checkbox" id="auth" data-ng-model="data.auth"> Authentication
+								</label>							
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="name">Name</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="name" type="text" class="form-control" placeholder="Name" data-ng-model="data.name" required>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label" for="server">Server URL</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="server" type="text" class="form-control" placeholder="Server URL" data-ng-model="data.server" required>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="user">User</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="user" type="text" class="form-control" placeholder="User" data-ng-model="data.user" >
+							</div>
+						</div>				
+
+						<div class="control-group">
+							<label class="control-label" for="type">Type</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<select id="type" class="form-control" data-ng-model="data.type" data-ng-options="k as v for (k,v) in types">									
+								</select>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="link">Issue link</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="link" type="text" class="form-control" placeholder="Read timeout" data-ng-model="data.link" >
+							</div>
+							<h6><span class="label label-info">${id}</span> issue id.</h6>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="save"></label>
+							<div class="controls">
+								<button id="save" type="submit" class="btn btn-success" data-ng-hide="data.n" ><i class="icon-floppy"></i> Save</button>
+								<button id="save" type="submit" class="btn btn-success" data-ng-show="data.n" ><i class="icon-doc-text"></i> Create</button>
+								<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
+								<span style="float: right">
+									<button type="button" class="btn btn-danger" data-ng-disabled="data.n" data-ng-click="delete()"><i class="icon-trash"></i> Delete</button>
+								</span>								
+							</div>
+						</div>					
+					</fieldset>
+				</form>	
+			</tab>
+			<tab data-ng-show="!data.n">
+				<tab-heading>
+					<i class="icon-lock"></i> Password
+				</tab-heading>
+				<form class="form-horizontal" data-ng-submit="changepswd()">		
+					<fieldset>
+
+						<div class="control-group" style="padding-top: 20px">
+							<label class="control-label" for="p">Current password</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="p" class="form-control" type="password" data-ng-model="pswd.o" pattern=".{5,20}" title="5 to 20 characters">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="np">New password</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="np" class="form-control" type="password" required="" data-ng-model="pswd.n" pattern=".{5,20}" title="5 to 20 characters">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="np">Confirm password</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="np" class="form-control" type="password" required="" data-ng-model="pswd.c" pattern=".{5,20}" title="5 to 20 characters">
+							</div>
+						</div>
+
+
+						<div class="control-group">
+							<label class="control-label" for="cp"></label>
+							<div class="controls">
+								<button id="cp" class="btn btn-success" type="submit" ><i class="icon-floppy"></i>  Change password</button>
+								<span class="label label-danger" data-ng-show="error.validation"><i class="icon-attention"></i> The password are not same.</span>								
+							</div>												
+						</div>
+					</fieldset>
+				</form>			
+			</tab>			
+	</div>
+</div>	

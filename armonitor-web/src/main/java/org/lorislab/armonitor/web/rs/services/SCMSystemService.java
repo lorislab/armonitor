@@ -56,6 +56,18 @@ public class SCMSystemService {
     @Inject
     private MessageController msg;
     
+    /**
+     * Gets the list of the source code systems.
+     *
+     * @return the map of ID and name.
+     */
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, String> getList() {
+        return service.getList();
+    }
+    
     @PUT
     @Path("{guid}/app/{app}")
     @Produces(MediaType.APPLICATION_JSON)

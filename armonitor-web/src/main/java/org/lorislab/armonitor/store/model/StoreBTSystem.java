@@ -41,6 +41,12 @@ public class StoreBTSystem extends Persistent {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "bts")
     private Set<StoreProject> projects;
 
+    /**
+     * The name.
+     */
+    @Column(name = "C_NAME")
+    private String name;
+
     @Column(name = "C_USER")
     private String user;
 
@@ -58,6 +64,24 @@ public class StoreBTSystem extends Persistent {
 
     @Column(name = "C_TYPE")
     private String type;
+
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the name.
+     *
+     * @param name the name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      * @return the projects

@@ -50,6 +50,17 @@ public class StoreSystemServiceBean extends AbstractEntityServiceBean<StoreSyste
     private static final long serialVersionUID = -9106271336827485594L;
 
     /**
+     * Deletes the system.
+     *
+     * @param guid the GUID.
+     * @return <code>true</code> if the system was deleted.
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean deleteSystem(String guid) {
+        return this.delete(guid);
+    }
+    
+    /**
      * Saves the system.
      *
      * @param system the system.

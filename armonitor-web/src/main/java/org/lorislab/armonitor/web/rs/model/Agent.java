@@ -44,5 +44,8 @@ public class Agent {
      * The user name.
      */
     public String user;
-
+    /**
+     * The new flag
+     */
+    public boolean n;
 }

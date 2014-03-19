@@ -41,6 +41,7 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
         result.connectionTimeout = data.getConnectionTimeout();
         result.type = data.getType();    
         result.n = data.isNew();
+        result.name = data.getName();
         return result;
     }
 
@@ -54,7 +55,8 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
         entity.setUser(data.user);
         entity.setConnectionTimeout(data.connectionTimeout);
         entity.setReadTimeout(data.readTimeout);
-        entity.setType(data.type);       
+        entity.setType(data.type);   
+        entity.setName(data.name);
         return entity;
     }
 

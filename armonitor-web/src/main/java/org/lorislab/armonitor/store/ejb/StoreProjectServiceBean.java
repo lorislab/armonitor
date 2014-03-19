@@ -63,6 +63,17 @@ public class StoreProjectServiceBean extends AbstractEntityServiceBean<StoreProj
     }
 
     /**
+     * Deletes the project.
+     *
+     * @param guid the GUID.
+     * @return <code>true</code> if the project was deleted.
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean deleteProject(String guid) {
+        return this.delete(guid);
+    }
+    
+    /**
      * Gets the project by GUID.
      *
      * @param guid the GUID.

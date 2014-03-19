@@ -51,6 +51,17 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
      */
     private static final long serialVersionUID = -6510343941028532559L;
 
+    /**
+     * Deletes the application.
+     *
+     * @param guid the GUID.
+     * @return <code>true</code> if the application was deleted.
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean deleteApplication(String guid) {
+        return this.delete(guid);
+    }
+    
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreApplication saveApplication(StoreApplication application) {
         StoreApplication tmp = this.save(application);

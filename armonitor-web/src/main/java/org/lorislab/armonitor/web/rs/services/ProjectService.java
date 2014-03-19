@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -37,7 +38,7 @@ import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
  *
  * @author Andrej Petras
  */
-@Path("ad/project")
+@Path("ad/pr")
 @CdiServiceMethod
 public class ProjectService {
 
@@ -94,7 +95,7 @@ public class ProjectService {
     @PUT
     @Path("{guid}/app/{app}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void addProject(@PathParam("guid") String guid, @PathParam("app") String app) throws Exception {
+    public void addApplication(@PathParam("guid") String guid, @PathParam("app") String app) throws Exception {
         service.addApplication(guid, app);
     }
 
@@ -111,6 +112,31 @@ public class ProjectService {
         return service.getBTSystem(guid);
     }
 
+    /**
+     * Add the bug tracking system to the project.
+     * 
+     * @param guid the project id.
+     * @param bts the bug tracking system id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/bts/{bts}")
+    public void addBTSystem(@PathParam("guid") String guid, @PathParam("bts") String bts) throws Exception {
+        service.addBTSystem(guid, bts);
+    }
+    
+    /**
+     * Add the bug tracking system to the project.
+     * 
+     * @param guid the project id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/bts")
+    public void addBTSystem(@PathParam("guid") String guid) throws Exception {
+        service.addBTSystem(guid, null);
+    }
+    
     /**
      * Gets the project by GUID.
      *
@@ -136,4 +162,10 @@ public class ProjectService {
     public List<Project> get() throws Exception {
         return service.get();
     }
+    
+    @DELETE
+    @Path("{guid}")
+    public void delete(@PathParam("guid") String guid) throws Exception {
+        service.delete(guid);      
+    }    
 }

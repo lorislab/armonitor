@@ -117,4 +117,10 @@ public class ApplicationSystemService {
     public String generatedKey(@PathParam("guid") String guid) throws Exception {
         return service.generatedKey(guid);
     }
+    
+    @DELETE
+    @Path("{guid}")
+    public void delete(@PathParam("guid") String guid) throws Exception {
+        service.delete(guid);      
+    }      
 }

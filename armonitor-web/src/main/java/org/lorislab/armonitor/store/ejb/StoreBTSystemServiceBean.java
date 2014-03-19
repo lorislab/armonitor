@@ -54,7 +54,7 @@ public class StoreBTSystemServiceBean extends AbstractEntityServiceBean<StoreBTS
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean deleteBTSystem(String guid) {
-        return this.delete(this);
+        return this.delete(guid);
     }
     
     public StoreBTSystem getBTSystem(String guid) {

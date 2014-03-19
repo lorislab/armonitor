@@ -37,6 +37,7 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
         result.name = data.getName();
         result.btsId = data.getBtsId();
         result.enabled = data.isEnabled();
+        result.n = data.isNew();
         return result;
     }
 

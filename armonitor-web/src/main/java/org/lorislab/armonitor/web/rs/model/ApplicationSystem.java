@@ -58,4 +58,8 @@ public class ApplicationSystem {
      * The classification.
      */
     public String clazz;
+    /**
+     * The new flag
+     */
+    public boolean n;    
 }

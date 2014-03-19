@@ -133,4 +133,9 @@ public class SCMSystemServiceBean {
             throw new ServiceException(Errors.SCM_DELETE_ERROR, guid, ex, guid);
         }
     }
+
+    public Map<String, String> getList() {
+        List<StoreSCMSystem> tmp = service.getSCMSystems();
+        return Mapper.convert(tmp, String.class);
+    }
 }

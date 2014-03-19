@@ -33,6 +33,7 @@ import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
+import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
  * The agent service.
@@ -120,4 +121,7 @@ public class AgentServiceBean {
         return Mapper.map(tmp, Agent.class);
     }
 
+    public void delete(String guid) throws ServiceException {
+        service.deleteAgent(guid);
+    }    
 }

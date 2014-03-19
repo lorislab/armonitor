@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -47,6 +48,18 @@ public class BTSystemService {
      */
     @EJB
     private BTSystemServiceBean service;
+
+    /**
+     * Gets the list of the bug tracking systems.
+     *
+     * @return the map of ID and name.
+     */
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, String> getList() {
+        return service.getList();
+    }
 
     /**
      * Gets the set of project for the bug tracking system.
@@ -77,7 +90,7 @@ public class BTSystemService {
     @GET
     @Path("types")
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String,String> getTypes() {
+    public Map<String, String> getTypes() {
         return service.getTypes();
     }
 
@@ -119,5 +132,11 @@ public class BTSystemService {
     @Consumes(MediaType.APPLICATION_JSON)
     public BTSystem save(BTSystem scm) {
         return service.save(scm);
+    }
+
+    @DELETE
+    @Path("{guid}")
+    public void delete(@PathParam("guid") String guid) throws Exception {
+        service.delete(guid);
     }
 }

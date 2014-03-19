@@ -36,6 +36,7 @@ import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.Project;
+import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
  *
@@ -122,5 +123,14 @@ public class BTSystemServiceBean {
         tmp = service.saveBTSystem(tmp);
         result = Mapper.map(tmp, BTSystem.class);
         return result;
+    }
+    
+    public void delete(String guid) throws ServiceException {
+        service.deleteBTSystem(guid);
+    }     
+
+    public Map<String, String> getList() {
+        List<StoreBTSystem> tmp = service.getBTSystems();
+        return Mapper.convert(tmp, String.class);
     }
 }

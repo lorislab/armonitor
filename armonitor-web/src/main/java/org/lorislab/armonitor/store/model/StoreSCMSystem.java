@@ -37,7 +37,11 @@ public class StoreSCMSystem extends Persistent {
      * The UID for this class.
      */
     private static final long serialVersionUID = -2589083311226920375L;
-
+    /**
+     * The name.
+     */
+    @Column(name = "C_NAME")
+    private String name;
     /**
      * The set of the applications for this SCM system.
      */
@@ -87,6 +91,24 @@ public class StoreSCMSystem extends Persistent {
     @Column(name = "C_LINK")
     private String link;
 
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the name.
+     *
+     * @param name the name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     /**
      * Gets the link.
      *

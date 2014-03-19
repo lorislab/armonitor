@@ -43,8 +43,12 @@ app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/settings/scm', {templateUrl: 'partials/admin/scm/search.html', controller: 'SCMSearchAdminCtrl'});		
 		$routeProvider.when('/settings/scm/edit', {templateUrl: 'partials/admin/scm/edit.html', controller: 'SCMAdminCtrl'});
 		$routeProvider.when('/settings/scm/edit/:guid', {templateUrl: 'partials/admin/scm/edit.html', controller: 'SCMAdminCtrl'});
-		$routeProvider.when('/settings/bts', {templateUrl: 'partials/admin/bts.html', controller: 'BTSAdminCtrl'});		
-		$routeProvider.when('/settings/projects', {templateUrl: 'partials/admin/projects.html', controller: 'ProjectsAdminCtrl'});		
+		$routeProvider.when('/settings/bts', {templateUrl: 'partials/admin/bts/search.html', controller: 'BTSSearchAdminCtrl'});		
+		$routeProvider.when('/settings/bts/edit', {templateUrl: 'partials/admin/bts/edit.html', controller: 'BTSAdminCtrl'});
+		$routeProvider.when('/settings/bts/edit/:guid', {templateUrl: 'partials/admin/bts/edit.html', controller: 'BTSAdminCtrl'});		
+		$routeProvider.when('/settings/project', {templateUrl: 'partials/admin/project/search.html', controller: 'ProjectSearchAdminCtrl'});		
+		$routeProvider.when('/settings/project/edit', {templateUrl: 'partials/admin/project/edit.html', controller: 'ProjectAdminCtrl'});		
+		$routeProvider.when('/settings/project/edit/:guid', {templateUrl: 'partials/admin/project/edit.html', controller: 'ProjectAdminCtrl'});		
 		$routeProvider.when('/settings/services', {templateUrl: 'partials/admin/services.html', controller: 'ServicesCtrl'});
 		$routeProvider.otherwise({redirectTo: '/dashboard'});
 	}]);
@@ -87,3 +91,8 @@ app.config(function($httpProvider) {
 		};
 	});
 });
+
+var services = angular.module('armonitor.services', ['ngResource']);
+var controllers = angular.module('armonitor.controllers', []);
+var filters = angular.module('armonitor.filters', []);
+var directives = angular.module('armonitor.directives', []);

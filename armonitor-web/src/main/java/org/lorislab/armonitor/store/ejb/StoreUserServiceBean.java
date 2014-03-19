@@ -53,6 +53,17 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Deletes the user.
+     *
+     * @param guid the GUID.
+     * @return <code>true</code> if the user was deleted.
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean deleteUser(String guid) {
+        return this.delete(guid);
+    }
+    
     public StoreUser getUser(String guid) {
         return this.getById(guid);
     }
@@ -60,11 +71,6 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreUser saveUser(StoreUser user) {
         return this.save(user);
-    }
-
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public boolean deleteUser(String guid) {
-        return this.deleteUser(guid);
     }
 
     public Set<StoreRole> getRoles(String guid) {

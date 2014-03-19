@@ -46,5 +46,12 @@ public class BTSystem {
      * The bug tracking system type.
      */
     public String type;
-
+    /**
+     * The new flag
+     */
+    public boolean n;
+    /**
+     * The name.
+     */
+    public String name;    
 }

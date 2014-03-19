@@ -30,4 +30,8 @@ public class Role {
      * The name.
      */
     public String name;
+    /**
+     * The new flag
+     */
+    public boolean n;    
 }

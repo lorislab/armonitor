@@ -54,4 +54,8 @@ public class Application {
      * The type.
      */
     public String type;
+    /**
+     * The new flag
+     */
+    public boolean n;    
 }

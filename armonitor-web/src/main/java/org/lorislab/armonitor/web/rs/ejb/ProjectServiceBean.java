@@ -26,8 +26,10 @@ import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreBTSystemServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreProjectServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
+import org.lorislab.armonitor.store.model.StoreBTSystem;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
@@ -48,6 +50,9 @@ public class ProjectServiceBean {
 
     @EJB
     private StoreApplicationServiceBean appService;
+
+    @EJB
+    private StoreBTSystemServiceBean btsService;
 
     public void addApplication(String guid, String app) {
         StoreApplication tmp = appService.getApplication(app);
@@ -86,6 +91,26 @@ public class ProjectServiceBean {
         return null;
     }
 
+    public void addBTSystem(String guid, String bts) {
+        StoreProject tmp = service.getProject(guid);
+        if (tmp != null) {
+            if (bts != null) {
+                StoreBTSystem system = btsService.getBTSystem(bts);
+                if (system != null) {
+                    tmp.setBts(system);
+                    service.saveProject(tmp);
+                } else {
+                    LOGGER.log(Level.WARNING, "The bug tracking system not found {0}", guid);
+                }
+            } else {
+                 tmp.setBts(null);
+                 service.saveProject(tmp);
+            }
+        } else {
+            LOGGER.log(Level.WARNING, "Project not found {0}", guid);
+        }
+    }
+
     public Project create() throws Exception {
         return Mapper.create(StoreProject.class, Project.class);
     }
@@ -111,6 +136,10 @@ public class ProjectServiceBean {
         tmp = service.saveProject(tmp);
         result = Mapper.map(tmp, Project.class);
         return result;
+    }
+
+    public void delete(String guid) {
+        service.deleteProject(guid);
     }
 
 }

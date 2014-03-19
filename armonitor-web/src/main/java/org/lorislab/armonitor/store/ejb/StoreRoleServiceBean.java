@@ -20,6 +20,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.store.model.StoreRole;
+import org.lorislab.armonitor.store.resources.Errors;
+import org.lorislab.jel.ejb.exception.ServiceException;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
 /**
@@ -71,9 +73,25 @@ public class StoreRoleServiceBean extends AbstractEntityServiceBean<StoreRole> {
      *
      * @param guid the GUID.
      * @return <code>true</code> if the role was deleted.
+     * 
+     * @exception ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public boolean deleteRole(String guid) {
-        return this.delete(guid);
+    public boolean deleteRole(String guid) throws ServiceException {
+        try {
+            StoreRole role = getRole(guid);
+            if (role != null) {
+                if (!role.isSystem()) {
+                    return this.delete(guid);
+                } else {
+                    throw new ServiceException(Errors.DELETE_ROLE_SYSTEM_ERROR, guid, role.getName());
+                }
+            }
+        } catch (ServiceException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new ServiceException(Errors.DELETE_ROLE_ERROR, guid, e);
+        }
+        return false;
     }
 }

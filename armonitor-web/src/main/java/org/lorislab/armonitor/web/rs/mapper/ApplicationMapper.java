@@ -41,6 +41,7 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         result.enabled = data.isEnabled();
         result.repoLink = data.getRepoLink();
         result.type = data.getType();
+        result.n = data.isNew();
         return result;
     }
 

@@ -33,6 +33,7 @@ import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Project;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
+import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
  *
@@ -125,4 +126,7 @@ public class ApplicationServiceBean {
         return result;
     }
 
+    public void delete(String guid) throws ServiceException {
+        service.deleteApplication(guid);
+    }     
 }

@@ -1,0 +1,48 @@
+<h2>Projects
+	<small>configuration</small>
+</h2>
+
+<ol class="breadcrumb">
+	<li>
+		<i class="icon-cog-alt"></i> 
+		<a href="#/settings">
+			Settings
+		</a>
+	</li>
+	<li class="active">
+		<i class="icon-award"></i> Projects
+	</li>	
+</ol>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="input-group">
+			<input type="search" placeholder="Search" class="form-control" data-ng-model="filter">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" data-ng-click="clear()"><i class="icon-erase"></i></button>
+				<button class="btn btn-default" type="button" data-ng-click="reload()"><i class="icon-arrows-cw"></i></button>
+				<a class="btn btn-default" href="#/settings/project/edit" ><i class="icon-doc-text"></i></a>
+			</span>				
+		</div>			
+	</div>
+	<table class="table table-striped sortable">
+		<thead>
+			<tr>
+				<th> </th>	
+				<th>Enabled</th>				
+				<th>Name</th>
+				<th>Bug tracking key</th>
+			</tr>
+		</thead>			
+		<tbody>
+			<tr data-ng-repeat="item in all| filter:search">
+				<td>
+					<a href="#/settings/project/edit/{{item.guid}}"><span class="icon-pencil"></span></a>
+				</td>					
+				<td><i data-ng-class="{'icon-check': item.enabled, 'icon-check-empty': !item.enabled}"></i></td>
+				<td>{{item.name}}</td>
+				<td>{{item.btsId}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

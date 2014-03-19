@@ -38,4 +38,8 @@ public class Project {
      * The enabled flag.
      */
     public boolean enabled;
+    /**
+     * The new flag
+     */
+    public boolean n;    
 }

@@ -47,6 +47,17 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
      */
     private static final long serialVersionUID = -6750263259636685498L;
 
+    /**
+     * Deletes the agent.
+     *
+     * @param guid the GUID.
+     * @return <code>true</code> if the agent was deleted.
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean deleteAgent(String guid) {
+        return this.delete(guid);
+    }
+    
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreAgent saveAgent(StoreAgent agent) {
         return this.save(agent);

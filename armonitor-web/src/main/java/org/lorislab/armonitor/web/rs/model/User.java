@@ -41,5 +41,9 @@ public class User {
     /**
      * The login flag.
      */
-    public boolean login;    
+    public boolean login;  
+    /**
+     * The new flag
+     */
+    public boolean n;    
 }

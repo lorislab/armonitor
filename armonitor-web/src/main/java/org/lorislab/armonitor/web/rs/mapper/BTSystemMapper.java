@@ -39,6 +39,8 @@ public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
         result.server = data.getServer();
         result.user = data.getUser();
         result.type = data.getType();
+        result.n = data.isNew();
+        result.name = data.getName();
         return result;
     }
 
@@ -52,6 +54,7 @@ public class BTSystemMapper implements MapperService<StoreBTSystem, BTSystem> {
         entity.setServer(data.server);
         entity.setUser(data.user);
         entity.setType(data.type);
+        entity.setName(data.name);
         return entity;
     }
 

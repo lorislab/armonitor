@@ -42,6 +42,7 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         result.domain = data.getDomain();
         result.link = data.getLink();
         result.clazz = data.getClassification();
+        result.n = data.isNew();
         return result;
     }
 

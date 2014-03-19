@@ -1,0 +1,98 @@
+<h2>Bug tracking systems
+	<small>configuration</small>
+</h2>
+
+<ol class="breadcrumb">
+	<li>
+		<i class="icon-cog-alt"></i> 
+		<a href="#/settings">
+			Settings
+		</a>
+	</li>
+	<li>
+		<i class="icon-award"></i>
+		<a href="#/settings/project">
+			Projects
+		</a>		
+	</li>	
+	<li class="active">
+		<i class="icon-award"></i><span data-ng-hide="data.n"> {{data.name}}</span><span data-ng-show="data.n"> - - - - - - - - - -</span>
+	</li>		
+</ol>
+
+<div class="row">
+	<div class="col-lg-12">
+
+		<tabset>
+			<tab>
+				<tab-heading>
+					<i class="icon-award"></i> SCM system
+				</tab-heading>				
+		<form class="form-horizontal" data-ng-submit="save()">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label" for="auth"></label>
+					<div class="controls">
+						<label class="enabled">
+							<input type="checkbox" id="auth" data-ng-model="data.enabled"> Project enabled
+						</label>							
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="name">Name</label>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="icon-pencil"></i></span>
+						<input id="name" type="text" class="form-control" placeholder="Name" data-ng-model="data.name" required>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="btsId">Bug tracking issue key</label>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="icon-pencil"></i></span>
+						<input id="btsId" type="text" class="form-control" placeholder="Bug tracking issue key" data-ng-model="data.btsId" >
+					</div>
+				</div>				
+
+				<div class="control-group">
+					<label class="control-label" for="save"></label>
+					<div class="controls">
+						<button id="save" type="submit" class="btn btn-success" data-ng-hide="data.n" ><i class="icon-floppy"></i> Save</button>
+						<button id="save" type="submit" class="btn btn-success" data-ng-show="data.n" ><i class="icon-doc-text"></i> Create</button>
+						<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
+						<span style="float: right">
+							<button type="button" class="btn btn-danger" data-ng-disabled="data.n" data-ng-click="delete()"><i class="icon-trash"></i> Delete</button>
+						</span>								
+					</div>
+				</div>					
+			</fieldset>
+		</form>	
+			</tab>
+			<tab data-ng-show="!data.n">
+				<tab-heading>
+					<i class="icon-bug"></i> Bug tracking system
+				</tab-heading>
+				<form class="form-horizontal" data-ng-submit="addbts()">		
+					<fieldset>
+
+						<div class="control-group">
+							<label class="control-label" for="btsc">Bug tracking systems</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<select data-ng-change="update()" id="btsc" class="form-control" data-ng-model="bts.selected" data-ng-options="k as v for (k,v) in btslist">									
+									<option value="">--- select a bug tracking system ---</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label" for="cp"></label>
+							<div class="controls">
+								<button id="cp" class="btn btn-success" type="submit" ><i class="icon-floppy"></i>  Save</button>
+							</div>												
+						</div>
+					</fieldset>
+				</form>			
+			</tab>					
+	</div>
+</div>	

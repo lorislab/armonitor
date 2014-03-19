@@ -55,4 +55,8 @@ public class SCMSystem {
      * The new flag
      */
     public boolean n;
+    /**
+     * The name.
+     */
+    public String name;     
 }

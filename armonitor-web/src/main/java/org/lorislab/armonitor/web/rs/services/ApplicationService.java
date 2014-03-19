@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -95,5 +96,11 @@ public class ApplicationService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Application> get() throws Exception {
         return service.get();
-    }    
+    }   
+    
+    @DELETE
+    @Path("{guid}")
+    public void delete(@PathParam("guid") String guid) throws Exception {
+        service.delete(guid);      
+    }      
 }

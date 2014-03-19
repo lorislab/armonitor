@@ -107,5 +107,10 @@ public class UserService {
     public void changePassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) throws Exception {
         service.changePassword(guid, reqeust);
     }
-    
+
+    @DELETE
+    @Path("{guid}")
+    public void delete(@PathParam("guid") String guid) throws Exception {
+        service.delete(guid);      
+    }      
 }

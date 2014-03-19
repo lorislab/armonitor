@@ -33,6 +33,7 @@ import org.lorislab.armonitor.store.model.StoreUser;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.Role;
 import org.lorislab.armonitor.web.rs.model.User;
+import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
  *
@@ -137,4 +138,7 @@ public class UserServiceBean {
         }
     }
 
+    public void delete(String guid) throws ServiceException {
+        service.deleteUser(guid);
+    }     
 }
