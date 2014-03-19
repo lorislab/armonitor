@@ -3,3 +3,6 @@ org.lorislab.armonitor.web.rs.mapper.DashboardApplicationSystemMapperKey
 org.lorislab.armonitor.web.rs.mapper.DashboardApplicationMapperKey
 org.lorislab.armonitor.web.rs.mapper.BTSystemMapperKey
 org.lorislab.armonitor.web.rs.mapper.SCMSystemMapperKey
+org.lorislab.armonitor.web.rs.mapper.ProjectMapperKey
+org.lorislab.armonitor.web.rs.mapper.AgentMapperKey
+org.lorislab.armonitor.web.rs.mapper.ApplicationMapperKey

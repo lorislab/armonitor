@@ -1,4 +1,4 @@
-<h2>Bug tracking systems
+<h2>Project
 	<small>configuration</small>
 </h2>
 
@@ -26,53 +26,53 @@
 		<tabset>
 			<tab>
 				<tab-heading>
-					<i class="icon-award"></i> SCM system
+					<i class="icon-award"></i> Project
 				</tab-heading>				
-		<form class="form-horizontal" data-ng-submit="save()">
-			<fieldset>
-				<div class="control-group">
-					<label class="control-label" for="auth"></label>
-					<div class="controls">
-						<label class="enabled">
-							<input type="checkbox" id="auth" data-ng-model="data.enabled"> Project enabled
-						</label>							
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="name">Name</label>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="icon-pencil"></i></span>
-						<input id="name" type="text" class="form-control" placeholder="Name" data-ng-model="data.name" required>
-					</div>
-				</div>
+				<form class="form-horizontal" data-ng-submit="save()">
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label" for="auth"></label>
+							<div class="controls">
+								<label class="enabled">
+									<input type="checkbox" id="auth" data-ng-model="data.enabled"> Project enabled
+								</label>							
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="name">Name</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="name" type="text" class="form-control" placeholder="Name" data-ng-model="data.name" required>
+							</div>
+						</div>
 
-				<div class="control-group">
-					<label class="control-label" for="btsId">Bug tracking issue key</label>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="icon-pencil"></i></span>
-						<input id="btsId" type="text" class="form-control" placeholder="Bug tracking issue key" data-ng-model="data.btsId" >
-					</div>
-				</div>				
+						<div class="control-group">
+							<label class="control-label" for="btsId">Bug tracking issue key</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="btsId" type="text" class="form-control" placeholder="Bug tracking issue key" data-ng-model="data.btsId" >
+							</div>
+						</div>				
 
-				<div class="control-group">
-					<label class="control-label" for="save"></label>
-					<div class="controls">
-						<button id="save" type="submit" class="btn btn-success" data-ng-hide="data.n" ><i class="icon-floppy"></i> Save</button>
-						<button id="save" type="submit" class="btn btn-success" data-ng-show="data.n" ><i class="icon-doc-text"></i> Create</button>
-						<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
-						<span style="float: right">
-							<button type="button" class="btn btn-danger" data-ng-disabled="data.n" data-ng-click="delete()"><i class="icon-trash"></i> Delete</button>
-						</span>								
-					</div>
-				</div>					
-			</fieldset>
-		</form>	
+						<div class="control-group">
+							<label class="control-label" for="save"></label>
+							<div class="controls">
+								<button id="save" type="submit" class="btn btn-success" data-ng-hide="data.n" ><i class="icon-floppy"></i> Save</button>
+								<button id="save" type="submit" class="btn btn-success" data-ng-show="data.n" ><i class="icon-doc-text"></i> Create</button>
+								<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
+								<span style="float: right">
+									<button type="button" class="btn btn-danger" data-ng-disabled="data.n" data-ng-click="delete()"><i class="icon-trash"></i> Delete</button>
+								</span>								
+							</div>
+						</div>					
+					</fieldset>
+				</form>	
 			</tab>
-			<tab data-ng-show="!data.n">
+			<tab data-ng-show="!data.n" select="load()" data-ng-controller="ProjectBtsAdminCtrl">
 				<tab-heading>
 					<i class="icon-bug"></i> Bug tracking system
 				</tab-heading>
-				<form class="form-horizontal" data-ng-submit="addbts()">		
+				<form class="form-horizontal" data-ng-submit="addbts()" >		
 					<fieldset>
 
 						<div class="control-group">
@@ -84,15 +84,62 @@
 								</select>
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<label class="control-label" for="cp"></label>
 							<div class="controls">
-								<button id="cp" class="btn btn-success" type="submit" ><i class="icon-floppy"></i>  Save</button>
+								<button id="cp" class="btn btn-success" type="submit" ><i class="icon-floppy"></i>  Update</button>
+								<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
 							</div>												
 						</div>
 					</fieldset>
 				</form>			
-			</tab>					
+			</tab>	
+			<tab data-ng-show="!data.n" select="load()" data-ng-controller="ProjectAppAdminCtrl">
+				<tab-heading>
+					<i class="icon-beaker"></i> Applications
+				</tab-heading>
+				<div style="padding-top: 10px"></div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="input-group">
+							<input type="search" placeholder="Search" class="form-control" data-ng-model="filter">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" data-ng-click="clear()"><i class="icon-erase"></i></button>
+								<button class="btn btn-default" type="button" data-ng-click="reload()"><i class="icon-arrows-cw"></i></button>
+								<a class="btn btn-default" href="#/settings/app/edit" ><i class="icon-doc-text"></i></a>
+							</span>				
+						</div>			
+					</div>
+					<table class="table table-striped sortable">
+						<thead>
+							<tr>
+								<th> </th>	
+								<th>Name</th>	
+								<th>Enabled</th>
+								<th>Type</th>
+							</tr>
+						</thead>			
+						<tbody>
+							<tr data-ng-repeat="item in all| filter:search">
+								<td>
+									<a href="#/settings/app/edit/{{item.guid}}"><span class="icon-pencil"></span></a>
+								</td>					
+								<td>{{item.name}}</td>
+								<td><i data-ng-class="{'icon-check': item.enabled, 'icon-check-empty': !item.enabled}"></i></td>
+								<td>{{item.type}}</td>
+							</tr>
+						</tbody>
+					</table>					
+				</div>		
+
+				<div class="control-group">
+					<label class="control-label" for="cp"></label>
+					<div class="controls">
+						<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
+					</div>												
+				</div>
+			</tab>
+		</tabset>
 	</div>
 </div>	

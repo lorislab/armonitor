@@ -17,6 +17,7 @@ package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -124,4 +125,9 @@ public class AgentServiceBean {
     public void delete(String guid) throws ServiceException {
         service.deleteAgent(guid);
     }    
+
+    public Map<String, String> getList() {
+        List<StoreAgent> tmp = service.getAgents();
+        return Mapper.convert(tmp, String.class);
+    }
 }

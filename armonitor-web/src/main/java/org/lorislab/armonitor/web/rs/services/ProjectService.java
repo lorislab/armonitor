@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -48,6 +49,18 @@ public class ProjectService {
     @EJB
     private ProjectServiceBean service;
 
+    /**
+     * Gets the list of the projects.
+     *
+     * @return the map of ID and name.
+     */
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, String> getList() {
+        return service.getList();
+    }    
+    
     /**
      * Creates the new project.
      *
@@ -126,14 +139,14 @@ public class ProjectService {
     }
     
     /**
-     * Add the bug tracking system to the project.
+     * Remove the bug tracking system to the project.
      * 
      * @param guid the project id.
      * @throws Exception if the method fails.
      */
     @PUT
     @Path("{guid}/bts")
-    public void addBTSystem(@PathParam("guid") String guid) throws Exception {
+    public void removeBTSystem(@PathParam("guid") String guid) throws Exception {
         service.addBTSystem(guid, null);
     }
     

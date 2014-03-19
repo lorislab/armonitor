@@ -55,6 +55,11 @@ services.factory('SCMAdminService', function($resource, config) {
 			method: 'GET',
 			url: config.server + '/ad/scm',
 			isArray: true
-		}
+		},
+		list: {
+			method: 'GET',
+			url: config.server + '/ad/scm/list',
+			isArray: false
+		}		
 	});
 });

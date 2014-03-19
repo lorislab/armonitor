@@ -27,9 +27,11 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.criteria.StoreSystemCriteria;
+import org.lorislab.armonitor.store.ejb.StoreAgentServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreRoleServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
+import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreRole;
 import org.lorislab.armonitor.store.model.StoreSystem;
@@ -54,7 +56,13 @@ public class ApplicationSystemServiceBean {
 
     @EJB
     private StoreRoleServiceBean roleService;
-            
+          
+    @EJB
+    private StoreApplicationServiceBean appService;
+    
+    @EJB
+    private StoreAgentServiceBean agentService;
+    
     public Agent getAgent(String guid) {
         StoreSystemCriteria criteria = new StoreSystemCriteria();
         criteria.setGuid(guid);
@@ -171,4 +179,44 @@ public class ApplicationSystemServiceBean {
     public void delete(String guid) throws ServiceException {
         service.deleteSystem(guid);
     }     
+
+    public void addApplication(String guid, String app) {
+        StoreSystem tmp = service.getSystem(guid);
+        if (tmp != null) {
+            if (app != null) {
+                StoreApplication pr = appService.getApplication(app);
+                if (pr != null) {
+                    tmp.setApplication(pr);
+                    service.saveSystem(tmp);
+                } else {
+                    LOGGER.log(Level.WARNING, "The application not found {0}", app);
+                }
+            } else {
+                 tmp.setApplication(null);
+                 service.saveSystem(tmp);
+            }
+        } else {
+            LOGGER.log(Level.WARNING, "System not found {0}", guid);
+        }
+    }
+    
+    public void addAgent(String guid, String agent) {
+        StoreSystem tmp = service.getSystem(guid);
+        if (tmp != null) {
+            if (agent != null) {
+                StoreAgent pr = agentService.loadAgent(agent);
+                if (pr != null) {
+                    tmp.setAgent(pr);
+                    service.saveSystem(tmp);
+                } else {
+                    LOGGER.log(Level.WARNING, "The agent not found {0}", agent);
+                }
+            } else {
+                 tmp.setAgent(null);
+                 service.saveSystem(tmp);
+            }
+        } else {
+            LOGGER.log(Level.WARNING, "System not found {0}", guid);
+        }
+    }    
 }

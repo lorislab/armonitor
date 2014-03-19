@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,8 +27,12 @@ import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreProjectServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreSCMSystemServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
+import org.lorislab.armonitor.store.model.StoreProject;
+import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
@@ -51,6 +56,12 @@ public class ApplicationServiceBean {
     @EJB
     private StoreSystemServiceBean sysService;
 
+    @EJB
+    private StoreProjectServiceBean projectService;
+    
+    @EJB
+    private StoreSCMSystemServiceBean scmService;
+    
     public Set<ApplicationSystem> getSystems(String guid) {
         StoreApplicationCriteria criteria = new StoreApplicationCriteria();
         criteria.setGuid(guid);
@@ -129,4 +140,49 @@ public class ApplicationServiceBean {
     public void delete(String guid) throws ServiceException {
         service.deleteApplication(guid);
     }     
+
+    public Map<String, String> getList() {
+        List<StoreApplication> tmp = service.getApplications();
+        return Mapper.convert(tmp, String.class);
+    }
+
+    public void addSCMSystem(String guid, String scm) {
+        StoreApplication tmp = service.getApplication(guid);
+        if (tmp != null) {
+            if (scm != null) {
+                StoreSCMSystem system = scmService.getSCMSystem(scm);
+                if (system != null) {
+                    tmp.setScm(system);
+                    service.saveApplication(tmp);
+                } else {
+                    LOGGER.log(Level.WARNING, "The source code system not found {0}", scm);
+                }
+            } else {
+                 tmp.setScm(null);
+                 service.saveApplication(tmp);
+            }
+        } else {
+            LOGGER.log(Level.WARNING, "Application not found {0}", guid);
+        }
+    }
+
+    public void addProject(String guid, String project) {
+        StoreApplication tmp = service.getApplication(guid);
+        if (tmp != null) {
+            if (project != null) {
+                StoreProject pr = projectService.getProject(project);
+                if (pr != null) {
+                    tmp.setProject(pr);
+                    service.saveApplication(tmp);
+                } else {
+                    LOGGER.log(Level.WARNING, "The project not found {0}", project);
+                }
+            } else {
+                 tmp.setProject(null);
+                 service.saveApplication(tmp);
+            }
+        } else {
+            LOGGER.log(Level.WARNING, "Application not found {0}", guid);
+        }
+    }
 }

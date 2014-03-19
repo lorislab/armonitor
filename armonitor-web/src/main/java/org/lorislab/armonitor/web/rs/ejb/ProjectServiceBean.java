@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,7 +63,7 @@ public class ProjectServiceBean {
                 tmp.setProject(sp);
                 appService.saveApplication(tmp);
             } else {
-                LOGGER.log(Level.WARNING, "Project not found {0}", guid);
+                LOGGER.log(Level.WARNING, "Project not found {0}", app);
             }
         } else {
             LOGGER.log(Level.WARNING, "Applicaiton not found application {0}", app);
@@ -100,7 +101,7 @@ public class ProjectServiceBean {
                     tmp.setBts(system);
                     service.saveProject(tmp);
                 } else {
-                    LOGGER.log(Level.WARNING, "The bug tracking system not found {0}", guid);
+                    LOGGER.log(Level.WARNING, "The bug tracking system not found {0}", bts);
                 }
             } else {
                  tmp.setBts(null);
@@ -140,6 +141,11 @@ public class ProjectServiceBean {
 
     public void delete(String guid) {
         service.deleteProject(guid);
+    }
+
+    public Map<String, String> getList() {
+        List<StoreProject> tmp = service.getProjects();
+        return Mapper.convert(tmp, String.class);
     }
 
 }

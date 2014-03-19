@@ -48,7 +48,13 @@ app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/settings/bts/edit/:guid', {templateUrl: 'partials/admin/bts/edit.html', controller: 'BTSAdminCtrl'});		
 		$routeProvider.when('/settings/project', {templateUrl: 'partials/admin/project/search.html', controller: 'ProjectSearchAdminCtrl'});		
 		$routeProvider.when('/settings/project/edit', {templateUrl: 'partials/admin/project/edit.html', controller: 'ProjectAdminCtrl'});		
-		$routeProvider.when('/settings/project/edit/:guid', {templateUrl: 'partials/admin/project/edit.html', controller: 'ProjectAdminCtrl'});		
+		$routeProvider.when('/settings/project/edit/:guid', {templateUrl: 'partials/admin/project/edit.html', controller: 'ProjectAdminCtrl'});	
+		$routeProvider.when('/settings/app', {templateUrl: 'partials/admin/app/search.html', controller: 'AppSearchAdminCtrl'});		
+		$routeProvider.when('/settings/app/edit', {templateUrl: 'partials/admin/app/edit.html', controller: 'AppAdminCtrl'});		
+		$routeProvider.when('/settings/app/edit/:guid', {templateUrl: 'partials/admin/app/edit.html', controller: 'AppAdminCtrl'});			
+		$routeProvider.when('/settings/sys', {templateUrl: 'partials/admin/sys/search.html', controller: 'SystemSearchAdminCtrl'});		
+		$routeProvider.when('/settings/sys/edit', {templateUrl: 'partials/admin/sys/edit.html', controller: 'SystemAdminCtrl'});		
+		$routeProvider.when('/settings/sys/edit/:guid', {templateUrl: 'partials/admin/sys/edit.html', controller: 'SystemAdminCtrl'});					
 		$routeProvider.when('/settings/services', {templateUrl: 'partials/admin/services.html', controller: 'ServicesCtrl'});
 		$routeProvider.otherwise({redirectTo: '/dashboard'});
 	}]);

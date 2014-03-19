@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -45,6 +46,18 @@ public class AgentService {
     @EJB
     private AgentServiceBean service;
 
+    /**
+     * Gets the list of the agents.
+     *
+     * @return the map of ID and name.
+     */
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, String> getList() {
+        return service.getList();
+    } 
+    
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Agent create() throws Exception {

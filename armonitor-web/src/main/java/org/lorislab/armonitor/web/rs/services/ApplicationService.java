@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -45,6 +46,18 @@ public class ApplicationService {
     
     @EJB
     private ApplicationServiceBean service;
+    
+    /**
+     * Gets the list of the applications.
+     *
+     * @return the map of ID and name.
+     */
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, String> getList() {
+        return service.getList();
+    } 
     
     @GET
     @Path("{guid}/sys")
@@ -78,6 +91,31 @@ public class ApplicationService {
         return service.getProject(guid);
     }
         
+    /**
+     * Add project to the application.
+     * 
+     * @param guid the application id.
+     * @param project the project id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/project/{project}")
+    public void addProject(@PathParam("guid") String guid, @PathParam("project") String project) throws Exception {
+        service.addProject(guid, project);
+    }
+    
+    /**
+     * Remove the project from the application.
+     * 
+     * @param guid the application id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/project")
+    public void removeProject(@PathParam("guid") String guid) throws Exception {
+        service.addProject(guid, null);
+    }
+    
     @GET
     @Path("{guid}/scm")
     @Produces(MediaType.APPLICATION_JSON)
@@ -85,6 +123,31 @@ public class ApplicationService {
         return service.getSCMSystem(guid);
     }
         
+    /**
+     * Add the source code system to the application.
+     * 
+     * @param guid the application id.
+     * @param scm the source code system id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/scm/{scm}")
+    public void addSCMSystem(@PathParam("guid") String guid, @PathParam("scm") String scm) throws Exception {
+        service.addSCMSystem(guid, scm);
+    }
+    
+    /**
+     * Remove the source code system to the application.
+     * 
+     * @param guid the application id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/scm")
+    public void removeSCMSystem(@PathParam("guid") String guid) throws Exception {
+        service.addSCMSystem(guid, null);
+    }
+    
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)

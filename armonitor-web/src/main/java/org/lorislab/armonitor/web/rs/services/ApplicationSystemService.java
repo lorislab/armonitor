@@ -49,23 +49,23 @@ public class ApplicationSystemService {
     @Path("{guid}/role")
     @Produces(MediaType.APPLICATION_JSON)
     public Set<Role> getRoles(@PathParam("guid") String guid) {
-        return service.getRoles(guid);        
+        return service.getRoles(guid);
     }
-    
+
     @PUT
     @Path("{guid}/role/{role}")
     @Produces(MediaType.APPLICATION_JSON)
     public void addRole(@PathParam("guid") String guid, @PathParam("role") String role) {
         service.addRole(guid, role);
     }
-    
+
     @DELETE
     @Path("{guid}/role/{role}")
     @Produces(MediaType.APPLICATION_JSON)
     public void removeRole(@PathParam("guid") String guid, @PathParam("role") String role) {
         service.removeRole(guid, role);
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<ApplicationSystem> get() {
@@ -85,14 +85,70 @@ public class ApplicationSystemService {
     public Application getApplication(@PathParam("guid") String guid) {
         return service.getApplication(guid);
     }
-    
+
+    /**
+     * Add the application to the system.
+     *
+     * @param guid the system id.
+     * @param app the application id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/app/{app}")
+    public void addApplication(@PathParam("guid") String guid, @PathParam("app") String app) throws Exception {
+        service.addApplication(guid, app);
+    }
+
+    /**
+     * Remove the application to the system.
+     *
+     * @param guid the system id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/app")
+    public void removeApplication(@PathParam("guid") String guid) throws Exception {
+        service.addApplication(guid, null);
+    }
+
+    /**
+     * Gets the agent of the system
+     *
+     * @param guid the system id.
+     * @return the corresponding agent.
+     */
     @GET
     @Path("{guid}/agent")
     @Produces(MediaType.APPLICATION_JSON)
     public Agent getAgent(@PathParam("guid") String guid) {
         return service.getAgent(guid);
     }
-    
+
+    /**
+     * Add the agent to the system.
+     *
+     * @param guid the system id.
+     * @param agent the agent id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/agent/{agent}")
+    public void addAgent(@PathParam("guid") String guid, @PathParam("agent") String agent) throws Exception {
+        service.addAgent(guid, agent);
+    }
+
+    /**
+     * Remove the agent to the system.
+     *
+     * @param guid the system id.
+     * @throws Exception if the method fails.
+     */
+    @PUT
+    @Path("{guid}/agent")
+    public void removeAgent(@PathParam("guid") String guid) throws Exception {
+        service.addAgent(guid, null);
+    }
+
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public ApplicationSystem create() throws Exception {
@@ -105,22 +161,22 @@ public class ApplicationSystemService {
     public ApplicationSystem save(ApplicationSystem system) throws Exception {
         return service.save(system);
     }
-    
+
     @DELETE
-    @Path("key/{guid}")
+    @Path("{guid}/key")
     public void deleteKey(@PathParam("guid") String guid) throws Exception {
         service.deleteKey(guid);
     }
-    
+
     @GET
-    @Path("key/{guid}")
+    @Path("{guid}/key")
     public String generatedKey(@PathParam("guid") String guid) throws Exception {
         return service.generatedKey(guid);
     }
-    
+
     @DELETE
     @Path("{guid}")
     public void delete(@PathParam("guid") String guid) throws Exception {
-        service.delete(guid);      
-    }      
+        service.delete(guid);
+    }
 }

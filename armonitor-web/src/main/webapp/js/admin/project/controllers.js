@@ -1,13 +1,8 @@
-controllers.controller('ProjectAdminCtrl', function($scope, $routeParams, ProjectAdminService, CommonService, BTSAdminService) {
+controllers.controller('ProjectAdminCtrl', function($scope, $routeParams, ProjectAdminService, CommonService) {
 
-	$scope.bts = {selected: null};
-	
 	if ($routeParams.guid) {
 		ProjectAdminService.get({guid: $routeParams.guid}, function(response) {
 			$scope.data = response;
-			ProjectAdminService.bts({guid: $routeParams.guid}, function(response) {
-				$scope.bts.selected = response.guid;				
-			});
 		});
 	} else {
 		ProjectAdminService.create({}, function(response) {
@@ -16,10 +11,6 @@ controllers.controller('ProjectAdminCtrl', function($scope, $routeParams, Projec
 		});
 	}
 
-	BTSAdminService.list({}, function(response) {
-		$scope.btslist = response;		
-	});
-	
 	$scope.close = function() {
 		history.back();
 	};
@@ -36,13 +27,67 @@ controllers.controller('ProjectAdminCtrl', function($scope, $routeParams, Projec
 			history.back();
 		});
 	};
+
+});
+
+controllers.controller('ProjectAppAdminCtrl', function($scope, $routeParams, ProjectAdminService) {
+	var _load = true;
 	
-	$scope.addbts = function() {
-		ProjectAdminService.addbts({guid: $routeParams.guid, id: $scope.bts.selected}, function(response) {
-			
+	function _search() {
+		ProjectAdminService.app({guid: $routeParams.guid}, function(response) {
+			$scope.all = response;
 		});
 	};
+	
+	$scope.load = function() {
+		if (_load) {
+			_search();
+		}
+		_load = false;
+	};
+	
+	$scope.reload = function() {
+		$scope.filter = null;
+		_search();
+	};
 
+	$scope.clear = function() {
+		$scope.filter = null;
+	};
+
+	$scope.search = function(row) {
+		if ($scope.filter) {
+			var tmp = $scope.filter || '';
+			return !!(((row.name !== null && row.name.indexOf(tmp)) !== -1 || (row.type !== null && row.type.indexOf(tmp) !== -1)));
+		}
+		return true;
+	};
+	
+});
+
+controllers.controller('ProjectBtsAdminCtrl', function($scope, $routeParams, BTSAdminService, ProjectAdminService) {
+
+	$scope.bts = {selected: null};
+	var _load = true;
+
+	$scope.load = function() {
+
+		if (_load) {
+			BTSAdminService.list({}, function(response) {
+				$scope.btslist = response;
+			});
+			ProjectAdminService.bts({guid: $routeParams.guid}, function(response) {
+				$scope.bts.selected = response.guid;
+			});
+		}
+		_load = false;
+	};
+
+	$scope.addbts = function() {
+		ProjectAdminService.addbts({guid: $routeParams.guid, id: $scope.bts.selected}, function(response) {
+
+		});
+	};
 });
 
 controllers.controller('ProjectSearchAdminCtrl', function($scope, ProjectAdminService) {
@@ -56,6 +101,7 @@ controllers.controller('ProjectSearchAdminCtrl', function($scope, ProjectAdminSe
 	_startup();
 
 	$scope.reload = function() {
+		$scope.filter = null;
 		_startup();
 	};
 

@@ -33,6 +33,17 @@ services.factory('ProjectAdminService', function($resource, config) {
 			params: {guid: '@guid'},
 			isArray: false
 		},
+		app: {
+			method: 'GET',
+			url: config.server + '/ad/pr/:guid/app',
+			params: {guid: '@guid'},
+			isArray: true
+		},
+		list: {
+			method: 'GET',
+			url: config.server + '/ad/pr/list',
+			isArray: false
+		},		
 		addbts: {
 			method: 'PUT',
 			url: config.server + '/ad/pr/:guid/bts/:id',
