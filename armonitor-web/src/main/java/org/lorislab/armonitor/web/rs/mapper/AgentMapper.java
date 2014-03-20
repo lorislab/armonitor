@@ -40,6 +40,7 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
         result.authentication = data.isAuthentication();
         result.type = null;
         result.n = data.isNew();
+        result.name = data.getName();
         if (data.getType() != null) {
             result.type = AgentType.valueOf(data.getType().name());
         }
@@ -59,6 +60,7 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
         }
         entity.setUrl(data.url);
         entity.setUser(data.user);
+        entity.setName(data.name);
         return entity;
     }
 

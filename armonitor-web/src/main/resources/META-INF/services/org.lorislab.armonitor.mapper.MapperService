@@ -24,6 +24,6 @@ org.lorislab.armonitor.web.rs.mapper.TimelineBuildSystemMapper
 org.lorislab.armonitor.web.rs.mapper.DashboardVersionBuildsMapper
 org.lorislab.armonitor.web.rs.mapper.BTSystemNameMapper
 org.lorislab.armonitor.web.rs.mapper.SCMSystemNameMapper
-org.lorislab.armonitor.web.rs.mapper.AgentUrlMapper
+org.lorislab.armonitor.web.rs.mapper.AgentNameMapper
 org.lorislab.armonitor.web.rs.mapper.ApplicationNameMapper
 org.lorislab.armonitor.web.rs.mapper.ProjectNameMapper

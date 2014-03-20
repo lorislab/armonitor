@@ -56,7 +56,7 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         entity.setScmBranches(data.scmBranches);
         entity.setScmTags(data.scmTags);
         entity.setRepoLink(data.repoLink);
-        entity.setType(data.type);
+        entity.setType(data.type);        
         return entity;
     }
 

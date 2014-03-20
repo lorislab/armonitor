@@ -38,6 +38,36 @@ services.factory('SystemAdminService', function($resource, config) {
 			url: config.server + '/ad/sys/:guid/app/:app',
 			params: {guid: '@guid', app: '@app'},
 			isArray: false				
-		}
+		},
+		agent: {
+			method: 'GET',
+			url: config.server + '/ad/sys/:guid/agent',
+			params: {guid: '@guid'},
+			isArray: false			
+		},
+		addagent: {
+			method: 'PUT',
+			url: config.server + '/ad/sys/:guid/agent/:agent',
+			params: {guid: '@guid', agent: '@agent'},
+			isArray: false				
+		},
+		roles: {
+			method: 'GET',
+			url: config.server + '/ad/sys/:guid/role',
+			params: {guid: '@guid'},
+			isArray: false
+		},
+		addrole: {
+			method: 'PUT',
+			url: config.server + '/ad/sys/:guid/role/:role',
+			params: {guid: '@guid', role: '@role'},
+			isArray: false
+		},
+		removerole: {
+			method: 'DELETE',
+			url: config.server + '/ad/sys/:guid/role/:role',
+			params: {guid: '@guid', role: '@role'},
+			isArray: false
+		}		
 	});
 });	

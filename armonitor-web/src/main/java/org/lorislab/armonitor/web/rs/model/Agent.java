@@ -29,6 +29,10 @@ public class Agent {
      */
     public String guid;
     /**
+     * The name.
+     */
+    public String name;    
+    /**
      * The URL.
      */
     public String url;

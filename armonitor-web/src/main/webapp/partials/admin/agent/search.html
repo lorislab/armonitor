@@ -29,9 +29,10 @@
 		<thead>
 			<tr>
 				<th> </th>	
+				<th>Name</th>
 				<th>Authentication</th>	
 				<th>User</th>
-				<th>Url</th>
+				<th>URL</th>
 				<th>Type</th>
 			</tr>
 		</thead>			
@@ -39,7 +40,8 @@
 			<tr data-ng-repeat="item in all| filter:search">
 				<td>
 					<a href="#/settings/agent/edit/{{item.guid}}"><span class="icon-pencil"></span></a>
-				</td>					
+				</td>	
+				<td>{{item.name}}</td>
 				<td><i data-ng-class="{'icon-check': item.authentication, 'icon-check-empty': !item.authentication}"></i></td>
 				<td>{{item.user}}</td>
 				<td>{{item.url}}</td>

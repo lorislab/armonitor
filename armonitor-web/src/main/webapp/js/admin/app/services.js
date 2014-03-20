@@ -45,6 +45,11 @@ services.factory('AppAdminService', function($resource, config) {
 			params: {guid: '@guid'},
 			isArray: false
 		},
+		list: {
+			method: 'GET',
+			url: config.server + '/ad/app/list',
+			isArray: false
+		},		
 		project: {
 			method: 'GET',
 			url: config.server + '/ad/app/:guid/project',

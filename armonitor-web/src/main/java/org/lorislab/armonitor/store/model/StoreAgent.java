@@ -41,9 +41,15 @@ public class StoreAgent extends Persistent {
      */
     private static final long serialVersionUID = -1986215389250537156L;
 
+    /**
+     * The name.
+     */
+    @Column(name = "C_NAME")
+    private String name;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "agent")
     private Set<StoreSystem> systems;
-   
+
     @Column(name = "C_URL")
     private String url;
 
@@ -60,6 +66,24 @@ public class StoreAgent extends Persistent {
     @Column(name = "C_PASSWORD")
     private char[] password;
 
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the name.
+     *
+     * @param name the name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Set<StoreSystem> getSystems() {
         return systems;
     }
@@ -67,7 +91,7 @@ public class StoreAgent extends Persistent {
     public void setSystems(Set<StoreSystem> systems) {
         this.systems = systems;
     }
-        
+
     public boolean isAuthentication() {
         return authentication;
     }

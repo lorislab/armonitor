@@ -20,18 +20,18 @@ import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreAgent;
 
 /**
- * The agent URL mapper.
+ * The agent name mapper.
  *
  * @author Andrej Petras
  */
-public class AgentUrlMapper implements MapperService<StoreAgent, String> {
+public class AgentNameMapper implements MapperService<StoreAgent, String> {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String map(StoreAgent data, Set<String> profiles) {
-        return data.getUrl();
+        return data.getName();
     }
 
     /**

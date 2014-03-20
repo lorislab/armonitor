@@ -46,7 +46,6 @@
 		<module>armonitor-agent-web</module>
 		<module>armonitor-bts</module>
 		<module>armonitor-scm</module>		
-
 		<module>armonitor-rs</module>
 		<module>armonitor-web</module>
 	</modules>
@@ -57,18 +56,10 @@
 			<dependency>
 				<groupId>org.lorislab.jel</groupId>
 				<artifactId>jel-bom</artifactId>
-				<version>0.0.4-SNAPSHOT</version>
+				<version>0.0.5</version>
 				<type>pom</type>
 				<scope>import</scope>				
-			</dependency>			
-			<!-- RESTEASY -->
-			<dependency>
-				<groupId>org.jboss.resteasy</groupId>
-				<artifactId>resteasy-bom</artifactId>
-				<version>2.3.5.Final</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>								
+			</dependency>											
 			<!-- EJB/Persistence libraries -->
 			<dependency>
 				<groupId>org.jboss.spec</groupId>
@@ -76,7 +67,25 @@
 				<version>3.0.1.Final</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>			
+			</dependency>	
+			<!-- RESTEASY -->
+			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-bom</artifactId>
+				<version>2.3.5.Final</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jaxrs</artifactId>
+				<version>2.3.5.Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jackson-provider</artifactId>
+				<version>2.3.5.Final</version>
+			</dependency>								
 			<!-- JBOSS -->     
 			<dependency>
 				<groupId>org.jboss.msc</groupId>

@@ -59,7 +59,8 @@ public final class MonitorClient {
      * @return the monitor service.
      */
     private static MonitorService createService(String url, String username, String password, boolean auth) {
-        RegisterBuiltin.register(ResteasyProviderFactory.getInstance());
+        ResteasyProviderFactory rpf = ResteasyProviderFactory.getInstance();
+        //RegisterBuiltin.register();
         if (auth) {
             Credentials credentials = new UsernamePasswordCredentials(username, password);
             DefaultHttpClient httpClient = new DefaultHttpClient();

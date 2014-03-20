@@ -66,6 +66,7 @@ controllers.controller('AgentSearchAdminCtrl', function($scope, AgentAdminServic
 		if ($scope.filter) {
 			var tmp = $scope.filter || '';
 			return !!(((row.user !== null && row.user.indexOf(tmp) !== -1)
+					|| (row.name !== null && row.name.indexOf(tmp) !== -1)
 					|| (row.url !== null && row.url.indexOf(tmp) !== -1)
 					));
 		}

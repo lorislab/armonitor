@@ -37,6 +37,11 @@ services.factory('AgentAdminService', function($resource, config) {
 			method: 'GET',
 			url: config.server + '/ad/agent/types',
 			isArray: false
+		},
+		list: {
+			method: 'GET',
+			url: config.server + '/ad/agent/list',
+			isArray: false
 		}		
 	});
 });
