@@ -91,11 +91,8 @@ public class SCMSystemServiceBean {
     public void changePassword(String guid, ChangePasswordRequest reqeust) {
         StoreSCMSystem tmp = service.getSCMSystem(guid);
         if (tmp != null) {
-            char[] password = tmp.getPassword();
-            if (password == null || Arrays.equals(password, reqeust.old.toCharArray())) {
-                tmp.setPassword(reqeust.p1.toCharArray());
-                service.saveSCMSystem(tmp);
-            }
+           tmp.setPassword(reqeust.p1.toCharArray());
+           service.saveSCMSystem(tmp);
         }
     }
 

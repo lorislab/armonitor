@@ -1,0 +1,50 @@
+<h2>Agents
+	<small>configuration</small>
+</h2>
+
+<ol class="breadcrumb">
+	<li>
+		<i class="icon-cog-alt"></i> 
+		<a href="#/settings">
+			Settings
+		</a>
+	</li>
+	<li class="active">
+		<i class="icon-user-md"></i> Agents
+	</li>	
+</ol>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="input-group">
+			<input type="search" placeholder="Search" class="form-control" data-ng-model="filter">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" data-ng-click="clear()"><i class="icon-erase"></i></button>
+				<button class="btn btn-default" type="button" data-ng-click="reload()"><i class="icon-arrows-cw"></i></button>
+				<a class="btn btn-default" href="#/settings/agent/edit" ><i class="icon-doc-text"></i></a>
+			</span>				
+		</div>			
+	</div>
+	<table class="table table-striped sortable">
+		<thead>
+			<tr>
+				<th> </th>	
+				<th>Authentication</th>	
+				<th>User</th>
+				<th>Url</th>
+				<th>Type</th>
+			</tr>
+		</thead>			
+		<tbody>
+			<tr data-ng-repeat="item in all| filter:search">
+				<td>
+					<a href="#/settings/agent/edit/{{item.guid}}"><span class="icon-pencil"></span></a>
+				</td>					
+				<td><i data-ng-class="{'icon-check': item.authentication, 'icon-check-empty': !item.authentication}"></i></td>
+				<td>{{item.user}}</td>
+				<td>{{item.url}}</td>
+				<td>{{item.type}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -85,13 +86,13 @@ public class ApplicationSystemServiceBean {
         return null;        
     }
     
-    public Set<Role> getRoles(String guid) {
+    public Map<String, Role> getRoles(String guid) {
         StoreSystemCriteria criteria = new StoreSystemCriteria();
         criteria.setGuid(guid);
         criteria.setFetchRoles(true);
         StoreSystem sys = service.getSystem(criteria);
         if (sys != null) {
-            return Mapper.map(sys.getRoles(), Role.class);
+            return Mapper.convert(sys.getRoles(), Role.class);
         }       
         return null;
     }

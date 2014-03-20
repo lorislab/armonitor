@@ -16,7 +16,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -48,7 +48,7 @@ public class ApplicationSystemService {
     @GET
     @Path("{guid}/role")
     @Produces(MediaType.APPLICATION_JSON)
-    public Set<Role> getRoles(@PathParam("guid") String guid) {
+    public Map<String, Role> getRoles(@PathParam("guid") String guid) {
         return service.getRoles(guid);
     }
 

@@ -61,6 +61,9 @@ app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/settings/user', {templateUrl: 'partials/admin/user/search.html', controller: 'UserSearchAdminCtrl'});		
 		$routeProvider.when('/settings/user/edit', {templateUrl: 'partials/admin/user/edit.html', controller: 'UserAdminCtrl'});		
 		$routeProvider.when('/settings/user/edit/:guid', {templateUrl: 'partials/admin/user/edit.html', controller: 'UserAdminCtrl'});									
+		$routeProvider.when('/settings/agent', {templateUrl: 'partials/admin/agent/search.html', controller: 'AgentSearchAdminCtrl'});		
+		$routeProvider.when('/settings/agent/edit', {templateUrl: 'partials/admin/agent/edit.html', controller: 'AgentAdminCtrl'});		
+		$routeProvider.when('/settings/agent/edit/:guid', {templateUrl: 'partials/admin/agent/edit.html', controller: 'AgentAdminCtrl'});									
 		$routeProvider.when('/settings/services', {templateUrl: 'partials/admin/services.html', controller: 'ServicesCtrl'});
 		$routeProvider.otherwise({redirectTo: '/dashboard'});
 	}]);

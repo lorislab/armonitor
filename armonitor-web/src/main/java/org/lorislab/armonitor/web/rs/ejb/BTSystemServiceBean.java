@@ -90,11 +90,8 @@ public class BTSystemServiceBean {
     public void changePassword(String guid, ChangePasswordRequest reqeust) {
         StoreBTSystem tmp = service.getBTSystem(guid);
         if (tmp != null) {
-            char[] password = tmp.getPassword();
-            if (password == null || Arrays.equals(password, reqeust.old.toCharArray())) {
-                tmp.setPassword(reqeust.p1.toCharArray());
-                service.saveBTSystem(tmp);
-            }
+            tmp.setPassword(reqeust.p1.toCharArray());
+            service.saveBTSystem(tmp);
         }
     }
 

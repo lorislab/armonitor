@@ -70,13 +70,6 @@ public class AgentService {
     public void changePassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) {
         service.changePassword(guid, reqeust);
     }
-
-    @PUT
-    @Path("{guid}/password")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ChangePasswordRequest createchangePassword(@PathParam("guid") String guid) {
-        return new ChangePasswordRequest();
-    }
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -115,5 +108,12 @@ public class AgentService {
     @Path("{guid}")
     public void delete(@PathParam("guid") String guid) throws Exception {
         service.delete(guid);      
-    }      
+    }     
+    
+    @GET
+    @Path("types")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, String> getTypes() throws Exception {
+        return service.getTypes();
+    }    
 }

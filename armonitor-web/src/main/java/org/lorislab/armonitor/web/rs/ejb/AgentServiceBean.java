@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +35,7 @@ import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
+import org.lorislab.armonitor.web.rs.model.enums.AgentType;
 import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
@@ -44,19 +46,19 @@ import org.lorislab.jel.ejb.exception.ServiceException;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class AgentServiceBean {
-
+    
     private static final Logger LOGGER = Logger.getLogger(AgentServiceBean.class.getName());
-
+    
     @EJB
     private StoreAgentServiceBean service;
-
+    
     @EJB
     private StoreSystemServiceBean systemService;
-
+    
     public Agent create() throws Exception {
         return Mapper.create(StoreAgent.class, Agent.class);
     }
-
+    
     public Set<ApplicationSystem> getSystems(String guid) {
         StoreAgentCriteria criteria = new StoreAgentCriteria();
         criteria.setGuid(guid);
@@ -67,7 +69,7 @@ public class AgentServiceBean {
         }
         return null;
     }
-
+    
     public void addSystem(String guid, String sys) {
         StoreAgentCriteria criteria = new StoreAgentCriteria();
         criteria.setGuid(guid);
@@ -85,18 +87,15 @@ public class AgentServiceBean {
             LOGGER.log(Level.WARNING, "The agent not found {0}", guid);
         }
     }
-
+    
     public void changePassword(String guid, ChangePasswordRequest reqeust) {
         StoreAgent tmp = service.loadAgent(guid);
         if (tmp != null) {
-            char[] password = tmp.getPassword();
-            if (password == null || Arrays.equals(password, reqeust.old.toCharArray())) {
-                tmp.setPassword(reqeust.p1.toCharArray());
-                service.saveAgent(tmp);
-            }
+            tmp.setPassword(reqeust.p1.toCharArray());
+            service.saveAgent(tmp);
         }
     }
-
+    
     public Agent save(Agent agent) throws Exception {
         Agent result = null;
         if (agent != null) {
@@ -111,23 +110,31 @@ public class AgentServiceBean {
         }
         return result;
     }
-
+    
     public Agent get(String guid) throws Exception {
         StoreAgent tmp = service.loadAgent(guid);
         return Mapper.map(tmp, Agent.class);
     }
-
+    
     public List<Agent> get() {
         List<StoreAgent> tmp = service.getAgents();
         return Mapper.map(tmp, Agent.class);
     }
-
+    
     public void delete(String guid) throws ServiceException {
         service.deleteAgent(guid);
     }    
-
+    
     public Map<String, String> getList() {
         List<StoreAgent> tmp = service.getAgents();
         return Mapper.convert(tmp, String.class);
+    }
+    
+    public Map<String, String> getTypes() {
+        Map<String, String> result = new HashMap<>();
+        for (AgentType t : AgentType.values()) {
+            result.put(t.name(), t.name());
+        }        
+        return result;
     }
 }
