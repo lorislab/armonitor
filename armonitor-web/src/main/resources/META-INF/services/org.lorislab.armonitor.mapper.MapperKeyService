@@ -6,3 +6,4 @@ org.lorislab.armonitor.web.rs.mapper.SCMSystemMapperKey
 org.lorislab.armonitor.web.rs.mapper.ProjectMapperKey
 org.lorislab.armonitor.web.rs.mapper.AgentMapperKey
 org.lorislab.armonitor.web.rs.mapper.ApplicationMapperKey
+org.lorislab.armonitor.web.rs.mapper.RoleMapperKey

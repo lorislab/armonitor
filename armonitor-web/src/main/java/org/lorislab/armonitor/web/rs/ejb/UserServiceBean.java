@@ -17,6 +17,7 @@ package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -52,13 +53,13 @@ public class UserServiceBean {
     @EJB
     private StorePasswordServiceBean passwordService;
 
-    public Set<Role> getRoles(String guid) {
+    public Map<String, Role> getRoles(String guid) {
         StoreUserCriteria criteria = new StoreUserCriteria();
         criteria.setGuid(guid);
         criteria.setFetchRoles(true);
         StoreUser user = service.getUser(criteria);
         if (user != null) {
-            return Mapper.map(user.getRoles(), Role.class);
+            return Mapper.convert(user.getRoles(), Role.class);
         }
         return null;
     }
@@ -141,4 +142,20 @@ public class UserServiceBean {
     public void delete(String guid) throws ServiceException {
         service.deleteUser(guid);
     }     
+
+    public void resetPassword(String guid, ChangePasswordRequest reqeust) {
+        StoreUser user = service.getUser(guid);
+        if (user != null) {
+            StorePassword tmp = passwordService.getPasswordForUser(guid);
+            if (tmp != null) {
+                tmp.setPassword(reqeust.p1.toCharArray());
+                passwordService.savePassword(tmp);
+            } else {
+                tmp = new StorePassword();
+                tmp.setUser(user);
+                tmp.setPassword(reqeust.p1.toCharArray());                
+                passwordService.savePassword(tmp);
+            }            
+        }
+    }
 }

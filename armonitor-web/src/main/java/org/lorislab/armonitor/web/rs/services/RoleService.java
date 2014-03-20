@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -47,6 +48,13 @@ public class RoleService {
         return service.get();
     }
 
+    @GET
+    @Path("map")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String,Role> map() {
+        return service.map();
+    }
+    
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Role create() {

@@ -1,5 +1,7 @@
 controllers.controller('SCMAdminCtrl', function($scope, $routeParams, SCMAdminService) {
 
+	$scope.pswd = {n: null, c: null, o: null};
+	
 	SCMAdminService.types({}, function(response) {
 		$scope.types = response;
 	});
@@ -36,14 +38,10 @@ controllers.controller('SCMAdminCtrl', function($scope, $routeParams, SCMAdminSe
 	};
 
 	$scope.changepswd = function() {
-		$scope.validation = false;
-
 		if ($scope.pswd.n && $scope.pswd.c && ($scope.pswd.n === $scope.pswd.c)) {
-			SCMAdminService.pswd({guid: $scope.user.guid}, {old: $scope.pswd.o, p1: $scope.pswd.n}, function(response) {
-
+			SCMAdminService.pswd({guid: $routeParams.guid}, {old: $scope.pswd.o, p1: $scope.pswd.n}, function(response) {
+				$scope.pswd = {n: null, c: null, o: null};
 			});
-		} else {
-			$scope.validation = true;
 		}
 	};
 });

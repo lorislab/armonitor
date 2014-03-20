@@ -1,4 +1,4 @@
-<h2>Bug tracking systems
+<h2>Users
 	<small>configuration</small>
 </h2>
 
@@ -10,13 +10,13 @@
 		</a>
 	</li>
 	<li>
-		<i class="icon-bug"></i>
-		<a href="#/settings/bts">
-			BTS systems
+		<i class="icon-users"></i>
+		<a href="#/settings/user">
+			Users
 		</a>		
 	</li>	
 	<li class="active">
-		<i class="icon-bug"></i><span data-ng-hide="data.n"> {{data.server}}</span><span data-ng-show="data.n"> - - - - - - - - - -</span>
+		<i class="icon-user"></i><span data-ng-hide="data.n"> {{data.name}}</span><span data-ng-show="data.n"> - - - - - - - - - -</span>
 	</li>		
 </ol>
 
@@ -26,19 +26,28 @@
 		<tabset>
 			<tab>
 				<tab-heading>
-					<i class="icon-bug"></i> SCM system
-				</tab-heading>		
-
+					<i class="icon-user"></i> User
+				</tab-heading>				
 				<form class="form-horizontal" data-ng-submit="save()">
 					<fieldset>
 						<div class="control-group">
 							<label class="control-label" for="auth"></label>
 							<div class="controls">
 								<label class="enabled">
-									<input type="checkbox" id="auth" data-ng-model="data.auth"> Authentication
+									<input type="checkbox" id="auth" data-ng-model="data.enabled"> User enabled
 								</label>							
 							</div>
 						</div>
+						
+						<div class="control-group">
+							<label class="control-label" for="login"></label>
+							<div class="controls">
+								<label class="enabled">
+									<input type="checkbox" id="login" data-ng-model="data.login"> User login
+								</label>							
+							</div>
+						</div>
+						
 						<div class="control-group">
 							<label class="control-label" for="name">Name</label>
 							<div class="input-group">
@@ -48,39 +57,13 @@
 						</div>
 						
 						<div class="control-group">
-							<label class="control-label" for="server">Server URL</label>
+							<label class="control-label" for="email">Email</label>
 							<div class="input-group">
 								<span class="input-group-addon"><i class="icon-pencil"></i></span>
-								<input id="server" type="text" class="form-control" placeholder="Server URL" data-ng-model="data.server" required>
+								<input id="email" type="text" class="form-control" placeholder="Name" data-ng-model="data.email" required>
 							</div>
-						</div>
-
-						<div class="control-group">
-							<label class="control-label" for="user">User</label>
-							<div class="input-group">
-								<span class="input-group-addon"><i class="icon-pencil"></i></span>
-								<input id="user" type="text" class="form-control" placeholder="User" data-ng-model="data.user" >
-							</div>
-						</div>				
-
-						<div class="control-group">
-							<label class="control-label" for="type">Type</label>
-							<div class="input-group">
-								<span class="input-group-addon"><i class="icon-pencil"></i></span>
-								<select id="type" class="form-control" data-ng-model="data.type" data-ng-options="k as v for (k,v) in types">									
-								</select>
-							</div>
-						</div>
-
-						<div class="control-group">
-							<label class="control-label" for="link">Issue link</label>
-							<div class="input-group">
-								<span class="input-group-addon"><i class="icon-pencil"></i></span>
-								<input id="link" type="text" class="form-control" placeholder="Read timeout" data-ng-model="data.link" >
-							</div>
-							<h6><span class="label label-info">${id}</span> issue id.</h6>
-						</div>
-
+						</div>												
+						
 						<div class="control-group">
 							<label class="control-label" for="save"></label>
 							<div class="controls">
@@ -95,20 +78,53 @@
 					</fieldset>
 				</form>	
 			</tab>
+			<tab data-ng-show="!data.n" select="load()" data-ng-controller="UserRoleAdminCtrl">
+				<tab-heading>
+					<i class="icon-key"></i> Roles
+				</tab-heading>
+				<div style="padding-top: 10px"></div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="input-group">
+							<input type="search" placeholder="Search" class="form-control" data-ng-model="filter">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" data-ng-click="clear()"><i class="icon-erase"></i></button>
+								<button class="btn btn-default" type="button" data-ng-click="reload()"><i class="icon-arrows-cw"></i></button>
+							</span>				
+						</div>			
+					</div>
+					<table class="table table-striped sortable">
+						<thead>
+							<tr>
+								<th> </th>	
+								<th>Name</th>								
+							</tr>
+						</thead>			
+						<tbody>
+							<tr data-ng-repeat="(i, item) in all| filter:search">
+								<td>
+									<a href="" data-ng-click="addRole(item)" data-ng-hide="item.remove"><span class="icon-check-empty"></span></a>
+									<a href="" data-ng-click="removeRole(item)" data-ng-show="item.remove"><span class="icon-check"></span></a>
+								</td>					
+								<td>{{item.name}}</td>
+							</tr>
+						</tbody>
+					</table>					
+				</div>		
+
+				<div class="control-group">
+					<label class="control-label" for="close"></label>
+					<div class="controls">
+						<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
+					</div>												
+				</div>
+			</tab>
 			<tab data-ng-show="!data.n">
 				<tab-heading>
 					<i class="icon-lock"></i> Password
 				</tab-heading>
 				<form class="form-horizontal" data-ng-submit="changepswd()">		
 					<fieldset>
-
-						<div class="control-group" style="padding-top: 20px">
-							<label class="control-label" for="p">Current password</label>
-							<div class="input-group">
-								<span class="input-group-addon"><i class="icon-pencil"></i></span>
-								<input id="p" class="form-control" type="password" data-ng-model="pswd.o" pattern=".{5,20}" title="5 to 20 characters">
-							</div>
-						</div>
 
 						<div class="control-group">
 							<label class="control-label" for="np">New password</label>
@@ -130,11 +146,13 @@
 						<div class="control-group">
 							<label class="control-label" for="cp"></label>
 							<div class="controls">
-								<button id="cp" class="btn btn-success" type="submit" ><i class="icon-floppy"></i>  Change password</button>
+								<button id="cp" class="btn btn-success" type="submit" ><i class="icon-floppy"></i>  Reset password</button>
+								<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
 							</div>												
 						</div>
 					</fieldset>
 				</form>			
-			</tab>			
+			</tab>		
+		</tabset>
 	</div>
 </div>	

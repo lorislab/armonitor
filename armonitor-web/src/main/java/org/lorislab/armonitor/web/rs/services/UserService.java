@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -47,7 +48,7 @@ public class UserService {
     @GET
     @Path("{guid}/role")
     @Produces(MediaType.APPLICATION_JSON)
-    public Set<Role> getRoles(@PathParam("guid") String guid) {
+    public Map<String, Role> getRoles(@PathParam("guid") String guid) {
         return service.getRoles(guid);
     }
 
@@ -108,6 +109,13 @@ public class UserService {
         service.changePassword(guid, reqeust);
     }
 
+    @PUT
+    @Path("{guid}/password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void resetPassword(@PathParam("guid") String guid, ChangePasswordRequest reqeust) throws Exception {
+        service.resetPassword(guid, reqeust);
+    }
+    
     @DELETE
     @Path("{guid}")
     public void delete(@PathParam("guid") String guid) throws Exception {

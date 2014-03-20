@@ -271,6 +271,7 @@ controllers.controller('ActivityCtrl', function($scope, $routeParams, ActivityRS
 
 controllers.controller('ProfileCtrl', function($scope, CommonService, SecurityRSService) {
 
+	$scope.pswd = {n: null, c: null, o: null};
 	$scope.user = angular.copy(CommonService.user());
 
 	if (!($scope.user)) {

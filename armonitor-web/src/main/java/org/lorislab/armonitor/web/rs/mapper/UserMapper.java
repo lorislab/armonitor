@@ -38,6 +38,7 @@ public class UserMapper implements MapperService<StoreUser, User> {
         result.login = data.isLogin();
         result.name = data.getName();
         result.n = data.isNew();
+        result.enabled = data.isEnabled();
         return result;
     }
 
@@ -49,6 +50,7 @@ public class UserMapper implements MapperService<StoreUser, User> {
         entity.setEmail(data.email);
         entity.setLogin(data.login);
         entity.setName(data.name);
+        entity.setEnabled(data.enabled);
         return entity;
     }
 

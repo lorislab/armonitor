@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.ejb;
 
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -68,4 +69,9 @@ public class RoleServiceBean {
     public void delete(String guid) throws ServiceException {
         service.deleteRole(guid);
     }     
+
+    public Map<String, Role> map() {
+        List<StoreRole> tmp = service.getRoles();
+        return Mapper.convert(tmp, Role.class);
+    }
 }

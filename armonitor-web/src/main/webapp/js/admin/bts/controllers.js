@@ -1,5 +1,7 @@
 controllers.controller('BTSAdminCtrl', function($scope, $routeParams, BTSAdminService) {
 
+	$scope.pswd = {n: null, c: null, o: null};
+	
 	BTSAdminService.types({}, function(response) {
 		$scope.types = response;
 	});
@@ -36,12 +38,10 @@ controllers.controller('BTSAdminCtrl', function($scope, $routeParams, BTSAdminSe
 	};
 
 	$scope.changepswd = function() {
-		$scope.validation = false;
 		if ($scope.pswd.n && $scope.pswd.c && ($scope.pswd.n === $scope.pswd.c)) {
-			BTSAdminService.pswd({guid: $scope.user.guid}, {old: $scope.pswd.o, p1: $scope.pswd.n}, function(response) {
+			BTSAdminService.pswd({guid: $routeParams.guid}, {old: $scope.pswd.o, p1: $scope.pswd.n}, function(response) {
+				$scope.pswd = {n: null, c: null, o: null};
 			});
-		} else {
-			$scope.validation = true;
 		}
 	};
 });

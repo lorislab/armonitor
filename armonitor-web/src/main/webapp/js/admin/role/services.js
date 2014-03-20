@@ -22,6 +22,11 @@ services.factory('RoleAdminService', function($resource, config) {
 			params: {guid: '@guid'},
 			isArray: false
 		},
+		map: {
+			method: 'GET',
+			url: config.server + '/ad/role/map',
+			isArray: false
+		},	
 		all: {
 			method: 'GET',
 			url: config.server + '/ad/role',

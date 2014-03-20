@@ -14,42 +14,25 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.model;
+package org.lorislab.armonitor.web.rs.mapper;
+
+import java.util.Set;
+import org.lorislab.armonitor.mapper.MapperKeyService;
+import org.lorislab.armonitor.store.model.StoreRole;
 
 /**
- * The user.
+ * The role mapper key.
  * 
  * @author Andrej Petras
  */
-public class User {
-   
-    /**
-     * The GUID.
-     */
-    public String guid;
-    
-    /**
-     * The name.
-     */
-    public String name;
+public class RoleMapperKey implements MapperKeyService<StoreRole> {
 
     /**
-     * The email.
-     */
-    public String email;
+     * {@inheritDoc}
+     */    
+    @Override
+    public String getKey(StoreRole data, Set<String> profiles) {
+        return data.getGuid();
+    }
     
-    /**
-     * The login flag.
-     */
-    public boolean login;  
-    
-    /**
-     * The enabled flag.
-     */
-    public boolean enabled;
-    
-    /**
-     * The new flag
-     */
-    public boolean n;    
 }
