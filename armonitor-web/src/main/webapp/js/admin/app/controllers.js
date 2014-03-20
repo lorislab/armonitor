@@ -87,7 +87,7 @@ controllers.controller('AppScmAdminCtrl', function($scope, $routeParams, SCMAdmi
 	};
 });
 
-controllers.controller('AppAdminCtrl', function($scope, $routeParams, AppAdminService, CommonService) {
+controllers.controller('AppAdminCtrl', function($scope, $routeParams, AppAdminService) {
 
 	if ($routeParams.guid) {
 		AppAdminService.get({guid: $routeParams.guid}, function(response) {
@@ -107,7 +107,6 @@ controllers.controller('AppAdminCtrl', function($scope, $routeParams, AppAdminSe
 	$scope.save = function() {
 		AppAdminService.save({}, $scope.data, function(response) {
 			$scope.data = response;
-			CommonService.updateMsg();
 		});
 	};
 

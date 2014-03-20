@@ -31,28 +31,22 @@ services.factory('MessageService', function($resource, config) {
 		}
 	});
 });
-services.factory('CommonService', function($location, SecurityRSService, MessageService) {
+services.factory('CommonService', function($location, SecurityRSService, MessageService, ErrorService) {
 
 	var _base_roles = ["admin", "base"];
 	var _user = null;
 	var _roles = null;
-	var _info = null;
 
-	function _loadMsgInfo() {
-		MessageService.info({}, function(response) {
-			_info = response;
-		});
-	}
+	MessageService.info({}, function(response) {
+		ErrorService.addInfo(response);
+	});
 
-	function _startup() {
-		_loadMsgInfo();
-		SecurityRSService.user(function(response) {
-			if (response.guid) {
-				_user = response;
-				_load_roles();
-			}
-		});
-	}
+	SecurityRSService.user(function(response) {
+		if (response.guid) {
+			_user = response;
+			_load_roles();
+		}
+	});
 
 	function _load_roles() {
 		SecurityRSService.roles({}, _base_roles, function(response) {
@@ -60,18 +54,11 @@ services.factory('CommonService', function($location, SecurityRSService, Message
 		});
 	}
 
-	_startup();
 
 	return {
-		info: function() {
-			return _info;
-		},
-		updateMsg: function() {
-			_loadMsgInfo();
-		},
 		closeMsg: function() {
 			MessageService.close({}, function(response) {
-				_info = response;
+				ErrorService.addInfo(response);
 			});
 		},
 		update: function(data, callback) {
@@ -101,7 +88,6 @@ services.factory('CommonService', function($location, SecurityRSService, Message
 		},
 		logout: function() {
 			SecurityRSService.logout(function(response) {
-				_loadMsgInfo();
 				$location.url('/');
 				_user = null;
 				_roles = null;
@@ -246,17 +232,24 @@ services.factory('BuildRSService', function($resource, config) {
 });
 
 services.factory('ErrorService', function() {
-	var data = [];
-
+	var _data = [];
+	var _info = null;
+	
 	return {
+		info: function() {
+			return _info;
+		},
+		addInfo: function(data) {
+			_info = data;
+		},		
 		errors: function() {
-			return data;
+			return _data;
 		},
 		close: function(index) {
-			data.splice(index, 1);
+			_data.splice(index, 1);
 		},
 		error: function(item) {
-			data.push(item);
+			_data.push(item);
 		}
 	};
 });

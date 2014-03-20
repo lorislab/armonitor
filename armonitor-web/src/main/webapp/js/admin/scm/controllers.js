@@ -1,4 +1,4 @@
-controllers.controller('SCMAdminCtrl', function($scope, $routeParams, SCMAdminService, CommonService) {
+controllers.controller('SCMAdminCtrl', function($scope, $routeParams, SCMAdminService) {
 
 	SCMAdminService.types({}, function(response) {
 		$scope.types = response;
@@ -21,20 +21,17 @@ controllers.controller('SCMAdminCtrl', function($scope, $routeParams, SCMAdminSe
 
 	$scope.close = function() {
 		history.back();
-		scope.$apply();
 	};
 
 	$scope.save = function() {
 		SCMAdminService.save({}, $scope.data, function(response) {
 			$scope.data = response;
-			CommonService.updateMsg();
 		});
 	};
 
 	$scope.delete = function() {
 		SCMAdminService.delete({guid: $routeParams.guid}, function(response) {
 			history.back();
-			scope.$apply();
 		});
 	};
 

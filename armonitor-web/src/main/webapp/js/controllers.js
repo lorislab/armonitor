@@ -314,11 +314,11 @@ controllers.controller('ErrorCtrl', function($scope, ErrorService) {
 	};
 });
 
-controllers.controller('MenuCtrl', function($scope, $location, $modal, CommonService) {
+controllers.controller('MenuCtrl', function($scope, $location, $modal, CommonService, ErrorService) {
 
 
 	$scope.$watch(function() {
-		return CommonService.info();
+		return ErrorService.info();
 	}, function(newVal, oldVal) {
 		$scope.info = newVal;
 	});

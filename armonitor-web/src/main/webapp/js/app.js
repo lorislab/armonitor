@@ -64,7 +64,7 @@ app.config(['$translateProvider', function($translateProvider) {
 		$translateProvider.translations('en', {
 			'APP_NAME': 'Release monitor',
 			'MENU_DASHBOARD': 'Dashboard',
-			'MENU_ABOUT': 'About',
+			'MENU_ABOUT': 'About'
 		});
 
 		$translateProvider.useStaticFilesLoader({
@@ -82,6 +82,10 @@ app.config(function($httpProvider) {
 		return function(promise) {
 
 			var _ok = function(value) {
+				var tmp = angular.fromJson(value.headers('MessageInfo'));
+				if (tmp) {
+					ErrorService.addInfo(tmp);
+				}
 				return value;
 			};
 

@@ -1,4 +1,4 @@
-controllers.controller('BTSAdminCtrl', function($scope, $routeParams, BTSAdminService, CommonService) {
+controllers.controller('BTSAdminCtrl', function($scope, $routeParams, BTSAdminService) {
 
 	BTSAdminService.types({}, function(response) {
 		$scope.types = response;
@@ -26,7 +26,6 @@ controllers.controller('BTSAdminCtrl', function($scope, $routeParams, BTSAdminSe
 	$scope.save = function() {
 		BTSAdminService.save({}, $scope.data, function(response) {
 			$scope.data = response;
-			CommonService.updateMsg();
 		});
 	};
 

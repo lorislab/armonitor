@@ -1,4 +1,4 @@
-controllers.controller('ProjectAdminCtrl', function($scope, $routeParams, ProjectAdminService, CommonService) {
+controllers.controller('ProjectAdminCtrl', function($scope, $routeParams, ProjectAdminService) {
 
 	if ($routeParams.guid) {
 		ProjectAdminService.get({guid: $routeParams.guid}, function(response) {
@@ -18,7 +18,6 @@ controllers.controller('ProjectAdminCtrl', function($scope, $routeParams, Projec
 	$scope.save = function() {
 		ProjectAdminService.save({}, $scope.data, function(response) {
 			$scope.data = response;
-			CommonService.updateMsg();
 		});
 	};
 
