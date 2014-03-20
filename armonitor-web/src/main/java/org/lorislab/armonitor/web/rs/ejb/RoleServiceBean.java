@@ -58,7 +58,7 @@ public class RoleServiceBean {
         if (tmp != null) {
             tmp = Mapper.update(tmp, role);
         } else {
-            tmp = Mapper.create(tmp, StoreRole.class);
+            tmp = Mapper.create(role, StoreRole.class);
         }
         tmp = service.saveRole(tmp);
         result = Mapper.map(tmp, Role.class);

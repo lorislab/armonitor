@@ -55,6 +55,9 @@ app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/settings/sys', {templateUrl: 'partials/admin/sys/search.html', controller: 'SystemSearchAdminCtrl'});		
 		$routeProvider.when('/settings/sys/edit', {templateUrl: 'partials/admin/sys/edit.html', controller: 'SystemAdminCtrl'});		
 		$routeProvider.when('/settings/sys/edit/:guid', {templateUrl: 'partials/admin/sys/edit.html', controller: 'SystemAdminCtrl'});					
+		$routeProvider.when('/settings/role', {templateUrl: 'partials/admin/role/search.html', controller: 'RoleSearchAdminCtrl'});		
+		$routeProvider.when('/settings/role/edit', {templateUrl: 'partials/admin/role/edit.html', controller: 'RoleAdminCtrl'});		
+		$routeProvider.when('/settings/role/edit/:guid', {templateUrl: 'partials/admin/role/edit.html', controller: 'RoleAdminCtrl'});							
 		$routeProvider.when('/settings/services', {templateUrl: 'partials/admin/services.html', controller: 'ServicesCtrl'});
 		$routeProvider.otherwise({redirectTo: '/dashboard'});
 	}]);

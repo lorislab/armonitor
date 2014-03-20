@@ -36,6 +36,7 @@ public class RoleMapper implements MapperService<StoreRole, Role> {
         result.guid = data.getGuid();
         result.name = data.getName();
         result.n = data.isNew();
+        result.system = data.isSystem();
         return result;
     }
 

@@ -34,4 +34,8 @@ public class Role {
      * The new flag
      */
     public boolean n;    
+    /**
+     * The system flag
+     */
+    public boolean system;    
 }
