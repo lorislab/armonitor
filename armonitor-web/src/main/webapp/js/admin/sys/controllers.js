@@ -26,6 +26,18 @@ controllers.controller('SystemAdminCtrl', function($scope, $routeParams, SystemA
 			history.back();
 		});
 	};
+	
+	$scope.deleteKey = function() {
+		SystemAdminService.deleteKey({guid: $routeParams.guid}, function(response) {
+			$scope.data = response;
+		});			
+	};
+
+	$scope.generateKey = function() {
+		SystemAdminService.generateKey({guid: $routeParams.guid}, function(response) {
+			$scope.data = response;
+		});		
+	};	
 });
 
 controllers.controller('SystemRoleAdminCtrl', function($scope, $routeParams, SystemAdminService, RoleAdminService) {

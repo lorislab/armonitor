@@ -68,6 +68,18 @@ services.factory('SystemAdminService', function($resource, config) {
 			url: config.server + '/ad/sys/:guid/role/:role',
 			params: {guid: '@guid', role: '@role'},
 			isArray: false
+		},
+		deleteKey: {
+			method: 'DELETE',
+			url: config.server + '/ad/sys/:guid/key',
+			params: {guid: '@guid'},
+			isArray: false
+		},
+		generateKey: {
+			method: 'GET',
+			url: config.server + '/ad/sys/:guid/key',
+			params: {guid: '@guid'},
+			isArray: false
 		}		
 	});
 });	

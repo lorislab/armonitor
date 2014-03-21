@@ -60,6 +60,18 @@ services.factory('AppAdminService', function($resource, config) {
 			url: config.server + '/ad/app/:guid/project/:id',
 			params: {guid: '@guid', id: '@id'},
 			isArray: false
-		}
+		},
+		deleteKey: {
+			method: 'DELETE',
+			url: config.server + '/ad/app/:guid/key',
+			params: {guid: '@guid'},
+			isArray: false
+		},
+		generateKey: {
+			method: 'GET',
+			url: config.server + '/ad/app/:guid/key',
+			params: {guid: '@guid'},
+			isArray: false
+		}		
 	});
 });	

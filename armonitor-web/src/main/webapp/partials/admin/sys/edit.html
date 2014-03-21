@@ -68,7 +68,7 @@
 								<input id="service" type="text" class="form-control" placeholder="Name" data-ng-model="data.service" >
 							</div>
 						</div>						
-						
+
 						<div class="control-group">
 							<label class="control-label" for="domain">Domain</label>
 							<div class="input-group">
@@ -76,7 +76,7 @@
 								<input id="domain" type="text" class="form-control" placeholder="Name" data-ng-model="data.domain" >
 							</div>
 						</div>	
-						
+
 						<div class="control-group">
 							<label class="control-label" for="link">Link</label>
 							<div class="input-group">
@@ -84,7 +84,7 @@
 								<input id="link" type="text" class="form-control" placeholder="Name" data-ng-model="data.link" >
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<label class="control-label" for="clazz">Classification</label>
 							<div class="input-group">
@@ -92,7 +92,7 @@
 								<input id="clazz" type="text" class="form-control" placeholder="Name" data-ng-model="data.clazz" >
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<label class="control-label" for="save"></label>
 							<div class="controls">
@@ -202,6 +202,34 @@
 					</div>												
 				</div>
 			</tab>
+			<tab data-ng-show="!data.n">
+				<tab-heading>
+					<i class="icon-key"></i> Key
+				</tab-heading>
+				<form class="form-horizontal" >		
+					<fieldset>
+
+						<div class="control-group">
+							<label class="control-label" for="key">Key</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="key" type="text" class="form-control" placeholder="System key" data-ng-model="data.key" readonly="true">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="gkey"></label>
+							<div class="controls">
+								<button id="gkey" class="btn btn-success" type="button" data-ng-click="generateKey()"><i class="icon-floppy"></i>  Generate key</button>
+								<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
+								<span style="float: right">
+									<button type="button" class="btn btn-danger" data-ng-disabled="data.n" data-ng-click="deleteKey()"><i class="icon-trash"></i> Remove key</button>
+								</span>									
+							</div>												
+						</div>
+					</fieldset>
+				</form>	
+			</tab>			
 		</tabset>
 	</div>
 </div>	

@@ -115,7 +115,18 @@ controllers.controller('AppAdminCtrl', function($scope, $routeParams, AppAdminSe
 			history.back();
 		});
 	};
+	
+	$scope.deleteKey = function() {
+		AppAdminService.deleteKey({guid: $routeParams.guid}, function(response) {
+			$scope.data = response;
+		});			
+	};
 
+	$scope.generateKey = function() {
+		AppAdminService.generateKey({guid: $routeParams.guid}, function(response) {
+			$scope.data = response;
+		});		
+	};
 });
 
 controllers.controller('AppSearchAdminCtrl', function($scope, AppAdminService) {
