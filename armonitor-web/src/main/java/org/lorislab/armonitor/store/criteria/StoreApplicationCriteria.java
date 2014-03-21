@@ -52,6 +52,10 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
      */
     private boolean fetchProject;
     /**
+     * The fetch project BTS flag.
+     */
+    private boolean fetchProjectBts;
+    /**
      * The fetch system flag.
      */
     private boolean fetchSystem;
@@ -71,6 +75,24 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
      * The build.
      */
     private String build;
+
+    /**
+     * Gets the fetch project BTS flag.
+     *
+     * @return the fetch project BTS flag.
+     */
+    public boolean isFetchProjectBts() {
+        return fetchProjectBts;
+    }
+
+    /**
+     * Sets the fetch project BTS flag.
+     *
+     * @param fetchProjectBts the fetch project BTS flag.
+     */
+    public void setFetchProjectBts(boolean fetchProjectBts) {
+        this.fetchProjectBts = fetchProjectBts;
+    }
 
     /**
      * Gets the fetch builds version.
@@ -266,6 +288,7 @@ public class StoreApplicationCriteria extends AbstractSearchCriteria {
         fetchSystem = false;
         build = null;
         fetchBuildsVersion = null;
+        fetchProjectBts = false;
     }
 
     /**

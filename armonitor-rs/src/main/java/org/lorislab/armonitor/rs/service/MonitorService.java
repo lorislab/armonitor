@@ -32,15 +32,26 @@ import org.lorislab.armonitor.rs.model.Result;
 public interface MonitorService {
 
     /**
-     * Sends the build request.
+     * Sends the build request for the system.
      *
-     * @param request the request.
+     * @param request the request for the system.
      * @return the result.
-     * @throws Exception if the method fails.
      */
     @POST
-    @Path("request/build")
+    @Path("deploy")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Result buildRequest(Request request) throws Exception;
+    public Result deploy(Request request);
+    
+    /**
+     * Sends the build request for the application.
+     *
+     * @param request the request for the application.
+     * @return the result.
+     */
+    @POST
+    @Path("install")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Result install(Request request);    
 }

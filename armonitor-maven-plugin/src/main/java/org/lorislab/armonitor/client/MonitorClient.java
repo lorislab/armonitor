@@ -58,18 +58,25 @@ public final class MonitorClient {
      * @param password the password.
      * @return the monitor service.
      */
-    private static MonitorService createService(String url, String username, String password, boolean auth) {
+    private static MonitorService createService(URL url, String username, String password, boolean auth) {
         ResteasyProviderFactory rpf = ResteasyProviderFactory.getInstance();
-        //RegisterBuiltin.register();
+        RegisterBuiltin.register(rpf);
+
+        String tmp = url.toString();
+        if (!tmp.endsWith("/")) {
+            tmp = tmp + "/";
+        }
+        tmp = tmp + APP_URL;
+
         if (auth) {
             Credentials credentials = new UsernamePasswordCredentials(username, password);
             DefaultHttpClient httpClient = new DefaultHttpClient();
             BasicCredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(AuthScope.ANY, credentials);
             httpClient.setCredentialsProvider(provider);
-            return ProxyFactory.create(MonitorService.class, url, new ApacheHttpClient4Executor(httpClient));
+            return ProxyFactory.create(MonitorService.class, tmp, new ApacheHttpClient4Executor(httpClient));
         }
-        return ProxyFactory.create(MonitorService.class, url);
+        return ProxyFactory.create(MonitorService.class, tmp);
     }
 
     /**
@@ -84,28 +91,51 @@ public final class MonitorClient {
      * @param version the version.
      * @throws java.lang.Exception if the method fails.
      */
-    public static void send(URL url, String user, String password, boolean auth, String key, Version version) throws Exception {
-        try {
-
-            String tmp = url.toString();
-            if (!tmp.endsWith("/")) {
-                tmp = tmp + "/";
+    public static void install(URL url, String user, String password, boolean auth, String key, Version version) throws Exception {
+        MonitorService service = createService(url, user, password, auth);
+        Request request = createRequest(key, version);
+        Result result = service.install(request);
+        if (result != null) {
+            if (result.status == null || result.status.equals(Status.ERROR)) {
+                throw new Exception("Could not install the build for the application: " + result.message);
             }
-            tmp = tmp + APP_URL;
-
-            MonitorService service = createService(tmp, user, password, auth);
-            Request request = new Request();
-            request.version = version;
-            request.key = key;
-            Result result = service.buildRequest(request);
-            if (result != null) {
-                if (result.status == null || result.status.equals(Status.ERROR)) {
-                    throw new Exception("Error process request: " + result.message);
-                }
-            }
-        } catch (Exception ex) {
-            throw new Exception("Error sending the data to the server!", ex);
         }
     }
 
+    /**
+     * Sends the version for the system <code>key</code> to the ARMONITOR
+     * server.
+     *
+     * @param url the URL.
+     * @param user the user name.
+     * @param password the password.
+     * @param auth the authentication flag.
+     * @param key the system key.
+     * @param version the version.
+     * @throws java.lang.Exception if the method fails.
+     */
+    public static void deploy(URL url, String user, String password, boolean auth, String key, Version version) throws Exception {
+        MonitorService service = createService(url, user, password, auth);
+        Request request = createRequest(key, version);
+        Result result = service.deploy(request);
+        if (result != null) {
+            if (result.status == null || result.status.equals(Status.ERROR)) {
+                throw new Exception("Could not deploy the build for the system: " + result.message);
+            }
+        }
+    }
+
+    /**
+     * Creates the request.
+     *
+     * @param key the key.
+     * @param version the version.
+     * @return the corresponding request.
+     */
+    private static Request createRequest(String key, Version version) {
+        Request request = new Request();
+        request.version = version;
+        request.key = key;
+        return request;
+    }
 }

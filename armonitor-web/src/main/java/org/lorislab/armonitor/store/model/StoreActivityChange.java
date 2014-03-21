@@ -24,6 +24,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.lorislab.armonitor.store.model.enums.ActivityChangeError;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
@@ -64,6 +65,11 @@ public class StoreActivityChange extends Persistent {
     @Column(name = "C_KEY")
     private String key;
     /**
+     * The parent.
+     */
+    @Column(name = "C_PARENT")
+    private String parent;
+    /**
      * The status.
      */
     @Column(name = "C_STATUS")
@@ -78,6 +84,48 @@ public class StoreActivityChange extends Persistent {
      */
     @Column(name = "C_DESCRIPTION")
     private String description;
+
+    /**
+     * The error.
+     */
+    @Column(name = "C_ERROR")
+    private ActivityChangeError error;
+
+    /**
+     * Gets the error.
+     *
+     * @return the error.
+     */
+    public ActivityChangeError getError() {
+        return error;
+    }
+
+    /**
+     * Sets the error.
+     *
+     * @param error the error.
+     */
+    public void setError(ActivityChangeError error) {
+        this.error = error;
+    }
+
+    /**
+     * Gets the parent.
+     *
+     * @return the parent.
+     */
+    public String getParent() {
+        return parent;
+    }
+
+    /**
+     * Sets the parent.
+     *
+     * @param parent the parent.
+     */
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
 
     /**
      * Gets the user.

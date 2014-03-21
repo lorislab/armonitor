@@ -130,7 +130,7 @@ public class StoreActivityServiceBean extends AbstractEntityServiceBean<StoreAct
 
         List<Predicate> predicates = new ArrayList<>();
         if (criteria.getBuild()!= null) {
-            predicates.add(cb.in(root.join(StoreActivity_.build).get(StoreBuild_.guid)).value(criteria.getBuild()));
+            predicates.add(cb.equal(root.join(StoreActivity_.build).get(StoreBuild_.guid), criteria.getBuild()));
         }
 
         if (criteria.getGuid() != null) {

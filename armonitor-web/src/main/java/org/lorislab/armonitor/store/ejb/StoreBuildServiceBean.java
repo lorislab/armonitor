@@ -24,11 +24,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
+import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuild_;
 import org.lorislab.armonitor.store.model.StoreApplication_;
@@ -115,7 +117,11 @@ public class StoreBuildServiceBean extends AbstractEntityServiceBean<StoreBuild>
         }
 
         if (criteria.isFetchApplication()) {
-            root.fetch(StoreBuild_.application, JoinType.LEFT);
+            Fetch<StoreBuild, StoreApplication> af = root.fetch(StoreBuild_.application, JoinType.LEFT);            
+            
+            if (criteria.isFetchApplicationProject()) {
+                af.fetch(StoreApplication_.project, JoinType.LEFT);
+            }
         }
 
         if (criteria.getMavenVersion() != null) {

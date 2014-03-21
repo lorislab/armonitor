@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.rs.services;
 
 import javax.ejb.EJB;
@@ -27,7 +26,7 @@ import org.lorislab.armonitor.store.model.StoreBuild;
 
 /**
  * The monitor rest-service implementation.
- * 
+ *
  * @author Andrej Petras
  */
 public class MonitorServiceImpl implements MonitorService {
@@ -37,18 +36,21 @@ public class MonitorServiceImpl implements MonitorService {
      */
     @EJB
     private ProcessServiceBean service;
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public Result buildRequest(Request request) throws Exception {
+    public Result deploy(Request request) {
         Result result = new Result();
         result.status = Status.ERROR;
         if (request != null) {
             try {
                 StoreBuild tmp = Mapper.map(request.version, StoreBuild.class);
-                service.process(request.key, tmp);                                        
+               // check build -> install
+               // deploy build
+               // load activity
+               // send notification
                 result.status = Status.OK;
             } catch (Exception ex) {
                 result.message = ex.getMessage();
@@ -58,5 +60,28 @@ public class MonitorServiceImpl implements MonitorService {
         }
         return result;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Result install(Request request) {
+        Result result = new Result();
+        result.status = Status.ERROR;
+        if (request != null) {
+            try {
+                StoreBuild tmp = Mapper.map(request.version, StoreBuild.class);
+                // check build
+                // create build
+                // create activity
+                result.status = Status.OK;
+            } catch (Exception ex) {
+                result.message = ex.getMessage();
+            }
+        } else {
+            result.message = "Missing request object!";
+        }
+        return result;
+    }
+
 }

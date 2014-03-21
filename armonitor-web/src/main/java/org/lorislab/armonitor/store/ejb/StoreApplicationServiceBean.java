@@ -34,6 +34,8 @@ import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreApplication_;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuild_;
+import org.lorislab.armonitor.store.model.StoreProject;
+import org.lorislab.armonitor.store.model.StoreProject_;
 import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
@@ -102,7 +104,11 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
         }
 
         if (criteria.isFetchProject()) {
-            root.fetch(StoreApplication_.project, JoinType.LEFT);
+            Fetch<StoreApplication, StoreProject> pf = root.fetch(StoreApplication_.project, JoinType.LEFT);
+            
+            if (criteria.isFetchProjectBts()) {
+                pf.fetch(StoreProject_.bts, JoinType.LEFT);
+            }
         }
 
         if (criteria.isFetchSystem()) {

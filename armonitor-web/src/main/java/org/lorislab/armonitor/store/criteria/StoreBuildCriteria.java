@@ -55,6 +55,11 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
     private boolean fetchApplication;
 
     /**
+     * The fetch application project flag.
+     */
+    private boolean fetchApplicationProject;
+
+    /**
      * The MAVEN version.
      */
     private String mavenVersion;
@@ -62,6 +67,24 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
      * The order by date flag.
      */
     private Boolean orderByDate;
+
+    /**
+     * Gets the fetch application project flag.
+     *
+     * @return the fetch application project flag.
+     */
+    public boolean isFetchApplicationProject() {
+        return fetchApplicationProject;
+    }
+
+    /**
+     * Sets the fetch application project flag.
+     *
+     * @param fetchApplicationProject the fetch application project flag.
+     */
+    public void setFetchApplicationProject(boolean fetchApplicationProject) {
+        this.fetchApplicationProject = fetchApplicationProject;
+    }
 
     /**
      * Gets the order by date flag.
@@ -219,6 +242,7 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
         fetchParameters = false;
         fetchApplication = false;
         orderByDate = null;
+        fetchApplicationProject = false;
     }
 
     /**

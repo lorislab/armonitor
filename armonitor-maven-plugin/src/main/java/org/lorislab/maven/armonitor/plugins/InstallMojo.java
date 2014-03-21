@@ -15,52 +15,39 @@
  */
 package org.lorislab.maven.armonitor.plugins;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.maven.artifact.manager.WagonManager;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.wagon.authentication.AuthenticationInfo;
-import org.lorislab.armonitor.agent.rs.mapper.ObjectMapper;
 import org.lorislab.armonitor.agent.rs.model.Version;
-import org.lorislab.armonitor.arm.model.Arm;
-import org.lorislab.armonitor.arm.util.ArmLoader;
 import org.lorislab.armonitor.client.MonitorClient;
-import org.lorislab.armonitor.manifest.util.ManifestLoader;
 
 /**
- * The deploy goal.
+ * The install goal.
  * 
  * @author Andrej Petras
  */
-@Mojo(name = "deploy",
+@Mojo(name = "install",
         defaultPhase = LifecyclePhase.DEPLOY,
         requiresProject = true,
         threadSafe = true)
-@Execute(goal = "deploy", phase = LifecyclePhase.PREPARE_PACKAGE)
-public class DeployMojo extends AbstractMonitorMojo {
+@Execute(goal = "install", phase = LifecyclePhase.PREPARE_PACKAGE)
+public class InstallMojo extends AbstractMonitorMojo {
 
     /**
-     * The deploy key parameter.
+     * The install key parameter.
      */
     @Parameter
-    private String deployKey;
+    private String installKey;
 
     /**
      * {@inheritDoc}
-     */
+     */    
     @Override
     protected void execute(URL url, String user, String password, boolean authetication, Version version) throws Exception {
-        MonitorClient.deploy(url, user, password, authetication, deployKey, version);
+        MonitorClient.install(url, user, password, authetication, installKey, version);
     }
+
+
 }

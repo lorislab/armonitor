@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.rs.model;
+package org.lorislab.armonitor.store.model.enums;
 
 /**
- * The result message.
+ * The activity change error.
  * 
  * @author Andrej Petras
  */
-public class Result {
+public enum ActivityChangeError {
    
     /**
-     * The message.
+     * The wrong version key.
      */
-    public String message;
+    WRONG_VERSION,
     /**
-     * The status.
+     * The wrong key.
      */
-    public Status status;
+    WRONG_KEY;
 }
