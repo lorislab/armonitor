@@ -162,15 +162,29 @@ public class ApplicationSystemService {
         return service.save(system);
     }
 
+    /**
+     * Deletes the system key.
+     * @param guid the system GUID.
+     * @return the system.
+     * @throws Exception if the method fails.
+     */
     @DELETE
     @Path("{guid}/key")
-    public void deleteKey(@PathParam("guid") String guid) throws Exception {
-        service.deleteKey(guid);
+    @Produces(MediaType.APPLICATION_JSON)
+    public ApplicationSystem deleteKey(@PathParam("guid") String guid) throws Exception {
+        return service.deleteKey(guid);
     }
 
+    /**
+     * Generates new key for the system.
+     * @param guid the system GUID.
+     * @return the system.
+     * @throws Exception if the method fails.
+     */    
     @GET
     @Path("{guid}/key")
-    public String generatedKey(@PathParam("guid") String guid) throws Exception {
+    @Produces(MediaType.APPLICATION_JSON)
+    public ApplicationSystem generatedKey(@PathParam("guid") String guid) throws Exception {
         return service.generatedKey(guid);
     }
 

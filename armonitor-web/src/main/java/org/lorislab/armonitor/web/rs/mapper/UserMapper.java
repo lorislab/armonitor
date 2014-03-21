@@ -39,6 +39,7 @@ public class UserMapper implements MapperService<StoreUser, User> {
         result.name = data.getName();
         result.n = data.isNew();
         result.enabled = data.isEnabled();
+        result.v = data.getVersion();
         return result;
     }
 

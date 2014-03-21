@@ -52,4 +52,8 @@ public class Agent {
      * The new flag
      */
     public boolean n;
+    /**
+     * The version.
+     */
+    public Integer v;    
 }

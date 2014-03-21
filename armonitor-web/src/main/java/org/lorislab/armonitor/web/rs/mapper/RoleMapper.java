@@ -37,6 +37,7 @@ public class RoleMapper implements MapperService<StoreRole, Role> {
         result.name = data.getName();
         result.n = data.isNew();
         result.system = data.isSystem();
+        result.v = data.getVersion();
         return result;
     }
 

@@ -42,6 +42,7 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
         result.type = data.getType();    
         result.n = data.isNew();
         result.name = data.getName();
+        result.v = data.getVersion();
         return result;
     }
 

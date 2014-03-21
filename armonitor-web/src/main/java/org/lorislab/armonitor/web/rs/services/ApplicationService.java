@@ -165,5 +165,31 @@ public class ApplicationService {
     @Path("{guid}")
     public void delete(@PathParam("guid") String guid) throws Exception {
         service.delete(guid);      
-    }      
+    }   
+    
+    /**
+     * Deletes the application key.
+     * @param guid the system GUID.
+     * @return the system.
+     * @throws Exception if the method fails.
+     */
+    @DELETE
+    @Path("{guid}/key")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Application deleteKey(@PathParam("guid") String guid) throws Exception {
+        return service.deleteKey(guid);
+    }
+
+    /**
+     * Generates new key for the application.
+     * @param guid the system GUID.
+     * @return the system.
+     * @throws Exception if the method fails.
+     */    
+    @GET
+    @Path("{guid}/key")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Application generatedKey(@PathParam("guid") String guid) throws Exception {
+        return service.generatedKey(guid);
+    }    
 }

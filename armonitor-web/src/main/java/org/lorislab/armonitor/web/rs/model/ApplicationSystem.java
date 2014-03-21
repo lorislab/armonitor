@@ -61,5 +61,13 @@ public class ApplicationSystem {
     /**
      * The new flag
      */
-    public boolean n;    
+    public boolean n;  
+    /**
+     * The key.
+     */
+    public String key;
+    /**
+     * The version.
+     */
+    public Integer v;    
 }

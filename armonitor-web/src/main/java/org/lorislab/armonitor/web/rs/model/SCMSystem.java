@@ -58,5 +58,9 @@ public class SCMSystem {
     /**
      * The name.
      */
-    public String name;     
+    public String name;
+    /**
+     * The version.
+     */
+    public Integer v;    
 }

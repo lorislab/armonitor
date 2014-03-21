@@ -37,5 +37,9 @@ public class Role {
     /**
      * The system flag
      */
-    public boolean system;    
+    public boolean system;
+    /**
+     * The version.
+     */
+    public Integer v;    
 }

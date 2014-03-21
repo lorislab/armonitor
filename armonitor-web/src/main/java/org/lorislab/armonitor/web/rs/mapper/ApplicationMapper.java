@@ -42,6 +42,8 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         result.repoLink = data.getRepoLink();
         result.type = data.getType();
         result.n = data.isNew();
+        result.v = data.getVersion();
+        result.key = data.getKey();        
         return result;
     }
 

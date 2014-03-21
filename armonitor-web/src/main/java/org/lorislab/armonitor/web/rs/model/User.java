@@ -51,5 +51,9 @@ public class User {
     /**
      * The new flag
      */
-    public boolean n;    
+    public boolean n;
+    /**
+     * The version.
+     */
+    public Integer v;    
 }

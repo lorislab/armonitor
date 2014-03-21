@@ -38,6 +38,7 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
         result.btsId = data.getBtsId();
         result.enabled = data.isEnabled();
         result.n = data.isNew();
+        result.v = data.getVersion();        
         return result;
     }
 

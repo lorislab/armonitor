@@ -43,6 +43,8 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         result.link = data.getLink();
         result.clazz = data.getClassification();
         result.n = data.isNew();
+        result.v = data.getVersion();
+        result.key = data.getKey();
         return result;
     }
 

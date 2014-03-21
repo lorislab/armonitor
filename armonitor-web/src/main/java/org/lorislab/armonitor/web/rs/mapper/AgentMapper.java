@@ -41,6 +41,7 @@ public class AgentMapper implements MapperService<StoreAgent, Agent> {
         result.type = null;
         result.n = data.isNew();
         result.name = data.getName();
+        result.v = data.getVersion();
         if (data.getType() != null) {
             result.type = AgentType.valueOf(data.getType().name());
         }

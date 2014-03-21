@@ -18,6 +18,7 @@ package org.lorislab.armonitor.web.rs.ejb;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -185,4 +186,26 @@ public class ApplicationServiceBean {
             LOGGER.log(Level.WARNING, "Application not found {0}", guid);
         }
     }
+    
+    public Application deleteKey(String guid) throws Exception {
+        Application result = null;
+        StoreApplication tmp = service.getApplication(guid);
+        if (tmp != null) {
+            tmp.setKey(null);
+            tmp = service.saveApplication(tmp);
+            result = Mapper.map(tmp, Application.class);
+        }
+        return result;
+    }
+    
+    public Application generatedKey(String guid) throws Exception {
+        Application result = null;
+        StoreApplication tmp = service.getApplication(guid);
+        if (tmp != null) {
+            tmp.setKey(UUID.randomUUID().toString());
+            tmp = service.saveApplication(tmp);
+            result = Mapper.map(tmp, Application.class);
+        }        
+        return result;
+    }    
 }

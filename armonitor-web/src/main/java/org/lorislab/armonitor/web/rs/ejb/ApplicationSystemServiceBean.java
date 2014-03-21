@@ -158,21 +158,24 @@ public class ApplicationSystemServiceBean {
         return result;
     }
 
-    public void deleteKey(String guid) throws Exception {
+    public ApplicationSystem deleteKey(String guid) throws Exception {
+        ApplicationSystem result = null;
         StoreSystem tmp = service.getSystem(guid);
         if (tmp != null) {
             tmp.setKey(null);
-            service.saveSystem(tmp);
+            tmp = service.saveSystem(tmp);
+            result = Mapper.map(tmp, ApplicationSystem.class);
         }
+        return result;
     }
     
-    public String generatedKey(String guid) throws Exception {
-        String result = null;
+    public ApplicationSystem generatedKey(String guid) throws Exception {
+        ApplicationSystem result = null;
         StoreSystem tmp = service.getSystem(guid);
-        if (tmp != null && !tmp.isTimer()) {
+        if (tmp != null) {
             tmp.setKey(UUID.randomUUID().toString());
             tmp = service.saveSystem(tmp);
-            result = tmp.getKey();
+            result = Mapper.map(tmp, ApplicationSystem.class);
         }        
         return result;
     }
