@@ -66,12 +66,27 @@ public class StoreApplication extends Persistent {
     @Column(name = "C_NAME")
     private String name;
 
+    /**
+     * The key for manual deployment.
+     */
+    @Column(name = "C_KEY")
+    private String key;
+    
+    /**
+     * The SCM trunk.
+     */
     @Column(name = "C_SCM_TRUNK")
     private String scmTrunk;
 
+    /**
+     * The SCM tags.
+     */
     @Column(name = "C_SCM_TAG")
     private String scmTags;
 
+    /**
+     * The SCM branches.
+     */
     @Column(name = "C_SCM_BRANCHES")
     private String scmBranches;
 
@@ -102,6 +117,25 @@ public class StoreApplication extends Persistent {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")
     private Set<StoreSystem> systems;
 
+
+    /**
+     * Gets the key for manual deployment.
+     *
+     * @return the key for manual deployment.
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Sets the key for manual deployment.
+     *
+     * @param key the key for manual deployment.
+     */
+    public void setKey(String key) {
+        this.key = key;
+    }
+    
     /**
      * Gets the type.
      * @return the type.
