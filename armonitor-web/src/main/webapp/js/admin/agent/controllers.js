@@ -1,3 +1,42 @@
+
+controllers.controller('AgentSysAdminCtrl', function($scope, $routeParams, AgentAdminService) {
+
+	var _load = true;
+	
+	function _search() {
+		AgentAdminService.sys({guid: $routeParams.guid}, function(response) {
+			$scope.all = response;
+		});
+	};
+	
+	$scope.load = function() {
+		if (_load) {
+			_search();
+		}
+		_load = false;
+	};
+	
+	$scope.reload = function() {
+		$scope.filter = null;
+		_search();
+	};
+
+	$scope.clear = function() {
+		$scope.filter = null;
+	};
+
+	$scope.search = function(row) {
+		if ($scope.filter) {
+			var tmp = $scope.filter || '';
+			return !!(((row.name !== null && row.name.indexOf(tmp)) !== -1 
+					|| (row.clazz !== null && row.clazz.indexOf(tmp) !== -1)
+					|| (row.domain !== null && row.domain.indexOf(tmp) !== -1)
+					|| (row.service !== null && row.service.indexOf(tmp) !== -1)));
+		}
+		return true;
+	};
+});
+
 controllers.controller('AgentAdminCtrl', function($scope, $routeParams, AgentAdminService) {
 
 	$scope.pswd = {n: null, c: null, o: null};

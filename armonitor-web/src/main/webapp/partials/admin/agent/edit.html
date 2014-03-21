@@ -38,7 +38,7 @@
 								</label>							
 							</div>
 						</div>
-												
+
 						<div class="control-group">
 							<label class="control-label" for="name">Name</label>
 							<div class="input-group">
@@ -46,7 +46,7 @@
 								<input id="name" type="text" class="form-control" placeholder="Name of the agent" data-ng-model="data.name" required>
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<label class="control-label" for="url">URL</label>
 							<div class="input-group">
@@ -54,7 +54,7 @@
 								<input id="url" type="text" class="form-control" placeholder="The agent URL" data-ng-model="data.url" required>
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<label class="control-label" for="user">User</label>
 							<div class="input-group">
@@ -62,7 +62,7 @@
 								<input id="user" type="text" class="form-control" placeholder="The agent user" data-ng-model="data.user" >
 							</div>
 						</div>												
-						
+
 						<div class="control-group">
 							<label class="control-label" for="type">Type</label>
 							<div class="input-group">
@@ -71,7 +71,7 @@
 								</select>
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<label class="control-label" for="save"></label>
 							<div class="controls">
@@ -120,7 +120,59 @@
 						</div>
 					</fieldset>
 				</form>			
-			</tab>		
+			</tab>	
+			<tab data-ng-show="!data.n" select="load()" data-ng-controller="AgentSysAdminCtrl">
+				<tab-heading>
+					<i class="icon-suitcase"></i> Systems
+				</tab-heading>
+				<div style="padding-top: 10px"></div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="input-group">
+							<input type="search" placeholder="Search" class="form-control" data-ng-model="filter">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" data-ng-click="clear()"><i class="icon-erase"></i></button>
+								<button class="btn btn-default" type="button" data-ng-click="reload()"><i class="icon-arrows-cw"></i></button>
+							</span>				
+						</div>			
+					</div>
+					<table class="table table-striped sortable">
+						<thead>
+							<tr>
+								<th> </th>	
+								<th>Name</th>	
+								<th>Enabled</th>
+								<th>Service</th>
+								<th>Domain</th>
+								<th>Classification</th>
+								<th>Notification</th>
+								<th>Timer</th>
+							</tr>
+						</thead>			
+						<tbody>
+							<tr data-ng-repeat="item in all| filter:search">
+								<td>
+									<a href="#/settings/sys/edit/{{item.guid}}"><span class="icon-pencil"></span></a>
+								</td>					
+								<td>{{item.name}}</td>
+								<td><i data-ng-class="{'icon-check': item.enabled, 'icon-check-empty': !item.enabled}"></i></td>
+								<td>{{item.service}}</td>
+								<td>{{item.domain}}</td>
+								<td>{{item.clazz}}</td>
+								<td><i data-ng-class="{'icon-check': item.enabled, 'icon-check-empty': !item.notification}"></i></td>
+								<td><i data-ng-class="{'icon-check': item.enabled, 'icon-check-empty': !item.timer}"></i></td>
+							</tr>
+						</tbody>
+					</table>					
+				</div>		
+
+				<div class="control-group">
+					<label class="control-label" for="cp"></label>
+					<div class="controls">
+						<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
+					</div>												
+				</div>
+			</tab>			
 		</tabset>
 	</div>
 </div>	
