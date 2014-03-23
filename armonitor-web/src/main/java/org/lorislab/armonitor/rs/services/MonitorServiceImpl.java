@@ -16,13 +16,17 @@
 package org.lorislab.armonitor.rs.services;
 
 import javax.ejb.EJB;
-import org.lorislab.armonitor.ejb.ProcessServiceBean;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
+import org.lorislab.armonitor.process.ejb.ProcessServiceBean;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.rs.model.Request;
 import org.lorislab.armonitor.rs.model.Result;
 import org.lorislab.armonitor.rs.model.Status;
 import org.lorislab.armonitor.rs.service.MonitorService;
 import org.lorislab.armonitor.store.model.StoreBuild;
+import org.lorislab.jel.base.resources.ResourceManager;
+import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
  * The monitor rest-service implementation.
@@ -38,6 +42,12 @@ public class MonitorServiceImpl implements MonitorService {
     private ProcessServiceBean service;
 
     /**
+     * The HTTP request.
+     */
+    @Context
+    private HttpServletRequest httpRequest;
+    
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -47,13 +57,10 @@ public class MonitorServiceImpl implements MonitorService {
         if (request != null) {
             try {
                 StoreBuild tmp = Mapper.map(request.version, StoreBuild.class);
-               // check build -> install
-               // deploy build
-               // load activity
-               // send notification
+                service.deploy(request.key, tmp);
                 result.status = Status.OK;
-            } catch (Exception ex) {
-                result.message = ex.getMessage();
+            } catch (ServiceException ex) {
+                result.message = ResourceManager.getMessage(ex.getResourceMessage(), httpRequest.getLocale());
             }
         } else {
             result.message = "Missing request object!";
@@ -71,12 +78,10 @@ public class MonitorServiceImpl implements MonitorService {
         if (request != null) {
             try {
                 StoreBuild tmp = Mapper.map(request.version, StoreBuild.class);
-                // check build
-                // create build
-                // create activity
+                service.install(request.key, tmp);
                 result.status = Status.OK;
-            } catch (Exception ex) {
-                result.message = ex.getMessage();
+            } catch (ServiceException ex) {
+                result.message = ResourceManager.getMessage(ex.getResourceMessage(), httpRequest.getLocale());
             }
         } else {
             result.message = "Missing request object!";

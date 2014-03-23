@@ -129,6 +129,10 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
             predicates.add(cb.equal(root.get(StoreApplication_.guid), criteria.getGuid()));
         }
 
+        if (criteria.getKey() != null) {
+            predicates.add(cb.equal(root.get(StoreApplication_.key), criteria.getKey()));
+        }
+        
         if (criteria.getBuild() != null) {
             predicates.add(cb.in(root.join(StoreApplication_.builds).get(StoreBuild_.guid)).value(criteria.getBuild()));
         }

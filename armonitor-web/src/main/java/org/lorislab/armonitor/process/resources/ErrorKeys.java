@@ -14,30 +14,26 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.services;
-
-import javax.ejb.EJB;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import org.lorislab.armonitor.ejb.OldProcessServiceBean;
-import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
+package org.lorislab.armonitor.process.resources;
 
 /**
- *
+ * The process error keys.
+ * 
  * @author Andrej Petras
  */
-@Path("ad/report")
-@CdiServiceMethod
-public class ReportService {
-   
-    @EJB
-    private OldProcessServiceBean service;
+public enum ErrorKeys {
     
-    @GET
-    @Path("{guid}")
-    public void report(@PathParam("guid") String guid) {
-        service.sendReportAsync(guid);
-    }
+    BUILD_ALREADY_INSTALLED,
     
+    ERROR_CREATE_ACTIVITY_FOR_BUILD,
+    
+    NO_ACTIVITY_FOUND_FOR_BUILD,
+    
+    NO_APPLICATION_FOR_SYSTEM_FOUND,
+    
+    NO_SYSTEM_FOR_KEY_FOUND,
+    
+    NO_PROJECT_FOR_APPLICATION_FOUND,
+    
+    NO_APPLICATION_FOR_KEY_FOUND;
 }

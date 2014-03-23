@@ -75,5 +75,5 @@ public class ActivityController implements Serializable {
         activity = service.getActivityForBuild(guid);
         this.guid = guid;
         return activity;
-    }
+    }   
 }

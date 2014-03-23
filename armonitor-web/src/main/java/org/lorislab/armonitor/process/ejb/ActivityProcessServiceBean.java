@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.armonitor.ejb;
+package org.lorislab.armonitor.process.ejb;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -88,11 +88,42 @@ public class ActivityProcessServiceBean {
      * Creates the store activity.
      *
      * @param build the build GUID.
+     * @param project the project GUID.
+     * @param application the application GUID.
+     * @return the create activity.
+     * @throws Exception if the method fails.
+     */
+    public StoreActivity createActivity(String build, String project, String application) throws Exception {
+        StoreBuild b = getBuild(build);
+        StoreProject pr = getProject(project);
+        StoreApplication app = getApplication(application);
+        return createActivity(b, pr, app);
+    }
+
+    /**
+     * Creates the store activity.
+     *
+     * @param build the build.
+     * @param project the project GUID.
+     * @param application the application GUID.
+     * @return the create activity.
+     * @throws Exception if the method fails.
+     */
+    public StoreActivity createActivity(StoreBuild build, String project, String application) throws Exception {
+        StoreProject pr = getProject(project);
+        StoreApplication app = getApplication(application);
+        return createActivity(build, pr, app);
+    }
+
+    /**
+     * Creates the store activity.
+     *
+     * @param build the build GUID.
      * @return the create activity.
      * @throws Exception if the method fails.
      */
     public StoreActivity createActivity(String build) throws Exception {
-        StoreBuild b = getBuild(build);
+        StoreBuild b = getBuildWithAppAndProject(build);
         StoreProject pr = getProject(b.getApplication().getProject().getGuid());
         StoreApplication app = getApplication(b.getApplication().getGuid());
         return createActivity(b, pr, app);
@@ -223,6 +254,18 @@ public class ActivityProcessServiceBean {
      * @return the build.
      */
     private StoreBuild getBuild(String guid) {
+        StoreBuildCriteria criteria = new StoreBuildCriteria();
+        criteria.setGuid(guid);
+        return buildService.getBuild(criteria);
+    }
+
+    /**
+     * Gets the build by GUID.
+     *
+     * @param guid the build GUID.
+     * @return the build.
+     */
+    private StoreBuild getBuildWithAppAndProject(String guid) {
         StoreBuildCriteria criteria = new StoreBuildCriteria();
         criteria.setGuid(guid);
         criteria.setFetchApplication(true);

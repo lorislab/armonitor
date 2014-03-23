@@ -24,6 +24,9 @@ import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.ejb.ReportServiceBean;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.model.ChangeReport;
+import org.lorislab.armonitor.store.criteria.StoreActivityCriteria;
+import org.lorislab.armonitor.store.ejb.StoreActivityServiceBean;
+import org.lorislab.armonitor.store.model.StoreActivity;
 import org.lorislab.armonitor.web.rs.model.Activity;
 
 /**
@@ -46,6 +49,12 @@ public class ActivityServiceBean {
     private ReportServiceBean reportService;
 
     /**
+     * The activity service.
+     */
+    @EJB
+    private StoreActivityServiceBean activityService;
+      
+    /**
      * Gets the activity for the build.
      *
      * @param build the build GUID.
@@ -53,6 +62,19 @@ public class ActivityServiceBean {
      */
     public Activity getActivityForBuild(String build) {
         try {
+//            
+//            StoreActivityCriteria sac = new StoreActivityCriteria();
+//            sac.setBuild(build);
+//            sac.setFetchBuild(true);
+//            sac.setFetchChange(true);
+//            sac.setFetchChangeLog(true);
+//            sac.setFetchChangeLogBuild(true);
+//            
+//            StoreActivity tmp = activityService.getActivity(sac);
+//            if (tmp != null) {
+//                
+//            }
+//            
             ChangeReport report = reportService.createChangeReportForBuild(build);
             return Mapper.map(report, Activity.class);
         } catch (Exception ex) {

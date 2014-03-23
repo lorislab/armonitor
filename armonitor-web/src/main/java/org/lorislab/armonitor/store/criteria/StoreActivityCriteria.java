@@ -90,7 +90,7 @@ public class StoreActivityCriteria extends AbstractSearchCriteria {
      *
      * @param fetchChangeLogBuild the fetch change build log flag.
      */
-    public void setFetchChangeBuildLog(boolean fetchChangeLogBuild) {
+    public void setFetchChangeLogBuild(boolean fetchChangeLogBuild) {
         this.fetchChangeLogBuild = fetchChangeLogBuild;
     }
 

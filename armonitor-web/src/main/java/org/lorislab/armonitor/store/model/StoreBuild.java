@@ -60,6 +60,10 @@ public class StoreBuild extends Persistent {
     @Column(name = "C_DATE")
     private Date date;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "C_INSTALL")
+    private Date install;
+    
     @Column(name = "C_SERVICE")
     private String service;
 
@@ -78,10 +82,18 @@ public class StoreBuild extends Persistent {
     @Column(name = "C_BUILD")
     private String build;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "C_BUILD")
     private Set<StoreBuildParameter> parameters;
 
+    public Date getInstall() {
+        return install;
+    }
+
+    public void setInstall(Date install) {
+        this.install = install;
+    }
+    
     public String getAgent() {
         return agent;
     }

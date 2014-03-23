@@ -39,7 +39,7 @@ public class ActivityService {
      */
     @Inject
     private ActivityController controller;
-
+    
     /**
      * Gets the activity for the build.
      *

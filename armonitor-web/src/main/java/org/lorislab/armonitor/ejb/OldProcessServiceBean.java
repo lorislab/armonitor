@@ -50,6 +50,7 @@ import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
+import org.lorislab.armonitor.store.model.StoreUser;
 import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 
 /**
@@ -59,12 +60,12 @@ import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class ProcessServiceBean {
+public class OldProcessServiceBean {
 
     /**
      * The logger for this class.
      */
-    private static final Logger LOGGER = Logger.getLogger(ProcessServiceBean.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OldProcessServiceBean.class.getName());
 
     /**
      * The new build deploy template.
@@ -288,7 +289,7 @@ public class ProcessServiceBean {
 
             // notification
             if (system.isNotification()) {
-                Set<String> users = userService.getUsersEmailsForSystem(system.getGuid());
+                Set<StoreUser> users = userService.getUsersEmailsForSystem(system.getGuid());
                 List<Mail> mails = createBuildDeployedMails(users, system, build, project, report, app, sb);
                 send(mails);
             } else {
@@ -305,19 +306,22 @@ public class ProcessServiceBean {
     /**
      * Creates the build deployed mails.
      *
-     * @param emails the set of addresses.
+     * @param users the set of users.
      * @param system the system.
      * @param build the build.
      * @return the list of mails.
      */
-    private List<Mail> createBuildDeployedMails(Set<String> emails, Object... values) {
+    private List<Mail> createBuildDeployedMails(Set<StoreUser> users, Object... values) {
         List<Mail> result = null;
-        if (emails != null) {
+        if (users != null) {
             result = new ArrayList<>();
-            for (String email : emails) {
+            for (StoreUser user : users) {
                 Mail mail = new Mail();
-                mail.getTo().add(email);
+                mail.getTo().add(user.getEmail());
                 mail.setTemplate(MAIL_BUILD_DEPLOYED_TEMPLATE);
+                // add the user to the parameters
+                mail.getParameters().put(user.getClass().getSimpleName(), user);
+                // add the list of values to the parameters
                 if (values != null) {
                     for (Object value : values) {
                         mail.getParameters().put(value.getClass().getSimpleName(), value);
@@ -327,7 +331,7 @@ public class ProcessServiceBean {
             }
         }
         return result;
-    }
+    } 
 
     /**
      * Send the notification asynchrony.

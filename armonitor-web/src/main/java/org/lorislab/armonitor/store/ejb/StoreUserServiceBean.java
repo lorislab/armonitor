@@ -97,23 +97,22 @@ public class StoreUserServiceBean extends AbstractEntityServiceBean<StoreUser> {
         return getUsers(new StoreUserCriteria());
     }
 
-    public Set<String> getUsersEmailsForSystem(String system) {
-        Set<String> result = new HashSet<>();
+    public Set<StoreUser> getUsersEmailsForSystem(String system) {
+        Set<StoreUser> result = new HashSet<>();
 
         CriteriaBuilder cb = getBaseEAO().getCriteriaBuilder();
-        CriteriaQuery<String> cq = getBaseEAO().createCriteriaQuery(String.class);
+        CriteriaQuery<StoreUser> cq = getBaseEAO().createCriteriaQuery(StoreUser.class);
         Root<StoreUser> root = cq.from(StoreUser.class);
 
         Subquery<String> sq = cq.subquery(String.class);
         Root<StoreSystem> project = sq.from(StoreSystem.class);
         sq.select(project.join(StoreSystem_.roles).get(StoreRole_.guid)).where(cb.equal(project.get(StoreSystem_.guid), system));
 
-        cq.select(root.get(StoreUser_.email));
         cq.where(cb.in(root.join(StoreUser_.roles).get(StoreRole_.guid)).value(sq));
 
         try {
-            TypedQuery<String> typeQuery = getBaseEAO().createQuery(cq);
-            List<String> tmp = typeQuery.getResultList();
+            TypedQuery<StoreUser> typeQuery = getBaseEAO().createQuery(cq);
+            List<StoreUser> tmp = typeQuery.getResultList();
             if (tmp != null) {
                 result.addAll(tmp);
             }

@@ -15,7 +15,6 @@
  */
 package org.lorislab.armonitor.timer.ejb;
 
-import org.lorislab.armonitor.ejb.ProcessServiceBean;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +30,7 @@ import javax.ejb.TimerService;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
+import org.lorislab.armonitor.process.ejb.TimerProcessServiceBean;
 import org.lorislab.armonitor.timer.model.TimerConfig;
 
 /**
@@ -68,7 +68,7 @@ public class TimerServiceBean {
      * The process service.
      */
     @EJB
-    private ProcessServiceBean processService;
+    private TimerProcessServiceBean processService;
 
     /**
      * Initialise after start.

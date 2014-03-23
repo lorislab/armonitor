@@ -19,6 +19,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -51,7 +53,7 @@ public class StoreActivityChange extends Persistent {
     /**
      * The set of activity change logs.
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "change")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "change")
     private Set<StoreActivityLog> logs;
 
     /**
@@ -88,6 +90,7 @@ public class StoreActivityChange extends Persistent {
     /**
      * The error.
      */
+    @Enumerated(EnumType.STRING)
     @Column(name = "C_ERROR")
     private ActivityChangeError error;
 

@@ -60,7 +60,7 @@ public class StoreActivity extends Persistent {
     /**
      * The set of activity changes.
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "activity")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "activity")
     private Set<StoreActivityChange> changes;
 
     /**

@@ -48,7 +48,7 @@ public class AsyncProcessServiceBean implements MessageListener {
      * The process service.
      */
     @EJB
-    private ProcessServiceBean processService;
+    private OldProcessServiceBean processService;
 
     /**
      * Get the message from the queue.
