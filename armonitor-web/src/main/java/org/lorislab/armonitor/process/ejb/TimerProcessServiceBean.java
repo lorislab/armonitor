@@ -87,7 +87,7 @@ public class TimerProcessServiceBean {
                 try {
                     StoreBuild build = agentClientService.getBuild(system.getAgent(), system.getService());
                     if (build != null) {
-                        check(system, build);
+                        processService.deploy(system, build, StoreSystemBuildType.TIMER);
                     } else {
                         LOGGER.log(Level.WARNING, "Could not get the build for the system {0}", system.getGuid());
                     }
@@ -102,35 +102,4 @@ public class TimerProcessServiceBean {
         }
     }
 
-    /**
-     * The check before deploy the build.
-     *
-     * @param system the system.
-     * @param build the build.
-     * @throws ServiceException if the method fails.
-     */
-    private void check(StoreSystem system, StoreBuild build) throws ServiceException {
-
-        //check if the build exist for the system if not deploy!!!
-        StoreSystemBuildCriteria ssbc = new StoreSystemBuildCriteria();
-        ssbc.setSystem(system.getGuid());
-        ssbc.setMaxDate(Boolean.TRUE);
-        ssbc.setFetchBuild(true);
-        StoreSystemBuild tmp = systemBuildService.getSystemBuild(ssbc);
-
-        boolean deploy = false;
-        if (tmp != null) {
-            Date odate = tmp.getBuild().getDate();
-            Date ndate = build.getDate();
-            if (odate != null && ndate != null) {
-                deploy = odate.equals(ndate);
-            }
-        }
-
-        if (deploy) {
-            processService.deploy(system, build, StoreSystemBuildType.TIMER);
-        } else {
-            LOGGER.log(Level.INFO, "The build {0}{1} already deploy on the system {2}", new Object[]{build.getMavenVersion(), build.getBuild(), system.getName()});
-        }
-    }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.armonitor.process.ejb;
+package org.lorislab.armonitor.activity.ejb;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +30,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.activity.model.ActivityType;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
 import org.lorislab.armonitor.bts.model.BtsIssue;
 import org.lorislab.armonitor.bts.model.BtsResult;
@@ -84,36 +85,36 @@ public class ActivityProcessServiceBean {
     @EJB
     private StoreBuildServiceBean buildService;
 
-    /**
-     * Creates the store activity.
-     *
-     * @param build the build GUID.
-     * @param project the project GUID.
-     * @param application the application GUID.
-     * @return the create activity.
-     * @throws Exception if the method fails.
-     */
-    public StoreActivity createActivity(String build, String project, String application) throws Exception {
-        StoreBuild b = getBuild(build);
-        StoreProject pr = getProject(project);
-        StoreApplication app = getApplication(application);
-        return createActivity(b, pr, app);
-    }
+//    /**
+//     * Creates the store activity.
+//     *
+//     * @param build the build GUID.
+//     * @param project the project GUID.
+//     * @param application the application GUID.
+//     * @return the create activity.
+//     * @throws Exception if the method fails.
+//     */
+//    public StoreActivity createActivity(String build, String project, String application) throws Exception {
+//        StoreBuild b = getBuild(build);
+//        StoreProject pr = getProject(project);
+//        StoreApplication app = getApplication(application);
+//        return createActivity(b, pr, app);
+//    }
 
-    /**
-     * Creates the store activity.
-     *
-     * @param build the build.
-     * @param project the project GUID.
-     * @param application the application GUID.
-     * @return the create activity.
-     * @throws Exception if the method fails.
-     */
-    public StoreActivity createActivity(StoreBuild build, String project, String application) throws Exception {
-        StoreProject pr = getProject(project);
-        StoreApplication app = getApplication(application);
-        return createActivity(build, pr, app);
-    }
+//    /**
+//     * Creates the store activity.
+//     *
+//     * @param build the build.
+//     * @param project the project GUID.
+//     * @param application the application GUID.
+//     * @return the create activity.
+//     * @throws Exception if the method fails.
+//     */
+//    private StoreActivity createActivity(StoreBuild build, String project, String application) throws Exception {
+//        StoreProject pr = getProject(project);
+//        StoreApplication app = getApplication(application);
+//        return createActivity(build, pr, app);
+//    }
 
     /**
      * Creates the store activity.
@@ -240,6 +241,7 @@ public class ActivityProcessServiceBean {
                     change.setParent(issue.getParent());
                 } else {
                     // the issue is not valid issue in the BTS
+                    change.setType(ActivityType.ERROR);
                     change.setError(ActivityChangeError.WRONG_KEY);
                 }
             }

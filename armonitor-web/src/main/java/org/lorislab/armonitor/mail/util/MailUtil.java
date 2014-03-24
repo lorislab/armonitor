@@ -15,23 +15,24 @@
  */
 package org.lorislab.armonitor.mail.util;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.mail.Address;
 import javax.mail.internet.InternetAddress;
 import org.lorislab.armonitor.mail.model.Mail;
+import org.mvel2.templates.CompiledTemplate;
+import org.mvel2.templates.TemplateCompiler;
+import org.mvel2.templates.TemplateRuntime;
 
 /**
  * The mail utility class.
@@ -52,40 +53,24 @@ public final class MailUtil {
      * The subject file prefix.
      */
     private static final String TEMPLATE_SUBJECT = "subject";
-
     /**
-     * The template directory.
+     * The resources file prefix.
      */
-    private static final String TEMPLATE_DIR_NAME = "/templates/";
+    private static final String TEMPLATE_RESOURCES = "resources";
+    /**
+     * The bundle file name
+     */
+    private static final String BUNDLE = "mailtemplate.properties";
+
     /**
      * The path separator.
      */
     private static final String PATH_SEPARATOR = "/";
-
+    
     /**
-     * The free marker configuration.
+     * The map of templates.
      */
-    private static final Configuration CFG = new Configuration();
-
-    /**
-     * Set up the template configuration.
-     */
-    static {
-        CFG.setDefaultEncoding("UTF-8");
-
-        // set up the template directory
-        String templateDir = System.getProperty(MailUtil.class.getName());
-        if (templateDir != null) {
-            try {
-                CFG.setDirectoryForTemplateLoading(new File(templateDir));
-            } catch (IOException ex) {
-                LOGGER.log(Level.SEVERE, "Switch to default templates. Error open the mail template directory " + templateDir, ex);
-                CFG.setClassForTemplateLoading(MailUtil.class, TEMPLATE_DIR_NAME);
-            }
-        } else {
-            CFG.setClassForTemplateLoading(MailUtil.class, TEMPLATE_DIR_NAME);
-        }
-    }
+    private static final Map<String, CompiledTemplate> TEMPLATES = new HashMap<>();
 
     /**
      * The email object constant.
@@ -95,6 +80,11 @@ public final class MailUtil {
      * The email object constant.
      */
     public static final String CONTENT_TYPE = "Content-Type";
+
+    /**
+     * The template directory.
+     */
+    private static final String TEMPLATE_DIR = System.getProperty(MailUtil.class.getName(), null);
 
     /**
      * The email pattern.
@@ -161,12 +151,21 @@ public final class MailUtil {
     /**
      * Gets the file path from template.
      *
-     * @param template
-     * @param file
-     * @return
+     * @param template the template name.
+     * @param resource the resource name
+     * @param locale the locale.
+     * @return the resource path.
      */
-    public static final String getFilePathFromTemplate(String template, String file) {
-        return TEMPLATE_DIR_NAME + template + PATH_SEPARATOR + file;
+    public static final String getFilePathFromTemplate(String template, String resource, Locale locale) {
+        ResourceBundle rb = ResourceBundle.getBundle(BUNDLE, locale);
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append(template).append('.').append(TEMPLATE_RESOURCES);
+        String dir = rb.getString(sb.toString());
+        
+        sb = new StringBuilder();
+        sb.append(dir).append(PATH_SEPARATOR).append(resource);
+        return sb.toString();
     }
 
     /**
@@ -206,14 +205,48 @@ public final class MailUtil {
      */
     private static String getContent(String name, String template, Locale locale, Map<String, Object> parameters) throws Exception {
 
-        String contentKey = name + "_" + locale.getLanguage();
-        String key = template + "/" + contentKey + ".html";
+        ResourceBundle rb = ResourceBundle.getBundle(BUNDLE, locale);
 
-        Template contentTmp = CFG.getTemplate(key);
+        StringBuilder sb = new StringBuilder();
+        sb.append(template).append('.').append(name);
+        String key = rb.getString(sb.toString());
 
-        final StringWriter writer = new StringWriter();
-        contentTmp.process(parameters, writer);
-        String result = writer.toString();
+        if (key == null) {
+            throw new Exception("Missing mail template key: " + key);
+        }
+        
+        CompiledTemplate compiled = TEMPLATES.get(key);
+        // if not exist create compiled template
+        if (compiled == null) {
+            // load from external directory
+            if (TEMPLATE_DIR != null) {
+                compiled = TemplateCompiler.compileTemplate(new File(TEMPLATE_DIR, key));
+            } else {
+                // load from class path
+                InputStream stream = null;
+                try {
+                    stream = MailUtil.class.getResourceAsStream(key);
+                    compiled = TemplateCompiler.compileTemplate(stream);
+                } finally {
+                    if (stream != null) {
+                        stream.close();
+                    }
+                }
+            }
+            // add to the template cache.
+            if (compiled != null) {
+                TEMPLATES.put(key, compiled);
+            }
+        }
+
+        String result = null;
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            TemplateRuntime.execute(compiled, parameters, out);
+            result = out.toString("UTF-8");
+        } finally {
+            out.close();
+        }
         return result;
     }
 

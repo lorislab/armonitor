@@ -70,7 +70,8 @@ public final class ObjectMapper {
     public static Version update(Version version, Arm arm) {
         if (arm != null && version != null) {
             version.date = arm.getDate();
-
+            version.key = arm.getKey();
+            
             // add maven attributes
             version.groupId = arm.getGroupId();
             version.artifactId = arm.getArtifactId();

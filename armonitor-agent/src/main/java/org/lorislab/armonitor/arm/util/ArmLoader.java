@@ -78,6 +78,7 @@ public class ArmLoader {
         // add release version
         result.setScm((String) properties.remove(ArmConstant.RELEASE_SCM));
         result.setBuild((String) properties.remove(ArmConstant.RELEASE_BUILD));
+        result.setKey((String) properties.remove(ArmConstant.RELEASE_KEY));
 
         // add release date
         String tmp = (String) properties.remove(ArmConstant.RELEASE_DATE);
@@ -112,6 +113,7 @@ public class ArmLoader {
         // add release properties
         result.put(ArmConstant.RELEASE_SCM, arm.getScm());
         result.put(ArmConstant.RELEASE_BUILD, arm.getBuild());
+        result.put(ArmConstant.RELEASE_KEY, arm.getKey());
 
         // add release properties
         Long tmp = null;

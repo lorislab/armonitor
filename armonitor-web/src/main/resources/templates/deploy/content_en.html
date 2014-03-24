@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+</head>
+<!--
+	Mail: ${Mail.guid}
+	StoreSystem: ${StoreSystem.guid}
+	StoreBuild: ${StoreBuild.guid}
+	StoreApplication: ${StoreApplication.guid}
+	StoreProject: ${StoreProject.guid}
+-->
+<body>
+
+	Dear user @{StoreUser.name},
+	
+	the application @{StoreApplication.name} was deployed on the @{StoreSystem.name} system.
+	
+	regards,
+	Your release monitor.
+	
+	<div id="body" style="width:80%;margin:0 auto; padding-left: 10%">
+		<h2>
+			<a style="text-decoration:none;" href="@{MailConfig.server}/#/appbuild/@{StoreApplication.guid}">@{StoreApplication.name}</a>
+			<small>
+				<a href="@{MailConfig.server}/#/systembuild/@{StoreSystem.guid}" style="text-decoration:none;">@{StoreSystem.name}</a>
+			</small>
+		</h2>
+		<!-- BUILD CHANGES -->	
+		<table style="padding: 0px;border:0px;width:100%;border-spacing:0">
+			<thead style="padding:0px;">
+				<tr style="padding:0px;border:0px;font-weight:700;font-size:18px;background-color:#baecb7;color:#32a32d;">
+					<td colspan="5" style="border:0px; padding:0px;">
+						<h3>
+						<a href="@{MailConfig.server}/#/versionbuild/@{StoreApplication.guid}/@{StoreBuild.mavenVersion}" style="text-decoration:none;">
+							@{StoreBuild.mavenVersion}
+						</a>
+						<a href="@{MailConfig.server}/#/activity/@{StoreBuild.guid}" style="text-decoration:none;">
+							@{StoreBuild.build}
+						</a>		
+						@{StoreSystemBuild.date?datetime}
+						</h3>
+					</td>
+				</tr>
+			</thead>
+			<!-- @if{ActivityWrapper.isBuildChanges()} -->
+			<tbody>
+				<!-- @foreach{w : ActivityWrapper.buildChanges}  -->
+				<tr style="padding:0px; font-weight: bold; border-bottom:1px solid #adadad;">
+					<!-- TYPE -->
+					<!-- @if{w.change.error == null} -->
+					<td style="width: 20px; background-color: #5cb85c; text-align: center; border-top:1px solid #adadad">@{w.change.type}</td>
+					<!-- @else{w.change.error == 'WRONG_VERSION'} -->
+					<td style="padding:0px; width: 20px; background-color: #f0ad4e; text-align: center; border-top:1px solid #adadad">@{w.change.type}</td>
+					<!-- @else{} -->
+					<td style="width: 20px; background-color: #d9534f; text-align: center; border-top:1px solid #adadad">!</td>
+					<!-- @end{} -->					
+					<!-- ID -->
+					<td style="width: 110px; border-top:1px solid #adadad">
+						<a href="@{w.link}" style="text-decoration:none;">${w.change.key}</a>
+					</td>
+					<!-- RESOLUTION -->
+					<td style="width: 140px; border-top:1px solid #adadad">@{w.change.status}</td>
+					<!-- ASSIGNEE -->
+					<td style="width: 160px; border-top:1px solid #adadad">@{w.change.user}</td>
+					<!-- SUMMARY -->
+					<td style="border-top:1px solid #adadad;">@{w.change.description}</td>
+				</tr>
+				
+				<!-- @if{w.change.isLogs()} -->
+					<!-- @foreach{e : w.change.logs}  -->
+					<tr>
+						<td></td>
+						<td>
+							<!-- @if{e.isBuild()} -->
+							<h6><a href="@{MailConfig.server}/#/activity/${e.log.build.guid}" style="text-decoration:none;">@{e.log.build.build}</a></h6>
+							<!-- @else{} -->
+							***
+							<!-- @end{} -->	
+						</td>	
+						<td><h6>${e.date}</h6></td>
+						<td><h6>${e.log.user}</h6></td>
+						<td><h6><a href="${e.link}" style="text-decoration:none;">${e.log.revision}</a>: @{e.log.message}</h6></td>						
+					</tr>
+					<!-- @end{} -->
+				<!-- @else{} -->
+				<tr><td colspan="4"></td><td><h6><span>No changes</span></h6></td></tr>				
+				<!-- @end{} -->	
+			</tbody>
+			<!-- @else{} -->
+			<tbody><tr><td colspan="5" style="text-align: center;">No changes</td></tr></tbody>
+			<!-- @end{} -->				
+		</table>
+
+		<div style="text-align: center; padding-bottom: 10px; padding-top: 10px;"> 
+            <h4><a href="http://www.lorislab.org" style="text-decoration:none;"><span>www.lorislab.org</span></a></h4>
+        </div>
+
+	</div>    
+</body>
+</html>

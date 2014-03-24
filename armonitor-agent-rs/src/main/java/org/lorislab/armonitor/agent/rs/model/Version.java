@@ -63,6 +63,10 @@ public class Version {
      */
     public String build;
     /**
+     * The key.
+     */
+    public String key;    
+    /**
      * The other parameters.
      */
     public Map<String, String> other = new HashMap<>();

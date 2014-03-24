@@ -15,14 +15,10 @@
  */
 package org.lorislab.armonitor.web.rs.mapper;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import org.lorislab.armonitor.activity.wrapper.ActivityWrapper;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.mapper.MapperService;
-import org.lorislab.armonitor.model.Change;
-import org.lorislab.armonitor.model.ChangeReport;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.web.rs.model.Activity;
@@ -35,20 +31,20 @@ import org.lorislab.armonitor.web.rs.util.LinkUtil;
  *
  * @author Andrej Petras
  */
-public class ActivityMapper implements MapperService<ChangeReport, Activity> {
+public class ActivityMapper implements MapperService<ActivityWrapper, Activity> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Activity map(ChangeReport data, Set<String> profiles) {
+    public Activity map(ActivityWrapper data, Set<String> profiles) {
         Activity result = new Activity();
-        result.guid = data.getGuid();
-        result.types = new HashSet<>();
-        result.changes = map(data.getChanges(), result.types, profiles);                
-        result.buildChanges = map(data.getBuildChanges(), result.types, profiles);        
+        result.guid = data.getActivity().getGuid();
+        result.types = data.getTypes();
+        result.changes = Mapper.map(data.getChanges(), ActivityChange.class, profiles);                
+        result.buildChanges = Mapper.map(data.getBuildChanges(), ActivityChange.class, profiles);        
         result.build = Mapper.map(data.getBuild(), Build.class, profiles);
-        
+        // add the application
         StoreApplication app = data.getApplication();
         if (app != null) {
             result.app = app.getGuid();
@@ -57,7 +53,7 @@ public class ActivityMapper implements MapperService<ChangeReport, Activity> {
                 result.build.link = LinkUtil.createLink(app.getRepoLink(), data.getBuild());
             }
         }
-        
+        // add the project
         StoreProject p = data.getProject();
         if (p != null) {
             result.project = p.getGuid();
@@ -65,37 +61,12 @@ public class ActivityMapper implements MapperService<ChangeReport, Activity> {
         }
         return result;
     }
-
-    /**
-     * Maps the activity changes.
-     * @param changes the changes.
-     * @param types the set of types.
-     * @param profiles the mapping profiles set.
-     * @return the list of activity changes.
-     */
-    private List<ActivityChange> map(List<Change> changes, Set<String> types, Set<String> profiles) {
-        List<ActivityChange> result =  null;
-        if (changes != null) {
-            result = new ArrayList<>(changes.size());
-            for (Change change : changes) {
-                ActivityChange tmp = Mapper.map(change, ActivityChange.class, profiles);
-                if (tmp != null) {
-                    if (tmp.type == null) {
-                        tmp.type = "Error";
-                    }
-                    types.add(tmp.type);
-                    result.add(tmp);
-                }
-            }
-        }
-        return result;
-    }      
-
+    
     /**
      * {@inheritDoc}
      */
     @Override
-    public ChangeReport update(ChangeReport entity, Activity data, Set<String> profiles) {
+    public ActivityWrapper update(ActivityWrapper entity, Activity data, Set<String> profiles) {
         return entity;
 }
 
@@ -103,7 +74,7 @@ public class ActivityMapper implements MapperService<ChangeReport, Activity> {
      * {@inheritDoc}
      */
     @Override
-    public ChangeReport create(Activity data, Set<String> profiles) {
+    public ActivityWrapper create(Activity data, Set<String> profiles) {
         return null;
     }
 

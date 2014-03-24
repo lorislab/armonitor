@@ -17,12 +17,14 @@
 package org.lorislab.armonitor.web.rs.services;
 
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.mail.ejb.MailServiceBean;
@@ -45,6 +47,9 @@ public class MailService {
     @EJB
     private MailServiceBean mailService;
     
+    @Context
+    private HttpServletRequest request;
+    
     /**
      * Gets the mail template image (resource).
      *
@@ -58,7 +63,7 @@ public class MailService {
     @Produces({"image/jpeg", "image/png", "image/gif"})
     public byte[] getMailResource(@PathParam("template") String template, @PathParam("name") String name) {
         byte[] result = null;
-        MailTemplateResource resource = mailService.loadMailTemplateResource(template, name);
+        MailTemplateResource resource = mailService.loadMailTemplateResource(template, name, request.getLocale());
         if (resource != null) {
             result = resource.getContent();
         }

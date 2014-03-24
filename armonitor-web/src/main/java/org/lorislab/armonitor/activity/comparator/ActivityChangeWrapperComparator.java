@@ -32,7 +32,19 @@ public class ActivityChangeWrapperComparator implements Comparator<ActivityChang
     
     @Override
     public int compare(ActivityChangeWrapper o1, ActivityChangeWrapper o2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (o1.isError() && !o2.isError()) {
+            return -1;
+        }
+        if (o2.isError() && !o1.isError()) {
+            return 1;
+        }
+        if (o1.isEmpty() && o2.isLogs()) {
+            return 1;
+        }
+        if (o2.isEmpty() && o1.isLogs()) {
+            return -1;
+        }
+        return o1.getKey().compareTo(o2.getKey());
     }
     
 }

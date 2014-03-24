@@ -21,12 +21,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import org.lorislab.armonitor.ejb.ReportServiceBean;
+import org.lorislab.armonitor.activity.criteria.ActivityWrapperCriteria;
+import org.lorislab.armonitor.activity.ejb.ActivityWrapperServiceBean;
+import org.lorislab.armonitor.activity.wrapper.ActivityWrapper;
 import org.lorislab.armonitor.mapper.Mapper;
-import org.lorislab.armonitor.model.ChangeReport;
-import org.lorislab.armonitor.store.criteria.StoreActivityCriteria;
-import org.lorislab.armonitor.store.ejb.StoreActivityServiceBean;
-import org.lorislab.armonitor.store.model.StoreActivity;
 import org.lorislab.armonitor.web.rs.model.Activity;
 
 /**
@@ -43,16 +41,10 @@ public class ActivityServiceBean {
      */
     private static final Logger LOGGER = Logger.getLogger(ActivityServiceBean.class.getName());
     /**
-     * The report service.
-     */
-    @EJB
-    private ReportServiceBean reportService;
-
-    /**
      * The activity service.
      */
     @EJB
-    private StoreActivityServiceBean activityService;
+    private ActivityWrapperServiceBean activityService;
       
     /**
      * Gets the activity for the build.
@@ -62,21 +54,10 @@ public class ActivityServiceBean {
      */
     public Activity getActivityForBuild(String build) {
         try {
-//            
-//            StoreActivityCriteria sac = new StoreActivityCriteria();
-//            sac.setBuild(build);
-//            sac.setFetchBuild(true);
-//            sac.setFetchChange(true);
-//            sac.setFetchChangeLog(true);
-//            sac.setFetchChangeLogBuild(true);
-//            
-//            StoreActivity tmp = activityService.getActivity(sac);
-//            if (tmp != null) {
-//                
-//            }
-//            
-            ChangeReport report = reportService.createChangeReportForBuild(build);
-            return Mapper.map(report, Activity.class);
+            ActivityWrapperCriteria criteria = new ActivityWrapperCriteria();
+            criteria.setBuild(build);
+            ActivityWrapper wrapper = activityService.create(criteria);
+            return Mapper.map(wrapper, Activity.class);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error create activity for the build {0}, Error: {1}", new Object[]{build, ex.getMessage()});
             LOGGER.log(Level.FINE, "Error create activity", ex);

@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.lorislab.armonitor.activity.wrapper.ActivityChangeLogWrapper;
 import org.lorislab.armonitor.mapper.MapperService;
-import org.lorislab.armonitor.model.ScmLogBuild;
-import org.lorislab.armonitor.scm.model.ScmLog;
+import org.lorislab.armonitor.store.model.StoreActivityLog;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.web.rs.model.ActivityChangeLog;
 
@@ -27,35 +26,37 @@ import org.lorislab.armonitor.web.rs.model.ActivityChangeLog;
  *
  * @author Andrej Petras
  */
-public class ActivityChangeLogMapper implements MapperService<ScmLogBuild, ActivityChangeLog> {
+public class ActivityChangeLogMapper implements MapperService<ActivityChangeLogWrapper, ActivityChangeLog> {
 
     @Override
-    public ActivityChangeLog map(ScmLogBuild data, Set<String> profiles) {
+    public ActivityChangeLog map(ActivityChangeLogWrapper data, Set<String> profiles) {
         ActivityChangeLog result = new ActivityChangeLog();
-        StoreBuild build = data.getBuild();        
         result.link = data.getLink();
+
+        // add the log
+        StoreActivityLog log = data.getLog();
+        result.id = log.getRevision();
+        result.user = log.getUser();
+        result.message = log.getMessage();
+        result.date = log.getDate();
+
+        // add the build
+        StoreBuild build = log.getBuild();
         if (build != null) {
             result.build = build.getGuid();
             result.version = build.getMavenVersion();
-            result.rc = build.getBuild();            
+            result.rc = build.getBuild();
         }
-        ScmLog log = data.getScmLog();
-        if (log != null) {
-            result.id = log.getId();
-            result.user = log.getUser();
-            result.message = log.getMessage();
-            result.date = log.getDate();            
-        }                
         return result;
     }
 
     @Override
-    public ScmLogBuild update(ScmLogBuild entity, ActivityChangeLog data, Set<String> profiles) {
+    public ActivityChangeLogWrapper update(ActivityChangeLogWrapper entity, ActivityChangeLog data, Set<String> profiles) {
         return entity;
     }
 
     @Override
-    public ScmLogBuild create(ActivityChangeLog data, Set<String> profiles) {
+    public ActivityChangeLogWrapper create(ActivityChangeLog data, Set<String> profiles) {
         return null;
     }
 
@@ -63,5 +64,5 @@ public class ActivityChangeLogMapper implements MapperService<ScmLogBuild, Activ
     public ActivityChangeLog create(Set<String> profiles) {
         return null;
     }
-    
+
 }

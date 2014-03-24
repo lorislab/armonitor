@@ -18,6 +18,7 @@ package org.lorislab.armonitor.mail.ejb;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -71,14 +72,17 @@ public class MailServiceBean {
      *
      * @param template the template name.
      * @param name the resource name.
+     * @param locale the locale.
      * @return the mail template resource.
      */
-    public MailTemplateResource loadMailTemplateResource(String template, String name) {
+    public MailTemplateResource loadMailTemplateResource(String template, String name, Locale locale) {
 
         byte[] data = null;
         try {
             // load the file
-            data = FileUtil.readFileAsByteArray(MailUtil.getFilePathFromTemplate(template, name), this.getClass().getClassLoader());
+            //FIXME: load only from class path
+            String file = MailUtil.getFilePathFromTemplate(template, name, locale);
+            data = FileUtil.readFileAsByteArray(file, this.getClass().getClassLoader());
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "Error reading the template " + template + " resource " + name, ex);
         }

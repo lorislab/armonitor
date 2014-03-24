@@ -14,30 +14,13 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.services;
-
-import javax.ejb.EJB;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import org.lorislab.armonitor.ejb.OldProcessServiceBean;
-import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
+package org.lorislab.armonitor.activity.model;
 
 /**
  *
  * @author Andrej Petras
  */
-@Path("ad/report")
-@CdiServiceMethod
-public class ReportService {
-   
-    @EJB
-    private OldProcessServiceBean service;
+public interface ActivityType {
     
-    @GET
-    @Path("{guid}")
-    public void report(@PathParam("guid") String guid) {
-        service.sendReportAsync(guid);
-    }
-    
+    public static String ERROR = "Error";
 }

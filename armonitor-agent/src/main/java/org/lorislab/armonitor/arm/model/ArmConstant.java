@@ -66,4 +66,9 @@ public interface ArmConstant {
      * The release date.
      */
     public static final String RELEASE_DATE = "Release-Date";
+    
+    /**
+     * The key.
+     */
+    public static final String RELEASE_KEY = "Release-Key";    
 }

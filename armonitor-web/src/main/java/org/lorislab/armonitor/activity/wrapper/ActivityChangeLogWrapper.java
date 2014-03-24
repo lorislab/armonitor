@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.activity.wrapper;
 
 import java.io.Serializable;
+import java.util.Date;
 import org.lorislab.armonitor.store.model.StoreActivityLog;
 
 /**
@@ -45,7 +46,16 @@ public class ActivityChangeLogWrapper implements Serializable {
     public void setLink(String link) {
         this.link = link;
     }
+
+    public String getLink() {
+        return link;
+    }
+        
+    public Date getDate() {
+        return log.getDate();
+    }
     
-    
-    
+    public boolean isBuild() {
+        return log.getBuild() != null;
+    }
 }

@@ -103,5 +103,11 @@ public class ActivityWrapper implements Serializable {
         return activity.getBuild();
     }
     
+    public boolean isBuildChanges() {
+        return !buildChanges.isEmpty();
+    }
     
+    public boolean isChanges() {
+        return !changes.isEmpty();
+    }    
 }

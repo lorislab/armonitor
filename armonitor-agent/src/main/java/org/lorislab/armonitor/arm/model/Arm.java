@@ -56,6 +56,10 @@ public class Arm implements Serializable {
      */
     private String build;
     /**
+     * The key.
+     */
+    private String key;
+    /**
      * The other parameters.
      */
     private Map<String, String> other = new HashMap<>();
@@ -184,6 +188,24 @@ public class Arm implements Serializable {
      */
     public void setOther(Map<String, String> other) {
         this.other = other;
+    }
+
+    /**
+     * Gets the key.
+     *
+     * @return the key.
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Sets the key.
+     *
+     * @param key the key.
+     */
+    public void setKey(String key) {
+        this.key = key;
     }
 
 }

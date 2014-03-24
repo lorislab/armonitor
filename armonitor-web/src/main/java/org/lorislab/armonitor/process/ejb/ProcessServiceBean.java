@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.process.ejb;
 
+import org.lorislab.armonitor.activity.ejb.ActivityProcessServiceBean;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,12 +26,15 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.activity.criteria.ActivityWrapperCriteria;
+import org.lorislab.armonitor.activity.ejb.ActivityWrapperServiceBean;
+import org.lorislab.armonitor.activity.wrapper.ActivityWrapper;
 import org.lorislab.armonitor.mail.ejb.MailServiceBean;
 import org.lorislab.armonitor.mail.model.Mail;
 import org.lorislab.armonitor.process.resources.ErrorKeys;
-import org.lorislab.armonitor.store.criteria.StoreActivityCriteria;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
+import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
 import org.lorislab.armonitor.store.criteria.StoreSystemCriteria;
 import org.lorislab.armonitor.store.ejb.StoreActivityServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
@@ -41,12 +45,12 @@ import org.lorislab.armonitor.store.ejb.StoreUserServiceBean;
 import org.lorislab.armonitor.store.model.StoreActivity;
 import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreBuild;
-import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.store.model.StoreUser;
 import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 import org.lorislab.jel.ejb.exception.ServiceException;
+import static org.lorislab.jel.jpa.model.Persistent_.guid;
 
 /**
  * The process service.
@@ -65,7 +69,7 @@ public class ProcessServiceBean {
     /**
      * The new build deploy template.
      */
-    private static final String MAIL_BUILD_DEPLOYED_TEMPLATE = "buildDeployed";
+    private static final String MAIL_BUILD_DEPLOYED_TEMPLATE = "deploy";
     
     /**
      * The store system service.
@@ -116,6 +120,12 @@ public class ProcessServiceBean {
     private MailServiceBean mailService;
     
     /**
+     * The activity wrapper service.
+     */
+    @EJB
+    private ActivityWrapperServiceBean activityWrapperService;
+    
+    /**
      * Install the store build.
      *
      * @param key the key.
@@ -127,38 +137,31 @@ public class ProcessServiceBean {
         // check the application for to key
         StoreApplicationCriteria criteria = new StoreApplicationCriteria();
         criteria.setKey(key);
-        criteria.setFetchProject(true);
         StoreApplication app = appService.getApplication(criteria);
         if (app == null) {
             throw new ServiceException(ErrorKeys.NO_APPLICATION_FOR_KEY_FOUND, key, key);
         }
-        if (app.getProject() == null) {
-            throw new ServiceException(ErrorKeys.NO_PROJECT_FOR_APPLICATION_FOUND, app.getGuid(), app.getName());
-        }
-
-        // instal the build
-        StoreBuild buildNew = createBuild(build, app);
-        createActivity(buildNew, app, app.getProject());
+        install(app, build);
     }
-
-    /**
-     * Deploy the store build.
-     *
-     * @param sys the system with loaded application and project.
-     * @param build the store build.
-     * @param type the system build type.
-     * @throws ServiceException if the method fails.
-     */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void deploy(StoreSystem sys, StoreBuild build, StoreSystemBuildType type) throws ServiceException {
-        if (sys.getApplication() == null) {
-            throw new ServiceException(ErrorKeys.NO_APPLICATION_FOR_SYSTEM_FOUND, sys.getGuid(), sys.getName());
+    
+    private void install(final StoreApplication app, final StoreBuild build) throws ServiceException {      
+        // create new build and save it
+        StoreBuild buildNew = null;
+        try {
+            build.setApplication(app);
+            build.setInstall(new Date());
+            buildNew = buildService.saveBuild(build);
+        } catch (Exception ex) {
+            throw new ServiceException(ErrorKeys.BUILD_ALREADY_INSTALLED, ex, app.getName(), build.getMavenVersion(), build.getBuild());
         }
-        if (sys.getApplication().getProject() == null) {
-            throw new ServiceException(ErrorKeys.NO_PROJECT_FOR_APPLICATION_FOUND, sys.getApplication().getGuid(), sys.getApplication().getName());
+        
+        // create activity for the build.
+        try {
+            StoreActivity activity = activityProcessService.createActivity(buildNew.getGuid());
+            activityService.saveActivity(activity);
+        } catch (Exception ex) {
+            throw new ServiceException(ErrorKeys.ERROR_CREATE_ACTIVITY_FOR_BUILD, ex, app.getName(), build.getMavenVersion(), build.getBuild());
         }
-        // deploy the build on the system
-        deploy(build, type, sys, sys.getApplication(), sys.getApplication().getProject());
     }
 
     /**
@@ -168,73 +171,88 @@ public class ProcessServiceBean {
      * @param build the store build.
      * @throws ServiceException if the method fails.
      */
-    public void deploy(String key, StoreBuild build) throws ServiceException {
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)    
+    public void deploy(final String key, final StoreBuild build) throws ServiceException {
         // check the system by key
         StoreSystemCriteria criteria = new StoreSystemCriteria();
         criteria.setKey(key);
-        criteria.setFetchApplication(true);
-        criteria.setFetchApplicationProject(true);
-        StoreSystem sys = systemService.getSystem(criteria);       
-        if (sys == null) {
+        StoreSystem system = systemService.getSystem(criteria);       
+        if (system == null) {
             throw new ServiceException(ErrorKeys.NO_SYSTEM_FOR_KEY_FOUND, key, key);
         }        
-        deploy(sys, build, StoreSystemBuildType.MANUAL);
+        deploy(system, build, StoreSystemBuildType.MANUAL);
     }
 
     /**
      * Deploy the store build.
      *
+     * @param system the store system.
      * @param build the store build.
+     * @param type the type of deployment.
      * @throws ServiceException if the method fails.
      */
-    private void deploy(final StoreBuild build, final StoreSystemBuildType type, final StoreSystem sys, StoreApplication app, StoreProject project) throws ServiceException {
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)    
+    public void deploy(final StoreSystem system, final StoreBuild build, final StoreSystemBuildType type) throws ServiceException {
 
         // check the build
         StoreBuildCriteria buildCriteria = new StoreBuildCriteria();
         buildCriteria.setDate(build.getDate());
-        buildCriteria.setApplication(app.getGuid());
+        buildCriteria.setApplication(system.getApplication().getGuid());
         StoreBuild buildOld = buildService.getBuild(buildCriteria);
 
-        StoreActivity activity = null;
         // if the build does not exist install it first
         if (buildOld == null) {
-            buildOld = createBuild(build, app);
-            activity = createActivity(buildOld, app, project);
+            install(system.getApplication(), build);
         }
 
         // deploy the build on the system
         StoreSystemBuild sysBuild = new StoreSystemBuild();
         sysBuild.setBuild(buildOld);
-        sysBuild.setSystem(sys);
+        sysBuild.setSystem(system);
         sysBuild.setType(type);
         sysBuild.setDate(new Date());
         sysBuild = systemBuildService.saveSystemBuild(sysBuild);
-
-        // if not created find already existing activity
-        if (activity == null) {
-            StoreActivityCriteria ac = new StoreActivityCriteria();
-            ac.setBuild(buildOld.getGuid());
-            ac.setFetchChange(true);
-            ac.setFetchChangeLog(true);
-            ac.setFetchChangeLogBuild(true);
-            activity = activityService.getActivity(ac);
-        }
-
-        if (activity == null) {
-            throw new ServiceException(ErrorKeys.NO_ACTIVITY_FOUND_FOR_BUILD, buildOld.getGuid());
-        }
         
         // send notification
-        notification(buildOld, sys, activity, app, project, sysBuild);
+        notification(build.getGuid(), system, sysBuild);       
     }
 
+    public void sendNotificationForSystem(String guid) throws ServiceException {
+        // load the system build, build and system
+        StoreSystemBuildCriteria criteria = new StoreSystemBuildCriteria();
+        criteria.setMaxDate(Boolean.TRUE);
+        criteria.setSystem(guid);
+        criteria.setFetchSystem(true);
+        criteria.setFetchBuild(true);
+        StoreSystemBuild systemBuild = systemBuildService.getSystemBuild(criteria);
+        if (systemBuild == null) {
+            throw new ServiceException(ErrorKeys.NO_SYSTEM_BUILD_FOR_SYSTEM_FOUND, guid);
+        }
+        // send notification
+        notification(systemBuild.getBuild().getGuid(), systemBuild.getSystem(), systemBuild);
+    }
+    
+    public void sendNotificationForSystemBuild(String guid) throws ServiceException {
+        // load the system build, build and system
+        StoreSystemBuildCriteria criteria = new StoreSystemBuildCriteria();
+        criteria.setGuid(guid);
+        criteria.setFetchSystem(true);
+        criteria.setFetchBuild(true);
+        StoreSystemBuild systemBuild = systemBuildService.getSystemBuild(criteria);
+        if (systemBuild == null) {
+            throw new ServiceException(ErrorKeys.NO_SYSTEM_BUILD_FOUND, guid);
+        }
+        // send notification
+        notification(systemBuild.getBuild().getGuid(), systemBuild.getSystem(), systemBuild);
+    }
+    
     /**
      * Creates the notification and send mails.
      * @param build the build.
      * @param system the system.
      * @param activity the activity.
      */
-    private void notification(StoreBuild build, StoreSystem system, StoreActivity activity, StoreApplication app, StoreProject project, StoreSystemBuild sysBuild) {
+    private void notification(String build, StoreSystem system, StoreSystemBuild sysBuild) throws ServiceException {
         
         // check the notification
         if (!system.isNotification()) {
@@ -242,14 +260,26 @@ public class ProcessServiceBean {
             return;
         }
         
+        ActivityWrapperCriteria wc = new ActivityWrapperCriteria();
+        wc.setSortList(true);
+        wc.setBuild(build);
+            
+        ActivityWrapper wrapper = activityWrapperService.create(wc);
+        if (wrapper == null) {
+            LOGGER.log(Level.SEVERE, "No activity for the build found!");
+            return;
+//            throw new ServiceException(ErrorKeys.NO_ACTIVITY_FOUND_FOR_BUILD, build);
+        }        
+                
         // load the users
         Set<StoreUser> users = userService.getUsersEmailsForSystem(system.getGuid());
         if (users == null || users.isEmpty()) {
             LOGGER.log(Level.WARNING, "No user found for the notification system {0}.", system.getName());
+            return;
         }
         
         // create mails
-        List<Mail> mails = createBuildDeployedMails(users, activity, build, system, app, project, sysBuild);
+        List<Mail> mails = createBuildDeployedMails(users, wrapper.getBuild(), system, wrapper, wrapper.getApplication(), wrapper.getProject(), sysBuild);
         if (mails != null) {
             for (Mail mail : mails) {
                 try {
@@ -260,54 +290,7 @@ public class ProcessServiceBean {
             }
         }
     }
-    
-    /**
-     * Creates the activity for the build.
-     *
-     * @param build the build.
-     * @param app the application.
-     * @param project the project.
-     * @return the activity.
-     *
-     * @throws ServiceException if the method fails.
-     */
-    private StoreActivity createActivity(final StoreBuild build, final StoreApplication app, final StoreProject project) throws ServiceException {
-        StoreActivity result = null;
-        // create activity and save it   
-        try {
-            StoreActivity activity = activityProcessService.createActivity(build, project.getGuid(), app.getGuid());
-            result = activityService.saveActivity(activity);
-        } catch (Exception ex) {
-            throw new ServiceException(ErrorKeys.ERROR_CREATE_ACTIVITY_FOR_BUILD, build.getGuid(), app.getName(), build.getMavenVersion(), build.getBuild());
-        }
-        return result;
-    }
-
-    /**
-     * Creates the store build.
-     *
-     * @param build the build.
-     * @param app the application.
-     * @return the activity.
-     *
-     * @throws ServiceException if the method fails.
-     */
-    private StoreBuild createBuild(final StoreBuild build, final StoreApplication app) throws ServiceException {
-        // check the build
-        StoreBuildCriteria buildCriteria = new StoreBuildCriteria();
-        buildCriteria.setDate(build.getDate());
-        buildCriteria.setApplication(app.getGuid());
-        StoreBuild buildOld = buildService.getBuild(buildCriteria);
-        if (buildOld != null) {
-            throw new ServiceException(ErrorKeys.BUILD_ALREADY_INSTALLED, buildOld.getGuid());
-        }
-
-        // create new build and save it
-        build.setApplication(app);
-        build.setInstall(new Date());
-        return buildService.saveBuild(build);
-    }
-    
+        
     /**
      * Creates the build deployed mails.
      *

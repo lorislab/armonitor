@@ -13,6 +13,7 @@ import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.activity.comparator.ActivityChangeLogWrapperComparator;
 import org.lorislab.armonitor.activity.comparator.ActivityChangeWrapperComparator;
 import org.lorislab.armonitor.activity.criteria.ActivityWrapperCriteria;
+import org.lorislab.armonitor.activity.model.ActivityType;
 import org.lorislab.armonitor.activity.wrapper.ActivityChangeLogWrapper;
 import org.lorislab.armonitor.activity.wrapper.ActivityChangeWrapper;
 import org.lorislab.armonitor.activity.wrapper.ActivityWrapper;
@@ -32,7 +33,7 @@ import org.lorislab.armonitor.web.rs.util.LinkUtil;
 
 /**
  * The activity wrapper service.
- * 
+ *
  * @author Andrej Petras
  */
 @Stateless
@@ -41,12 +42,12 @@ public class ActivityWrapperServiceBean {
 
     @EJB
     private StoreActivityServiceBean activityService;
-    
+
     @EJB
     private StoreApplicationServiceBean appService;
-    
+
     public ActivityWrapper create(ActivityWrapperCriteria criteria) {
-        
+
         // create wrapper and load the activity                        
         StoreActivityCriteria sac = new StoreActivityCriteria();
         sac.setBuild(criteria.getBuild());
@@ -56,12 +57,16 @@ public class ActivityWrapperServiceBean {
         sac.setFetchChangeLog(true);
         sac.setFetchChangeLogBuild(true);
         StoreActivity activity = activityService.getActivity(sac);
-
+        
+        return create(activity, criteria);
+    }
+    
+    public ActivityWrapper create(StoreActivity activity, ActivityWrapperCriteria criteria) {        
         ActivityWrapper result = new ActivityWrapper(activity);
-        // if build GUID was null set it
-        StoreBuild build = activity.getBuild();
+                
+        StoreBuild build = activity.getBuild();        
         criteria.setBuild(build.getGuid());
-
+        
         // load application and project
         StoreBTSystem bts = null;
         StoreSCMSystem scm = null;
@@ -69,36 +74,37 @@ public class ActivityWrapperServiceBean {
         StoreApplication app = null;
 
         // fetch the application and project
-        if (criteria.isFetchApplication()) {
-            StoreApplicationCriteria sapc = new StoreApplicationCriteria();
-            sapc.setBuild(criteria.getBuild());
-            sapc.setFetchSCM(true);
+        StoreApplicationCriteria sapc = new StoreApplicationCriteria();
+        sapc.setBuild(criteria.getBuild());
+        sapc.setFetchSCM(true);
+        sapc.setFetchProject(true);
+        sapc.setFetchProjectBts(true);
 
-            sapc.setFetchProject(criteria.isFetchProject());
-            sapc.setFetchProjectBts(criteria.isFetchProject());
+        app = appService.getApplication(sapc);
+        result.setApplication(app);
 
-            app = appService.getApplication(sapc);
-            result.setApplication(app);
-
-            if (app != null) {
-                scm = app.getScm();
-                if (criteria.isFetchProject()) {
-                    project = app.getProject();
-                    result.setProject(project);
-                    bts = project.getBts();
-                }
-            }
+        if (app != null) {
+            scm = app.getScm();
+            project = app.getProject();
+            result.setProject(project);
+            bts = project.getBts();
         }
 
         // temporary 
         boolean btsLink = bts != null && project != null;
         boolean scmLink = scm != null && app != null;
-        
+
         // create the wrapper list
-        if (activity.getChanges() != null) {
+        if (activity.getChanges()
+                != null) {
             for (StoreActivityChange change : activity.getChanges()) {
                 // add to the types
-                result.getTypes().add(change.getType());
+                String type = change.getType();
+                if (type == null) {
+                    type = ActivityType.ERROR;
+                }
+                result.getTypes().add(type);
+
                 // the build change
                 ActivityChangeWrapper bacw = null;
                 // create the change                
@@ -119,7 +125,7 @@ public class ActivityWrapperServiceBean {
                             aclw.setLink(link);
                         }
                         acw.getLogs().add(aclw);
-                        
+
                         // check the build change.
                         if (build.equals(log.getBuild())) {
                             if (bacw == null) {
@@ -130,24 +136,24 @@ public class ActivityWrapperServiceBean {
                         }
                     }
                 }
-                
+
                 if (criteria.isSortList()) {
                     Collections.sort(acw.getLogs(), ActivityChangeLogWrapperComparator.INSTANCE);
                 }
-                
+
                 // add the build change to the wrapper
                 if (bacw != null) {
-                    result.getBuildChanges().add(bacw);                    
+                    result.getBuildChanges().add(bacw);
                     if (criteria.isSortList()) {
                         Collections.sort(bacw.getLogs(), ActivityChangeLogWrapperComparator.INSTANCE);
                     }
                 }
             }
-            
+
             //FIXME: sort order the list
             if (criteria.isSortList()) {
                 Collections.sort(result.getChanges(), ActivityChangeWrapperComparator.INSTANCE);
-                Collections.sort(result.getBuildChanges(), ActivityChangeWrapperComparator.INSTANCE);             
+                Collections.sort(result.getBuildChanges(), ActivityChangeWrapperComparator.INSTANCE);
             }
         }
         return result;

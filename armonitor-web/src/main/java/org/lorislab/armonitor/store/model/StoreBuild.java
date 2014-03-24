@@ -27,6 +27,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
@@ -35,7 +36,7 @@ import org.lorislab.jel.jpa.model.Persistent;
  * @author Andrej Petras
  */
 @Entity
-@Table(name = "ARM_BUILD")
+@Table(name = "ARM_BUILD", uniqueConstraints={@UniqueConstraint(columnNames={"C_DATE", "C_KEY", "C_APP"})})
 public class StoreBuild extends Persistent {
 
     /**
@@ -53,6 +54,9 @@ public class StoreBuild extends Persistent {
     @Column(name = "C_UID")
     private String uid;
 
+    @Column(name = "C_KEY")
+    private String key;
+    
     @Column(name = "C_VERSION")
     private Integer ver;
 
@@ -86,6 +90,14 @@ public class StoreBuild extends Persistent {
     @JoinColumn(name = "C_BUILD")
     private Set<StoreBuildParameter> parameters;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+    
     public Date getInstall() {
         return install;
     }

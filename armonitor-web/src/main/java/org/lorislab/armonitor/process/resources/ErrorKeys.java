@@ -23,6 +23,10 @@ package org.lorislab.armonitor.process.resources;
  */
 public enum ErrorKeys {
     
+    NO_SYSTEM_BUILD_FOR_SYSTEM_FOUND, 
+    
+    NO_SYSTEM_BUILD_FOUND, 
+    
     BUILD_ALREADY_INSTALLED,
     
     ERROR_CREATE_ACTIVITY_FOR_BUILD,

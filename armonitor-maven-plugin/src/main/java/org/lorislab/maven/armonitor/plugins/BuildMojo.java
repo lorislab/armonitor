@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -136,6 +137,8 @@ public class BuildMojo extends AbstractMojo {
                 releaseBuild = "";
             }
             properties.put(ArmConstant.RELEASE_BUILD, releaseBuild);
+            // create key
+            properties.put(ArmConstant.RELEASE_KEY, UUID.randomUUID().toString());
             
             // add custom properties
             if (custom != null && !custom.isEmpty()) {                

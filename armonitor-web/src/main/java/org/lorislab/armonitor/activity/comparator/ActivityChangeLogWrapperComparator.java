@@ -42,21 +42,7 @@ public class ActivityChangeLogWrapperComparator implements Comparator<ActivityCh
      */
     @Override
     public int compare(ActivityChangeLogWrapper o1, ActivityChangeLogWrapper o2) {
-        StoreActivityLog b1 = o1.getLog();
-        StoreActivityLog b2 = o2.getLog();
-        if (b1 != null && b2 != null) {
-            return b1.getDate().compareTo(b2.getDate());
-        }
-
-        if (b1 == null && b2 == null) {
-            return 0;
-        }
-
-        if (b1 == null) {
-            return 1;
-        }
-
-        return -1;
+        return o1.getDate().compareTo(o2.getDate());
     }
 
 }

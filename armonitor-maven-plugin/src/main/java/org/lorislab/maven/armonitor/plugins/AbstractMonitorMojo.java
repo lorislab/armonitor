@@ -154,7 +154,7 @@ public abstract class AbstractMonitorMojo extends AbstractMojo {
                 Map<String, String> map = ManifestLoader.loadManifestToMap(fileUrl);
 
                 if (arm != null && map != null) {
-                    if (arm.getDate() != null) {
+                    if (arm.getDate() != null && arm.getKey() != null) {
                         version = ObjectMapper.create();
                         ObjectMapper.update(version, arm);
                         version.manifest = map;

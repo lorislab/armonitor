@@ -46,6 +46,22 @@ public class ActivityChangeWrapper implements Serializable {
         this.change = change;
     }
     
+    public String getKey() {
+        return change.getKey();
+    }
+    
+    public boolean isError() {
+        return change.getError() != null;
+    }
+    
+    public boolean isLogs() {
+        return !logs.isEmpty();
+    }
+    
+    public boolean isEmpty() {
+        return logs.isEmpty();
+    }
+    
     public StoreActivityChange getChange() {
         return change;
     }

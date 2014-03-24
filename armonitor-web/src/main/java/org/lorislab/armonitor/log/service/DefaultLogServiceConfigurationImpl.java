@@ -19,12 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.lorislab.armonitor.log.model.ActivityLogParameter;
 import org.lorislab.armonitor.log.model.BuildLogParameter;
-import org.lorislab.armonitor.log.model.ChangeReportLogParameter;
 import org.lorislab.armonitor.log.model.DashboardLogParameter;
 import org.lorislab.armonitor.log.model.DashboardSystemLogParameter;
 import org.lorislab.armonitor.log.model.MailLogParameter;
 import org.lorislab.armonitor.log.model.MailTemplateResourceLogParameter;
-import org.lorislab.armonitor.log.model.MessageLogParameter;
 import org.lorislab.jel.ejb.log.parameters.PersistentLogParameter;
 import org.lorislab.jel.ejb.log.parameters.WrapperLogParameter;
 import org.lorislab.jel.log.config.LogServiceConfiguration;
@@ -70,8 +68,7 @@ public class DefaultLogServiceConfigurationImpl implements LogServiceConfigurati
      * Set up the default configuration.
      */
     static {
-        CLASS_PARAM.add(new BasicLogParamater());
-        CLASS_PARAM.add(new ChangeReportLogParameter());               
+        CLASS_PARAM.add(new BasicLogParamater());                   
         CLASS_PARAM.add(new DashboardLogParameter());
         CLASS_PARAM.add(new ActivityLogParameter());
         CLASS_PARAM.add(new MailTemplateResourceLogParameter());
@@ -83,7 +80,6 @@ public class DefaultLogServiceConfigurationImpl implements LogServiceConfigurati
         INSTANCE_PARAM.add(new CollectionLogParameter());
         INSTANCE_PARAM.add(new PersistentLogParameter());
         INSTANCE_PARAM.add(new WrapperLogParameter());
-        INSTANCE_PARAM.add(new MessageLogParameter());
         INSTANCE_PARAM.add(new MailLogParameter());
     }
 

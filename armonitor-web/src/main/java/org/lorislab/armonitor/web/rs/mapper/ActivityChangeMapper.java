@@ -17,10 +17,12 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.lorislab.armonitor.activity.wrapper.ActivityChangeWrapper;
 import org.lorislab.armonitor.bts.model.BtsIssue;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.mapper.MapperService;
-import org.lorislab.armonitor.model.Change;
+import org.lorislab.armonitor.store.model.StoreActivityChange;
+import org.lorislab.armonitor.store.model.enums.ActivityChangeError;
 import org.lorislab.armonitor.web.rs.model.ActivityChange;
 import org.lorislab.armonitor.web.rs.model.ActivityChangeLog;
 
@@ -29,27 +31,28 @@ import org.lorislab.armonitor.web.rs.model.ActivityChangeLog;
  * 
  * @author Andrej Petras
  */
-public class ActivityChangeMapper implements MapperService<Change, ActivityChange> {
+public class ActivityChangeMapper implements MapperService<ActivityChangeWrapper, ActivityChange> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ActivityChange map(Change data, Set<String> profiles) {
+    public ActivityChange map(ActivityChangeWrapper data, Set<String> profiles) {
         ActivityChange result = new ActivityChange();
-        result.id = data.getId();
-        result.error = data.isError();
+        result.id = data.getKey();
         result.link = data.getLink();
-        result.not = data.isNotIssue();
-        BtsIssue i = data.getIssue();
-        if (i != null) {
-            result.assignee = i.getAssignee();
-            result.resolution = i.getResolution();
-            result.summary = i.getSummary();
-            result.type = i.getType();
-            result.parent = i.getParent();
+        result.error = data.isError();
+        if (data.isError()) {
+            result.not = (ActivityChangeError.WRONG_KEY == data.getChange().getError());
         }
-        result.changes = Mapper.map(data.getChanges(), ActivityChangeLog.class, profiles);
+        
+        StoreActivityChange change = data.getChange();
+        result.assignee = change.getUser();
+        result.resolution = change.getStatus();
+        result.summary = change.getDescription();
+        result.type = change.getType();
+        result.parent = change.getParent();
+        result.changes = Mapper.map(data.getLogs(), ActivityChangeLog.class, profiles);
         return result;
     }
     
@@ -57,7 +60,7 @@ public class ActivityChangeMapper implements MapperService<Change, ActivityChang
      * {@inheritDoc}
      */
     @Override
-    public Change update(Change entity, ActivityChange data, Set<String> profiles) {
+    public ActivityChangeWrapper update(ActivityChangeWrapper entity, ActivityChange data, Set<String> profiles) {
         return entity;
     }
     
@@ -65,7 +68,7 @@ public class ActivityChangeMapper implements MapperService<Change, ActivityChang
      * {@inheritDoc}
      */
     @Override
-    public Change create(ActivityChange data, Set<String> profiles) {
+    public ActivityChangeWrapper create(ActivityChange data, Set<String> profiles) {
         return null;
     }
     

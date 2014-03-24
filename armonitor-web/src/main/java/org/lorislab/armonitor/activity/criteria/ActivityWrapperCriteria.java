@@ -20,10 +20,6 @@ public class ActivityWrapperCriteria extends AbstractSearchCriteria {
     
     private String build;
     
-    private boolean fetchProject;
-    
-    private boolean fetchApplication;
-    
     private boolean sortList;
 
     public String getBuild() {
@@ -42,22 +38,6 @@ public class ActivityWrapperCriteria extends AbstractSearchCriteria {
         this.guid = guid;
     }
 
-    public boolean isFetchApplication() {
-        return fetchApplication;
-    }
-
-    public void setFetchApplication(boolean fetchApplication) {
-        this.fetchApplication = fetchApplication;
-    }
-
-    public boolean isFetchProject() {
-        return fetchProject;
-    }
-
-    public void setFetchProject(boolean fetchProject) {
-        this.fetchProject = fetchProject;
-    }
-
     public boolean isSortList() {
         return sortList;
     }
@@ -70,8 +50,6 @@ public class ActivityWrapperCriteria extends AbstractSearchCriteria {
     public void reset() {
         guid = null;
         build = null;
-        fetchApplication = false;
-        fetchProject = false;
         sortList = false;
     }
 
