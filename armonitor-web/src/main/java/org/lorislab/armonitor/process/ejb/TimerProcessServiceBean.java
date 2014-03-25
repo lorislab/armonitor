@@ -15,7 +15,6 @@
  */
 package org.lorislab.armonitor.process.ejb;
 
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,13 +23,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.agent.ejb.AgentClientServiceBean;
-import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
 import org.lorislab.armonitor.store.criteria.StoreSystemCriteria;
 import org.lorislab.armonitor.store.ejb.StoreSystemBuildServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreSystem;
-import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 import org.lorislab.jel.base.resources.ResourceManager;
 import org.lorislab.jel.ejb.exception.ServiceException;
@@ -81,13 +78,14 @@ public class TimerProcessServiceBean {
         criteria.setFetchAgent(true);
         criteria.setTimer(Boolean.TRUE);
         criteria.setEnabled(Boolean.TRUE);
+        criteria.setFetchApplication(true);
         List<StoreSystem> systems = systemService.getSystems(criteria);
         if (systems != null) {
             for (StoreSystem system : systems) {
                 try {
                     StoreBuild build = agentClientService.getBuild(system.getAgent(), system.getService());
                     if (build != null) {
-                        processService.deploy(system, build, StoreSystemBuildType.TIMER);
+                        processService.deploy(system, system.getApplication(), build, StoreSystemBuildType.TIMER);
                     } else {
                         LOGGER.log(Level.WARNING, "Could not get the build for the system {0}", system.getGuid());
                     }

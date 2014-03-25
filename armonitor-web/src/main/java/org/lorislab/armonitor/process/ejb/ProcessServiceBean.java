@@ -132,7 +132,7 @@ public class ProcessServiceBean {
      * @param build the store build.
      * @throws ServiceException if the method fails.
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)    
     public void install(final String key, final StoreBuild build) throws ServiceException {
         // check the application for to key
         StoreApplicationCriteria criteria = new StoreApplicationCriteria();
@@ -141,9 +141,9 @@ public class ProcessServiceBean {
         if (app == null) {
             throw new ServiceException(ErrorKeys.NO_APPLICATION_FOR_KEY_FOUND, key, key);
         }
-        install(app, build);
+        install(app, build);               
     }
-    
+   
     private void install(final StoreApplication app, final StoreBuild build) throws ServiceException {      
         // create new build and save it
         StoreBuild buildNew = null;
@@ -151,17 +151,17 @@ public class ProcessServiceBean {
             build.setApplication(app);
             build.setInstall(new Date());
             buildNew = buildService.saveBuild(build);
-        } catch (Exception ex) {
+        } catch (Exception ex) {            
             throw new ServiceException(ErrorKeys.BUILD_ALREADY_INSTALLED, ex, app.getName(), build.getMavenVersion(), build.getBuild());
-        }
+        }        
         
         // create activity for the build.
         try {
-            StoreActivity activity = activityProcessService.createActivity(buildNew.getGuid());
+            StoreActivity activity = activityProcessService.createActivity(app, buildNew);
             activityService.saveActivity(activity);
         } catch (Exception ex) {
             throw new ServiceException(ErrorKeys.ERROR_CREATE_ACTIVITY_FOR_BUILD, ex, app.getName(), build.getMavenVersion(), build.getBuild());
-        }
+        }        
     }
 
     /**
@@ -176,11 +176,12 @@ public class ProcessServiceBean {
         // check the system by key
         StoreSystemCriteria criteria = new StoreSystemCriteria();
         criteria.setKey(key);
+        criteria.setFetchApplication(true);
         StoreSystem system = systemService.getSystem(criteria);       
         if (system == null) {
             throw new ServiceException(ErrorKeys.NO_SYSTEM_FOR_KEY_FOUND, key, key);
         }        
-        deploy(system, build, StoreSystemBuildType.MANUAL);
+        deploy(system, system.getApplication(), build, StoreSystemBuildType.MANUAL);
     }
 
     /**
@@ -189,20 +190,22 @@ public class ProcessServiceBean {
      * @param system the store system.
      * @param build the store build.
      * @param type the type of deployment.
+     * @param application the application.
      * @throws ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)    
-    public void deploy(final StoreSystem system, final StoreBuild build, final StoreSystemBuildType type) throws ServiceException {
+    public void deploy(final StoreSystem system, final StoreApplication application, final StoreBuild build, final StoreSystemBuildType type) throws ServiceException {
 
         // check the build
         StoreBuildCriteria buildCriteria = new StoreBuildCriteria();
         buildCriteria.setDate(build.getDate());
-        buildCriteria.setApplication(system.getApplication().getGuid());
+        buildCriteria.setKey(build.getKey()); 
+        buildCriteria.setApplication(application.getGuid());
         StoreBuild buildOld = buildService.getBuild(buildCriteria);
 
         // if the build does not exist install it first
         if (buildOld == null) {
-            install(system.getApplication(), build);
+            install(application, build);
         }
 
         // deploy the build on the system

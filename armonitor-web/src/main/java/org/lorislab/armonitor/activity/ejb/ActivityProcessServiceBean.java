@@ -130,6 +130,16 @@ public class ActivityProcessServiceBean {
         return createActivity(b, pr, app);
     }
 
+    public StoreActivity createActivity(final StoreApplication app, final StoreBuild build) throws Exception {        
+        StoreApplicationCriteria criteria = new StoreApplicationCriteria();
+        criteria.setGuid(app.getGuid());
+        criteria.setFetchSCM(true);
+        criteria.setFetchProject(true);
+        criteria.setFetchProjectBts(true);
+        StoreApplication application = appService.getApplication(criteria);
+        return createActivity(build, application.getProject(), application);
+    }
+    
     /**
      * Creates the activity for the application build in the project.
      *

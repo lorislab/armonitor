@@ -38,6 +38,10 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
      */
     private String application;
     /**
+     * The key.
+     */
+    private String key;
+    /**
      * The agent.
      */
     private String agent;
@@ -67,6 +71,24 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
      * The order by date flag.
      */
     private Boolean orderByDate;
+
+    /**
+     * Gets the key.
+     *
+     * @return the key.
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Sets the key.
+     *
+     * @param key the key.
+     */
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     /**
      * Gets the fetch application project flag.
@@ -238,6 +260,7 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
         application = null;
         date = null;
         agent = null;
+        key = null;
         mavenVersion = null;
         fetchParameters = false;
         fetchApplication = false;
@@ -250,7 +273,7 @@ public class StoreBuildCriteria extends AbstractSearchCriteria {
      */
     @Override
     public boolean isEmpty() {
-        return isEmpty(application, date, agent, mavenVersion);
+        return isEmpty(application, date, agent, mavenVersion, key);
     }
 
 }

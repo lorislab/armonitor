@@ -48,6 +48,7 @@ public class VersionMapper implements MapperService<Version, StoreBuild> {
         result.setScm(data.scm);
         result.setService(data.service);
         result.setVer(data.ver);
+        result.setKey(data.key);
         result.setParameters(new HashSet<StoreBuildParameter>());
         result.getParameters().addAll(createStoreBuildParameter(data.manifest, StoreBuildParameterType.MANIFEST));
         result.getParameters().addAll(createStoreBuildParameter(data.other, StoreBuildParameterType.OTHER));
