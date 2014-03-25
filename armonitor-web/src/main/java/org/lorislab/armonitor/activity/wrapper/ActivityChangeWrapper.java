@@ -45,7 +45,7 @@ public class ActivityChangeWrapper implements Serializable {
     public ActivityChangeWrapper(StoreActivityChange change) {
         this.change = change;
     }
-    
+
     public String getKey() {
         return change.getKey();
     }
@@ -53,11 +53,7 @@ public class ActivityChangeWrapper implements Serializable {
     public boolean isError() {
         return change.getError() != null;
     }
-    
-    public boolean isLogs() {
-        return !logs.isEmpty();
-    }
-    
+        
     public boolean isEmpty() {
         return logs.isEmpty();
     }
@@ -87,4 +83,7 @@ public class ActivityChangeWrapper implements Serializable {
         return logs;
     }
     
+    public boolean hasLogs() {
+        return !logs.isEmpty();
+    }
 }

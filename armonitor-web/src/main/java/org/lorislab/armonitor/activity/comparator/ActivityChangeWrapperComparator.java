@@ -38,10 +38,10 @@ public class ActivityChangeWrapperComparator implements Comparator<ActivityChang
         if (o2.isError() && !o1.isError()) {
             return 1;
         }
-        if (o1.isEmpty() && o2.isLogs()) {
+        if (o1.isEmpty() && !o2.isEmpty()) {
             return 1;
         }
-        if (o2.isEmpty() && o1.isLogs()) {
+        if (o2.isEmpty() && !o1.isEmpty()) {
             return -1;
         }
         return o1.getKey().compareTo(o2.getKey());

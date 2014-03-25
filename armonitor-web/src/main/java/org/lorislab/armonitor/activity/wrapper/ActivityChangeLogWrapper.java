@@ -55,7 +55,7 @@ public class ActivityChangeLogWrapper implements Serializable {
         return log.getDate();
     }
     
-    public boolean isBuild() {
+    public boolean hasBuild() {
         return log.getBuild() != null;
     }
 }

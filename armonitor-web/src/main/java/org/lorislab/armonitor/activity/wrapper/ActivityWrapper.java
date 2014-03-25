@@ -78,6 +78,10 @@ public class ActivityWrapper implements Serializable {
         return activity;
     }
     
+    public String getGuid() {
+        return activity.getGuid();
+    }
+    
     /**
      * @return the changes
      */
@@ -103,11 +107,11 @@ public class ActivityWrapper implements Serializable {
         return activity.getBuild();
     }
     
-    public boolean isBuildChanges() {
+    public boolean hasBuildChanges() {
         return !buildChanges.isEmpty();
     }
     
-    public boolean isChanges() {
+    public boolean hasChanges() {
         return !changes.isEmpty();
     }    
 }

@@ -50,7 +50,6 @@ import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.store.model.StoreUser;
 import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 import org.lorislab.jel.ejb.exception.ServiceException;
-import static org.lorislab.jel.jpa.model.Persistent_.guid;
 
 /**
  * The process service.
@@ -144,7 +143,7 @@ public class ProcessServiceBean {
         install(app, build);               
     }
    
-    private void install(final StoreApplication app, final StoreBuild build) throws ServiceException {      
+    private StoreBuild install(final StoreApplication app, final StoreBuild build) throws ServiceException {      
         // create new build and save it
         StoreBuild buildNew = null;
         try {
@@ -161,7 +160,9 @@ public class ProcessServiceBean {
             activityService.saveActivity(activity);
         } catch (Exception ex) {
             throw new ServiceException(ErrorKeys.ERROR_CREATE_ACTIVITY_FOR_BUILD, ex, app.getName(), build.getMavenVersion(), build.getBuild());
-        }        
+        }       
+        
+        return buildNew;
     }
 
     /**
@@ -205,7 +206,7 @@ public class ProcessServiceBean {
 
         // if the build does not exist install it first
         if (buildOld == null) {
-            install(application, build);
+            buildOld = install(application, build);
         }
 
         // deploy the build on the system
@@ -217,7 +218,7 @@ public class ProcessServiceBean {
         sysBuild = systemBuildService.saveSystemBuild(sysBuild);
         
         // send notification
-        notification(build.getGuid(), system, sysBuild);       
+        notification(buildOld.getGuid(), system, sysBuild);       
     }
 
     public void sendNotificationForSystem(String guid) throws ServiceException {

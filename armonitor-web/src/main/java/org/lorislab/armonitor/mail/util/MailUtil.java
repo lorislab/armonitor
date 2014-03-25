@@ -60,7 +60,7 @@ public final class MailUtil {
     /**
      * The bundle file name
      */
-    private static final String BUNDLE = "mailtemplate.properties";
+    private static final String BUNDLE = "mailtemplate";
 
     /**
      * The path separator.
@@ -234,7 +234,7 @@ public final class MailUtil {
                 }
             }
             // add to the template cache.
-            if (compiled != null) {
+            if (compiled != null && TEMPLATE_DIR == null) {
                 TEMPLATES.put(key, compiled);
             }
         }
