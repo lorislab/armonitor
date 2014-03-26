@@ -264,6 +264,34 @@ controllers.controller('ActivityCtrl', function($scope, $routeParams, ActivityRS
 		});
 	};
 
+	$scope.searchBuild = function(row) {
+		if ($scope.filterBuild) {
+			var tmp = $scope.filterBuild || '';
+			return !!(((row.id !== null && row.id.indexOf(tmp)) !== -1 
+					|| (row.assignee !== null && row.assignee.indexOf(tmp) !== -1)
+					|| (row.summary !== null && row.summary.indexOf(tmp) !== -1)));
+		}
+		return true;
+	};
+	
+	$scope.clearBuild = function() {
+		$scope.filterBuild = null;
+	};
+	
+	$scope.clearVersion = function() {
+		$scope.filterVersion = null;
+	};
+	
+	$scope.searchVersion = function(row) {
+		if ($scope.filterVersion) {
+			var tmp = $scope.filterVersion || '';
+			return !!(((row.id !== null && row.id.indexOf(tmp)) !== -1 
+					|| (row.assignee !== null && row.assignee.indexOf(tmp) !== -1)
+					|| (row.summary !== null && row.summary.indexOf(tmp) !== -1)));
+		}
+		return true;
+	};
+	
 	$scope.search = function(row) {
 		return !!(($scope.ftypes.indexOf(row.type) !== -1) || row.type === null);
 	};

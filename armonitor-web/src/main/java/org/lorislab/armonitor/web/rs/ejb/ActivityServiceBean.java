@@ -56,6 +56,7 @@ public class ActivityServiceBean {
         try {
             ActivityWrapperCriteria criteria = new ActivityWrapperCriteria();
             criteria.setBuild(build);
+            criteria.setSortList(true);
             ActivityWrapper wrapper = activityService.create(criteria);
             return Mapper.map(wrapper, Activity.class);
         } catch (Exception ex) {

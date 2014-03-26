@@ -26,16 +26,23 @@
 			<button data-ng-repeat="b in stypes" type="button" class="btn btn-sm" data-ng-click="updateTypes(b.id)" data-ng-class="{'btn-success': b.select && b.id !== 'Error', 'btn-default': !b.select, 'btn-danger': b.select && b.id === 'Error'}" data-ng-model="b.select" btn-checkbox>{{b.id}}</button>
 		</div>
 	</div>
-	
+
 	<div class="panel panel-default">
-		<div class="panel-heading">{{activity.build.mavenVersion}} {{activity.build.build}}
-			<div style="float: right">{{bcSize}} / {{activity.buildChanges.length}}</div>
+
+		<div class="panel-heading">	
+			<div class="input-group">
+				<span class="input-group-addon">{{activity.build.mavenVersion}} {{activity.build.build}}</span>	
+				<input type="search" placeholder="Search in {{activity.build.mavenVersion}} {{activity.build.build}}" class="form-control" data-ng-model="filterBuild">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" data-ng-click="clearBuild()"><i class="icon-erase"></i></button>
+				</span>		
+			</div>						
 		</div>
 
 		<div class="panel-body">
 			<h4 data-ng-hide="activity.buildChanges" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
 			<table class="table" data-ng-show="activity.buildChanges">
-				<tbody  data-ng-repeat="c in activity.buildChanges| filter:search | filterSize:bcSizeUpdate">
+				<tbody  data-ng-repeat="c in activity.buildChanges| filter:search | filter:searchBuild | filterSize:bcSizeUpdate">
 					<tr style="font-weight: bold">
 						<td style="max-width: 20px;">
 							<span data-ng-show="c.error && !c.not" class="label label-warning" data-tooltip="This {{c.type.toLowerCase()}} is not for {{activity.build.mavenVersion}}!" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
@@ -76,13 +83,20 @@
 	</div>
 	<div style="padding-top: 20px"></div>
 	<div class="panel panel-default">
-		<div class="panel-heading">{{activity.build.mavenVersion}}
-			<div style="float: right">{{cSize}} / {{activity.changes.length}}</div>	
+		<div class="panel-heading">		
+			<div class="input-group">
+				<span class="input-group-addon">{{activity.build.mavenVersion}}</span>	
+				<input type="search" placeholder="Search in {{activity.build.mavenVersion}}" class="form-control" data-ng-model="filterVersion">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" data-ng-click="clearVersion()"><i class="icon-erase"></i></button>
+				</span>		
+			</div>			
 		</div>
+		
 		<div class="panel-body">
 			<h4 data-ng-hide="activity.changes" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
 			<table class="table" data-ng-show="activity.changes">
-				<tbody  data-ng-repeat="c in activity.changes| filter:search | filterSize:cSizeUpdate">
+				<tbody  data-ng-repeat="c in activity.changes| filter:search | filter:searchVersion | filterSize:cSizeUpdate">
 					<tr style="font-weight: bold">
 						<td style="max-width: 20px;">
 							<span data-ng-show="c.error && !c.not" class="label label-warning" data-tooltip="This {{c.type.toLowerCase()}} is not for {{activity.build.mavenVersion}}!" data-tooltip-placement="top" data-tooltip-trigger="mouseenter">{{c.type.charAt(0)}}</span>
