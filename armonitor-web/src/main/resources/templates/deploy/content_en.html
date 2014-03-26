@@ -57,7 +57,7 @@
 					<!-- TYPE -->
 					<!-- @if{w.change.error == null} -->
 						<td style="width: 20px; background-color: #5cb85c; text-align: center; border-top:1px solid #adadad">@{w.change.type.substring(0,1)}</td>
-					<!-- @else{w.change.error == 'WRONG_VERSION'} -->
+					<!-- @else{w.change.error.name() == 'WRONG_VERSION'} -->
 						<td style="padding:0px; width: 20px; background-color: #f0ad4e; text-align: center; border-top:1px solid #adadad">@{w.change.type.substring(0,1)}</td>
 					<!-- @else{} -->
 						<td style="width: 20px; background-color: #d9534f; text-align: center; border-top:1px solid #adadad">!</td>
