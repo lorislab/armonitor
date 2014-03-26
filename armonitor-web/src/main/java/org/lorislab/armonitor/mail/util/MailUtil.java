@@ -206,7 +206,7 @@ public final class MailUtil {
     private static String getContent(String name, String template, Locale locale, Map<String, Object> parameters) throws Exception {
 
         ResourceBundle rb = ResourceBundle.getBundle(BUNDLE, locale);
-
+        // create ID
         StringBuilder sb = new StringBuilder();
         sb.append(template).append('.').append(name);
         String key = rb.getString(sb.toString());
@@ -238,15 +238,8 @@ public final class MailUtil {
                 TEMPLATES.put(key, compiled);
             }
         }
-
-        String result = null;
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
-            TemplateRuntime.execute(compiled, parameters, out);
-            result = out.toString("UTF-8");
-        } finally {
-            out.close();
-        }
+        // create the result
+        String result = (String) TemplateRuntime.execute(compiled, parameters);
         return result;
     }
 
