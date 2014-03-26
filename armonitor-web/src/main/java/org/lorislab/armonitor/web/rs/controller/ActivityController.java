@@ -47,6 +47,11 @@ public class ActivityController implements Serializable {
     private Activity activity;
 
     /**
+     * The activity (now)
+     */
+    private Activity now;
+    
+    /**
      * The activity service.
      */
     @EJB
@@ -64,7 +69,32 @@ public class ActivityController implements Serializable {
         }
         return activity;
     }
+    
+    /**
+     * Gets the activity (now).
+     *
+     * @param guid the build GUID.
+     * @return the activity.
+     */    
+    public Activity getActivityNow(String guid) {
+        if (this.guid == null || this.now == null || !this.guid.equals(guid)) {
+            reloadActivityNow(guid);
+        }
+        return now;
+    }
 
+    /**
+     * Reloads the activity (now).
+     *
+     * @param guid the build GUID.
+     * @return the activity.
+     */
+    public Activity reloadActivityNow(String guid) {
+        now = service.getActivityNowForBuild(guid);
+        this.guid = guid;
+        return now;
+    }  
+    
     /**
      * Reloads the activity.
      *
@@ -72,7 +102,8 @@ public class ActivityController implements Serializable {
      * @return the activity.
      */
     public Activity reloadActivity(String guid) {
-        activity = service.getActivityForBuild(guid);
+        now = null;
+        activity = service.getActivityForBuild(guid);        
         this.guid = guid;
         return activity;
     }   

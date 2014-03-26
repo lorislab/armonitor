@@ -206,30 +206,61 @@ controllers.controller('SystemBuildCtrl', function($scope, $routeParams, SystemB
 
 controllers.controller('ActivityCtrl', function($scope, $routeParams, ActivityRSService) {
 
+	$scope.old = null;
 	$scope.activity = null;
+	$scope.now = null;
 	$scope.bcSize = 0;
 	$scope.cSize = 0;
 	$scope.stypes = [];
 	$scope.ftypes = [];
-	$scope.log = { history: true, current: false };
-	
+	$scope.radio = 'old';
+
+	$scope.ra = false;
+
+	$scope.$watch('radio', function() {
+		$scope.activity = null;
+		if ($scope.radio === 'old') {
+			_result($scope.old);
+		} else {
+			if ($scope.now) {
+				_result($scope.now);
+			} else {
+				_loadNow();
+			}
+		}
+	});
+
+	function _loadNow() {
+		$scope.ra = true;
+		ActivityRSService.now({guid: $routeParams.guid}, function(response) {
+			_result(response);
+			$scope.now = response;
+			$scope.ra = false;
+		}, function(error) {
+			$scope.ra = false;
+		});
+	}
+
 	function _load() {
 		_clear();
 		ActivityRSService.get({guid: $routeParams.guid}, function(response) {
 			_result(response);
+			$scope.old = response;
 		});
 	}
 
 	function _clear() {
-		$scope.stypes = [];
-		$scope.ftypes = [];
 		$scope.activity = null;
+		$scope.filterBuild = null;
+		$scope.filterVersion = null;
 	}
 
 	function _result(response) {
+		$scope.stypes = [];
+		$scope.ftypes = [];
 		$scope.activity = response;
 		if ($scope.activity) {
-			$scope.ftypes = $scope.activity.types;
+			$scope.ftypes = angular.copy($scope.activity.types);
 			if ($scope.ftypes) {
 				var t;
 				for (t in $scope.ftypes) {
@@ -260,39 +291,44 @@ controllers.controller('ActivityCtrl', function($scope, $routeParams, ActivityRS
 
 	$scope.reload = function() {
 		_clear();
-		ActivityRSService.reload({guid: $routeParams.guid}, function(response) {
+		$scope.ra = true;
+		ActivityRSService.reloadNow({guid: $routeParams.guid}, function(response) {
 			_result(response);
+			$scope.now = response;
+			$scope.ra = false;
+		}, function(error) {
+			$scope.ra = false;
 		});
 	};
 
 	$scope.searchBuild = function(row) {
 		if ($scope.filterBuild) {
 			var tmp = $scope.filterBuild || '';
-			return !!(((row.id !== null && row.id.indexOf(tmp)) !== -1 
+			return !!(((row.id !== null && row.id.indexOf(tmp)) !== -1
 					|| (row.assignee !== null && row.assignee.indexOf(tmp) !== -1)
 					|| (row.summary !== null && row.summary.indexOf(tmp) !== -1)));
 		}
 		return true;
 	};
-	
+
 	$scope.clearBuild = function() {
 		$scope.filterBuild = null;
 	};
-	
+
 	$scope.clearVersion = function() {
 		$scope.filterVersion = null;
 	};
-	
+
 	$scope.searchVersion = function(row) {
 		if ($scope.filterVersion) {
 			var tmp = $scope.filterVersion || '';
-			return !!(((row.id !== null && row.id.indexOf(tmp)) !== -1 
+			return !!(((row.id !== null && row.id.indexOf(tmp)) !== -1
 					|| (row.assignee !== null && row.assignee.indexOf(tmp) !== -1)
 					|| (row.summary !== null && row.summary.indexOf(tmp) !== -1)));
 		}
 		return true;
 	};
-	
+
 	$scope.search = function(row) {
 		return !!(($scope.ftypes.indexOf(row.type) !== -1) || row.type === null);
 	};
@@ -309,7 +345,7 @@ controllers.controller('ProfileCtrl', function($scope, CommonService, SecurityRS
 
 	$scope.validation = false;
 
-	$scope.pswd = {o: null,n: null,c: null};
+	$scope.pswd = {o: null, n: null, c: null};
 
 	$scope.save = function() {
 		CommonService.update($scope.user, function(response) {

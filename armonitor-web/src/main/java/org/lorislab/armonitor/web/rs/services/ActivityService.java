@@ -54,6 +54,19 @@ public class ActivityService {
     }
     
     /**
+     * Gets the activity (now) for the build.
+     *
+     * @param guid the build GUID.
+     * @return the activity for the build.
+     */
+    @GET
+    @Path("/build/{guid}/now")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Activity getActivityNowForBuild(@PathParam("guid") String guid) {
+        return controller.getActivityNow(guid);
+    }
+    
+    /**
      * Reloads the activity for the build.
      *
      * @param guid the build GUID.
@@ -64,5 +77,18 @@ public class ActivityService {
     @Produces(MediaType.APPLICATION_JSON)
     public Activity reloadActivityForBuild(@PathParam("guid") String guid) {
         return controller.reloadActivity(guid);
-    }    
+    } 
+    
+    /**
+     * Reloads the activity (now) for the build.
+     *
+     * @param guid the build GUID.
+     * @return the activity for the build.
+     */
+    @GET
+    @Path("/build/{guid}/now/reload")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Activity reloadActivityNowForBuild(@PathParam("guid") String guid) {
+        return controller.reloadActivityNow(guid);
+    }     
 }

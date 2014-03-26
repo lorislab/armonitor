@@ -22,9 +22,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.activity.criteria.ActivityWrapperCriteria;
+import org.lorislab.armonitor.activity.ejb.ActivityProcessServiceBean;
 import org.lorislab.armonitor.activity.ejb.ActivityWrapperServiceBean;
 import org.lorislab.armonitor.activity.wrapper.ActivityWrapper;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.store.model.StoreActivity;
 import org.lorislab.armonitor.web.rs.model.Activity;
 
 /**
@@ -45,7 +47,12 @@ public class ActivityServiceBean {
      */
     @EJB
     private ActivityWrapperServiceBean activityService;
-      
+    /**
+     * The activity process service.
+     */
+    @EJB  
+    private ActivityProcessServiceBean activityProcessSevrice;
+    
     /**
      * Gets the activity for the build.
      *
@@ -65,4 +72,29 @@ public class ActivityServiceBean {
         }
         return null;
     }
+    
+    /**
+     * Gets the activity (now) for the build.
+     *
+     * @param build the build GUID.
+     * @return the activity.
+     */
+    public Activity getActivityNowForBuild(String build) {
+        try {
+            // create activity
+            StoreActivity activity = activityProcessSevrice.createActivity(build);            
+            // set up the criteria
+            ActivityWrapperCriteria criteria = new ActivityWrapperCriteria();
+            criteria.setBuild(build);
+            criteria.setSortList(true);
+            // load the wrapper
+            ActivityWrapper wrapper = activityService.create(activity, criteria);
+            return Mapper.map(wrapper, Activity.class);
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error create activity (now) for the build {0}, Error: {1}", new Object[]{build, ex.getMessage()});
+            LOGGER.log(Level.FINE, "Error create activity", ex);
+        }
+        return null;
+    }
+    
 }

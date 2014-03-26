@@ -1,6 +1,6 @@
 <h1>Activity
 	<small data-ng-show="activity">{{activity.projectName}} / {{activity.appName}} / {{activity.build.mavenVersion}} {{activity.build.build}}
-		<a href="" style="text-align: right; float: right" data-ng-click="reload()"><i class="icon-arrows-cw"></i></a>
+		<a data-ng-show="radio === 'now'" href="" style="text-align: right; float: right" data-ng-click="reload()" data-ng-class="{'animate-spin': ra}"><i class="icon-arrows-cw"></i></a>
 	</small>	
 	<small data-ng-show="!activity" style="text-align: right; float: right">
 		<i class="icon-arrows-cw animate-spin"></i>
@@ -19,11 +19,11 @@
 	</li>	
 </ol>
 
-<div data-ng-show="activity">
+<div data-ng-show="old">
 	<div>
 		<div class="btn-group">
-			<button type="button" class="btn btn-sm btn-default" data-ng-model="log.history" data-btn-checkbox data-ng-disabled="{{log.history}}"><i class="icon-clock"></i>{{activity.date| date:'yyyy-MM-dd HH:mm:ss'}}</button>
-			<button type="button" class="btn btn-sm btn-default" data-ng-model="log.now" data-btn-checkbox><i class="icon-clock"></i>Now</button>
+			<button type="button" class="btn btn-sm btn-default" data-ng-model="radio" btn-radio="'old'"><i class="icon-clock"></i>{{old.date| date:'yyyy-MM-dd HH:mm:ss'}}</button>
+			<button type="button" class="btn btn-sm btn-default" data-ng-model="radio" btn-radio="'now'"><i class="icon-clock"></i>Now</button>
 		</div>
 		<div style="float: right;">
 			<div class="btn-group">
@@ -33,7 +33,7 @@
 	</div>
 	<div style="padding-bottom: 10px"></div>
 	
-	<div class="panel panel-default">
+	<div class="panel panel-default" data-ng-show="activity && activity === old">
 
 		<div class="panel-heading">	
 			<div class="input-group">
@@ -48,6 +48,13 @@
 		<div class="panel-body">
 			<h4 data-ng-hide="activity.buildChanges" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
 			<table class="table" data-ng-show="activity.buildChanges">
+				<tbody data-ng-show="bcSize === 0">
+					<tr>
+						<td align="center" colspan="5">
+							<h4><span class="label label-info">No changes found.</span></h4>
+						</td>
+					</tr>					
+				</tbody>
 				<tbody  data-ng-repeat="c in activity.buildChanges| filter:search | filter:searchBuild | filterSize:bcSizeUpdate">
 					<tr style="font-weight: bold">
 						<td style="max-width: 20px;">
@@ -87,8 +94,8 @@
 			<div style="float: right">{{bcSize}} / {{activity.buildChanges.length}}</div>
 		</div>
 	</div>
-	<div style="padding-top: 20px"></div>
-	<div class="panel panel-default">
+	<div style="padding-top: 20px" data-ng-show="activity && activity === old"></div>
+	<div class="panel panel-default" data-ng-show="activity">
 		<div class="panel-heading">		
 			<div class="input-group">
 				<span class="input-group-addon">{{activity.build.mavenVersion}}</span>	
@@ -102,6 +109,13 @@
 		<div class="panel-body">
 			<h4 data-ng-hide="activity.changes" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
 			<table class="table" data-ng-show="activity.changes">
+				<tbody data-ng-show="cSize === 0">
+					<tr>
+						<td align="center" colspan="5">
+							<h4><span class="label label-info">No changes found.</span></h4>
+						</td>
+					</tr>					
+				</tbody>				
 				<tbody  data-ng-repeat="c in activity.changes| filter:search | filter:searchVersion | filterSize:cSizeUpdate">
 					<tr style="font-weight: bold">
 						<td style="max-width: 20px;">

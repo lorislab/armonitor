@@ -212,7 +212,19 @@ services.factory('ActivityRSService', function($resource, config) {
 			url: config.server + '/ac/build/:guid',
 			params: {guid: '@guid'},
 			isArray: false
-		}
+		},
+		reloadNow: {
+			method: 'GET',
+			url: config.server + '/ac/build/:guid/now/reload',
+			params: {guid: '@guid'},
+			isArray: false
+		},
+		now: {
+			method: 'GET',
+			url: config.server + '/ac/build/:guid/now',
+			params: {guid: '@guid'},
+			isArray: false
+		}		
 	});
 });
 

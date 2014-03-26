@@ -180,10 +180,6 @@ public class ActivityProcessServiceBean {
                     }
                 }                
                 Collections.sort(buildInfos, BuildInfoComparator.INSTANCE);
-                
-                for (BuildInfo i : buildInfos) {
-                    System.out.println(i.date);
-                }
             }
             
             
