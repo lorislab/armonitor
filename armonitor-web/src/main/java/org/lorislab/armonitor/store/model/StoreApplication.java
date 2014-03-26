@@ -71,7 +71,7 @@ public class StoreApplication extends Persistent {
      */
     @Column(name = "C_KEY")
     private String key;
-    
+
     /**
      * The SCM trunk.
      */
@@ -96,6 +96,9 @@ public class StoreApplication extends Persistent {
     @Column(name = "C_SCM_REPO")
     private String scmRepo;
 
+    /**
+     * The enabled flag.
+     */
     @Column(name = "C_ENABLED")
     private boolean enabled;
 
@@ -104,7 +107,7 @@ public class StoreApplication extends Persistent {
      */
     @Column(name = "C_TYPE")
     private String type;
-    
+
     /**
      * The application builds.
      */
@@ -117,6 +120,29 @@ public class StoreApplication extends Persistent {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "application")
     private Set<StoreSystem> systems;
 
+    /**
+     * The index.
+     */
+    @Column(name = "C_INDEX")
+    private Integer index;
+
+    /**
+     * Gets the index.
+     *
+     * @return the index.
+     */
+    public Integer getIndex() {
+        return index;
+    }
+
+    /**
+     * Sets the index.
+     *
+     * @param index the index.
+     */
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
 
     /**
      * Gets the key for manual deployment.
@@ -135,9 +161,10 @@ public class StoreApplication extends Persistent {
     public void setKey(String key) {
         this.key = key;
     }
-    
+
     /**
      * Gets the type.
+     *
      * @return the type.
      */
     public String getType() {
@@ -146,12 +173,13 @@ public class StoreApplication extends Persistent {
 
     /**
      * Sets the type.
+     *
      * @param type the type.
      */
     public void setType(String type) {
         this.type = type;
     }
-    
+
     /**
      * Gets the SCM repository.
      *

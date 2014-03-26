@@ -128,6 +128,30 @@ public class StoreSystem extends Persistent {
     private String classification;
 
     /**
+     * The index.
+     */
+    @Column(name = "C_INDEX")
+    private Integer index;
+
+    /**
+     * Gets the index.
+     *
+     * @return the index.
+     */
+    public Integer getIndex() {
+        return index;
+    }
+
+    /**
+     * Sets the index.
+     *
+     * @param index the index.
+     */
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+    
+    /**
      * Gets the system classification.
      *
      * @return the system classification.

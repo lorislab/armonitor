@@ -56,6 +56,30 @@ public class StoreProject extends Persistent {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "project")
     private Set<StoreApplication> applications;
 
+    /**
+     * The index.
+     */
+    @Column(name = "C_INDEX")
+    private Integer index;
+
+    /**
+     * Gets the index.
+     *
+     * @return the index.
+     */
+    public Integer getIndex() {
+        return index;
+    }
+
+    /**
+     * Sets the index.
+     *
+     * @param index the index.
+     */
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+    
     public StoreBTSystem getBts() {
         return bts;
     }
