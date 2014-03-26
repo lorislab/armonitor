@@ -15,6 +15,9 @@
  */
 package org.lorislab.armonitor.activity.ejb;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -85,37 +88,6 @@ public class ActivityProcessServiceBean {
     @EJB
     private StoreBuildServiceBean buildService;
 
-//    /**
-//     * Creates the store activity.
-//     *
-//     * @param build the build GUID.
-//     * @param project the project GUID.
-//     * @param application the application GUID.
-//     * @return the create activity.
-//     * @throws Exception if the method fails.
-//     */
-//    public StoreActivity createActivity(String build, String project, String application) throws Exception {
-//        StoreBuild b = getBuild(build);
-//        StoreProject pr = getProject(project);
-//        StoreApplication app = getApplication(application);
-//        return createActivity(b, pr, app);
-//    }
-
-//    /**
-//     * Creates the store activity.
-//     *
-//     * @param build the build.
-//     * @param project the project GUID.
-//     * @param application the application GUID.
-//     * @return the create activity.
-//     * @throws Exception if the method fails.
-//     */
-//    private StoreActivity createActivity(StoreBuild build, String project, String application) throws Exception {
-//        StoreProject pr = getProject(project);
-//        StoreApplication app = getApplication(application);
-//        return createActivity(build, pr, app);
-//    }
-
     /**
      * Creates the store activity.
      *
@@ -182,14 +154,40 @@ public class ActivityProcessServiceBean {
 
         // load builds for the version
         List<StoreBuild> builds = getBuilds(application, build);
-
+        
         // the issue in the commits but not in the bts
         Set<String> errors = new HashSet<>();
 
         // create logs        
         Pattern pattern = getKeyPattern(project);
-        ScmResult scmResult = getCommits(application, build);
+        ScmResult scmResult = getCommits(application, build);                
         if (scmResult != null && !scmResult.isEmpty()) {
+            
+            // create build information
+            List<BuildInfo> buildInfos = new ArrayList<>();
+            
+            if (builds != null && !builds.isEmpty()) {
+                builds.add(build);
+                for (StoreBuild b : builds) {
+                    ScmLog log = scmResult.getScmLog(b.getScm());
+                    if (log != null) {
+                        BuildInfo bi = new BuildInfo();
+                        bi.build = b;
+                        bi.date = log.getDate();
+                        buildInfos.add(bi);
+                    } else {
+                        LOGGER.log(Level.WARNING, "The store build {0} has wrong revision number {1}.", new Object[] {b.getGuid(), b.getScm()});
+                    }
+                }                
+                Collections.sort(buildInfos, BuildInfoComparator.INSTANCE);
+                
+                for (BuildInfo i : buildInfos) {
+                    System.out.println(i.date);
+                }
+            }
+            
+            
+            // load commits
             for (ScmLog commit : scmResult.getScmLogs()) {
                 Matcher matcher = pattern.matcher(commit.getMessage());
                 while (matcher.find()) {
@@ -200,7 +198,7 @@ public class ActivityProcessServiceBean {
                     log.setMessage(commit.getMessage());
 
                     // set the build to the log.
-                    StoreBuild logBuild = findStoreBuild(builds, commit.getDate());
+                    StoreBuild logBuild = findStoreBuild(buildInfos, commit.getDate());
                     log.setBuild(logBuild);
 
                     String key = matcher.group();
@@ -396,21 +394,39 @@ public class ActivityProcessServiceBean {
     /**
      * Finds the build for the date in the list.
      *
-     * @param builds the list of build order ASC.
+     * @param infos the list of build info order ASC.
      * @param date the date.
      * @return the store build or <code>null</code> if no build find.
      */
-    private StoreBuild findStoreBuild(List<StoreBuild> builds, Date date) {
+    private StoreBuild findStoreBuild(List<BuildInfo> infos, Date date) {
         StoreBuild result = null;
-        if (builds != null && date != null) {
-            Iterator<StoreBuild> iter = builds.iterator();
+        if (infos != null && date != null) {
+            Iterator<BuildInfo> iter = infos.iterator();
             while (result == null && iter.hasNext()) {
-                StoreBuild build = iter.next();
-                if (!date.after(build.getDate())) {
-                    result = build;
+                BuildInfo item = iter.next();
+                if (!date.after(item.date)) {
+                    result = item.build;
                 }
             }
         }
         return result;
     }
+    
+    private class BuildInfo {
+        
+        public Date date;
+        
+        public StoreBuild build;
+    }
+    
+    private static class BuildInfoComparator implements Comparator<BuildInfo> {
+
+        private static final BuildInfoComparator INSTANCE = new BuildInfoComparator();
+        
+        @Override
+        public int compare(BuildInfo o1, BuildInfo o2) {
+            return o1.date.compareTo(o2.date);
+        }
+                
+    }    
 }
