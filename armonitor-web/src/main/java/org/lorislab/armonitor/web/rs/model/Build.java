@@ -38,6 +38,10 @@ public class Build {
      */
     public String uid;
     /**
+     * The key.
+     */
+    public String key;    
+    /**
      * The version.
      */
     public Integer ver;

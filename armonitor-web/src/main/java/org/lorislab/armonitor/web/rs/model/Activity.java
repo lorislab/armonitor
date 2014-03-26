@@ -16,6 +16,7 @@
 
 package org.lorislab.armonitor.web.rs.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -61,4 +62,8 @@ public class Activity {
      * The activity change types.
      */
     public Set<String> types;
+    /**
+     * The creation date.
+     */
+    public Date date;
 }

@@ -20,13 +20,19 @@
 </ol>
 
 <div data-ng-show="activity">
-
-	<div style="text-align: right; padding-bottom: 10px">
+	<div>
 		<div class="btn-group">
-			<button data-ng-repeat="b in stypes" type="button" class="btn btn-sm" data-ng-click="updateTypes(b.id)" data-ng-class="{'btn-success': b.select && b.id !== 'Error', 'btn-default': !b.select, 'btn-danger': b.select && b.id === 'Error'}" data-ng-model="b.select" btn-checkbox>{{b.id}}</button>
+			<button type="button" class="btn btn-sm btn-default" data-ng-model="log.history" data-btn-checkbox data-ng-disabled="{{log.history}}"><i class="icon-clock"></i>{{activity.date| date:'yyyy-MM-dd HH:mm:ss'}}</button>
+			<button type="button" class="btn btn-sm btn-default" data-ng-model="log.now" data-btn-checkbox><i class="icon-clock"></i>Now</button>
+		</div>
+		<div style="float: right;">
+			<div class="btn-group">
+				<button data-ng-repeat="b in stypes" type="button" class="btn btn-sm" data-ng-click="updateTypes(b.id)" data-ng-class="{'btn-success': b.select && b.id !== 'Error', 'btn-default': !b.select, 'btn-danger': b.select && b.id === 'Error'}" data-ng-model="b.select" btn-checkbox>{{b.id}}</button>
+			</div>
 		</div>
 	</div>
-
+	<div style="padding-bottom: 10px"></div>
+	
 	<div class="panel panel-default">
 
 		<div class="panel-heading">	
@@ -92,7 +98,7 @@
 				</span>		
 			</div>			
 		</div>
-		
+
 		<div class="panel-body">
 			<h4 data-ng-hide="activity.changes" style="text-align: center;"><span class="label label-info">No changes</span ></h4>
 			<table class="table" data-ng-show="activity.changes">

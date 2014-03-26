@@ -48,7 +48,7 @@ public class BuildMapper implements MapperService<StoreBuild, Build> {
         result.service = data.getService();
         result.uid = data.getUid();
         result.ver = data.getVer();
-
+        result.key = data.getKey();
         if (profiles.contains("link")) {
             if (data.getApplication() != null) {
                 result.link = LinkUtil.createLink(data.getApplication().getRepoLink(), data);

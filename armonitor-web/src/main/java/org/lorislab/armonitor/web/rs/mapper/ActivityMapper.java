@@ -44,6 +44,7 @@ public class ActivityMapper implements MapperService<ActivityWrapper, Activity> 
         result.changes = Mapper.map(data.getChanges(), ActivityChange.class, profiles);                
         result.buildChanges = Mapper.map(data.getBuildChanges(), ActivityChange.class, profiles);        
         result.build = Mapper.map(data.getBuild(), Build.class, profiles);
+        result.date = data.getActivity().getDate();
         // add the application
         StoreApplication app = data.getApplication();
         if (app != null) {

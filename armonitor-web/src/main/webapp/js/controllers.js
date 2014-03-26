@@ -211,7 +211,8 @@ controllers.controller('ActivityCtrl', function($scope, $routeParams, ActivityRS
 	$scope.cSize = 0;
 	$scope.stypes = [];
 	$scope.ftypes = [];
-
+	$scope.log = { history: true, current: false };
+	
 	function _load() {
 		_clear();
 		ActivityRSService.get({guid: $routeParams.guid}, function(response) {
