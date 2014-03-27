@@ -1,4 +1,5 @@
-controllers.controller('SCMAdminCtrl', function($scope, $routeParams, SCMAdminService) {
+controllers.controller('SCMAdminCtrl', ['$scope','$routeParams','SCMAdminService',
+	function($scope, $routeParams, SCMAdminService) {
 
 	$scope.pswd = {n: null, c: null, o: null};
 	
@@ -31,8 +32,8 @@ controllers.controller('SCMAdminCtrl', function($scope, $routeParams, SCMAdminSe
 		});
 	};
 
-	$scope.delete = function() {
-		SCMAdminService.delete({guid: $routeParams.guid}, function(response) {
+	$scope.remove = function() {
+		SCMAdminService.remove({guid: $routeParams.guid}, function(response) {
 			history.back();
 		});
 	};
@@ -44,9 +45,10 @@ controllers.controller('SCMAdminCtrl', function($scope, $routeParams, SCMAdminSe
 			});
 		}
 	};
-});
+}]);
 
-controllers.controller('SCMSearchAdminCtrl', function($scope, SCMAdminService) {
+controllers.controller('SCMSearchAdminCtrl', ['$scope','SCMAdminService',
+	function($scope, SCMAdminService) {
 	SCMAdminService.types({}, function(response) {
 		$scope.types = response;
 	});
@@ -74,4 +76,4 @@ controllers.controller('SCMSearchAdminCtrl', function($scope, SCMAdminService) {
 		}
 		return true;
 	};
-});
+}]);

@@ -1,4 +1,5 @@
-controllers.controller('ProjectAdminCtrl', function($scope, $routeParams, ProjectAdminService) {
+controllers.controller('ProjectAdminCtrl', ['$scope','$routeParams','ProjectAdminService',
+	function($scope, $routeParams, ProjectAdminService) {
 
 	if ($routeParams.guid) {
 		ProjectAdminService.get({guid: $routeParams.guid}, function(response) {
@@ -21,15 +22,16 @@ controllers.controller('ProjectAdminCtrl', function($scope, $routeParams, Projec
 		});
 	};
 
-	$scope.delete = function() {
-		ProjectAdminService.delete({guid: $routeParams.guid}, function(response) {
+	$scope.remove = function() {
+		ProjectAdminService.remove({guid: $routeParams.guid}, function(response) {
 			history.back();
 		});
 	};
 
-});
+}]);
 
-controllers.controller('ProjectAppAdminCtrl', function($scope, $routeParams, ProjectAdminService) {
+controllers.controller('ProjectAppAdminCtrl', ['$scope','$routeParams','ProjectAdminService',
+	function($scope, $routeParams, ProjectAdminService) {
 	var _load = true;
 	
 	function _search() {
@@ -62,9 +64,10 @@ controllers.controller('ProjectAppAdminCtrl', function($scope, $routeParams, Pro
 		return true;
 	};
 	
-});
+}]);
 
-controllers.controller('ProjectBtsAdminCtrl', function($scope, $routeParams, BTSAdminService, ProjectAdminService) {
+controllers.controller('ProjectBtsAdminCtrl', ['$scope','$routeParams','BTSAdminService','ProjectAdminService',
+	function($scope, $routeParams, BTSAdminService, ProjectAdminService) {
 
 	$scope.bts = {selected: null};
 	var _load = true;
@@ -87,9 +90,10 @@ controllers.controller('ProjectBtsAdminCtrl', function($scope, $routeParams, BTS
 
 		});
 	};
-});
+}]);
 
-controllers.controller('ProjectSearchAdminCtrl', function($scope, ProjectAdminService) {
+controllers.controller('ProjectSearchAdminCtrl', ['$scope','ProjectAdminService',
+	function($scope, ProjectAdminService) {
 
 	function _startup() {
 		ProjectAdminService.all({}, function(response) {
@@ -115,4 +119,4 @@ controllers.controller('ProjectSearchAdminCtrl', function($scope, ProjectAdminSe
 		}
 		return true;
 	};
-});
+}]);

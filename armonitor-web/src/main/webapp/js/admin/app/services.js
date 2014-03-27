@@ -1,6 +1,7 @@
-services.factory('AppAdminService', function($resource, config) {
+services.factory('AppAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/ad/app', {}, {
-		delete: {
+		remove: {
 			method: 'DELETE',
 			url: config.server + '/ad/app/:guid',
 			params: {guid: '@guid'},
@@ -74,4 +75,4 @@ services.factory('AppAdminService', function($resource, config) {
 			isArray: false
 		}		
 	});
-});	
+}]);	

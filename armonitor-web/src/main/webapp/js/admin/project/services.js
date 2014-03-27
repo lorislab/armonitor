@@ -1,6 +1,7 @@
-services.factory('ProjectAdminService', function($resource, config) {
+services.factory('ProjectAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/ad/pr', {}, {
-		delete: {
+		remove: {
 			method: 'DELETE',
 			url: config.server + '/ad/pr/:guid',
 			params: {guid: '@guid'},
@@ -51,4 +52,4 @@ services.factory('ProjectAdminService', function($resource, config) {
 			isArray: false
 		}		
 	});
-});	
+}]);	

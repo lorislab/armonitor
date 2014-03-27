@@ -1,21 +1,14 @@
 'use strict';
 
 /* Controllers */
-controllers.controller('LoginModalCtrl', function($scope, $modalInstance, CommonService) {
-
-	$scope.msg = {
-		error: null
-	};
-
-	$scope.data = {
-		email: null,
-		password: null
-	};
+controllers.controller('LoginModalCtrl', ['$scope', '$modalInstance', 'CommonService', 
+	function($scope, $modalInstance, CommonService) {
+		
+	$scope.msg = { error: null };
+	$scope.data = { email: null, password: null };
 
 	$scope.login = function() {
 		$scope.msg.error = null;
-//		$scope.data.email = 'andrej@ajka-andrej.com';
-//		$scope.data.password = 'test';
 		CommonService.login($scope.data, function(user) {
 			if (user) {
 				$modalInstance.close(user);
@@ -28,9 +21,10 @@ controllers.controller('LoginModalCtrl', function($scope, $modalInstance, Common
 	$scope.cancel = function() {
 		$modalInstance.dismiss('cancel');
 	};
-});
+}]);
 
-controllers.controller('DashboardCtrl', function($scope, DashboardRSService) {
+controllers.controller('DashboardCtrl',['$scope', 'DashboardRSService', 
+	function($scope, DashboardRSService) {
 
 	$scope.dashboard = null;
 
@@ -89,8 +83,9 @@ controllers.controller('DashboardCtrl', function($scope, DashboardRSService) {
 		$scope.dashboard.msg = true;
 	};
 
-});
-controllers.controller('VersionBuildCtrl', function($scope, $routeParams, VersionBuildRSService, BuildRSService, CommonService) {
+}]);
+controllers.controller('VersionBuildCtrl',['$scope','$routeParams','VersionBuildRSService','BuildRSService','CommonService', 
+	function($scope, $routeParams, VersionBuildRSService, BuildRSService, CommonService) {
 
 	$scope.ver = null;
 	$scope.version = null;
@@ -135,9 +130,10 @@ controllers.controller('VersionBuildCtrl', function($scope, $routeParams, Versio
 	};
 
 	_load();
-});
+}]);
 
-controllers.controller('ApplicationBuildCtrl', function($scope, $routeParams, ApplicationBuildRSService, BuildRSService, CommonService) {
+controllers.controller('ApplicationBuildCtrl', ['$scope','$routeParams','ApplicationBuildRSService','BuildRSService','CommonService',
+	function($scope, $routeParams, ApplicationBuildRSService, BuildRSService, CommonService) {
 
 	$scope.app = null;
 	$scope.build = null;
@@ -178,9 +174,10 @@ controllers.controller('ApplicationBuildCtrl', function($scope, $routeParams, Ap
 	};
 
 	_load();
-});
+}]);
 
-controllers.controller('SystemBuildCtrl', function($scope, $routeParams, SystemBuildRSService, BuildRSService, CommonService) {
+controllers.controller('SystemBuildCtrl', ['$scope','$routeParams','SystemBuildRSService','BuildRSService','CommonService',
+	function($scope, $routeParams, SystemBuildRSService, BuildRSService, CommonService) {
 
 	$scope.system = null;
 	$scope.build = null;
@@ -221,9 +218,10 @@ controllers.controller('SystemBuildCtrl', function($scope, $routeParams, SystemB
 	};
 
 	_load();
-});
+}]);
 
-controllers.controller('ActivityCtrl', function($scope, $routeParams, ActivityRSService) {
+controllers.controller('ActivityCtrl', ['$scope','$routeParams','ActivityRSService',
+	function($scope, $routeParams, ActivityRSService) {
 
 	$scope.old = null;
 	$scope.activity = null;
@@ -351,9 +349,10 @@ controllers.controller('ActivityCtrl', function($scope, $routeParams, ActivityRS
 	$scope.search = function(row) {
 		return !!(($scope.ftypes.indexOf(row.type) !== -1) || row.type === null);
 	};
-});
+}]);
 
-controllers.controller('ProfileCtrl', function($scope, CommonService, SecurityRSService) {
+controllers.controller('ProfileCtrl', ['$scope','CommonService','SecurityRSService', 
+	function($scope, CommonService, SecurityRSService) {
 
 	$scope.pswd = {n: null, c: null, o: null};
 	$scope.user = angular.copy(CommonService.user());
@@ -384,9 +383,10 @@ controllers.controller('ProfileCtrl', function($scope, CommonService, SecurityRS
 		}
 	};
 
-});
+}]);
 
-controllers.controller('ErrorCtrl', function($scope, ErrorService) {
+controllers.controller('ErrorCtrl', ['$scope','ErrorService', 
+	function($scope, ErrorService) {
 
 	$scope.$watch(function() {
 		return ErrorService.error();
@@ -398,9 +398,10 @@ controllers.controller('ErrorCtrl', function($scope, ErrorService) {
 		ErrorService.close();
 	};	
 
-});
+}]);
 
-controllers.controller('MenuCtrl', function($scope, $location, $modal, CommonService, ErrorService) {
+controllers.controller('MenuCtrl', ['$scope','$location','$modal','CommonService','ErrorService', 
+	function($scope, $location, $modal, CommonService, ErrorService) {
 
 
 	$scope.$watch(function() {
@@ -447,4 +448,4 @@ controllers.controller('MenuCtrl', function($scope, $location, $modal, CommonSer
 		var tmp = $location.path();
 		return tmp.indexOf(data) !== -1;
 	};
-});
+}]);

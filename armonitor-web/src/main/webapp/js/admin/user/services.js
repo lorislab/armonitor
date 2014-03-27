@@ -1,6 +1,7 @@
-services.factory('UserAdminService', function($resource, config) {
+services.factory('UserAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/user', {}, {
-		delete: {
+		remove: {
 			method: 'DELETE',
 			url: config.server + '/ad/user/:guid',
 			params: {guid: '@guid'},
@@ -58,5 +59,5 @@ services.factory('UserAdminService', function($resource, config) {
 			isArray: false
 		}		
 	});
-});
+}]);
 

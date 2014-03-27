@@ -1,6 +1,7 @@
-services.factory('AgentAdminService', function($resource, config) {
+services.factory('AgentAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/agent', {}, {
-		delete: {
+		remove: {
 			method: 'DELETE',
 			url: config.server + '/ad/agent/:guid',
 			params: {guid: '@guid'},
@@ -50,4 +51,4 @@ services.factory('AgentAdminService', function($resource, config) {
 			isArray: false
 		}		
 	});
-});
+}]);

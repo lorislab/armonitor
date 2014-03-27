@@ -1,4 +1,5 @@
-controllers.controller('UserRoleAdminCtrl', function($scope, $routeParams, UserAdminService, RoleAdminService) {
+controllers.controller('UserRoleAdminCtrl', ['$scope','$routeParams','UserAdminService','RoleAdminService', 
+	function($scope, $routeParams, UserAdminService, RoleAdminService) {
 	var _load = true;
 
 	RoleAdminService.all({}, function(response) {
@@ -50,9 +51,10 @@ controllers.controller('UserRoleAdminCtrl', function($scope, $routeParams, UserA
 			_search();
 		});		
 	};	
-});
+}]);
 
-controllers.controller('UserAdminCtrl', function($scope, $routeParams, UserAdminService) {
+controllers.controller('UserAdminCtrl', ['$scope','$routeParams','UserAdminService', 
+	function($scope, $routeParams, UserAdminService) {
 
 	$scope.pswd = {n: null, c: null, o: null};
 
@@ -77,8 +79,8 @@ controllers.controller('UserAdminCtrl', function($scope, $routeParams, UserAdmin
 		});
 	};
 
-	$scope.delete = function() {
-		UserAdminService.delete({guid: $routeParams.guid}, function(response) {
+	$scope.remove = function() {
+		UserAdminService.remove({guid: $routeParams.guid}, function(response) {
 			history.back();
 		});
 	};
@@ -91,9 +93,10 @@ controllers.controller('UserAdminCtrl', function($scope, $routeParams, UserAdmin
 		}
 	};	
 
-});
+}]);
 
-controllers.controller('UserSearchAdminCtrl', function($scope, UserAdminService) {
+controllers.controller('UserSearchAdminCtrl', ['$scope','UserAdminService', 
+	function($scope, UserAdminService) {
 
 	function _startup() {
 		UserAdminService.all({}, function(response) {
@@ -119,4 +122,4 @@ controllers.controller('UserSearchAdminCtrl', function($scope, UserAdminService)
 		}
 		return true;
 	};
-});
+}]);

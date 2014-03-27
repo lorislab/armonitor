@@ -1,5 +1,6 @@
 
-controllers.controller('AgentSysAdminCtrl', function($scope, $routeParams, AgentAdminService) {
+controllers.controller('AgentSysAdminCtrl', ['$scope','$routeParams','AgentAdminService',
+	function($scope, $routeParams, AgentAdminService) {
 
 	var _load = true;
 	
@@ -35,9 +36,10 @@ controllers.controller('AgentSysAdminCtrl', function($scope, $routeParams, Agent
 		}
 		return true;
 	};
-});
+}]);
 
-controllers.controller('AgentAdminCtrl', function($scope, $routeParams, AgentAdminService) {
+controllers.controller('AgentAdminCtrl', ['$scope','$routeParams','AgentAdminService',
+	function($scope, $routeParams, AgentAdminService) {
 
 	$scope.pswd = {n: null, c: null, o: null};
 
@@ -66,8 +68,8 @@ controllers.controller('AgentAdminCtrl', function($scope, $routeParams, AgentAdm
 		});
 	};
 
-	$scope.delete = function() {
-		AgentAdminService.delete({guid: $routeParams.guid}, function(response) {
+	$scope.remove = function() {
+		AgentAdminService.remove({guid: $routeParams.guid}, function(response) {
 			history.back();
 		});
 	};
@@ -80,9 +82,10 @@ controllers.controller('AgentAdminCtrl', function($scope, $routeParams, AgentAdm
 		}
 	};	
 
-});
+}]);
 
-controllers.controller('AgentSearchAdminCtrl', function($scope, AgentAdminService) {
+controllers.controller('AgentSearchAdminCtrl', ['$scope','AgentAdminService',
+	function($scope, AgentAdminService) {
 
 	function _startup() {
 		AgentAdminService.all({}, function(response) {
@@ -111,4 +114,4 @@ controllers.controller('AgentSearchAdminCtrl', function($scope, AgentAdminServic
 		}
 		return true;
 	};
-});
+}]);

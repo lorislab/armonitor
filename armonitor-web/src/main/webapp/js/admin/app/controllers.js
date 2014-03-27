@@ -1,5 +1,6 @@
 
-controllers.controller('AppSysAdminCtrl', function($scope, $routeParams, AppAdminService) {
+controllers.controller('AppSysAdminCtrl', ['$scope','$routeParams','AppAdminService',
+	function($scope, $routeParams, AppAdminService) {
 	var _load = true;
 	
 	function _search() {
@@ -35,9 +36,10 @@ controllers.controller('AppSysAdminCtrl', function($scope, $routeParams, AppAdmi
 		return true;
 	};
 	
-});
+}]);
 
-controllers.controller('AppProjectAdminCtrl', function($scope, $routeParams, ProjectAdminService, AppAdminService) {
+controllers.controller('AppProjectAdminCtrl', ['$scope','$routeParams','ProjectAdminService','AppAdminService',
+	function($scope, $routeParams, ProjectAdminService, AppAdminService) {
 
 	$scope.item = {selected: null};
 	var _load = true;
@@ -60,9 +62,10 @@ controllers.controller('AppProjectAdminCtrl', function($scope, $routeParams, Pro
 
 		});
 	};
-});
+}]);
 
-controllers.controller('AppScmAdminCtrl', function($scope, $routeParams, SCMAdminService, AppAdminService) {
+controllers.controller('AppScmAdminCtrl', ['$scope','$routeParams','SCMAdminService','AppAdminService',
+	function($scope, $routeParams, SCMAdminService, AppAdminService) {
 
 	$scope.bts = {selected: null};
 	var _load = true;
@@ -85,9 +88,10 @@ controllers.controller('AppScmAdminCtrl', function($scope, $routeParams, SCMAdmi
 
 		});
 	};
-});
+}]);
 
-controllers.controller('AppAdminCtrl', function($scope, $routeParams, AppAdminService) {
+controllers.controller('AppAdminCtrl', ['$scope','$routeParams','AppAdminService',
+	function($scope, $routeParams, AppAdminService) {
 
 	if ($routeParams.guid) {
 		AppAdminService.get({guid: $routeParams.guid}, function(response) {
@@ -110,8 +114,8 @@ controllers.controller('AppAdminCtrl', function($scope, $routeParams, AppAdminSe
 		});
 	};
 
-	$scope.delete = function() {
-		AppAdminService.delete({guid: $routeParams.guid}, function(response) {
+	$scope.remove = function() {
+		AppAdminService.remove({guid: $routeParams.guid}, function(response) {
 			history.back();
 		});
 	};
@@ -127,9 +131,10 @@ controllers.controller('AppAdminCtrl', function($scope, $routeParams, AppAdminSe
 			$scope.data = response;
 		});		
 	};
-});
+}]);
 
-controllers.controller('AppSearchAdminCtrl', function($scope, AppAdminService) {
+controllers.controller('AppSearchAdminCtrl', ['$scope','AppAdminService',
+	function($scope, AppAdminService) {
 
 	function _startup() {
 		AppAdminService.all({}, function(response) {
@@ -155,4 +160,4 @@ controllers.controller('AppSearchAdminCtrl', function($scope, AppAdminService) {
 		}
 		return true;
 	};
-});
+}]);

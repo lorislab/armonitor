@@ -1,4 +1,5 @@
-controllers.controller('TimerAdminCtrl', function($scope, TimerAdminService, CommonService) {
+controllers.controller('TimerAdminCtrl', ['$scope','TimerAdminService','CommonService',
+	function($scope, TimerAdminService, CommonService) {
 
 	TimerAdminService.get({}, function(response) {
 		$scope.data = response;
@@ -31,9 +32,10 @@ controllers.controller('TimerAdminCtrl', function($scope, TimerAdminService, Com
 			$scope.status = response;
 		});
 	};
-});
+}]);
 
-controllers.controller('MailAdminCtrl', function($scope, MailAdminService, CommonService) {
+controllers.controller('MailAdminCtrl', ['$scope','MailAdminService','CommonService',
+	function($scope, MailAdminService, CommonService) {
 
 	MailAdminService.get({}, function(response) {
 		$scope.data = response;
@@ -45,4 +47,4 @@ controllers.controller('MailAdminCtrl', function($scope, MailAdminService, Commo
 			CommonService.updateMsg();
 		});
 	};
-});
+}]);

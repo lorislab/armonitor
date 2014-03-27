@@ -1,7 +1,7 @@
 'use strict';
 
 /* Services */
-services.factory('MessageService', function($resource, config) {
+services.factory('MessageService', ['$resource','config', function($resource, config) {
 	return $resource(config.server + '/msg', {}, {
 		trashItem: {
 			method: 'GET',
@@ -30,8 +30,8 @@ services.factory('MessageService', function($resource, config) {
 			isArray: true
 		}
 	});
-});
-services.factory('UserService', function() {
+}]);
+services.factory('UserService', [function() {
 	var _user = null;
 	var _roles = null;
 
@@ -53,8 +53,10 @@ services.factory('UserService', function() {
 			_roles = roles;
 		}		
 	};
-});
-services.factory('CommonService', function($location, UserService, SecurityRSService, MessageService, ErrorService) {
+}]);
+
+services.factory('CommonService', ['$location','UserService','SecurityRSService','MessageService','ErrorService',
+	function($location, UserService, SecurityRSService, MessageService, ErrorService) {
 
 	var _base_roles = ["admin", "base"];
 
@@ -132,8 +134,9 @@ services.factory('CommonService', function($location, UserService, SecurityRSSer
 			return found;
 		}
 	};
-});
-services.factory('SecurityRSService', function($resource, config) {
+}]);
+services.factory('SecurityRSService', ['$resource','config', 
+	function($resource, config) {
 	return $resource(config.server + '/sec', {}, {
 		pswd: {
 			method: 'POST',
@@ -166,9 +169,10 @@ services.factory('SecurityRSService', function($resource, config) {
 			isArray: false
 		}
 	});
-});
+}]);
 
-services.factory('VersionBuildRSService', function($resource, config) {
+services.factory('VersionBuildRSService', ['$resource','config', 
+	function($resource, config) {
 	return $resource(config.server + '/dvb', {}, {
 		reload: {
 			method: 'GET',
@@ -183,9 +187,10 @@ services.factory('VersionBuildRSService', function($resource, config) {
 			isArray: false
 		}
 	});
-});
+}]);
 
-services.factory('ApplicationBuildRSService', function($resource, config) {
+services.factory('ApplicationBuildRSService', ['$resource','config', 
+	function($resource, config) {
 	return $resource(config.server + '/dab', {}, {
 		reload: {
 			method: 'GET',
@@ -200,9 +205,10 @@ services.factory('ApplicationBuildRSService', function($resource, config) {
 			isArray: false
 		}
 	});
-});
+}]);
 
-services.factory('SystemBuildRSService', function($resource, config) {
+services.factory('SystemBuildRSService', ['$resource','config', 
+	function($resource, config) {
 	return $resource(config.server + '/dsb', {}, {
 		reload: {
 			method: 'GET',
@@ -217,9 +223,10 @@ services.factory('SystemBuildRSService', function($resource, config) {
 			isArray: false
 		}
 	});
-});
+}]);
 
-services.factory('ActivityRSService', function($resource, config) {
+services.factory('ActivityRSService', ['$resource','config', 
+	function($resource, config) {
 	return $resource(config.server + '/ac', {}, {
 		reload: {
 			method: 'GET',
@@ -246,9 +253,10 @@ services.factory('ActivityRSService', function($resource, config) {
 			isArray: false
 		}		
 	});
-});
+}]);
 
-services.factory('BuildRSService', function($resource, config) {
+services.factory('BuildRSService', ['$resource','config', 
+	function($resource, config) {
 	return $resource(config.server + '/build', {}, {
 		search: {
 			method: 'POST',
@@ -261,9 +269,9 @@ services.factory('BuildRSService', function($resource, config) {
 			isArray: false
 		}
 	});
-});
+}]);
 
-services.factory('ErrorService', function() {
+services.factory('ErrorService', [function() {
 	var _data = null;
 	var _info = null;
 	
@@ -284,9 +292,10 @@ services.factory('ErrorService', function() {
 			_data = item;
 		}
 	};
-});
+}]);
 
-services.factory('DashboardRSService', function($resource, config) {
+services.factory('DashboardRSService', ['$resource','config', 
+	function($resource, config) {
 	return $resource(config.server + '/db', {}, {
 		get: {
 			method: 'GET',
@@ -309,4 +318,4 @@ services.factory('DashboardRSService', function($resource, config) {
 			isArray: false
 		}
 	});
-});
+}]);

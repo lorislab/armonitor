@@ -1,6 +1,7 @@
-services.factory('RoleAdminService', function($resource, config) {
+services.factory('RoleAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/ad/role', {}, {
-		delete: {
+		remove: {
 			method: 'DELETE',
 			url: config.server + '/ad/role/:guid',
 			params: {guid: '@guid'},
@@ -33,4 +34,4 @@ services.factory('RoleAdminService', function($resource, config) {
 			isArray: true
 		}	
 	});
-});	
+}]);	

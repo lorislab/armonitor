@@ -1,4 +1,5 @@
-controllers.controller('BTSAdminCtrl', function($scope, $routeParams, BTSAdminService) {
+controllers.controller('BTSAdminCtrl', ['$scope','$routeParams','BTSAdminService',
+	function($scope, $routeParams, BTSAdminService) {
 
 	$scope.pswd = {n: null, c: null, o: null};
 	
@@ -31,8 +32,8 @@ controllers.controller('BTSAdminCtrl', function($scope, $routeParams, BTSAdminSe
 		});
 	};
 
-	$scope.delete = function() {
-		BTSAdminService.delete({guid: $routeParams.guid}, function(response) {
+	$scope.remove = function() {
+		BTSAdminService.remove({guid: $routeParams.guid}, function(response) {
 			history.back();
 		});
 	};
@@ -44,9 +45,10 @@ controllers.controller('BTSAdminCtrl', function($scope, $routeParams, BTSAdminSe
 			});
 		}
 	};
-});
+}]);
 
-controllers.controller('BTSSearchAdminCtrl', function($scope, BTSAdminService) {
+controllers.controller('BTSSearchAdminCtrl', ['$scope','BTSAdminService',
+	function($scope, BTSAdminService) {
 
 	BTSAdminService.types({}, function(response) {
 		$scope.types = response;
@@ -75,4 +77,4 @@ controllers.controller('BTSSearchAdminCtrl', function($scope, BTSAdminService) {
 		}
 		return true;
 	};
-});
+}]);

@@ -1,4 +1,5 @@
-controllers.controller('RoleAdminCtrl', function($scope, $routeParams, RoleAdminService) {
+controllers.controller('RoleAdminCtrl', ['$scope','$routeParams','RoleAdminService',
+	function($scope, $routeParams, RoleAdminService) {
 
 
 	if ($routeParams.guid) {
@@ -22,15 +23,16 @@ controllers.controller('RoleAdminCtrl', function($scope, $routeParams, RoleAdmin
 		});
 	};
 
-	$scope.delete = function() {
-		RoleAdminService.delete({guid: $routeParams.guid}, function(response) {
+	$scope.remove = function() {
+		RoleAdminService.remove({guid: $routeParams.guid}, function(response) {
 			history.back();
 		});
 	};
 
-});
+}]);
 
-controllers.controller('RoleSearchAdminCtrl', function($scope, RoleAdminService) {
+controllers.controller('RoleSearchAdminCtrl', ['$scope','RoleAdminService',
+	function($scope, RoleAdminService) {
 
 	function _startup() {
 		RoleAdminService.all({}, function(response) {
@@ -56,4 +58,4 @@ controllers.controller('RoleSearchAdminCtrl', function($scope, RoleAdminService)
 		}
 		return true;
 	};
-});
+}]);

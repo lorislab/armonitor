@@ -1,4 +1,5 @@
-services.factory('MailAdminService', function($resource, config) {
+services.factory('MailAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/ad/mail', {}, {
 		save: {
 			method: 'POST',
@@ -11,9 +12,10 @@ services.factory('MailAdminService', function($resource, config) {
 			isArray: false
 		}
 	});
-});
+}]);
 
-services.factory('TimerAdminService', function($resource, config) {
+services.factory('TimerAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/ad/timer', {}, {
 		start: {
 			method: 'GET',
@@ -41,4 +43,4 @@ services.factory('TimerAdminService', function($resource, config) {
 			isArray: false
 		}
 	});
-});
+}]);

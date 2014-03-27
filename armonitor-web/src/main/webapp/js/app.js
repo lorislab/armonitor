@@ -84,7 +84,7 @@ app.config(['$translateProvider', function($translateProvider) {
 	}]);
 
 // register the interceptor during module config
-app.config(function($httpProvider) {
+app.config(['$httpProvider', function($httpProvider) {
 
 	$httpProvider.responseInterceptors.push(function($q, $location, UserService, ErrorService) {
 
@@ -113,7 +113,7 @@ app.config(function($httpProvider) {
 
 		};
 	});
-});
+}]);
 
 var services = angular.module('armonitor.services', ['ngResource']);
 var controllers = angular.module('armonitor.controllers', []);

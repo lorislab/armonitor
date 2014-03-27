@@ -1,6 +1,7 @@
-services.factory('SystemAdminService', function($resource, config) {
+services.factory('SystemAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/ad/sys', {}, {
-		delete: {
+		remove: {
 			method: 'DELETE',
 			url: config.server + '/ad/sys/:guid',
 			params: {guid: '@guid'},
@@ -82,4 +83,4 @@ services.factory('SystemAdminService', function($resource, config) {
 			isArray: false
 		}		
 	});
-});	
+}]);	

@@ -1,6 +1,7 @@
-services.factory('BTSAdminService', function($resource, config) {
+services.factory('BTSAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/ad/bts', {}, {
-		delete: {
+		remove: {
 			method: 'DELETE',
 			url: config.server + '/ad/bts/:guid',
 			params: {guid: '@guid'},
@@ -44,4 +45,4 @@ services.factory('BTSAdminService', function($resource, config) {
 			isArray: false
 		}		
 	});
-});
+}]);

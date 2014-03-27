@@ -1,6 +1,7 @@
-services.factory('SCMAdminService', function($resource, config) {
+services.factory('SCMAdminService', ['$resource','config',
+	function($resource, config) {
 	return $resource(config.server + '/ad/scm', {}, {
-		delete: {
+		remove: {
 			method: 'DELETE',
 			url: config.server + '/ad/scm/:guid',
 			params: {guid: '@guid'},
@@ -62,4 +63,4 @@ services.factory('SCMAdminService', function($resource, config) {
 			isArray: false
 		}		
 	});
-});
+}]);
