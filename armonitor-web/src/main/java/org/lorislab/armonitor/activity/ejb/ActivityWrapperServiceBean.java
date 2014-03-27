@@ -71,7 +71,14 @@ public class ActivityWrapperServiceBean {
         return create(activity, criteria);
     }
     
-    public ActivityWrapper create(StoreActivity activity, ActivityWrapperCriteria criteria) {        
+    public ActivityWrapper create(ActivityWrapperCriteria criteria, StoreActivity activity) {        
+        if (activity == null) {
+            return create(criteria);
+        }
+        return create(activity, criteria);
+    }
+    
+    private ActivityWrapper create(StoreActivity activity, ActivityWrapperCriteria criteria) {        
         ActivityWrapper result = new ActivityWrapper(activity);
                 
         StoreBuild build = activity.getBuild();        

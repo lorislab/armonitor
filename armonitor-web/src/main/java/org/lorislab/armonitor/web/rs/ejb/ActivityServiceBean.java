@@ -88,7 +88,7 @@ public class ActivityServiceBean {
             criteria.setBuild(build);
             criteria.setSortList(true);
             // load the wrapper
-            ActivityWrapper wrapper = activityService.create(activity, criteria);
+            ActivityWrapper wrapper = activityService.create(criteria, activity);
             return Mapper.map(wrapper, Activity.class);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error create activity (now) for the build {0}, Error: {1}", new Object[]{build, ex.getMessage()});

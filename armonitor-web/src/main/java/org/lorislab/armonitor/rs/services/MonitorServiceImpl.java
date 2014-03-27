@@ -25,6 +25,8 @@ import org.lorislab.armonitor.rs.model.Result;
 import org.lorislab.armonitor.rs.model.Status;
 import org.lorislab.armonitor.rs.service.MonitorService;
 import org.lorislab.armonitor.store.model.StoreBuild;
+import org.lorislab.armonitor.store.model.StoreSystemBuild;
+import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 import org.lorislab.jel.base.resources.ResourceManager;
 import org.lorislab.jel.ejb.exception.ServiceException;
 
@@ -57,7 +59,12 @@ public class MonitorServiceImpl implements MonitorService {
         if (request != null) {
             try {
                 StoreBuild tmp = Mapper.map(request.version, StoreBuild.class);
-                service.deploy(request.key, tmp);
+                // deploy the build
+                StoreSystemBuild ssb = service.deploy(request.key, tmp, StoreSystemBuildType.MANUAL);
+                // send notification
+                if (ssb != null) {
+                    service.sendNotificationForSystemBuild(ssb.getGuid());                                
+                }
                 result.status = Status.OK;
             } catch (ServiceException ex) {
                 result.message = ResourceManager.getMessage(ex.getResourceMessage(), httpRequest.getLocale());
