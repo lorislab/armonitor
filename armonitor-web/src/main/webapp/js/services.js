@@ -31,11 +31,32 @@ services.factory('MessageService', function($resource, config) {
 		}
 	});
 });
-services.factory('CommonService', function($location, SecurityRSService, MessageService, ErrorService) {
-
-	var _base_roles = ["admin", "base"];
+services.factory('UserService', function() {
 	var _user = null;
 	var _roles = null;
+
+	return {
+		clear: function() {
+			_user = null;
+			_roles = null;
+		},		
+		user: function() {
+			return _user;
+		},
+		setUser: function(user) {
+			_user = user;
+		},		
+		roles: function() {
+			return _roles;
+		},
+		setRoles: function(roles) {
+			_roles = roles;
+		}		
+	};
+});
+services.factory('CommonService', function($location, UserService, SecurityRSService, MessageService, ErrorService) {
+
+	var _base_roles = ["admin", "base"];
 
 	MessageService.info({}, function(response) {
 		ErrorService.addInfo(response);
@@ -43,14 +64,14 @@ services.factory('CommonService', function($location, SecurityRSService, Message
 
 	SecurityRSService.user(function(response) {
 		if (response.guid) {
-			_user = response;
+			UserService.setUser(response);
 			_load_roles();
 		}
 	});
 
 	function _load_roles() {
 		SecurityRSService.roles({}, _base_roles, function(response) {
-			_roles = response;
+			UserService.setRoles(response);			
 		});
 	}
 
@@ -64,40 +85,39 @@ services.factory('CommonService', function($location, SecurityRSService, Message
 		update: function(data, callback) {
 			SecurityRSService.save({}, data, function(response) {
 				if (response.guid) {
-					_user = response;
+					UserService.setUser(response);
 					if (callback) {
-						callback(_user);
+						callback(UserService.user());
 					}
 				}
 			});
 		},
-		login: function(data, callback) {
+		login: function(data, callback, error) {
 			SecurityRSService.login({}, data, function(response) {
 				if (response.guid) {
-					_user = response;
+					UserService.setUser(response);
 					_load_roles();
 					if (callback) {
-						callback(_user);
+						callback(UserService.user());
 					}
 				}
 			}, function(response) {
-				if (callback) {
-					callback(_user);
+				if (error) {
+					error(response);
 				}
 			});
 		},
 		logout: function() {
 			SecurityRSService.logout(function(response) {
 				$location.url('/');
-				_user = null;
-				_roles = null;
+				UserService.clear();
 			});
 		},
 		user: function() {
-			return _user;
+			return UserService.user();;
 		},
 		roles: function() {
-			return _roles;
+			return UserService.roles();;
 		},
 		check: function(item) {
 			var found = false, name;
@@ -244,7 +264,7 @@ services.factory('BuildRSService', function($resource, config) {
 });
 
 services.factory('ErrorService', function() {
-	var _data = [];
+	var _data = null;
 	var _info = null;
 	
 	return {
@@ -253,15 +273,15 @@ services.factory('ErrorService', function() {
 		},
 		addInfo: function(data) {
 			_info = data;
-		},		
-		errors: function() {
+		},
+		error: function() {	
 			return _data;
 		},
-		close: function(index) {
-			_data.splice(index, 1);
-		},
-		error: function(item) {
-			_data.push(item);
+		close: function() {
+			_data = null;
+		},		
+		addError: function(item) {
+			_data = item;
 		}
 	};
 });

@@ -4,7 +4,7 @@
 controllers.controller('LoginModalCtrl', function($scope, $modalInstance, CommonService) {
 
 	$scope.msg = {
-		error: false
+		error: null
 	};
 
 	$scope.data = {
@@ -13,15 +13,15 @@ controllers.controller('LoginModalCtrl', function($scope, $modalInstance, Common
 	};
 
 	$scope.login = function() {
-		$scope.msg.error = false;
-		$scope.data.email = 'andrej@ajka-andrej.com';
-		$scope.data.password = 'test';
+		$scope.msg.error = null;
+//		$scope.data.email = 'andrej@ajka-andrej.com';
+//		$scope.data.password = 'test';
 		CommonService.login($scope.data, function(user) {
 			if (user) {
 				$modalInstance.close(user);
-			} else {
-				$scope.msg.error = true;
 			}
+		}, function(response) {
+			$scope.msg.error = response.data;
 		});
 	};
 
@@ -42,7 +42,7 @@ controllers.controller('DashboardCtrl', function($scope, DashboardRSService) {
 	}
 
 	_load();
-	
+
 	function _findEntity(list, guid) {
 		for (var i = 0; i < list.length; i++) {
 			if (list[i].guid === guid) {
@@ -51,7 +51,7 @@ controllers.controller('DashboardCtrl', function($scope, DashboardRSService) {
 		}
 		return null;
 	}
-	
+
 	function _findEntityIndex(list, guid) {
 		for (var i = 0; i < list.length; i++) {
 			if (list[i].guid === guid) {
@@ -60,13 +60,13 @@ controllers.controller('DashboardCtrl', function($scope, DashboardRSService) {
 		}
 		return null;
 	}
-	
+
 	$scope.updateBuild = function(sys) {
 		DashboardRSService.updateBuild({sys: sys}, function(res) {
-			if (res) {				
+			if (res) {
 				var p = _findEntity($scope.dashboard.projects, res.project);
-				if (p !== null)  {
-					var a = _findEntity(p.applications,res.application);
+				if (p !== null) {
+					var a = _findEntity(p.applications, res.application);
 					if (a !== null) {
 						var i = _findEntityIndex(a.systems, res.guid);
 						if (i !== null) {
@@ -88,7 +88,7 @@ controllers.controller('DashboardCtrl', function($scope, DashboardRSService) {
 		DashboardRSService.msg();
 		$scope.dashboard.msg = true;
 	};
-	
+
 });
 controllers.controller('VersionBuildCtrl', function($scope, $routeParams, VersionBuildRSService, BuildRSService, CommonService) {
 
@@ -387,16 +387,17 @@ controllers.controller('ProfileCtrl', function($scope, CommonService, SecurityRS
 });
 
 controllers.controller('ErrorCtrl', function($scope, ErrorService) {
+
 	$scope.$watch(function() {
-		return ErrorService.errors();
+		return ErrorService.error();
 	}, function(newVal, oldVal) {
-		$scope.errors = newVal;
+		$scope.error = newVal;		
 	});
+	
+	$scope.close = function() {
+		ErrorService.close();
+	};	
 
-
-	$scope.close = function(index) {
-		ErrorService.close(index);
-	};
 });
 
 controllers.controller('MenuCtrl', function($scope, $location, $modal, CommonService, ErrorService) {

@@ -26,6 +26,8 @@ import org.lorislab.jel.base.resources.annotations.ResourceKey;
 @ResourceKey
 public enum Errors {
     
+    WRONG_USER_OR_PASSWORD,
+    
     SCM_DELETE_ERROR,
     
     DASHBOARD_LOAD_ERROR,

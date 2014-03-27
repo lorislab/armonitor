@@ -35,6 +35,8 @@ import org.lorislab.armonitor.web.rs.ejb.SecurityServiceBean;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.LoginRequest;
 import org.lorislab.armonitor.web.rs.model.User;
+import org.lorislab.armonitor.web.rs.resources.Errors;
+import org.lorislab.jel.base.exception.SystemException;
 import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
@@ -89,7 +91,7 @@ public class SecurityService {
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User login(LoginRequest request) {
+    public User login(LoginRequest request) throws Exception {
         User result = controller.getUser();
         if (result == null) {
             User tmp = service.getUser(request);
@@ -99,7 +101,10 @@ public class SecurityService {
                     result = controller.setUser(tmp);
                 } catch (ServletException ex) {
                     LOGGER.log(Level.SEVERE, "Error login the user " + tmp.guid, ex);
+                    throw new SystemException(Errors.WRONG_USER_OR_PASSWORD);
                 }
+            } else {
+                throw new SystemException(Errors.WRONG_USER_OR_PASSWORD);
             }
         }
         return result;
