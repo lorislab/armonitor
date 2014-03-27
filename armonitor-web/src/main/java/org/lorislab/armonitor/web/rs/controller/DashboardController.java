@@ -64,14 +64,19 @@ public class DashboardController implements Serializable {
      * @param project the project.
      * @param application the application.
      * @return the dashboard application.
-     * 
+     *
      * @throws Exception if the method fails.
      */
     private DashboardApplication getApplication(String project, String application) throws Exception {
         if (dashboard != null) {
-            DashboardProject p = dashboard.projects.get(project);
-            if (p != null) {
-                return p.applications.get(application);
+            for (DashboardProject p : dashboard.projects) {
+                if (p != null) {
+                    for (DashboardApplication a : p.applications) {
+                        if (a.guid.equals(application)) {
+                            return a;
+                        }
+                    }
+                }
             }
         }
         return null;
@@ -79,7 +84,7 @@ public class DashboardController implements Serializable {
 
     /**
      * Disable the message in the dashboard.
-     * 
+     *
      * @throws Exception if the method fails.
      */
     public void disableMsg() {
@@ -93,7 +98,7 @@ public class DashboardController implements Serializable {
      *
      * @param system the system GUID.
      * @return the updated dashboard application system.
-     * 
+     *
      * @throws Exception if the method fails.
      */
     public DashboardApplicationSystem updateSystemBuild(String system) throws Exception {
@@ -109,7 +114,7 @@ public class DashboardController implements Serializable {
      * Gets the dashboard.
      *
      * @return the dashboard.
-     * 
+     *
      * @throws Exception if the method fails.
      */
     public Dashboard getDashboard() throws Exception {
@@ -123,7 +128,7 @@ public class DashboardController implements Serializable {
      * Reloads the dashboard.
      *
      * @return the dashboard.
-     * 
+     *
      * @throws Exception if the method fails.
      */
     public Dashboard reload() throws Exception {

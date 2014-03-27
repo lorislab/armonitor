@@ -42,13 +42,38 @@ controllers.controller('DashboardCtrl', function($scope, DashboardRSService) {
 	}
 
 	_load();
-
+	
+	function _findEntity(list, guid) {
+		for (var i = 0; i < list.length; i++) {
+			if (list[i].guid === guid) {
+				return list[i];
+			}
+		}
+		return null;
+	}
+	
+	function _findEntityIndex(list, guid) {
+		for (var i = 0; i < list.length; i++) {
+			if (list[i].guid === guid) {
+				return i;
+			}
+		}
+		return null;
+	}
+	
 	$scope.updateBuild = function(sys) {
 		DashboardRSService.updateBuild({sys: sys}, function(res) {
-			if (res) {
-				var p = $scope.dashboard.projects[res.project];
-				var a = p.applications[res.application];
-				a.systems[res.guid] = res;
+			if (res) {				
+				var p = _findEntity($scope.dashboard.projects, res.project);
+				if (p !== null)  {
+					var a = _findEntity(p.applications,res.application);
+					if (a !== null) {
+						var i = _findEntityIndex(a.systems, res.guid);
+						if (i !== null) {
+							a.systems[i] = res;
+						}
+					}
+				}
 			}
 		});
 	};
@@ -63,13 +88,7 @@ controllers.controller('DashboardCtrl', function($scope, DashboardRSService) {
 		DashboardRSService.msg();
 		$scope.dashboard.msg = true;
 	};
-
-	$scope.getProjects = function() {
-		if ($scope.dashboard) {
-			return $scope.dashboard.projects;
-		}
-		return [];
-	};
+	
 });
 controllers.controller('VersionBuildCtrl', function($scope, $routeParams, VersionBuildRSService, BuildRSService, CommonService) {
 

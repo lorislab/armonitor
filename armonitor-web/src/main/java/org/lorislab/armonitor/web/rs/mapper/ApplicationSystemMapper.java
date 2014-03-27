@@ -45,6 +45,7 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         result.n = data.isNew();
         result.v = data.getVersion();
         result.key = data.getKey();
+        result.index = data.getIndex();
         return result;
     }
 
@@ -61,6 +62,7 @@ public class ApplicationSystemMapper implements MapperService<StoreSystem, Appli
         entity.setLink(data.link);
         entity.setDomain(data.domain);
         entity.setClassification(data.clazz);
+        entity.setIndex(data.index);        
         return entity;
     }
 

@@ -18,19 +18,19 @@
 
 <div class="alert alert-info alert-dismissable" data-ng-hide="dashboard.msg">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true"  ng-click="closeMsg()">&times;</button>
-	Welcome to Application release monitor by <a class="alert-link" href="http://www.lorislabr.org">lorislab.org</a> community.
+	Welcome to Application release monitor by <a class="alert-link" href="http://www.lorislab.org">lorislab.org</a> community.
 </div>
 
 <div data-ng-show="dashboard">
-	<div data-ng-repeat="(pi,p) in getProjects()">
+	<div data-ng-repeat="p in dashboard.projects | orderBy:['index','name']">
 
 		<h2>{{p.name}}</h2>
-		<div data-ng-repeat="(ai,a) in p.applications">
+		<div data-ng-repeat="a in p.applications | orderBy:['index','name']">
 			<a href="#/appbuild/{{a.guid}}">
 				<h3><i class="icon-beaker"></i> {{a.name}}</h3>		
 			</a>
 			<div class="row">
-				<div class="col-lg-4" data-ng-repeat="(si,s) in a.systems">
+				<div class="col-lg-4" data-ng-repeat="s in a.systems | orderBy:['index','name']">
 					<div class="panel" data-ng-class="{ 'panel-success': s.systemBuild !== null, 'panel-danger': s.systemBuild === null}">
 
 						<div class="panel-heading" style="min-height: 140px">

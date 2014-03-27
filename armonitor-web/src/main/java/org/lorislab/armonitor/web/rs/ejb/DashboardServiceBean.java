@@ -95,7 +95,7 @@ public class DashboardServiceBean {
         try {
             result = new Dashboard();
             List<StoreProject> tmp = service.getDashboardProjects();
-            result.projects = Mapper.convert(tmp, DashboardProject.class);
+            result.projects = Mapper.set(tmp, DashboardProject.class);
             result.date = new Date();
             if (tmp != null) {
                 result.size = tmp.size();
@@ -117,10 +117,14 @@ public class DashboardServiceBean {
     public Map<String, DashboardApplicationSystem> updateSystems(Dashboard dashboard) throws Exception {
         Map<String, DashboardApplicationSystem> systems = new HashMap<>();
         if (dashboard.projects != null) {
-            for (DashboardProject project : dashboard.projects.values()) {
+            for (DashboardProject project : dashboard.projects) {
                 if (project != null && project.applications != null) {
-                    for (DashboardApplication app : project.applications.values()) {
-                        systems.putAll(app.systems);
+                    for (DashboardApplication app : project.applications) {
+                        if (app != null && app.systems != null) {
+                            for (DashboardApplicationSystem sys : app.systems) {
+                                systems.put(sys.guid, sys);
+                            }
+                        }
                     }
                 }
             }

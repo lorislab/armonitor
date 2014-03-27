@@ -37,7 +37,8 @@ public class DashboardProjectMapper implements MapperService<StoreProject, Dashb
         DashboardProject result = new DashboardProject();
         result.guid = data.getGuid();
         result.name = data.getName();
-        result.applications = Mapper.convert(data.getApplications(), DashboardApplication.class, profiles);
+        result.index = data.getIndex();
+        result.applications = Mapper.map(data.getApplications(), DashboardApplication.class, profiles);
         return result;
     }
 

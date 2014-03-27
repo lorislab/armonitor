@@ -55,4 +55,8 @@ public class DashboardApplicationSystem {
      * The dashboard system build.
      */
     public DashboardSystemBuild systemBuild;
+    /**
+     * The index.
+     */
+    public Integer index;    
 }

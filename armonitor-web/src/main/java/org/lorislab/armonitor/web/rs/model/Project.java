@@ -45,5 +45,9 @@ public class Project {
     /**
      * The version.
      */
-    public Integer v;    
+    public Integer v;   
+    /**
+     * The index.
+     */
+    public Integer index;      
 }

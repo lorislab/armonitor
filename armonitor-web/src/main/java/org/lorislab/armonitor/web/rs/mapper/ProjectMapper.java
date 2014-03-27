@@ -38,7 +38,8 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
         result.btsId = data.getBtsId();
         result.enabled = data.isEnabled();
         result.n = data.isNew();
-        result.v = data.getVersion();        
+        result.v = data.getVersion();    
+        result.index = data.getIndex();
         return result;
     }
 
@@ -50,6 +51,7 @@ public class ProjectMapper implements MapperService<StoreProject, Project> {
         entity.setName(data.name);
         entity.setBtsId(data.btsId);
         entity.setEnabled(data.enabled);
+        entity.setIndex(data.index);
         return entity;
     }
 

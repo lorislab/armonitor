@@ -19,7 +19,6 @@ import java.util.Set;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreApplication;
-import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.DashboardApplication;
 import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
 
@@ -38,10 +37,11 @@ public class DashboardApplicationMapper implements MapperService<StoreApplicatio
         DashboardApplication result = new DashboardApplication();
         result.guid = data.getGuid();
         result.name = data.getName();
+        result.index = data.getIndex();
         if (data.getProject() != null) {
             result.project = data.getProject().getGuid();
         }
-        result.systems = Mapper.convert(data.getSystems(), DashboardApplicationSystem.class, profiles);       
+        result.systems = Mapper.map(data.getSystems(), DashboardApplicationSystem.class, profiles);       
         return result;
     }
 

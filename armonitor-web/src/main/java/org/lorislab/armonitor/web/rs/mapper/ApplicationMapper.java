@@ -43,7 +43,8 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         result.type = data.getType();
         result.n = data.isNew();
         result.v = data.getVersion();
-        result.key = data.getKey();        
+        result.key = data.getKey();    
+        result.index = data.getIndex();
         return result;
     }
 
@@ -58,7 +59,8 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         entity.setScmBranches(data.scmBranches);
         entity.setScmTags(data.scmTags);
         entity.setRepoLink(data.repoLink);
-        entity.setType(data.type);        
+        entity.setType(data.type);   
+        entity.setIndex(data.index);
         return entity;
     }
 

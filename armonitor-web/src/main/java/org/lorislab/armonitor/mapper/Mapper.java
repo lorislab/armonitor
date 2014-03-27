@@ -255,6 +255,49 @@ public final class Mapper {
     }
 
     /**
+     * Maps the list of the entities to the set of models.
+     *
+     * @param <T> the model type.
+     * @param <E> the entity type.
+     * @param data the set of entities.
+     * @param clazz the model class.
+     * @param profiles the mapping profile.
+     * @return the list of models.
+     */
+    public static <T, E> Set<T> set(List<E> data, Class<T> clazz, String... profiles) {
+        return set(data, clazz, profile(profiles));
+    }   
+    
+    /**
+     * Maps the list of the entities to the set of models.
+     *
+     * @param <T> the model type.
+     * @param <E> the entity type.
+     * @param data the set of entities.
+     * @param clazz the model class.
+     * @param profiles the mapping profile.
+     * @return the list of models.
+     */
+    public static <T, E> Set<T> set(List<E> data, Class<T> clazz, Set<String> profiles) {
+        Set<T> result = null;
+        if (data != null) {
+            result = new HashSet<>();
+            if (!data.isEmpty()) {
+                MapperService<E, T> mapper = MAPPER.get(data.get(0).getClass()).get(clazz);
+                for (E item : data) {
+                    if (item != null) {
+                        T tmp = map(item, mapper, profiles);
+                        if (tmp != null) {
+                            result.add(tmp);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
+    /**
      * Mapping the entity to the model.
      *
      * @param <T> the type of the model.

@@ -66,4 +66,8 @@ public class Application {
      * The version.
      */
     public Integer v;
+    /**
+     * The index.
+     */
+    public Integer index;      
 }
