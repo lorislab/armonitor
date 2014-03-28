@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreApplication;
 
@@ -24,6 +25,7 @@ import org.lorislab.armonitor.store.model.StoreApplication;
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class ApplicationNameMapper implements MapperService<StoreApplication, String> {
 
     /**

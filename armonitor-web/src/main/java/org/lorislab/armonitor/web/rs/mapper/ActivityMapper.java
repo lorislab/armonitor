@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.activity.wrapper.ActivityWrapper;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.mapper.MapperService;
@@ -24,13 +25,14 @@ import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.web.rs.model.Activity;
 import org.lorislab.armonitor.web.rs.model.ActivityChange;
 import org.lorislab.armonitor.web.rs.model.Build;
-import org.lorislab.armonitor.web.rs.util.LinkUtil;
+import org.lorislab.armonitor.util.LinkUtil;
 
 /**
  * The activity mapper.
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class ActivityMapper implements MapperService<ActivityWrapper, Activity> {
 
     /**

@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBTSystem;
 
@@ -24,6 +25,7 @@ import org.lorislab.armonitor.store.model.StoreBTSystem;
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class BTSystemNameMapper implements MapperService<StoreBTSystem, String> {
 
     /**

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+    
+	<parent>
+		<groupId>org.lorislab.armonitor</groupId>
+		<artifactId>armonitor</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+	
+	<name>armonitor-ear</name>
+	<artifactId>armonitor-ear</artifactId>
+	<packaging>ear</packaging>
+
+	<dependencies>  	
+		<dependency>
+			<groupId>org.lorislab.armonitor</groupId>
+			<artifactId>armonitor-ejb</artifactId>
+			<version>${project.version}</version>
+			<type>ejb</type>
+			<exclusions>
+				<exclusion>
+					<artifactId>resteasy-jackson-provider</artifactId>
+					<groupId>org.jboss.resteasy</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>resteasy-jaxrs</artifactId>
+					<groupId>org.jboss.resteasy</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.lorislab.armonitor</groupId>
+			<artifactId>armonitor-web</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>		
+	</dependencies>
+	
+	<build>
+		<finalName>armonitor</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<version>6</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>					
+					<displayName>armonitor</displayName>
+					<modules>        
+						<ejbModule>
+							<groupId>org.lorislab.armonitor</groupId>
+							<artifactId>armonitor-ejb</artifactId>
+							<bundleFileName>armonitor-ejb.jar</bundleFileName>
+						</ejbModule>                                        
+						<webModule>
+							<groupId>org.lorislab.armonitor</groupId>
+							<artifactId>armonitor-web</artifactId>
+							<bundleFileName>armonitor-web.war</bundleFileName>
+							<contextRoot>armonitor</contextRoot>
+						</webModule> 
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>				
+			</build>
+		</profile>
+		<profile>
+			<id>deploy</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<configuration>
+									<tasks>
+										<copy file="${project.build.directory}/${project.build.finalName}.${project.packaging}" tofile="${server.home.dir}/standalone/deployments/${project.build.finalName}.${project.packaging}" />
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build> 			
+		</profile>
+	</profiles>	
+</project>

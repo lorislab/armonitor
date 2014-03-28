@@ -108,6 +108,7 @@
 								<button id="save" type="submit" class="btn btn-success" data-ng-hide="data.n" ><i class="icon-floppy"></i> Save</button>
 								<button id="save" type="submit" class="btn btn-success" data-ng-show="data.n" ><i class="icon-doc-text"></i> Create</button>
 								<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
+								<button id="notify" type="button" class="btn btn-default" data-ng-disabled="!data.notification || data.n" data-ng-click="notify()" ><i class="icon-mail-alt"></i> Send notification</button>
 								<span style="float: right">
 									<button type="button" class="btn btn-danger" data-ng-disabled="data.n" data-ng-click="delete()"><i class="icon-trash"></i> Delete</button>
 								</span>								

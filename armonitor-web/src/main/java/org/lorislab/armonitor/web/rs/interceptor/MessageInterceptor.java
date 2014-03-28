@@ -50,7 +50,7 @@ public class MessageInterceptor implements MessageBodyWriterInterceptor {
      * Attach the message information to the header.
      */
     @Override
-    public void write(MessageBodyWriterContext context) throws IOException, WebApplicationException {              
+    public void write(MessageBodyWriterContext context) throws IOException, WebApplicationException {           
         ResteasyProviderFactory rpf = ResteasyProviderFactory.getInstance();
         MessageBodyWriter mw = rpf.getMessageBodyWriter(MessageInfo.class, null, null, context.getMediaType());        
         MessageInfo info = controller.getInfo();

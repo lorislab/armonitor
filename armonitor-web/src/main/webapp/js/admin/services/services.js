@@ -1,3 +1,15 @@
+services.factory('NotificationAdminService', ['$resource','config',
+	function($resource, config) {
+	return $resource(config.server + '/ad/notify', {}, {
+		system: {
+			method: 'GET',
+			url: config.server + '/ad/notify/sys/:guid',
+			params: {guid: '@guid'},
+			isArray: false
+		}
+	});
+}]);
+
 services.factory('MailAdminService', ['$resource','config',
 	function($resource, config) {
 	return $resource(config.server + '/ad/mail', {}, {

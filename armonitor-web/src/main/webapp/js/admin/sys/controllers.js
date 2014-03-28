@@ -1,5 +1,5 @@
-controllers.controller('SystemAdminCtrl', ['$scope', '$routeParams', 'SystemAdminService',
-	function($scope, $routeParams, SystemAdminService) {
+controllers.controller('SystemAdminCtrl', ['$scope', '$routeParams', 'SystemAdminService','NotificationAdminService',
+	function($scope, $routeParams, SystemAdminService, NotificationAdminService) {
 
 		if ($routeParams.guid) {
 			SystemAdminService.get({guid: $routeParams.guid}, function(response) {
@@ -39,6 +39,12 @@ controllers.controller('SystemAdminCtrl', ['$scope', '$routeParams', 'SystemAdmi
 				$scope.data = response;
 			});
 		};
+		
+		$scope.notify = function() {
+			NotificationAdminService.system({guid: $routeParams.guid}, function(response) {
+				
+			});			
+		}
 	}]);
 
 controllers.controller('SystemRoleAdminCtrl', ['$scope', '$routeParams', 'SystemAdminService', 'RoleAdminService',

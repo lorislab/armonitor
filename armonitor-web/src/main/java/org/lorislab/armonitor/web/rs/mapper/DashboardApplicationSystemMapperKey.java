@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperKeyService;
 import org.lorislab.armonitor.store.model.StoreSystem;
 
@@ -24,6 +25,7 @@ import org.lorislab.armonitor.store.model.StoreSystem;
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class DashboardApplicationSystemMapperKey implements MapperKeyService<StoreSystem> {
 
     /**

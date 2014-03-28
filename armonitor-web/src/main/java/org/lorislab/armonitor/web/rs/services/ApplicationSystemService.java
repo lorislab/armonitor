@@ -44,7 +44,7 @@ public class ApplicationSystemService {
 
     @EJB
     private ApplicationSystemServiceBean service;
-
+    
     @GET
     @Path("{guid}/role")
     @Produces(MediaType.APPLICATION_JSON)

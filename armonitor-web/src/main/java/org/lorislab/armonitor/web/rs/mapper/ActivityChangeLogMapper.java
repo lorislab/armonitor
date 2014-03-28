@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.activity.wrapper.ActivityChangeLogWrapper;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreActivityLog;
@@ -26,6 +27,7 @@ import org.lorislab.armonitor.web.rs.model.ActivityChangeLog;
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class ActivityChangeLogMapper implements MapperService<ActivityChangeLogWrapper, ActivityChangeLog> {
 
     @Override

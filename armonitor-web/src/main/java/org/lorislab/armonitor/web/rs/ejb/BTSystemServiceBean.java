@@ -15,7 +15,6 @@
  */
 package org.lorislab.armonitor.web.rs.ejb;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

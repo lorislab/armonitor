@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreRole;
 import org.lorislab.armonitor.web.rs.model.Role;
@@ -25,6 +26,7 @@ import org.lorislab.armonitor.web.rs.model.Role;
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class RoleMapper implements MapperService<StoreRole, Role> {
 
     /**

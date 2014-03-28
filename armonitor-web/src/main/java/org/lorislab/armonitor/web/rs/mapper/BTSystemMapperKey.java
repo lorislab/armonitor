@@ -17,6 +17,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperKeyService;
 import org.lorislab.armonitor.store.model.StoreBTSystem;
 
@@ -25,6 +26,7 @@ import org.lorislab.armonitor.store.model.StoreBTSystem;
  * 
  * @author Andrej Petras
  */
+@MetaInfServices
 public class BTSystemMapperKey implements MapperKeyService<StoreBTSystem> {
 
     @Override

@@ -17,18 +17,20 @@ package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.HashMap;
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuildParameter;
 import org.lorislab.armonitor.store.model.enums.StoreBuildParameterType;
 import org.lorislab.armonitor.web.rs.model.Build;
-import org.lorislab.armonitor.web.rs.util.LinkUtil;
+import org.lorislab.armonitor.util.LinkUtil;
 
 /**
  * The build mapper.
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class BuildMapper implements MapperService<StoreBuild, Build> {
 
     /**

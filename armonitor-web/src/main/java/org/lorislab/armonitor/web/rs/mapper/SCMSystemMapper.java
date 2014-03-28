@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
@@ -25,6 +26,7 @@ import org.lorislab.armonitor.web.rs.model.SCMSystem;
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem> {
 
     /**

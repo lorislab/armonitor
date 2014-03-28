@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreUser;
 import org.lorislab.armonitor.web.rs.model.User;
@@ -25,6 +26,7 @@ import org.lorislab.armonitor.web.rs.model.User;
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class UserMapper implements MapperService<StoreUser, User> {
 
     /**

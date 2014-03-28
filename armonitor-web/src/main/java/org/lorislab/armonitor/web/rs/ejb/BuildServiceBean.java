@@ -26,7 +26,7 @@ import org.lorislab.armonitor.store.ejb.StoreBuildServiceBean;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.web.rs.model.Build;
 import org.lorislab.armonitor.web.rs.model.BuildCriteria;
-import org.lorislab.armonitor.web.rs.util.LinkUtil;
+import org.lorislab.armonitor.util.LinkUtil;
 
 /**
  * The build service.

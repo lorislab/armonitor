@@ -16,6 +16,7 @@
 package org.lorislab.armonitor.web.rs.mapper;
 
 import java.util.Set;
+import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.web.rs.model.TimelineBuild;
@@ -25,6 +26,7 @@ import org.lorislab.armonitor.web.rs.model.TimelineBuild;
  * 
  * @author Andrej Petras
  */
+@MetaInfServices
 public class TimelineBuildMapper implements MapperService<StoreBuild, TimelineBuild> {
 
     /**
