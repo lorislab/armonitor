@@ -41,7 +41,7 @@ public final class MonitorClient {
     /**
      * The agent monitor URL.
      */
-    private static final String APP_URL = "armonitor/rs";
+    private static final String APP_URL = "armonitor-rs/rs";
 
     /**
      * The default constructor.

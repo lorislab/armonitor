@@ -35,7 +35,13 @@
 			<artifactId>armonitor-web</artifactId>
 			<version>${project.version}</version>
 			<type>war</type>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.lorislab.armonitor</groupId>
+			<artifactId>armonitor-rs-web</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>				
 	</dependencies>
 	
 	<build>
@@ -59,7 +65,13 @@
 							<artifactId>armonitor-web</artifactId>
 							<bundleFileName>armonitor-web.war</bundleFileName>
 							<contextRoot>armonitor</contextRoot>
-						</webModule> 
+						</webModule>
+						<webModule>
+							<groupId>org.lorislab.armonitor</groupId>
+							<artifactId>armonitor-rs-web</artifactId>
+							<bundleFileName>armonitor-rs-web.war</bundleFileName>
+							<contextRoot>armonitor-rs</contextRoot>
+						</webModule> 						 
 					</modules>
 				</configuration>
 			</plugin>

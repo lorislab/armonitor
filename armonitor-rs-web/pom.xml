@@ -9,8 +9,8 @@
 		<relativePath>../</relativePath>
 	</parent>
 	
-	<name>armonitor-web</name>
-	<artifactId>armonitor-web</artifactId>
+	<name>armonitor-rs-web</name>
+	<artifactId>armonitor-rs-web</artifactId>
 	<packaging>war</packaging>
 
 	<dependencies>  
@@ -33,22 +33,32 @@
 		</dependency>			
 		<dependency>
 			<groupId>org.lorislab.armonitor</groupId>
-			<artifactId>armonitor-mapper</artifactId>
-			<scope>provided</scope>
+			<artifactId>armonitor-rs</artifactId>
 			<version>${project.version}</version>
+			<classifier>rsclient</classifier>
+			<exclusions>
+				<exclusion>
+					<artifactId>armonitor-agent</artifactId>
+					<groupId>org.lorislab.armonitor</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>armonitor-agent-rs</artifactId>
+					<groupId>org.lorislab.armonitor</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.lorislab.armonitor</groupId>
-			<artifactId>armonitor-bts</artifactId>
-			<scope>provided</scope>
+			<artifactId>armonitor-rs</artifactId>
 			<version>${project.version}</version>
-		</dependency>				
-		<dependency>
-			<groupId>org.lorislab.armonitor</groupId>
-			<artifactId>armonitor-scm</artifactId>
 			<scope>provided</scope>
-			<version>${project.version}</version>
-		</dependency>									
+			<exclusions>
+				<exclusion>
+					<artifactId>armonitor-agent</artifactId>
+					<groupId>org.lorislab.armonitor</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>										
 		<!-- JEL -->
 		<dependency>
 			<groupId>org.lorislab.jel</groupId>
@@ -105,79 +115,7 @@
 			<groupId>org.jboss.spec.javax.servlet</groupId>
 			<artifactId>jboss-servlet-api_3.0_spec</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		<!-- META-INF SERVICES -->
-		<dependency>
-			<groupId>org.kohsuke.metainf-services</groupId>
-			<artifactId>metainf-services</artifactId>
-			<optional>true</optional>
 		</dependency>			
-	</dependencies>
-	
-	<build>		
-		<finalName>armonitor-web</finalName>
-		<plugins>
-			<plugin>
-				<groupId>com.google.code.maven-replacer-plugin</groupId>
-				<artifactId>replacer</artifactId>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>                    
-					</execution>
-				</executions>
-				<configuration>
-					<regex>true</regex>
-					<regexFlags>
-						<regexFlag>DOTALL</regexFlag>
-					</regexFlags>
-					<file>${basedir}/src/main/webapp/index.html</file>
-					<outputFile>target/${project.build.finalName}/index.html</outputFile>
-					<tokenValueMap>${basedir}/src/config/tokens.conf</tokenValueMap>
-				</configuration>				
-			</plugin>			 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<warSourceExcludes>lib/angular/i18n/*,lib/**/*.map,lib/**/*.txt,lib/**/*.json,js/*.js,js/admin/**/*.js,css/*.css,index.html</warSourceExcludes>
-					<!--<packagingExcludes>css/${project.build.finalName}.css,js/${project.build.finalName}.js</packagingExcludes>-->
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.samaxes.maven</groupId>
-				<artifactId>minify-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>default-minify</id>
-						<goals>
-							<goal>minify</goal>
-						</goals>						
-						<configuration>
-							<skipMinify>true</skipMinify>
-							<cssSourceDir>css</cssSourceDir>
-							<cssSourceIncludes>
-								<cssSourceInclude>**</cssSourceInclude>
-							</cssSourceIncludes>
-							<cssSourceExcludes>
-								<cssSourceExclude>**/*.min.css</cssSourceExclude>
-							</cssSourceExcludes>
-							<cssFinalFile>${project.build.finalName}.css</cssFinalFile>
-							<jsSourceDir>js</jsSourceDir>
-							<jsSourceIncludes>
-								<jsSourceInclude>**</jsSourceInclude>
-							</jsSourceIncludes>
-							<jsSourceExcludes>
-								<jsSourceExclude>**/*.min.js</jsSourceExclude>
-							</jsSourceExcludes>
-							<jsFinalFile>${project.build.finalName}.js</jsFinalFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>	
-		</plugins>
-	</build>  
+	</dependencies>		  
 			
 </project>

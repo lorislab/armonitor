@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.rs.services;
+package org.lorislab.armonitor.web.rs;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

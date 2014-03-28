@@ -47,6 +47,7 @@
 		<module>armonitor-bts</module>
 		<module>armonitor-scm</module>		
 		<module>armonitor-rs</module>
+		<module>armonitor-rs-web</module>
 		<module>armonitor-web</module>
 		<module>armonitor-ejb</module>
 		<module>armonitor-ear</module>
