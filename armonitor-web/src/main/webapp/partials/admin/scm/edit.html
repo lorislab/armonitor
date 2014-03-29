@@ -88,6 +88,24 @@
 						</div>
 
 						<div class="control-group">
+							<label class="control-label" for="link">Link</label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="icon-pencil"></i></span>
+								<input id="link" type="text" class="form-control" placeholder="The link to the SCM system" data-ng-model="data.link" required>
+							</div>
+						</div>
+						
+						<h6>
+							<span class="label label-info">${revision}</span>
+							<span class="label label-info">${user}</span> 
+							<span class="label label-info">${scmRepo}</span> 
+							<span class="label label-info">${scmTrunk}</span> 
+							<span class="label label-info">${scmTags}</span> 
+							<span class="label label-info">${scmBranches}</span> 
+								dynamic keys.
+						</h6>
+						
+						<div class="control-group">
 							<label class="control-label" for="save"></label>
 							<div class="controls">
 								<button id="save" type="submit" class="btn btn-success" data-ng-hide="data.n" ><i class="icon-floppy"></i> Save</button>

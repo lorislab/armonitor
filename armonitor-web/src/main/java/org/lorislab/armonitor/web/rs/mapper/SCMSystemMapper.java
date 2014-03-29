@@ -45,6 +45,7 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
         result.n = data.isNew();
         result.name = data.getName();
         result.v = data.getVersion();
+        result.link = data.getLink();
         return result;
     }
 
@@ -60,6 +61,7 @@ public class SCMSystemMapper implements MapperService<StoreSCMSystem, SCMSystem>
         entity.setReadTimeout(data.readTimeout);
         entity.setType(data.type);   
         entity.setName(data.name);
+        entity.setLink(data.link);
         return entity;
     }
 

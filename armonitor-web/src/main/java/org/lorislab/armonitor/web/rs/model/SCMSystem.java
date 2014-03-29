@@ -62,5 +62,9 @@ public class SCMSystem {
     /**
      * The version.
      */
-    public Integer v;    
+    public Integer v;
+    /**
+     * The link.
+     */
+    public String link;    
 }

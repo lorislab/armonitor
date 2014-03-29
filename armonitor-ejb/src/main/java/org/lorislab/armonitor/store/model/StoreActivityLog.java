@@ -76,6 +76,12 @@ public class StoreActivityLog extends Persistent {
     private String revision;
 
     /**
+     * The message.
+     */
+    @Column(name = "C_MESSAGE")
+    private String message;
+    
+    /**
      * Gets the date.
      *
      * @return the date.
@@ -92,12 +98,6 @@ public class StoreActivityLog extends Persistent {
     public void setDate(Date date) {
         this.date = date;
     }
-
-    /**
-     * The message.
-     */
-    @Column(name = "C_MESSAGE")
-    private String message;
 
     /**
      * Gets the user.
