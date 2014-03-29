@@ -23,6 +23,10 @@ package org.lorislab.armonitor.process.resources;
  */
 public enum ErrorKeys {
     
+    ERROR_SEND_EMAIL,
+    
+    ERROR_EMAIL_IS_NULL,
+    
     NO_SYSTEM_BUILD_FOR_SYSTEM_FOUND, 
     
     NO_SYSTEM_BUILD_FOUND, 

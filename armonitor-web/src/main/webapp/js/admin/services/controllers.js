@@ -1,5 +1,5 @@
-controllers.controller('TimerAdminCtrl', ['$scope','TimerAdminService','CommonService',
-	function($scope, TimerAdminService, CommonService) {
+controllers.controller('TimerAdminCtrl', ['$scope','TimerAdminService',
+	function($scope, TimerAdminService) {
 
 	TimerAdminService.get({}, function(response) {
 		$scope.data = response;
@@ -16,7 +16,6 @@ controllers.controller('TimerAdminCtrl', ['$scope','TimerAdminService','CommonSe
 	$scope.save = function() {
 		TimerAdminService.save({}, $scope.data, function(response) {
 			$scope.data = response;
-			CommonService.updateMsg();
 			_status();
 		});
 	};
@@ -34,8 +33,8 @@ controllers.controller('TimerAdminCtrl', ['$scope','TimerAdminService','CommonSe
 	};
 }]);
 
-controllers.controller('MailAdminCtrl', ['$scope','MailAdminService','CommonService',
-	function($scope, MailAdminService, CommonService) {
+controllers.controller('MailAdminCtrl', ['$scope','MailAdminService',
+	function($scope, MailAdminService) {
 
 	MailAdminService.get({}, function(response) {
 		$scope.data = response;
@@ -44,7 +43,13 @@ controllers.controller('MailAdminCtrl', ['$scope','MailAdminService','CommonServ
 	$scope.save = function() {
 		MailAdminService.save({}, $scope.data, function(response) {
 			$scope.data = response;
-			CommonService.updateMsg();
 		});
 	};
+	
+	$scope.test = function() {
+		MailAdminService.test({email: $scope.test.email}, function(response) {
+			// do nothing
+		});
+		$scope.test.email = null;
+	};	
 }]);

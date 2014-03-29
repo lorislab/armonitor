@@ -30,6 +30,7 @@ import org.lorislab.armonitor.config.ejb.ConfigurationServiceBean;
 import org.lorislab.armonitor.mail.ejb.MailServiceBean;
 import org.lorislab.armonitor.mail.model.MailConfig;
 import org.lorislab.armonitor.mail.model.MailTemplateResource;
+import org.lorislab.armonitor.process.ejb.TestServiceBean;
 import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
@@ -41,12 +42,24 @@ import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 @CdiServiceMethod
 public class MailService {
     
+    /**
+     * The configuration service.
+     */
     @EJB
     private ConfigurationServiceBean configService;
     
+    /**
+     * The mail service.
+     */
     @EJB
     private MailServiceBean mailService;
     
+    @EJB
+    private TestServiceBean testService;
+    
+    /**
+     * The HTTP SERVLET request.
+     */
     @Context
     private HttpServletRequest request;
     
@@ -83,5 +96,11 @@ public class MailService {
     @Consumes(MediaType.APPLICATION_JSON)
     public MailConfig setConfig(MailConfig jiraConfig) {
         return configService.setConfiguration(jiraConfig);
-    }    
+    }   
+    
+    @Path("test/{email}")
+    @GET
+    public void test(@PathParam("email") String email) throws Exception {
+        testService.sendTestEmail(email);
+    }      
 }

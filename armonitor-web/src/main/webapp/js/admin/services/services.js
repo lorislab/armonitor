@@ -22,7 +22,13 @@ services.factory('MailAdminService', ['$resource','config',
 			method: 'GET',
 			url: config.server + '/ad/mail/cf',
 			isArray: false
-		}
+		},
+		test: {
+			method: 'GET',
+			url: config.server + '/ad/mail/test/:email',
+			params: {email: '@email'},
+			isArray: false
+		}		
 	});
 }]);
 
