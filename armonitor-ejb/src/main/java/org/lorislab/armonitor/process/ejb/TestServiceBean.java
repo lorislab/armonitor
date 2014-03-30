@@ -83,6 +83,12 @@ public class TestServiceBean {
     private StoreAgentServiceBean agentService;
 
     /**
+     * The external system service.
+     */
+    @EJB
+    private ExternalSystemServiceBean externalService;
+    
+    /**
      * Gets the agent services list.
      *
      * @param guid the GUID of the agent.
@@ -147,7 +153,7 @@ public class TestServiceBean {
             bc.setPassword(bts.getPassword());
             bc.setAuth(bts.isAuth());
             bc.setType(bts.getType());
-            BtsService.testConnection(bc);
+            externalService.testConnection(bc);
         } catch (Exception ex) {
             throw new ServiceException(ErrorKeys.ERROR_CREATE_BT_CONNECTION, guid, ex, bts.getServer(), ex.getMessage());
         }
@@ -174,7 +180,7 @@ public class TestServiceBean {
             criteria.setPassword(scm.getPassword());
             criteria.setReadTimeout(scm.getReadTimeout());
             criteria.setConnectionTimeout(scm.getConnectionTimeout());
-            ScmService.testConnection(criteria);
+            externalService.testConnection(criteria);
         } catch (Exception ex) {
             throw new ServiceException(ErrorKeys.ERROR_CREATE_SCM_CONNECTION, guid, ex, scm.getServer(), ex.getMessage());
         }
@@ -214,7 +220,7 @@ public class TestServiceBean {
             bc.setPassword(bts.getPassword());
             bc.setAuth(bts.isAuth());
             bc.setType(bts.getType());
-            BtsService.testProjectAccess(bc);
+            externalService.testProjectAccess(bc);
         } catch (Exception ex) {
             throw new ServiceException(ErrorKeys.ERROR_CREATE_BT_CONNECTION, guid, ex, bts.getServer(), ex.getMessage());
         }
@@ -236,8 +242,8 @@ public class TestServiceBean {
             criteria.setUser(scm.getUser());
             criteria.setPassword(scm.getPassword());
             criteria.setReadTimeout(scm.getReadTimeout());
-            criteria.setConnectionTimeout(scm.getConnectionTimeout());
-            ScmService.testRepository(criteria);
+            criteria.setConnectionTimeout(scm.getConnectionTimeout());            
+            externalService.testRepository(criteria);
         } catch (Exception ex) {
             throw new ServiceException(ErrorKeys.ERROR_CREATE_SCM_CONNECTION, guid, ex, scm.getServer(), ex.getMessage());
         }

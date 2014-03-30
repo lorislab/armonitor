@@ -80,95 +80,99 @@ public class JiraBtsServiceClient implements BtsServiceClient {
     public BtsResult getIssues(BtsCriteria criteria) throws Exception {
         BtsResult result = new BtsResult();
 
-        boolean first = false;
-        StringBuilder jql = new StringBuilder();
+        try {
+            boolean first = false;
+            StringBuilder jql = new StringBuilder();
 
-        // version
-        if (criteria.getVersion() != null) {
-            if (first) {
-                jql.append(" and ");
+            // version
+            if (criteria.getVersion() != null) {
+                if (first) {
+                    jql.append(" and ");
+                }
+                jql.append("fixVersion = \"").append(criteria.getVersion()).append('"');
+                first = true;
             }
-            jql.append("fixVersion = \"").append(criteria.getVersion()).append('"');
-            first = true;
+
+            // project
+            if (criteria.getProject() != null) {
+                if (first) {
+                    jql.append(" and ");
+                }
+                jql.append("project = ").append(criteria.getProject());
+                first = true;
+            }
+
+            // ids
+            if (criteria.getIds() != null && !criteria.getIds().isEmpty()) {
+                if (first) {
+                    jql.append(" and ");
+                }
+                jql.append("id in (");
+                boolean ff = false;
+                for (String id : criteria.getIds()) {
+                    if (ff) {
+                        jql.append(',');
+                    }
+                    jql.append(id);
+                    ff = true;
+                }
+                jql.append(')');
+            }
+
+            // id
+            if (criteria.getId() != null) {
+                if (first) {
+                    jql.append(" and ");
+                }
+                jql.append("id = ");
+                jql.append(criteria.getId());
+            }
+
+            LOGGER.log(Level.INFO, "Jira criteria: {0}", jql.toString());
+            // create the client
+            JIRAClient btsClient = new JIRAClient(criteria.getServer(), criteria.getUser(), criteria.getPassword(), criteria.isAuth());
+            SearchClient search = btsClient.createSearchClient();
+
+            SearchCriteria sc = new SearchCriteria();
+            sc.setJql(jql.toString());
+            sc.setFields(FIELDS);
+            sc.setMaxResults(100);
+
+            // search
+            SearchResult sr;
+            do {
+                sr = search.search(sc);
+
+                for (Issue issue : sr.getIssues()) {
+                    BtsIssue i = new BtsIssue();
+                    i.setId(issue.getKey());
+                    Fields fields = issue.getFields();
+                    if (fields.getAssignee() != null) {
+                        i.setAssignee(fields.getAssignee().getDisplayName());
+                    }
+                    if (fields.getResolution() != null) {
+                        i.setResolution(fields.getResolution().getName());
+                    } else {
+                        i.setResolution(DEFAULT_RESOLUTION);
+                    }
+                    i.setSummary(fields.getSummary());
+
+                    if (fields.getParent() != null) {
+                        i.setParent(fields.getParent().getKey());
+                    }
+
+                    if (fields.getIssuetype() != null) {
+                        i.setType(fields.getIssuetype().getName());
+                    }
+                    result.addIssue(i);
+                }
+
+                sc.setStartAt(sc.getStartAt() + sr.getMaxResults());
+            } while (sc.getStartAt() < sr.getTotal());
+
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error reading the issue information from JIRA. {0}", ex.getMessage());
         }
-
-        // project
-        if (criteria.getProject() != null) {
-            if (first) {
-                jql.append(" and ");
-            }
-            jql.append("project = ").append(criteria.getProject());
-            first = true;
-        }
-
-        // ids
-        if (criteria.getIds() != null && !criteria.getIds().isEmpty()) {
-            if (first) {
-                jql.append(" and ");
-            }
-            jql.append("id in (");
-            boolean ff = false;
-            for (String id : criteria.getIds()) {
-                if (ff) {
-                    jql.append(',');
-                }
-                jql.append(id);
-                ff = true;
-            }
-            jql.append(')');
-        }
-
-        // id
-        if (criteria.getId() != null) {
-            if (first) {
-                jql.append(" and ");
-            }
-            jql.append("id = ");
-            jql.append(criteria.getId());
-        }
-
-        LOGGER.log(Level.INFO, "Jira criteria: {0}", jql.toString());
-        // create the client
-        JIRAClient btsClient = new JIRAClient(criteria.getServer(), criteria.getUser(), criteria.getPassword(), criteria.isAuth());
-        SearchClient search = btsClient.createSearchClient();
-
-        SearchCriteria sc = new SearchCriteria();
-        sc.setJql(jql.toString());
-        sc.setFields(FIELDS);
-        sc.setMaxResults(100);
-
-        // search
-        SearchResult sr;
-        do {
-            sr = search.search(sc);
-
-            for (Issue issue : sr.getIssues()) {
-                BtsIssue i = new BtsIssue();
-                i.setId(issue.getKey());
-                Fields fields = issue.getFields();
-                if (fields.getAssignee() != null) {
-                    i.setAssignee(fields.getAssignee().getDisplayName());
-                }
-                if (fields.getResolution() != null) {
-                    i.setResolution(fields.getResolution().getName());
-                } else {
-                    i.setResolution(DEFAULT_RESOLUTION);
-                }
-                i.setSummary(fields.getSummary());
-
-                if (fields.getParent() != null) {
-                    i.setParent(fields.getParent().getKey());
-                }
-
-                if (fields.getIssuetype() != null) {
-                    i.setType(fields.getIssuetype().getName());
-                }
-                result.addIssue(i);
-            }
-
-            sc.setStartAt(sc.getStartAt() + sr.getMaxResults());
-        } while (sc.getStartAt() < sr.getTotal());
-
         return result;
     }
 
@@ -199,21 +203,21 @@ public class JiraBtsServiceClient implements BtsServiceClient {
      */
     @Override
     public void testProjectAccess(BtsCriteria criteria) throws Exception {
-        
+
         // create the client
         JIRAClient btsClient = new JIRAClient(criteria.getServer(), criteria.getUser(), criteria.getPassword(), criteria.isAuth());
         MyPermissionsClient client = btsClient.createMyPermissionsClient();
         Permissions per = client.getPermissions(criteria.getProject(), null, null, null);
-        
+
         boolean test = false;
-        
+
         if (per != null && per.getPermissions() != null) {
             Map<String, Permission> tmp = per.getPermissions();
             test = tmp.containsKey("BROWSE");
         }
-        
+
         if (!test) {
             throw new Exception("No browse access to the project " + criteria.getProject());
         }
-    }    
+    }
 }

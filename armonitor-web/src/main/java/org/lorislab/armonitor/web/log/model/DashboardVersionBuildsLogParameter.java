@@ -19,27 +19,25 @@ package org.lorislab.armonitor.web.log.model;
 import java.util.ArrayList;
 import java.util.List;
 import org.kohsuke.MetaInfServices;
-import org.lorislab.armonitor.web.rs.model.DashboardSystemBuilds;
+import org.lorislab.armonitor.web.rs.model.DashboardVersionBuilds;
 import org.lorislab.jel.log.parameters.ClassLogParameter;
 
 /**
- * The dashboard log parameter.
+ * The dashboard version builds log parameter.
  * 
  * @author Andrej Petras
  */
 @MetaInfServices
-public class DashboardSystemLogParameter implements ClassLogParameter {
-
+public class DashboardVersionBuildsLogParameter implements ClassLogParameter {
     /**
      * {@inheritDoc}
      */
     @Override
     public List<Class<?>> getClasses() {
         List<Class<?>> result = new ArrayList<>();
-        result.add(DashboardSystemBuilds.class);
+        result.add(DashboardVersionBuilds.class);
         return result;
     }
-
     /**
      * {@inheritDoc}
      */
@@ -47,13 +45,13 @@ public class DashboardSystemLogParameter implements ClassLogParameter {
     public boolean isResult() {
         return true;
     }
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public Object getObject(Object parameter) {   
-        DashboardSystemBuilds tmp = (DashboardSystemBuilds) parameter;
+    public Object getObject(Object parameter) {
+        DashboardVersionBuilds tmp = (DashboardVersionBuilds) parameter;
         return parameter.getClass().getSimpleName() + ":" + tmp.guid;
     }
+    
 }

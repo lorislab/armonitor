@@ -37,11 +37,10 @@ import org.lorislab.armonitor.activity.model.ActivityType;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
 import org.lorislab.armonitor.bts.model.BtsIssue;
 import org.lorislab.armonitor.bts.model.BtsResult;
-import org.lorislab.armonitor.bts.service.BtsService;
+import org.lorislab.armonitor.process.ejb.ExternalSystemServiceBean;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.model.ScmLog;
 import org.lorislab.armonitor.scm.model.ScmResult;
-import org.lorislab.armonitor.scm.service.ScmService;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
 import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
@@ -89,6 +88,12 @@ public class ActivityProcessServiceBean {
     @EJB
     private StoreBuildServiceBean buildService;
 
+    /**
+     * The external system service.
+     */
+    @EJB
+    private ExternalSystemServiceBean externalService;
+    
     /**
      * Creates the store activity.
      *
@@ -226,10 +231,9 @@ public class ActivityProcessServiceBean {
                 btsc.setId(key);
 
                 BtsResult tmp = null;
-                try {
-                    tmp = BtsService.getIssues(btsc);
-                } catch (Exception ex) {
-                    LOGGER.log(Level.WARNING, "{0} is not valid issue for this project", key);
+                try {                    
+                    tmp = externalService.getIssues(btsc);
+                } catch (Exception ex) {                    
                     LOGGER.log(Level.FINEST, "Error get the BTS issue", ex);
                 }
 
@@ -245,6 +249,7 @@ public class ActivityProcessServiceBean {
                     change.setParent(issue.getParent());
                 } else {
                     // the issue is not valid issue in the BTS
+                    LOGGER.log(Level.WARNING, "{0} is not valid issue for this project", key);
                     change.setType(ActivityType.ERROR);
                     change.setError(ActivityChangeError.WRONG_KEY);
                 }
@@ -350,7 +355,7 @@ public class ActivityProcessServiceBean {
         criteria.setPassword(scm.getPassword());
         criteria.setReadTimeout(scm.getReadTimeout());
         criteria.setConnectionTimeout(scm.getConnectionTimeout());
-        return ScmService.getLog(criteria);
+        return externalService.getLog(criteria);
     }
 
     /**
@@ -365,7 +370,7 @@ public class ActivityProcessServiceBean {
         BtsCriteria bc = createBtsCriteria(project);
         bc.setVersion(build.getMavenVersion());
         bc.setProject(project.getBtsId());
-        return BtsService.getIssues(bc);
+        return externalService.getIssues(bc);
     }
 
     /**
@@ -393,7 +398,7 @@ public class ActivityProcessServiceBean {
      * @throws Exception if the method fails.
      */
     private Pattern getKeyPattern(StoreProject project) throws Exception {
-        String key = BtsService.getIdPattern(project.getBts().getType(), project.getBtsId());
+        String key = externalService.getIdPattern(project.getBts().getType(), project.getBtsId());
         return Pattern.compile(key);
     }
 

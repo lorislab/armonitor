@@ -144,7 +144,7 @@ public class SvnScmServiceClient implements ScmServiceClient {
         SVNRepository repository = null;
         try { 
             repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(criteria.getServer()));            
-            
+
             if (criteria.isAuth()) {
                 repository.setAuthenticationManager(FactoryAuthenticationManager.create(criteria));
             }

@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.lorislab.armonitor.web.log.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.kohsuke.MetaInfServices;
-import org.lorislab.armonitor.web.rs.model.DashboardSystemBuilds;
+import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
 import org.lorislab.jel.log.parameters.ClassLogParameter;
 
 /**
- * The dashboard log parameter.
- * 
+ * the dashboard application system log parameter.
+ *
  * @author Andrej Petras
  */
 @MetaInfServices
-public class DashboardSystemLogParameter implements ClassLogParameter {
+public class DashboardApplicationSystemLogParameter implements ClassLogParameter {
 
     /**
      * {@inheritDoc}
@@ -36,7 +35,7 @@ public class DashboardSystemLogParameter implements ClassLogParameter {
     @Override
     public List<Class<?>> getClasses() {
         List<Class<?>> result = new ArrayList<>();
-        result.add(DashboardSystemBuilds.class);
+        result.add(DashboardApplicationSystem.class);
         return result;
     }
 
@@ -52,8 +51,9 @@ public class DashboardSystemLogParameter implements ClassLogParameter {
      * {@inheritDoc}
      */
     @Override
-    public Object getObject(Object parameter) {   
-        DashboardSystemBuilds tmp = (DashboardSystemBuilds) parameter;
+    public Object getObject(Object parameter) {
+        DashboardApplicationSystem tmp = (DashboardApplicationSystem) parameter;
         return parameter.getClass().getSimpleName() + ":" + tmp.guid;
     }
+
 }

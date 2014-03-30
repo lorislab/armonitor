@@ -19,16 +19,16 @@ package org.lorislab.armonitor.web.log.model;
 import java.util.ArrayList;
 import java.util.List;
 import org.kohsuke.MetaInfServices;
-import org.lorislab.armonitor.web.rs.model.DashboardSystemBuilds;
+import org.lorislab.armonitor.web.rs.model.MessageInfo;
 import org.lorislab.jel.log.parameters.ClassLogParameter;
 
 /**
- * The dashboard log parameter.
+ * The message info log parameter.
  * 
  * @author Andrej Petras
  */
 @MetaInfServices
-public class DashboardSystemLogParameter implements ClassLogParameter {
+public class MessageInfoLogParameter implements ClassLogParameter {
 
     /**
      * {@inheritDoc}
@@ -36,7 +36,7 @@ public class DashboardSystemLogParameter implements ClassLogParameter {
     @Override
     public List<Class<?>> getClasses() {
         List<Class<?>> result = new ArrayList<>();
-        result.add(DashboardSystemBuilds.class);
+        result.add(MessageInfo.class);
         return result;
     }
 
@@ -52,8 +52,19 @@ public class DashboardSystemLogParameter implements ClassLogParameter {
      * {@inheritDoc}
      */
     @Override
-    public Object getObject(Object parameter) {   
-        DashboardSystemBuilds tmp = (DashboardSystemBuilds) parameter;
-        return parameter.getClass().getSimpleName() + ":" + tmp.guid;
+    public Object getObject(Object parameter) {
+        MessageInfo tmp = (MessageInfo) parameter;
+        StringBuilder sb = new StringBuilder();
+        sb.append(parameter.getClass().getSimpleName());
+        sb.append("[status:");
+        sb.append(tmp.status);        
+        sb.append(",size:");
+        sb.append(tmp.size);
+        if (tmp.msg != null) {
+            sb.append(",key:");
+            sb.append(tmp.msg.key);
+        }
+        sb.append(']');
+        return sb.toString();
     }
 }

@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.log.model;
+package org.lorislab.armonitor.log.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.kohsuke.MetaInfServices;
-import org.lorislab.armonitor.web.rs.model.DashboardSystemBuilds;
+import org.lorislab.armonitor.bts.model.BtsResult;
 import org.lorislab.jel.log.parameters.ClassLogParameter;
 
 /**
- * The dashboard log parameter.
+ * The bug tracking system result log parameter.
  * 
  * @author Andrej Petras
  */
 @MetaInfServices
-public class DashboardSystemLogParameter implements ClassLogParameter {
+public class BtsResultLogParameter implements ClassLogParameter {
 
     /**
      * {@inheritDoc}
@@ -36,7 +36,7 @@ public class DashboardSystemLogParameter implements ClassLogParameter {
     @Override
     public List<Class<?>> getClasses() {
         List<Class<?>> result = new ArrayList<>();
-        result.add(DashboardSystemBuilds.class);
+        result.add(BtsResult.class);
         return result;
     }
 
@@ -53,7 +53,7 @@ public class DashboardSystemLogParameter implements ClassLogParameter {
      */
     @Override
     public Object getObject(Object parameter) {   
-        DashboardSystemBuilds tmp = (DashboardSystemBuilds) parameter;
-        return parameter.getClass().getSimpleName() + ":" + tmp.guid;
+        BtsResult res = (BtsResult) parameter;
+        return parameter.getClass().getSimpleName() + "[size:" + res.size() + "]";
     }
 }
