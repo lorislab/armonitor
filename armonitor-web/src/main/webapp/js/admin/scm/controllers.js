@@ -2,6 +2,7 @@ controllers.controller('SCMAdminCtrl', ['$scope','$routeParams','SCMAdminService
 	function($scope, $routeParams, SCMAdminService) {
 
 	$scope.pswd = {n: null, c: null, o: null};
+	$scope.test = {result: null};
 	
 	SCMAdminService.types({}, function(response) {
 		$scope.types = response;
@@ -45,6 +46,15 @@ controllers.controller('SCMAdminCtrl', ['$scope','$routeParams','SCMAdminService
 			});
 		}
 	};
+	
+	$scope.test = function() {
+		$scope.test.result = 'req';
+		SCMAdminService.test({guid: $routeParams.guid}, function(response) {
+			$scope.test.result = 'ok';
+		}, function(response) {
+			$scope.test.result = 'error';
+		});
+	};	
 }]);
 
 controllers.controller('SCMSearchAdminCtrl', ['$scope','SCMAdminService',

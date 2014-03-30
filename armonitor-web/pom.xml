@@ -134,7 +134,7 @@
 						<regexFlag>DOTALL</regexFlag>
 					</regexFlags>
 					<file>${basedir}/src/main/webapp/index.html</file>
-					<outputFile>target/${project.build.finalName}/index.html</outputFile>
+					<outputFile>${project.build.directory}/${project.build.finalName}/index.html</outputFile>
 					<tokenValueMap>${basedir}/src/config/tokens.conf</tokenValueMap>
 				</configuration>				
 			</plugin>			 

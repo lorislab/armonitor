@@ -23,6 +23,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ProxyFactory;
+import org.lorislab.jira.jaxrs.services.MyPermissionsClient;
+import org.lorislab.jira.jaxrs.services.MySelfClient;
 import org.lorislab.jira.jaxrs.services.ProjectClient;
 import org.lorislab.jira.jaxrs.services.SearchClient;
 
@@ -75,8 +77,7 @@ public class JIRAClient {
      * @return the search client.
      */
     public SearchClient createSearchClient() {
-        SearchClient client = ProxyFactory.create(SearchClient.class, server, executor);
-        return client;
+        return ProxyFactory.create(SearchClient.class, server, executor);
     }
 
     /**
@@ -85,8 +86,24 @@ public class JIRAClient {
      * @return the project client.
      */
     public ProjectClient createProjectClient() {
-        ProjectClient client = ProxyFactory.create(ProjectClient.class, server, executor);
-        return client;
+        return ProxyFactory.create(ProjectClient.class, server, executor);
     }
 
+    /**
+     * Gets the my self client.
+     *
+     * @return the my self client.
+     */
+    public MySelfClient createMySelfClient() {
+        return ProxyFactory.create(MySelfClient.class, server, executor);
+    }
+    
+    /**
+     * Gets the my permissions client.
+     *
+     * @return the my permissions client.
+     */
+    public MyPermissionsClient createMyPermissionsClient() {
+        return ProxyFactory.create(MyPermissionsClient.class, server, executor);
+    }    
 }

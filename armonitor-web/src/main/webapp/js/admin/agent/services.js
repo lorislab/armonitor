@@ -23,6 +23,12 @@ services.factory('AgentAdminService', ['$resource','config',
 			params: {guid: '@guid'},
 			isArray: false
 		},
+		test: {
+			method: 'GET',
+			url: config.server + '/ad/agent/:guid/test',
+			params: {guid: '@guid'},
+			isArray: false
+		},		
 		all: {
 			method: 'GET',
 			url: config.server + '/ad/agent',

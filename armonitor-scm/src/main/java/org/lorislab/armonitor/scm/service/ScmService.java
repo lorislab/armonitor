@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
@@ -108,5 +107,20 @@ public final class ScmService {
             throw new Exception("The type " + type + " of the scm service is not supported.");
         }
         return client;
+    }
+    
+    /**
+     * Tests the connection to the server.
+     * @param criteria the criteria.
+     * @throws Exception if the method fails.
+     */
+    public static void testConnection(ScmCriteria criteria) throws Exception {
+        if (criteria == null) {
+            throw new Exception("Missing bug tracking search criteria!");
+        }
+
+        // check client
+        ScmServiceClient client = getClient(criteria.getType());
+        client.testConnection(criteria);        
     }
 }

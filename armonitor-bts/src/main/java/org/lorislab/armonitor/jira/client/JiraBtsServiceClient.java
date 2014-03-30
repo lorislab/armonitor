@@ -17,6 +17,7 @@ package org.lorislab.armonitor.jira.client;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
@@ -26,8 +27,13 @@ import org.lorislab.armonitor.bts.service.BtsServiceClient;
 import org.lorislab.jira.jaxrs.model.FieldNames;
 import org.lorislab.jira.jaxrs.model.Fields;
 import org.lorislab.jira.jaxrs.model.Issue;
+import org.lorislab.jira.jaxrs.model.Permission;
+import org.lorislab.jira.jaxrs.model.Permissions;
 import org.lorislab.jira.jaxrs.model.SearchCriteria;
 import org.lorislab.jira.jaxrs.model.SearchResult;
+import org.lorislab.jira.jaxrs.model.User;
+import org.lorislab.jira.jaxrs.services.MyPermissionsClient;
+import org.lorislab.jira.jaxrs.services.MySelfClient;
 import org.lorislab.jira.jaxrs.services.SearchClient;
 
 /**
@@ -50,7 +56,7 @@ public class JiraBtsServiceClient implements BtsServiceClient {
      * The search fields.
      */
     private static final List<String> FIELDS = Arrays.asList(FieldNames.STATUS, FieldNames.SUMMARY, FieldNames.ASSIGNEE, FieldNames.RESOLUTION, FieldNames.PARENT, FieldNames.ISSUETYPE);
-    
+
     /**
      * {@inheritDoc}
      */
@@ -61,13 +67,12 @@ public class JiraBtsServiceClient implements BtsServiceClient {
 
     /**
      * {@inheritDoc}
-     */    
+     */
     @Override
     public String getName() {
         return "Jira";
     }
 
-    
     /**
      * {@inheritDoc}
      */
@@ -148,15 +153,15 @@ public class JiraBtsServiceClient implements BtsServiceClient {
                     i.setResolution(fields.getResolution().getName());
                 } else {
                     i.setResolution(DEFAULT_RESOLUTION);
-                }                
+                }
                 i.setSummary(fields.getSummary());
-                
+
                 if (fields.getParent() != null) {
                     i.setParent(fields.getParent().getKey());
                 }
-                
+
                 if (fields.getIssuetype() != null) {
-                    i.setType(fields.getIssuetype().getName());                    
+                    i.setType(fields.getIssuetype().getName());
                 }
                 result.addIssue(i);
             }
@@ -173,6 +178,20 @@ public class JiraBtsServiceClient implements BtsServiceClient {
     @Override
     public String getIdPattern(String id) {
         return id + "\\-\\d+";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void testConnection(BtsCriteria criteria) throws Exception {
+        // create the client
+        JIRAClient btsClient = new JIRAClient(criteria.getServer(), criteria.getUser(), criteria.getPassword(), criteria.isAuth());
+        MySelfClient client = btsClient.createMySelfClient();
+        User user = client.getCurrentlyLoggedUser();
+        if (user == null) {
+            throw new Exception("Wrong user for the connection!");
+        }
     }
 
 }

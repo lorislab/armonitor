@@ -122,4 +122,19 @@ public final class BtsService {
         return client;
     }
 
+    /**
+     * Test the connection.
+     *
+     * @param criteria the criteria.
+     * @throws Exception if the method fails.
+     */
+    public static void testConnection(BtsCriteria criteria) throws Exception {
+        if (criteria == null) {
+            throw new Exception("Missing bug tracking search criteria!");
+        }
+
+        // check type
+        BtsServiceClient client = getClient(criteria.getType());
+        client.testConnection(criteria);
+    }    
 }

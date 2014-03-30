@@ -60,7 +60,7 @@
 			<dependency>
 				<groupId>org.lorislab.jel</groupId>
 				<artifactId>jel-bom</artifactId>
-				<version>0.0.6-SNAPSHOT</version>
+				<version>0.0.7-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>				
 			</dependency>											
@@ -172,7 +172,7 @@
 			<dependency>
 				<groupId>org.lorislab.jira</groupId>
 				<artifactId>jira-jaxrs</artifactId>	
-				<version>0.0.3</version>							
+				<version>0.0.4-SNAPSHOT</version>							
 			</dependency>
 			<!-- META-INF SERVICES -->
 			<dependency>

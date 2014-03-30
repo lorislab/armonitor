@@ -23,6 +23,14 @@ package org.lorislab.armonitor.process.resources;
  */
 public enum ErrorKeys {
     
+    ERROR_CREATE_BT_CONNECTION,
+    
+    NO_BT_SYSTEM_FOUND, 
+    
+    ERROR_CREATE_SCM_CONNECTION,
+    
+    NO_SCM_SYSTEM_FOUND,
+    
     ERROR_SEND_EMAIL,
     
     ERROR_EMAIL_IS_NULL,

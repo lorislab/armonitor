@@ -147,11 +147,35 @@
 							<label class="control-label" for="cp"></label>
 							<div class="controls">
 								<button id="cp" class="btn btn-success" type="submit" ><i class="icon-floppy"></i>  Change password</button>
+								<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
 							</div>												
 						</div>
 					</fieldset>
 				</form>			
 			</tab>
+			<tab data-ng-show="!data.n">
+				<tab-heading>
+					<i class="icon-rocket"></i> Test connection
+				</tab-heading>
+				<form class="form-horizontal" data-ng-submit="test()">
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label">Connection status:</label>							
+							<label class="label label-default" data-ng-show="test.result !== 'req' && test.result !== 'ok' && test.result !== 'error'" >?</label>
+							<label class="label label-info" data-ng-show="test.result === 'req'"><i class="animate-spin icon-arrows-cw"></i></label>
+							<label class="label label-success" data-ng-show="test.result === 'ok'"><i class="icon-ok"></i></label>
+							<label class="label label-danger" data-ng-show="test.result === 'error'"><i class="icon-bug"></i></label>
+						</div>	
+						<div class="control-group">
+							<label class="control-label" for="test"></label>
+							<div class="controls">
+								<button id="test" type="submit" class="btn btn-success" ><i class="icon-rocket"></i> Test connection</button>
+								<button id="close" type="button" class="btn btn-default" data-ng-click="close()" ><i class="icon-floppy"></i> Close</button>
+							</div>
+						</div>						
+					</fieldset>
+				</form>
+			</tab>			
 		</tabset>
 	</div>
 </div>	

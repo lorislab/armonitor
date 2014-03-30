@@ -30,6 +30,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.lorislab.armonitor.process.ejb.TestServiceBean;
 import org.lorislab.armonitor.web.rs.controller.MessageController;
 import org.lorislab.armonitor.web.rs.ejb.SCMSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.Application;
@@ -52,6 +53,12 @@ public class SCMSystemService {
      */
     @EJB
     private SCMSystemServiceBean service;
+    
+    /**
+     * The test service.
+     */
+    @EJB
+    private TestServiceBean testService;
     
     @Inject
     private MessageController msg;
@@ -137,4 +144,11 @@ public class SCMSystemService {
         service.delete(guid);
         msg.addMsgRef(Messages.SCM_DELETE, guid);        
     }
+    
+    @GET
+    @Path("{guid}/test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void test(@PathParam("guid") String guid) throws Exception {
+        testService.testSCM(guid);
+    }    
 }

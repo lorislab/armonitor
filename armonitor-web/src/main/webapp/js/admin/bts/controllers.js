@@ -2,7 +2,8 @@ controllers.controller('BTSAdminCtrl', ['$scope','$routeParams','BTSAdminService
 	function($scope, $routeParams, BTSAdminService) {
 
 	$scope.pswd = {n: null, c: null, o: null};
-	
+	$scope.test = {result: null};
+		
 	BTSAdminService.types({}, function(response) {
 		$scope.types = response;
 	});
@@ -45,6 +46,15 @@ controllers.controller('BTSAdminCtrl', ['$scope','$routeParams','BTSAdminService
 			});
 		}
 	};
+	
+	$scope.test = function() {
+		$scope.test.result = 'req';
+		BTSAdminService.test({guid: $routeParams.guid}, function(response) {
+			$scope.test.result = 'ok';
+		}, function(response) {
+			$scope.test.result = 'error';
+		});
+	};		
 }]);
 
 controllers.controller('BTSSearchAdminCtrl', ['$scope','BTSAdminService',

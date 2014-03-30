@@ -54,6 +54,9 @@ public class MailService {
     @EJB
     private MailServiceBean mailService;
     
+    /**
+     * The test service.
+     */
     @EJB
     private TestServiceBean testService;
     

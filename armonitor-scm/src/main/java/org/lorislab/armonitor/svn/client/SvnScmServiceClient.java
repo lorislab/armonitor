@@ -49,7 +49,6 @@ public class SvnScmServiceClient implements ScmServiceClient {
         return "Subversion";
     }
 
-    
     /**
      * {@inheritDoc}
      */
@@ -67,36 +66,65 @@ public class SvnScmServiceClient implements ScmServiceClient {
             endRevision = Long.parseLong(criteria.getEnd());
         }
 
-        SVNRepository repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(criteria.getServer()));
+        SVNRepository repository = null;
+        try {
+            
+            repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(criteria.getServer()));
+            
+            if (criteria.isAuth()) {
+                repository.setAuthenticationManager(FactoryAuthenticationManager.create(criteria));
+            }
 
-        if (criteria.isAuth()) {
-            repository.setAuthenticationManager(FactoryAuthenticationManager.create(criteria));
-        }
+            String[] path = new String[]{""};
+            if (criteria.getPath() != null && !criteria.getPath().isEmpty()) {
+                path = criteria.getPath().toArray(new String[criteria.getPath().size()]);
+            }
 
-        String[] path = new String[]{""};
-        if (criteria.getPath() != null && !criteria.getPath().isEmpty()) {
-            path = criteria.getPath().toArray(new String[criteria.getPath().size()]);
-        }
+            Collection logEntries = repository.log(path, null, startRevision, endRevision, true, true);
 
-        Collection logEntries = repository.log(path, null, startRevision, endRevision, true, true);
+            if (logEntries != null) {
+                SVNLogEntry entry;
+                Iterator iter = logEntries.iterator();
+                while (iter.hasNext()) {
+                    entry = (SVNLogEntry) iter.next();
 
-        if (logEntries != null) {
-            SVNLogEntry entry;
-            Iterator iter = logEntries.iterator();
-            while (iter.hasNext()) {
-                entry = (SVNLogEntry) iter.next();
+                    ScmLog log = new ScmLog();
+                    log.setId("" + entry.getRevision());
+                    log.setUser(entry.getAuthor());
+                    log.setMessage(entry.getMessage());
+                    log.setDate(entry.getDate());
 
-                ScmLog log = new ScmLog();
-                log.setId("" + entry.getRevision());
-                log.setUser(entry.getAuthor());
-                log.setMessage(entry.getMessage());
-                log.setDate(entry.getDate());
-                
-                result.addScmLog(log);
+                    result.addScmLog(log);
 
+                }
+            }
+        } finally {
+            if (repository != null) {
+                repository.closeSession();
             }
         }
 
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    @Override
+    public void testConnection(ScmCriteria criteria) throws Exception {
+        SVNRepository repository = null;
+        try { 
+            repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(criteria.getServer()));            
+            
+            if (criteria.isAuth()) {
+                repository.setAuthenticationManager(FactoryAuthenticationManager.create(criteria));
+            }
+            
+            repository.testConnection();
+        } finally {
+            if (repository != null) {
+                repository.closeSession();
+            }
+        }
     }
 }

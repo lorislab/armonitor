@@ -55,4 +55,12 @@ public interface BtsServiceClient {
      * @throws Exception if the method fails.
      */
     public BtsResult getIssues(BtsCriteria criteria) throws Exception;
+    
+    /**
+     * Test the connection.
+     *
+     * @param criteria the criteria.
+     * @throws Exception if the method fails.
+     */
+    public void testConnection(BtsCriteria criteria) throws Exception;    
 }

@@ -15,15 +15,21 @@
  */
 package org.lorislab.armonitor.process.ejb;
 
-import java.util.logging.Level;
-import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.bts.model.BtsCriteria;
+import org.lorislab.armonitor.bts.service.BtsService;
 import org.lorislab.armonitor.mail.ejb.MailServiceBean;
 import org.lorislab.armonitor.mail.model.Mail;
 import org.lorislab.armonitor.process.resources.ErrorKeys;
+import org.lorislab.armonitor.scm.model.ScmCriteria;
+import org.lorislab.armonitor.scm.service.ScmService;
+import org.lorislab.armonitor.store.ejb.StoreBTSystemServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreSCMSystemServiceBean;
+import org.lorislab.armonitor.store.model.StoreBTSystem;
+import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
@@ -39,13 +45,86 @@ public class TestServiceBean {
      * The test email template.
      */
     private static final String MAIL_TEST_TEMPLATE = "test";
-    
-    
+
     /**
      * The mail service.
      */
     @EJB
     private MailServiceBean mailService;
+
+    /**
+     * The store SCM system service.
+     */
+    @EJB
+    private StoreSCMSystemServiceBean scmService;
+
+    /**
+     * The store bug tracking system service.
+     */
+    @EJB
+    private StoreBTSystemServiceBean btsService;
+
+    /**
+     * Tests the agent connection.
+     *
+     * @param guid the GUID of the agent.
+     * @throws ServiceException if the method fails.
+     */
+    public void testAgent(String guid) throws ServiceException {
+
+    }
+
+    /**
+     * Tests the BTS system connection.
+     *
+     * @param guid the GUID of the BTS system.
+     * @throws ServiceException if the method fails.
+     */
+    public void testBTS(String guid) throws ServiceException {
+        StoreBTSystem bts = btsService.getBTSystem(guid);
+        if (bts == null) {
+            throw new ServiceException(ErrorKeys.NO_BT_SYSTEM_FOUND, guid);
+        }
+
+        try {
+            BtsCriteria bc = new BtsCriteria();
+            bc.setServer(bts.getServer());
+            bc.setUser(bts.getUser());
+            bc.setPassword(bts.getPassword());
+            bc.setAuth(bts.isAuth());
+            bc.setType(bts.getType());
+            BtsService.testConnection(bc);
+        } catch (Exception ex) {
+            throw new ServiceException(ErrorKeys.ERROR_CREATE_BT_CONNECTION, guid, ex, bts.getServer(), ex.getMessage());
+        }
+    }
+
+    /**
+     * Tests the SCM system connection.
+     *
+     * @param guid the GUID of the SCM system.
+     * @throws ServiceException if the method fails.
+     */
+    public void testSCM(String guid) throws ServiceException {
+        StoreSCMSystem scm = scmService.getSCMSystem(guid);
+        if (scm == null) {
+            throw new ServiceException(ErrorKeys.NO_SCM_SYSTEM_FOUND, guid);
+        }
+
+        try {
+            ScmCriteria criteria = new ScmCriteria();
+            criteria.setType(scm.getType());
+            criteria.setServer(scm.getServer());
+            criteria.setAuth(scm.isAuth());
+            criteria.setUser(scm.getUser());
+            criteria.setPassword(scm.getPassword());
+            criteria.setReadTimeout(scm.getReadTimeout());
+            criteria.setConnectionTimeout(scm.getConnectionTimeout());
+            ScmService.testConnection(criteria);
+        } catch (Exception ex) {
+            throw new ServiceException(ErrorKeys.ERROR_CREATE_SCM_CONNECTION, guid, ex, scm.getServer(), ex.getMessage());
+        }
+    }
 
     /**
      * Sends the test email to the mail address.
@@ -60,7 +139,7 @@ public class TestServiceBean {
         try {
             Mail mail = new Mail();
             mail.getTo().add(email);
-            mail.setTemplate(MAIL_TEST_TEMPLATE);                
+            mail.setTemplate(MAIL_TEST_TEMPLATE);
             mailService.sendEmail(mail);
         } catch (Exception ex) {
             throw new ServiceException(ErrorKeys.ERROR_SEND_EMAIL, ex, email);

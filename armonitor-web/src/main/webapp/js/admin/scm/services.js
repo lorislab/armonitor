@@ -23,6 +23,12 @@ services.factory('SCMAdminService', ['$resource','config',
 			params: {guid: '@guid'},
 			isArray: false
 		},
+		test: {
+			method: 'GET',
+			url: config.server + '/ad/scm/:guid/test',
+			params: {guid: '@guid'},
+			isArray: false
+		},		
 		pswd: {
 			method: 'POST',
 			url: config.server + '/ad/scm/:guid/password',

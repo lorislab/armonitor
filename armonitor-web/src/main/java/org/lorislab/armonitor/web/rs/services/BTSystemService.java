@@ -28,6 +28,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.lorislab.armonitor.process.ejb.TestServiceBean;
 import org.lorislab.armonitor.web.rs.ejb.BTSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
@@ -49,6 +50,12 @@ public class BTSystemService {
     @EJB
     private BTSystemServiceBean service;
 
+    /**
+     * The test service.
+     */
+    @EJB
+    private TestServiceBean testService;
+    
     /**
      * Gets the list of the bug tracking systems.
      *
@@ -139,4 +146,11 @@ public class BTSystemService {
     public void delete(@PathParam("guid") String guid) throws Exception {
         service.delete(guid);
     }
+    
+    @GET
+    @Path("{guid}/test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void test(@PathParam("guid") String guid) throws Exception {
+        testService.testBTS(guid);
+    }     
 }

@@ -47,5 +47,13 @@ public interface ScmServiceClient {
      * @throws Exception if the method fails.
      */
     public ScmResult getLog(ScmCriteria criteria) throws Exception;
+    
+    /**
+     * Tests the connection and configuration.
+     *
+     * @param criteria the criteria.
+     * @throws Exception if the method fails.
+     */
+    public void testConnection(ScmCriteria criteria) throws Exception;    
 
 }
