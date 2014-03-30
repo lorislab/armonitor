@@ -57,6 +57,7 @@ import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.store.model.enums.ActivityChangeError;
+import org.lorislab.armonitor.store.model.enums.StoreApplicationScmRepository;
 import org.lorislab.armonitor.util.LinkUtil;
 
 /**
@@ -102,7 +103,7 @@ public class ActivityProcessServiceBean {
         return createActivity(b, pr, app);
     }
 
-    public StoreActivity createActivity(final StoreApplication app, final StoreBuild build) throws Exception {        
+    public StoreActivity createActivity(final StoreApplication app, final StoreBuild build) throws Exception {
         StoreApplicationCriteria criteria = new StoreApplicationCriteria();
         criteria.setGuid(app.getGuid());
         criteria.setFetchSCM(true);
@@ -111,7 +112,7 @@ public class ActivityProcessServiceBean {
         StoreApplication application = appService.getApplication(criteria);
         return createActivity(build, application.getProject(), application);
     }
-    
+
     /**
      * Creates the activity for the application build in the project.
      *
@@ -154,18 +155,18 @@ public class ActivityProcessServiceBean {
 
         // load builds for the version
         List<StoreBuild> builds = getBuilds(application, build);
-        
+
         // the issue in the commits but not in the bts
         Set<String> errors = new HashSet<>();
 
         // create logs        
         Pattern pattern = getKeyPattern(project);
-        ScmResult scmResult = getCommits(application, build);                
+        ScmResult scmResult = getCommits(application, build);
         if (scmResult != null && !scmResult.isEmpty()) {
-            
+
             // create build information
             List<BuildInfo> buildInfos = new ArrayList<>();
-            
+
             if (builds != null && !builds.isEmpty()) {
                 builds.add(build);
                 for (StoreBuild b : builds) {
@@ -176,13 +177,12 @@ public class ActivityProcessServiceBean {
                         bi.date = log.getDate();
                         buildInfos.add(bi);
                     } else {
-                        LOGGER.log(Level.WARNING, "The store build {0} has wrong revision number {1}.", new Object[] {b.getGuid(), b.getScm()});
+                        LOGGER.log(Level.WARNING, "The store build {0} has wrong revision number {1}.", new Object[]{b.getGuid(), b.getScm()});
                     }
-                }                
+                }
                 Collections.sort(buildInfos, BuildInfoComparator.INSTANCE);
             }
-            
-            
+
             // load commits
             for (ScmLog commit : scmResult.getScmLogs()) {
                 Matcher matcher = pattern.matcher(commit.getMessage());
@@ -330,7 +330,17 @@ public class ActivityProcessServiceBean {
      */
     private ScmResult getCommits(StoreApplication application, StoreBuild build) throws Exception {
         StoreSCMSystem scm = application.getScm();
-        String server = LinkUtil.createLink(application.getScmBranches(), scm, build);
+        String tmp = application.getScmBranches();
+        if (application.getScmType() == StoreApplicationScmRepository.TRUNK) {
+            tmp = application.getScmTrunk();
+        } else {
+            if (application.getScmType() == StoreApplicationScmRepository.TAG) {
+                tmp = application.getScmTags();
+            }
+        }
+        //LOGGER.log(Level.FINEST, "The repository link {0} and type {1}", new Object[]{ tmp, application.getScmType()});
+        
+        String server = LinkUtil.createLink(tmp, scm, build);
 
         ScmCriteria criteria = new ScmCriteria();
         criteria.setType(scm.getType());
@@ -407,22 +417,22 @@ public class ActivityProcessServiceBean {
         }
         return result;
     }
-    
+
     private class BuildInfo {
-        
+
         public Date date;
-        
+
         public StoreBuild build;
     }
-    
+
     private static class BuildInfoComparator implements Comparator<BuildInfo> {
 
         private static final BuildInfoComparator INSTANCE = new BuildInfoComparator();
-        
+
         @Override
         public int compare(BuildInfo o1, BuildInfo o2) {
             return o1.date.compareTo(o2.date);
         }
-                
-    }    
+
+    }
 }
