@@ -140,4 +140,8 @@ public class BTSystemServiceBean {
     public void testConnection(String guid) throws ServiceException {
         testService.testBTS(guid);
     }
+
+    public void testAccess(String guid, String project) throws ServiceException {
+        testService.testBTSAccess(guid, project);
+    }
 }

@@ -62,5 +62,13 @@ public interface BtsServiceClient {
      * @param criteria the criteria.
      * @throws Exception if the method fails.
      */
-    public void testConnection(BtsCriteria criteria) throws Exception;    
+    public void testConnection(BtsCriteria criteria) throws Exception; 
+    
+    /**
+     * Test the access to the project.
+     *
+     * @param criteria the criteria.
+     * @throws Exception if the method fails.
+     */
+    public void testProjectAccess(BtsCriteria criteria) throws Exception;     
 }

@@ -146,5 +146,12 @@ public class BTSystemService {
     @Produces(MediaType.APPLICATION_JSON)
     public void test(@PathParam("guid") String guid) throws Exception {
         service.testConnection(guid);
-    }     
+    } 
+    
+    @GET
+    @Path("{guid}/test/{project}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void testAccess(@PathParam("guid") String guid, @PathParam("project") String project) throws Exception {
+        service.testAccess(guid, project);
+    }    
 }

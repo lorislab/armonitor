@@ -136,5 +136,21 @@ public final class BtsService {
         // check type
         BtsServiceClient client = getClient(criteria.getType());
         client.testConnection(criteria);
+    } 
+    
+    /**
+     * Test the access to the project.
+     *
+     * @param criteria the criteria.
+     * @throws Exception if the method fails.
+     */
+    public static void testProjectAccess(BtsCriteria criteria) throws Exception {
+        if (criteria == null) {
+            throw new Exception("Missing bug tracking search criteria!");
+        }
+
+        // check type
+        BtsServiceClient client = getClient(criteria.getType());
+        client.testProjectAccess(criteria);
     }    
 }

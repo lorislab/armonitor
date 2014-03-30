@@ -198,4 +198,24 @@ public class TestServiceBean {
             throw new ServiceException(ErrorKeys.ERROR_SEND_EMAIL, ex, email);
         }
     }
+
+    public void testBTSAccess(String guid, String project) throws ServiceException {
+        StoreBTSystem bts = btsService.getBTSystem(guid);
+        if (bts == null) {
+            throw new ServiceException(ErrorKeys.NO_BT_SYSTEM_FOUND, guid);
+        }
+
+        try {
+            BtsCriteria bc = new BtsCriteria();
+            bc.setProject(project);
+            bc.setServer(bts.getServer());
+            bc.setUser(bts.getUser());
+            bc.setPassword(bts.getPassword());
+            bc.setAuth(bts.isAuth());
+            bc.setType(bts.getType());
+            BtsService.testProjectAccess(bc);
+        } catch (Exception ex) {
+            throw new ServiceException(ErrorKeys.ERROR_CREATE_BT_CONNECTION, guid, ex, bts.getServer(), ex.getMessage());
+        }
+    }
 }

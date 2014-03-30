@@ -194,4 +194,26 @@ public class JiraBtsServiceClient implements BtsServiceClient {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void testProjectAccess(BtsCriteria criteria) throws Exception {
+        
+        // create the client
+        JIRAClient btsClient = new JIRAClient(criteria.getServer(), criteria.getUser(), criteria.getPassword(), criteria.isAuth());
+        MyPermissionsClient client = btsClient.createMyPermissionsClient();
+        Permissions per = client.getPermissions(criteria.getProject(), null, null, null);
+        
+        boolean test = false;
+        
+        if (per != null && per.getPermissions() != null) {
+            Map<String, Permission> tmp = per.getPermissions();
+            test = tmp.containsKey("BROWSE");
+        }
+        
+        if (!test) {
+            throw new Exception("No browse access to the project " + criteria.getProject());
+        }
+    }    
 }

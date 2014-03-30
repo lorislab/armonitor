@@ -87,6 +87,8 @@ controllers.controller('AgentAdminCtrl', ['$scope','$routeParams','AgentAdminSer
 
 	$scope.test = function() {
 		$scope.test.result = 'req';
+		$scope.build = null;
+		$scope.services = null;
 		AgentAdminService.test({guid: $routeParams.guid}, function(response) {
 			$scope.test.result = 'ok';
 			$scope.build = response;

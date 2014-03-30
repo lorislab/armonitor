@@ -28,6 +28,12 @@ services.factory('BTSAdminService', ['$resource','config',
 			url: config.server + '/ad/bts/:guid/test',
 			params: {guid: '@guid'},
 			isArray: false
+		},
+		access: {
+			method: 'GET',
+			url: config.server + '/ad/bts/:guid/test/:project',
+			params: {guid: '@guid', project: '@project'},
+			isArray: false
 		},		
 		pswd: {
 			method: 'POST',
