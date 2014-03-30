@@ -19,11 +19,14 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.lorislab.armonitor.store.model.enums.StoreApplicationScmRepository;
 import org.lorislab.jel.jpa.model.Persistent;
 
 /**
@@ -97,6 +100,13 @@ public class StoreApplication extends Persistent {
     private String scmRepo;
 
     /**
+     * The SCM repository type.
+     */
+    @Column(name = "C_SCM_TYPE")
+    @Enumerated(EnumType.STRING)
+    private StoreApplicationScmRepository scmType;
+
+    /**
      * The enabled flag.
      */
     @Column(name = "C_ENABLED")
@@ -125,6 +135,24 @@ public class StoreApplication extends Persistent {
      */
     @Column(name = "C_INDEX")
     private Integer index;
+
+    /**
+     * Gets the SCM repository type.
+     *
+     * @return the SCM repository type.
+     */
+    public StoreApplicationScmRepository getScmType() {
+        return scmType;
+    }
+
+    /**
+     * Sets the SCM repository type.
+     *
+     * @param scmType the SCM repository type.
+     */
+    public void setScmType(StoreApplicationScmRepository scmType) {
+        this.scmType = scmType;
+    }
 
     /**
      * Gets the index.

@@ -43,6 +43,14 @@ public class Application {
      */
     public String scmTags;
     /**
+     * The SCM repository.
+     */
+    public String scmRepo;
+    /**
+     * The SCM type.
+     */
+    public String scmType;
+    /**
      * The enabled flag.
      */
     public boolean enabled;

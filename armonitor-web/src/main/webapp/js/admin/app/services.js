@@ -68,6 +68,11 @@ services.factory('AppAdminService', ['$resource','config',
 			params: {guid: '@guid'},
 			isArray: false
 		},
+		scmTypes: {
+			method: 'GET',
+			url: config.server + '/ad/app/scmtypes',
+			isArray: false			
+		},
 		generateKey: {
 			method: 'GET',
 			url: config.server + '/ad/app/:guid/key',

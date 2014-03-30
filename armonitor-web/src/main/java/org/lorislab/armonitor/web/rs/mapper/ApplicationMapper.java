@@ -19,6 +19,7 @@ import java.util.Set;
 import org.kohsuke.MetaInfServices;
 import org.lorislab.armonitor.mapper.MapperService;
 import org.lorislab.armonitor.store.model.StoreApplication;
+import org.lorislab.armonitor.store.model.enums.StoreApplicationScmRepository;
 import org.lorislab.armonitor.web.rs.model.Application;
 
 /**
@@ -37,6 +38,11 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         Application result = new Application();
         result.guid = data.getGuid();
         result.name = data.getName();
+        result.scmRepo = data.getScmRepo();
+        result.scmType = null;
+        if (data.getScmType() != null) {
+            result.scmType = data.getScmType().name();
+        }        
         result.scmTags = data.getScmTags();
         result.scmTrunk = data.getScmTrunk();
         result.scmBranches = data.getScmBranches();
@@ -46,7 +52,7 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         result.n = data.isNew();
         result.v = data.getVersion();
         result.key = data.getKey();    
-        result.index = data.getIndex();
+        result.index = data.getIndex();        
         return result;
     }
 
@@ -60,6 +66,11 @@ public class ApplicationMapper implements MapperService<StoreApplication, Applic
         entity.setScmTrunk(data.scmTrunk);
         entity.setScmBranches(data.scmBranches);
         entity.setScmTags(data.scmTags);
+        entity.setScmRepo(data.scmRepo);
+        entity.setScmType(null);
+        if (data.scmType != null) {
+            entity.setScmType(StoreApplicationScmRepository.valueOf(data.scmType));
+        }        
         entity.setRepoLink(data.repoLink);
         entity.setType(data.type);   
         entity.setIndex(data.index);

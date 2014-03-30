@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.web.rs.ejb;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,7 @@ import org.lorislab.armonitor.store.model.StoreApplication;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.store.model.StoreSystem;
+import org.lorislab.armonitor.store.model.enums.StoreApplicationScmRepository;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.Project;
@@ -208,4 +210,12 @@ public class ApplicationServiceBean {
         }        
         return result;
     }    
+
+    public Map<String, String> getScmTypes() {
+        Map<String, String> result = new HashMap<>();
+        for (StoreApplicationScmRepository t : StoreApplicationScmRepository.values()) {
+            result.put(t.name(), t.name());
+        }        
+        return result;
+    }
 }

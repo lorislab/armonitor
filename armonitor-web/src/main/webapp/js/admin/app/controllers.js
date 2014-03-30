@@ -125,6 +125,10 @@ controllers.controller('AppScmAdminCtrl', ['$scope', '$routeParams', 'SCMAdminSe
 controllers.controller('AppAdminCtrl', ['$scope', '$routeParams', 'AppAdminService',
 	function($scope, $routeParams, AppAdminService) {
 
+		AppAdminService.scmTypes({}, function(response) {
+			$scope.scmTypes = response;
+		});
+
 		if ($routeParams.guid) {
 			AppAdminService.get({guid: $routeParams.guid}, function(response) {
 				$scope.data = response;

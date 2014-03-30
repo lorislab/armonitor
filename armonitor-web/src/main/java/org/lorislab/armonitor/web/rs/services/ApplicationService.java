@@ -192,4 +192,11 @@ public class ApplicationService {
     public Application generatedKey(@PathParam("guid") String guid) throws Exception {
         return service.generatedKey(guid);
     }    
+    
+    @GET
+    @Path("scmtypes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, String> getScmTypes() throws Exception {
+        return service.getScmTypes();
+    }    
 }
