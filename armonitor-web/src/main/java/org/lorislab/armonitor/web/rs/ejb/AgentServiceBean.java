@@ -143,6 +143,11 @@ public class AgentServiceBean {
         return result;
     }
     
+    public List<Build> getServices(String guid) throws ServiceException {
+        List<StoreBuild> builds = testService.getAgentServices(guid);
+        return Mapper.map(builds, Build.class);
+    }
+    
     public Build testConnection(String guid) throws ServiceException {
         StoreBuild build = testService.testAgent(guid);
         return Mapper.map(build, Build.class);

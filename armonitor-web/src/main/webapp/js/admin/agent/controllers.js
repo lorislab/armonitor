@@ -44,6 +44,7 @@ controllers.controller('AgentAdminCtrl', ['$scope','$routeParams','AgentAdminSer
 	$scope.pswd = {n: null, c: null, o: null};
 	$scope.test = {result: null};
 	$scope.build = null;
+	$scope.services = null;
 	
 	AgentAdminService.types({}, function(response) {
 		$scope.types = response;
@@ -89,9 +90,10 @@ controllers.controller('AgentAdminCtrl', ['$scope','$routeParams','AgentAdminSer
 		AgentAdminService.test({guid: $routeParams.guid}, function(response) {
 			$scope.test.result = 'ok';
 			$scope.build = response;
-		}, function(response) {
-			$scope.test.result = 'error';
-		});
+			AgentAdminService.services({guid: $routeParams.guid}, function(response) {
+				$scope.services = response;
+			}, function(response) { $scope.test.result = 'error'; });
+		}, function(response) { $scope.test.result = 'error'; });
 	};	
 }]);
 

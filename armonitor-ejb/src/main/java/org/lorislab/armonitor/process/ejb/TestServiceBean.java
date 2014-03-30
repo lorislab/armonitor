@@ -15,6 +15,7 @@
  */
 package org.lorislab.armonitor.process.ejb;
 
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -80,6 +81,29 @@ public class TestServiceBean {
     @EJB
     private StoreAgentServiceBean agentService;
 
+    /**
+     * Gets the agent services list.
+     *
+     * @param guid the GUID of the agent.
+     *
+     * @return the build of the agent.
+     * @throws ServiceException if the method fails.
+     */
+    public List<StoreBuild> getAgentServices(String guid) throws ServiceException {
+        List<StoreBuild> result = null;
+        StoreAgent agent = agentService.getAgent(guid);
+        if (agent == null) {
+            throw new ServiceException(ErrorKeys.NO_AGENT_FOUND, guid);
+        }
+
+        try {
+            result = agentClientService.getBuilds(agent);
+        } catch (Exception ex) {
+            throw new ServiceException(ErrorKeys.ERROR_CREATE_AGENT_CONNECTION, guid, ex, agent.getUrl(), ex.getMessage());
+        }
+        return result;
+    }
+    
     /**
      * Tests the agent connection.
      *

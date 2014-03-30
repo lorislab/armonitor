@@ -127,5 +127,12 @@ public class AgentService {
     @Produces(MediaType.APPLICATION_JSON)
     public Build test(@PathParam("guid") String guid) throws Exception {
         return service.testConnection(guid);
-    }      
+    } 
+    
+    @GET
+    @Path("{guid}/services")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Build> services(@PathParam("guid") String guid) throws Exception {
+        return service.getServices(guid);
+    }     
 }

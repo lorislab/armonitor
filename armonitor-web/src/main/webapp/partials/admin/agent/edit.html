@@ -125,16 +125,52 @@
 				<tab-heading>
 					<i class="icon-rocket"></i> Test connection
 				</tab-heading>
+				<div style="padding-top: 10px"></div>
 				<form class="form-horizontal" data-ng-submit="test()">
 					<fieldset>
 						<div class="control-group">
-							<label class="control-label">Connection status:</label>							
-							<label class="label label-default" data-ng-show="test.result !== 'req' && test.result !== 'ok' && test.result !== 'error'" >?</label>
-							<label class="label label-info" data-ng-show="test.result === 'req'"><i class="animate-spin icon-arrows-cw"></i></label>
-							<label class="label label-success" data-ng-show="test.result === 'ok'"><i class="icon-ok"></i></label>
-							<label class="label label-danger" data-ng-show="test.result === 'error'"><i class="icon-bug"></i></label>
-							<span data-ng-show="build">Agent version: {{build.mavenVersion}}</span>
-						</div>	
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<label class="control-label">Connection status:</label>							
+									<label class="label label-default" data-ng-show="test.result !== 'req' && test.result !== 'ok' && test.result !== 'error'" >?</label>
+									<label class="label label-info" data-ng-show="test.result === 'req'"><i class="animate-spin icon-arrows-cw"></i></label>
+									<label class="label label-success" data-ng-show="test.result === 'ok'"><i class="icon-ok"></i></label>
+									<label class="label label-danger" data-ng-show="test.result === 'error'"><i class="icon-bug"></i></label>
+									<span data-ng-show="build">Agent version: {{build.mavenVersion}}</span>									
+								</div>							
+								<table class="table table-striped sortable">
+									<thead>
+										<tr>
+											<th>Service</th>	
+											<th>Date</th>
+											<th>GroupId</th>
+											<th>ArtifactId</th>
+											<th>Version</th>
+											<th>Build</th>
+											<th>SCM</th>
+										</tr>
+									</thead>	
+									<tbody data-ng-show="build && !services">
+										<tr>
+											<td align="center" colspan="7">
+												<h4><span class="label label-info">No services found.</span></h4>
+											</td>
+										</tr>					
+									</tbody>									
+									<tbody>
+										<tr data-ng-repeat="item in services">				
+											<td>{{item.service}}</td>
+											<td>{{item.date| date:'medium'}}</td>
+											<td>{{item.groupId}}</td>
+											<td>{{item.artifactId}}</td>
+											<td>{{item.mavenVersion}}</td>
+											<td>{{item.build}}</td>
+											<td>{{item.scm}}</td>										
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
 						<div class="control-group">
 							<label class="control-label" for="test"></label>
 							<div class="controls">
