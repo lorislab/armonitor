@@ -39,7 +39,7 @@ import org.lorislab.armonitor.timer.model.TimerConfig;
  * @author Andrej Petras
  */
 @Singleton
-@Startup
+//@Startup
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class TimerServiceBean {
 
@@ -73,10 +73,10 @@ public class TimerServiceBean {
     /**
      * Initialise after start.
      */
-    @PostConstruct
-    public void initialize() {
-        start();
-    }
+//    @PostConstruct
+//    public void initialize() {
+//        start();
+//    }
 
     /**
      * Restart the timer.

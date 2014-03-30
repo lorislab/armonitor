@@ -324,8 +324,11 @@ public final class Mapper {
     public static <T, E> T map(E data, Class<T> clazz, Set<String> profiles) {
         T result = null;
         if (data != null) {
-            MapperService<E, T> mapper = MAPPER.get(data.getClass()).get(clazz);
-            result = map(data, mapper, profiles);
+            Map<Class, MapperService> tmp = MAPPER.get(data.getClass());
+            if (tmp != null) {
+                MapperService<E, T> mapper = tmp.get(clazz);
+                result = map(data, mapper, profiles);
+            }
         }
         return result;
     }
