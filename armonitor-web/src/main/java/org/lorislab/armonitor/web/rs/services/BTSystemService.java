@@ -49,12 +49,6 @@ public class BTSystemService {
      */
     @EJB
     private BTSystemServiceBean service;
-
-    /**
-     * The test service.
-     */
-    @EJB
-    private TestServiceBean testService;
     
     /**
      * Gets the list of the bug tracking systems.
@@ -151,6 +145,6 @@ public class BTSystemService {
     @Path("{guid}/test")
     @Produces(MediaType.APPLICATION_JSON)
     public void test(@PathParam("guid") String guid) throws Exception {
-        testService.testBTS(guid);
+        service.testConnection(guid);
     }     
 }

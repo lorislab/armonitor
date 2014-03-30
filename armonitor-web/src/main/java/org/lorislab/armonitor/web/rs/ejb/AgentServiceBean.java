@@ -15,7 +15,6 @@
  */
 package org.lorislab.armonitor.web.rs.ejb;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +26,16 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.process.ejb.TestServiceBean;
 import org.lorislab.armonitor.store.criteria.StoreAgentCriteria;
 import org.lorislab.armonitor.store.ejb.StoreAgentServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
 import org.lorislab.armonitor.store.model.StoreAgent;
+import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
+import org.lorislab.armonitor.web.rs.model.Build;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.enums.AgentType;
 import org.lorislab.jel.ejb.exception.ServiceException;
@@ -54,6 +56,9 @@ public class AgentServiceBean {
     
     @EJB
     private StoreSystemServiceBean systemService;
+    
+    @EJB
+    private TestServiceBean testService;
     
     public Agent create() throws Exception {
         return Mapper.create(StoreAgent.class, Agent.class);
@@ -89,7 +94,7 @@ public class AgentServiceBean {
     }
     
     public void changePassword(String guid, ChangePasswordRequest reqeust) {
-        StoreAgent tmp = service.loadAgent(guid);
+        StoreAgent tmp = service.getAgent(guid);
         if (tmp != null) {
             tmp.setPassword(reqeust.p1.toCharArray());
             service.saveAgent(tmp);
@@ -99,7 +104,7 @@ public class AgentServiceBean {
     public Agent save(Agent agent) throws Exception {
         Agent result = null;
         if (agent != null) {
-            StoreAgent tmp = service.loadAgent(agent.guid);
+            StoreAgent tmp = service.getAgent(agent.guid);
             if (tmp != null) {
                 tmp = Mapper.update(tmp, agent);
             } else {
@@ -112,7 +117,7 @@ public class AgentServiceBean {
     }
     
     public Agent get(String guid) throws Exception {
-        StoreAgent tmp = service.loadAgent(guid);
+        StoreAgent tmp = service.getAgent(guid);
         return Mapper.map(tmp, Agent.class);
     }
     
@@ -136,5 +141,10 @@ public class AgentServiceBean {
             result.put(t.name(), t.name());
         }        
         return result;
+    }
+    
+    public Build testConnection(String guid) throws ServiceException {
+        StoreBuild build = testService.testAgent(guid);
+        return Mapper.map(build, Build.class);
     }
 }

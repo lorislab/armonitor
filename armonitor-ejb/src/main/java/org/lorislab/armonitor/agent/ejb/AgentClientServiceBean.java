@@ -87,8 +87,10 @@ public class AgentClientServiceBean {
      *
      * @param agent the agent.
      * @return the agent service build.
+     * 
+     * @throws Exception if the method fails.
      */
-    public StoreBuild getAgentBuild(StoreAgent agent) {
+    public StoreBuild getAgentBuild(StoreAgent agent) throws Exception {
         StoreBuild result = null;
 
         try {
@@ -96,7 +98,8 @@ public class AgentClientServiceBean {
             Version version = client.getAgentVersion(true);
             result = Mapper.map(version, StoreBuild.class);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error reading the version of the agent " + agent.getGuid(), ex);
+            LOGGER.log(Level.SEVERE, "Error reading the version of the agent {0}", agent.getGuid());
+            throw ex;
         }
         return result;
     }

@@ -26,6 +26,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.bts.service.BtsService;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.process.ejb.TestServiceBean;
 import org.lorislab.armonitor.store.criteria.StoreBTSystemCriteria;
 import org.lorislab.armonitor.store.criteria.StoreProjectCriteria;
 import org.lorislab.armonitor.store.ejb.StoreBTSystemServiceBean;
@@ -52,7 +53,13 @@ public class BTSystemServiceBean {
 
     @EJB
     private StoreProjectServiceBean projectService;
-
+    
+    /**
+     * The test service.
+     */
+    @EJB
+    private TestServiceBean testService;
+    
     public Map<String, String> getTypes() {
         return BtsService.getTypes();
     }
@@ -128,5 +135,9 @@ public class BTSystemServiceBean {
     public Map<String, String> getList() {
         List<StoreBTSystem> tmp = service.getBTSystems();
         return Mapper.convert(tmp, String.class);
+    }
+    
+    public void testConnection(String guid) throws ServiceException {
+        testService.testBTS(guid);
     }
 }

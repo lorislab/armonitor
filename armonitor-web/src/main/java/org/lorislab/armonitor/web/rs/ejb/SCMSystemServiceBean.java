@@ -26,6 +26,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
+import org.lorislab.armonitor.process.ejb.TestServiceBean;
 import org.lorislab.armonitor.scm.service.ScmService;
 import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
 import org.lorislab.armonitor.store.criteria.StoreSCMSystemCriteria;
@@ -54,7 +55,13 @@ public class SCMSystemServiceBean {
 
     @EJB
     private StoreApplicationServiceBean appService;
-
+    
+    /**
+     * The test service.
+     */
+    @EJB
+    private TestServiceBean testService;
+    
     public Map<String, String> getTypes() {
         return ScmService.getTypes();
     }
@@ -135,4 +142,8 @@ public class SCMSystemServiceBean {
         List<StoreSCMSystem> tmp = service.getSCMSystems();
         return Mapper.convert(tmp, String.class);
     }
+        
+    public void testConnection(String guid) throws ServiceException {
+        testService.testSCM(guid);
+    }    
 }

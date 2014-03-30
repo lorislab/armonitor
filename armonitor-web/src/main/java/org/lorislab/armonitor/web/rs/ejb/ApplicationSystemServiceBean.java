@@ -208,7 +208,7 @@ public class ApplicationSystemServiceBean {
         StoreSystem tmp = service.getSystem(guid);
         if (tmp != null) {
             if (agent != null) {
-                StoreAgent pr = agentService.loadAgent(agent);
+                StoreAgent pr = agentService.getAgent(agent);
                 if (pr != null) {
                     tmp.setAgent(pr);
                     service.saveSystem(tmp);

@@ -23,6 +23,10 @@ package org.lorislab.armonitor.process.resources;
  */
 public enum ErrorKeys {
     
+    ERROR_CREATE_AGENT_CONNECTION,
+    
+    NO_AGENT_FOUND,
+    
     ERROR_CREATE_BT_CONNECTION,
     
     NO_BT_SYSTEM_FOUND, 

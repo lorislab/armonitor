@@ -54,12 +54,6 @@ public class SCMSystemService {
     @EJB
     private SCMSystemServiceBean service;
     
-    /**
-     * The test service.
-     */
-    @EJB
-    private TestServiceBean testService;
-    
     @Inject
     private MessageController msg;
     
@@ -149,6 +143,6 @@ public class SCMSystemService {
     @Path("{guid}/test")
     @Produces(MediaType.APPLICATION_JSON)
     public void test(@PathParam("guid") String guid) throws Exception {
-        testService.testSCM(guid);
+        service.testConnection(guid);
     }    
 }

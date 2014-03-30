@@ -63,7 +63,7 @@ public class StoreAgentServiceBean extends AbstractEntityServiceBean<StoreAgent>
         return this.save(agent);
     }
 
-    public StoreAgent loadAgent(String guid) {
+    public StoreAgent getAgent(String guid) {
         StoreAgentCriteria criteria = new StoreAgentCriteria();
         criteria.setGuid(guid);
         return loadAgent(criteria);

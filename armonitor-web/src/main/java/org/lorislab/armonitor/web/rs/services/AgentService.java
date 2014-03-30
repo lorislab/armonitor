@@ -32,6 +32,7 @@ import org.lorislab.armonitor.process.ejb.TestServiceBean;
 import org.lorislab.armonitor.web.rs.ejb.AgentServiceBean;
 import org.lorislab.armonitor.web.rs.model.Agent;
 import org.lorislab.armonitor.web.rs.model.ApplicationSystem;
+import org.lorislab.armonitor.web.rs.model.Build;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
@@ -49,12 +50,6 @@ public class AgentService {
      */
     @EJB
     private AgentServiceBean service;
-
-    /**
-     * The test service.
-     */
-    @EJB
-    private TestServiceBean testService;
     
     /**
      * Gets the list of the agents.
@@ -130,7 +125,7 @@ public class AgentService {
     @GET
     @Path("{guid}/test")
     @Produces(MediaType.APPLICATION_JSON)
-    public void test(@PathParam("guid") String guid) throws Exception {
-        testService.testAgent(guid);
+    public Build test(@PathParam("guid") String guid) throws Exception {
+        return service.testConnection(guid);
     }      
 }

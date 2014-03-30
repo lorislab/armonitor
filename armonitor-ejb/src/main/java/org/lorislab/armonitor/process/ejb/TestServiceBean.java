@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.lorislab.armonitor.agent.ejb.AgentClientServiceBean;
 import org.lorislab.armonitor.bts.model.BtsCriteria;
 import org.lorislab.armonitor.bts.service.BtsService;
 import org.lorislab.armonitor.mail.ejb.MailServiceBean;
@@ -26,9 +27,12 @@ import org.lorislab.armonitor.mail.model.Mail;
 import org.lorislab.armonitor.process.resources.ErrorKeys;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.service.ScmService;
+import org.lorislab.armonitor.store.ejb.StoreAgentServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreBTSystemServiceBean;
 import org.lorislab.armonitor.store.ejb.StoreSCMSystemServiceBean;
+import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreBTSystem;
+import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.jel.ejb.exception.ServiceException;
 
@@ -65,13 +69,38 @@ public class TestServiceBean {
     private StoreBTSystemServiceBean btsService;
 
     /**
+     * The agent client service.
+     */
+    @EJB
+    private AgentClientServiceBean agentClientService;
+
+    /**
+     * The store agent service.
+     */
+    @EJB
+    private StoreAgentServiceBean agentService;
+
+    /**
      * Tests the agent connection.
      *
      * @param guid the GUID of the agent.
+     *
+     * @return the build of the agent.
      * @throws ServiceException if the method fails.
      */
-    public void testAgent(String guid) throws ServiceException {
+    public StoreBuild testAgent(String guid) throws ServiceException {
+        StoreBuild result = null;
+        StoreAgent agent = agentService.getAgent(guid);
+        if (agent == null) {
+            throw new ServiceException(ErrorKeys.NO_AGENT_FOUND, guid);
+        }
 
+        try {
+            result = agentClientService.getAgentBuild(agent);
+        } catch (Exception ex) {
+            throw new ServiceException(ErrorKeys.ERROR_CREATE_AGENT_CONNECTION, guid, ex, agent.getUrl(), ex.getMessage());
+        }
+        return result;
     }
 
     /**
