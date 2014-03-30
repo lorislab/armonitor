@@ -17,10 +17,13 @@ package org.lorislab.armonitor.svn.client;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lorislab.armonitor.scm.model.ScmCriteria;
 import org.lorislab.armonitor.scm.model.ScmLog;
 import org.lorislab.armonitor.scm.model.ScmResult;
 import org.lorislab.armonitor.scm.service.ScmServiceClient;
+import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.io.SVNRepository;
@@ -33,6 +36,11 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
  */
 public class SvnScmServiceClient implements ScmServiceClient {
 
+    /**
+     * The logger for this class.
+     */    
+    private static final Logger LOGGER = Logger.getLogger(SvnScmServiceClient.class.getName());
+    
     /**
      * {@inheritDoc}
      */
@@ -127,4 +135,31 @@ public class SvnScmServiceClient implements ScmServiceClient {
             }
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */    
+    @Override
+    public void testRepository(ScmCriteria criteria) throws Exception {
+        SVNRepository repository = null;
+        try { 
+            repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(criteria.getServer()));            
+            
+            if (criteria.isAuth()) {
+                repository.setAuthenticationManager(FactoryAuthenticationManager.create(criteria));
+            }
+            
+            long revision = -1;
+            SVNDirEntry dir = repository.info(".", revision);
+            if (dir == null) {
+                throw new Exception("Error reading the repository information.");
+            }
+            revision = dir.getRevision();
+            LOGGER.log(Level.INFO, "Revision {0} is the last in the repository {1}", new Object[]{revision, criteria.getServer()});
+        } finally {
+            if (repository != null) {
+                repository.closeSession();
+            }
+        }
+    }    
 }

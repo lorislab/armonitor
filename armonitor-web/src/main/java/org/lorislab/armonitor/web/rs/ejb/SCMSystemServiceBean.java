@@ -37,6 +37,7 @@ import org.lorislab.armonitor.store.model.StoreSCMSystem;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
+import org.lorislab.armonitor.web.rs.model.SCMTestRepository;
 import org.lorislab.armonitor.web.rs.resources.Errors;
 import org.lorislab.jel.ejb.exception.ServiceException;
 
@@ -146,4 +147,8 @@ public class SCMSystemServiceBean {
     public void testConnection(String guid) throws ServiceException {
         testService.testSCM(guid);
     }    
+
+    public void testRepository(String guid, SCMTestRepository request) throws ServiceException {
+        testService.testSCMRepository(guid, request.repository);
+    }
 }

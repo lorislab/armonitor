@@ -35,6 +35,7 @@ import org.lorislab.armonitor.store.model.StoreAgent;
 import org.lorislab.armonitor.store.model.StoreBTSystem;
 import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreSCMSystem;
+import org.lorislab.armonitor.util.LinkUtil;
 import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
@@ -216,6 +217,29 @@ public class TestServiceBean {
             BtsService.testProjectAccess(bc);
         } catch (Exception ex) {
             throw new ServiceException(ErrorKeys.ERROR_CREATE_BT_CONNECTION, guid, ex, bts.getServer(), ex.getMessage());
+        }
+    }
+
+    public void testSCMRepository(String guid, String repository) throws ServiceException {
+        StoreSCMSystem scm = scmService.getSCMSystem(guid);
+        if (scm == null) {
+            throw new ServiceException(ErrorKeys.NO_SCM_SYSTEM_FOUND, guid);
+        }
+        
+        String server = LinkUtil.createLink(repository, scm);
+        
+        try {
+            ScmCriteria criteria = new ScmCriteria();
+            criteria.setType(scm.getType());
+            criteria.setServer(server);
+            criteria.setAuth(scm.isAuth());
+            criteria.setUser(scm.getUser());
+            criteria.setPassword(scm.getPassword());
+            criteria.setReadTimeout(scm.getReadTimeout());
+            criteria.setConnectionTimeout(scm.getConnectionTimeout());
+            ScmService.testRepository(criteria);
+        } catch (Exception ex) {
+            throw new ServiceException(ErrorKeys.ERROR_CREATE_SCM_CONNECTION, guid, ex, scm.getServer(), ex.getMessage());
         }
     }
 }

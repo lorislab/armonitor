@@ -56,4 +56,11 @@ public interface ScmServiceClient {
      */
     public void testConnection(ScmCriteria criteria) throws Exception;    
 
+    /**
+     * Tests the connection to the repository.
+     *
+     * @param criteria the criteria.
+     * @throws Exception if the method fails.
+     */
+    public void testRepository(ScmCriteria criteria) throws Exception;     
 }

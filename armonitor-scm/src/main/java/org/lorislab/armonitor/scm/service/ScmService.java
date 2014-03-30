@@ -123,4 +123,19 @@ public final class ScmService {
         ScmServiceClient client = getClient(criteria.getType());
         client.testConnection(criteria);        
     }
+    
+    /**
+     * Tests the connection to the server.
+     * @param criteria the criteria.
+     * @throws Exception if the method fails.
+     */
+    public static void testRepository(ScmCriteria criteria) throws Exception {
+        if (criteria == null) {
+            throw new Exception("Missing bug tracking search criteria!");
+        }
+
+        // check client
+        ScmServiceClient client = getClient(criteria.getType());
+        client.testRepository(criteria);        
+    }    
 }

@@ -36,6 +36,7 @@ import org.lorislab.armonitor.web.rs.ejb.SCMSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.Application;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;
 import org.lorislab.armonitor.web.rs.model.SCMSystem;
+import org.lorislab.armonitor.web.rs.model.SCMTestRepository;
 import org.lorislab.armonitor.web.rs.resources.Messages;
 import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
@@ -144,5 +145,12 @@ public class SCMSystemService {
     @Produces(MediaType.APPLICATION_JSON)
     public void test(@PathParam("guid") String guid) throws Exception {
         service.testConnection(guid);
-    }    
+    }  
+    
+    @POST
+    @Path("{guid}/test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void testRepository(@PathParam("guid") String guid, SCMTestRepository request) throws Exception {
+        service.testRepository(guid, request);
+    }     
 }
