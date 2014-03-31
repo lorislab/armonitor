@@ -122,21 +122,22 @@
 				<artifactId>replacer</artifactId>
 				<executions>
 					<execution>
+						<id>index</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>replace</goal>
-						</goals>                    
-					</execution>
-				</executions>
-				<configuration>
-					<regex>true</regex>
-					<regexFlags>
-						<regexFlag>DOTALL</regexFlag>
-					</regexFlags>
-					<file>${basedir}/src/main/webapp/index.html</file>
-					<outputFile>${project.build.directory}/${project.build.finalName}/index.html</outputFile>
-					<tokenValueMap>${basedir}/src/config/tokens.conf</tokenValueMap>
-				</configuration>				
+						</goals>
+						<configuration>
+							<regex>true</regex>
+							<regexFlags>
+								<regexFlag>DOTALL</regexFlag>
+							</regexFlags>
+							<file>${basedir}/src/main/webapp/index.html</file>
+							<outputFile>${project.build.directory}/${project.build.finalName}/index.html</outputFile>
+							<tokenValueMap>${basedir}/src/main/config/tokens.conf</tokenValueMap>
+						</configuration>						                    
+					</execution>										
+				</executions>								
 			</plugin>			 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

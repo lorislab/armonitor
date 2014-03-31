@@ -1,7 +1,5 @@
 'use strict';
 
-
-// Declare app level module which depends on filters, and services
 var app = angular.module('armonitor', [
 	'ngRoute',
 	'ui.bootstrap',
@@ -11,6 +9,8 @@ var app = angular.module('armonitor', [
 	'armonitor.directives',
 	'armonitor.controllers'
 ]);
+
+app.value('version', '0.0.3');
 
 app.provider('config', function() {
 	var _server;
@@ -27,8 +27,9 @@ app.provider('config', function() {
 });
 
 app.config(function(configProvider) {
-	configProvider.setServer("/armonitor/rs");
+	configProvider.setServer("http://localhost:8080/armonitor/rs");
 });
+
 app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/dashboard', {templateUrl: 'partials/dashboard.html', controller: 'DashboardCtrl'});
 		$routeProvider.when('/about', {templateUrl: 'partials/about.html', controller: 'AboutCtrl'});
