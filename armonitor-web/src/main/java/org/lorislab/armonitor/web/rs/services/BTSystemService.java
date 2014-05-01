@@ -28,7 +28,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.lorislab.armonitor.process.ejb.TestServiceBean;
 import org.lorislab.armonitor.web.rs.ejb.BTSystemServiceBean;
 import org.lorislab.armonitor.web.rs.model.BTSystem;
 import org.lorislab.armonitor.web.rs.model.ChangePasswordRequest;

@@ -36,6 +36,7 @@ import org.lorislab.armonitor.store.model.StoreBuild;
 import org.lorislab.armonitor.store.model.StoreBuild_;
 import org.lorislab.armonitor.store.model.StoreProject;
 import org.lorislab.armonitor.store.model.StoreProject_;
+import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystem_;
 import org.lorislab.jel.ejb.services.AbstractEntityServiceBean;
 
@@ -63,19 +64,37 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
     public boolean deleteApplication(String guid) {
         return this.delete(guid);
     }
-    
+
+    /**
+     * Saves the application.
+     *
+     * @param application the application.
+     * @return the saved application.
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StoreApplication saveApplication(StoreApplication application) {
         StoreApplication tmp = this.save(application);
         return getApplication(tmp.getGuid());
     }
 
+    /**
+     * Gets the application by GUID.
+     *
+     * @param guid the application GUID.
+     * @return the corresponding application.
+     */
     public StoreApplication getApplication(String guid) {
         StoreApplicationCriteria criteria = new StoreApplicationCriteria();
         criteria.setGuid(guid);
         return this.getById(guid);
     }
 
+    /**
+     * Gets the application by application criteria.
+     *
+     * @param criteria the application criteria.
+     * @return the corresponding application.
+     */
     public StoreApplication getApplication(StoreApplicationCriteria criteria) {
         StoreApplication result = null;
         List<StoreApplication> tmp = getApplications(criteria);
@@ -85,11 +104,61 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
         return result;
     }
 
+    /**
+     * Gets the list of all applications.
+     *
+     * @return the list of all applications.
+     */
     public List<StoreApplication> getApplications() {
         StoreApplicationCriteria criteria = new StoreApplicationCriteria();
         return getApplications(criteria);
     }
 
+    /**
+     * Gets the application object for the deployment list.
+     *
+     * @param system the system GUID.
+     * @return the corresponding application.
+     */
+    public StoreApplication getApplicationForDeployment(String system) {
+        StoreApplication result = null;
+
+        CriteriaBuilder cb = getBaseEAO().getCriteriaBuilder();
+        CriteriaQuery<StoreApplication> cq = getBaseEAO().createCriteriaQuery();
+        Root<StoreApplication> root = cq.from(StoreApplication.class);
+
+        cq.distinct(true);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        root.fetch(StoreApplication_.builds, JoinType.LEFT);
+        root.fetch(StoreApplication_.project, JoinType.LEFT);
+
+        Join<StoreApplication, StoreSystem> fs = (Join<StoreApplication, StoreSystem>) root.fetch(StoreApplication_.systems, JoinType.LEFT);
+        predicates.add(cb.equal(fs.get(StoreSystem_.guid), system));
+
+        if (!predicates.isEmpty()) {
+            cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        }
+
+        try {
+            TypedQuery<StoreApplication> typeQuery = getBaseEAO().createTypedQuery(cq);
+            List<StoreApplication> tmp = typeQuery.getResultList();
+            if (tmp != null && !tmp.isEmpty()) {
+                result = tmp.get(0);
+            }
+        } catch (NoResultException ex) {
+            // do nothing
+        }
+        return result;
+    }
+
+    /**
+     * Gets the applications by application criteria.
+     *
+     * @param criteria the application criteria.
+     * @return the corresponding list of application.
+     */
     public List<StoreApplication> getApplications(StoreApplicationCriteria criteria) {
         List<StoreApplication> result = new ArrayList<>();
 
@@ -98,14 +167,14 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
         Root<StoreApplication> root = cq.from(StoreApplication.class);
 
         List<Predicate> predicates = new ArrayList<>();
-        
+
         if (criteria.isFetchSCM()) {
             root.fetch(StoreApplication_.scm, JoinType.LEFT);
         }
 
         if (criteria.isFetchProject()) {
             Fetch<StoreApplication, StoreProject> pf = root.fetch(StoreApplication_.project, JoinType.LEFT);
-            
+
             if (criteria.isFetchProjectBts()) {
                 pf.fetch(StoreProject_.bts, JoinType.LEFT);
             }
@@ -114,17 +183,16 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
         if (criteria.isFetchSystem()) {
             root.fetch(StoreApplication_.systems, JoinType.LEFT);
         }
-        
+
         if (criteria.isFetchBuilds()) {
             Fetch<StoreApplication, StoreBuild> fb = root.fetch(StoreApplication_.builds, JoinType.LEFT);
-            
+
             if (criteria.getFetchBuildsVersion() != null) {
                 Join<StoreApplication, StoreBuild> jb = (Join<StoreApplication, StoreBuild>) fb;
                 predicates.add(cb.equal(jb.get(StoreBuild_.mavenVersion), criteria.getFetchBuildsVersion()));
             }
         }
-        
-        
+
         if (criteria.getGuid() != null) {
             predicates.add(cb.equal(root.get(StoreApplication_.guid), criteria.getGuid()));
         }
@@ -132,11 +200,11 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
         if (criteria.getKey() != null) {
             predicates.add(cb.equal(root.get(StoreApplication_.key), criteria.getKey()));
         }
-        
+
         if (criteria.getBuild() != null) {
             predicates.add(cb.in(root.join(StoreApplication_.builds).get(StoreBuild_.guid)).value(criteria.getBuild()));
         }
-        
+
         if (criteria.isEnabled() != null) {
             predicates.add(cb.equal(root.get(StoreApplication_.enabled), criteria.isEnabled()));
         }

@@ -14,32 +14,18 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.resources;
-
-import org.lorislab.jel.base.resources.annotations.ResourceKey;
+package org.lorislab.armonitor.web.rs.model;
 
 /**
- * The error keys.
+ * The deploy request.
  * 
  * @author Andrej Petras
  */
-@ResourceKey
-public enum Errors {
+public class DeployRequest {
     
-    /**
-     * No system found.
-     */
-    NO_SYSTEM_FOUND,
-    /**
-     * The deploy request is {@code null}.
-     */
-    DEPLOY_REQUEST_IS_NULL,
+    public String system;
     
-    WRONG_USER_OR_PASSWORD,
-    
-    SCM_DELETE_ERROR,
-    
-    DASHBOARD_LOAD_ERROR,
-    
-    DASHBOARD_UPDATE_SYSTEM_BUILD_ERROR;
+    public String build;
+ 
+    public boolean notification;
 }

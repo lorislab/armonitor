@@ -84,8 +84,6 @@ public class DashboardController implements Serializable {
 
     /**
      * Disable the message in the dashboard.
-     *
-     * @throws Exception if the method fails.
      */
     public void disableMsg() {
         if (dashboard != null) {

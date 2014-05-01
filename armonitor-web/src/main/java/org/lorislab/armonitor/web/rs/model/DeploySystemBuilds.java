@@ -14,32 +14,34 @@
  * limitations under the License.
  */
 
-package org.lorislab.armonitor.web.rs.resources;
+package org.lorislab.armonitor.web.rs.model;
 
-import org.lorislab.jel.base.resources.annotations.ResourceKey;
+import java.util.Set;
 
 /**
- * The error keys.
+ * The deployment system builds.
  * 
  * @author Andrej Petras
  */
-@ResourceKey
-public enum Errors {
-    
+public class DeploySystemBuilds {
     /**
-     * No system found.
+     * The system GUID.
      */
-    NO_SYSTEM_FOUND,
+    public String guid;
     /**
-     * The deploy request is {@code null}.
+     * The system.
      */
-    DEPLOY_REQUEST_IS_NULL,
-    
-    WRONG_USER_OR_PASSWORD,
-    
-    SCM_DELETE_ERROR,
-    
-    DASHBOARD_LOAD_ERROR,
-    
-    DASHBOARD_UPDATE_SYSTEM_BUILD_ERROR;
+    public DeploySystem system;
+    /**
+     * The application name.
+     */
+    private String application;
+    /**
+     * The project name.
+     */
+    private String project;
+    /**
+     * The set of builds.
+     */
+    public Set<Build> builds;
 }

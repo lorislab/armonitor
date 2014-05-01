@@ -167,6 +167,69 @@ public class ProcessServiceBean {
     }
 
     /**
+     * Deploys the build on the system.
+     *
+     * @param systemGuid the system GUID.
+     * @param buildGuid the build GUID.
+     * @param type the deploy type.
+     * @return the system build.
+     * @throws ServiceException if the method fails.
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public StoreSystemBuild deploy(final String systemGuid, final String buildGuid, final StoreSystemBuildType type) throws ServiceException {
+
+        StoreSystemBuild result = null;
+
+        // check the system by GUID
+        StoreSystemCriteria criteria = new StoreSystemCriteria();
+        criteria.setGuid(systemGuid);
+        criteria.setFetchApplication(true);
+        StoreSystem system = systemService.getSystem(criteria);
+        if (system == null) {
+            throw new ServiceException(ErrorKeys.NO_SYSTEM_FOR_KEY_FOUND, systemGuid, systemGuid);
+        }
+
+        StoreApplication application = system.getApplication();
+
+        // check the build
+        StoreBuildCriteria buildCriteria = new StoreBuildCriteria();
+        buildCriteria.setGuid(buildGuid);
+        buildCriteria.setApplication(application.getGuid());
+        StoreBuild build = buildService.getBuild(buildCriteria);
+        if (build == null) {
+            throw new ServiceException(ErrorKeys.NO_BUILD_FOR_GUID_AND_APPLICATION_FOUND, buildGuid, buildGuid, systemGuid);
+        }
+
+        // load the system build, build and system
+        StoreSystemBuildCriteria ssbc = new StoreSystemBuildCriteria();
+        ssbc.setMaxDate(Boolean.TRUE);
+        ssbc.setSystem(system.getGuid());
+        ssbc.setFetchBuild(true);
+        StoreSystemBuild sb = systemBuildService.getSystemBuild(ssbc);
+        if (sb != null && sb.getBuild() != null) {
+            if (build.equals(sb.getBuild())) {
+                result = sb;
+                LOGGER.log(Level.FINEST, "The build {0} is already deploy on the system {1}", new Object[]{build.getGuid(), system.getGuid()});
+            }
+        }
+
+        if (result == null) {
+            // deploy the build on the system
+            StoreSystemBuild sysBuild = new StoreSystemBuild();
+            sysBuild.setBuild(build);
+            sysBuild.setSystem(system);
+            sysBuild.setType(type);
+            sysBuild.setDate(new Date());
+            result = systemBuildService.saveSystemBuild(sysBuild);
+        } else {
+            result = null;
+        }
+
+        return result;
+
+    }
+
+    /**
      * Deploy the store build.
      *
      * @param key the key.
@@ -227,7 +290,7 @@ public class ProcessServiceBean {
         } else {
             result = null;
         }
-        
+
         return result;
     }
 

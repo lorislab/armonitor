@@ -10,7 +10,7 @@
 	</parent>
 	
 	<name>armonitor-web</name>
-	<artifactId>armonitor-web</artifactId>
+	<artifactId>armonitor-web</artifactId>	
 	<packaging>war</packaging>
 
 	<dependencies>  

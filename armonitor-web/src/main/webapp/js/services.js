@@ -58,7 +58,7 @@ services.factory('UserService', [function() {
 services.factory('CommonService', ['$location','UserService','SecurityRSService','MessageService','ErrorService',
 	function($location, UserService, SecurityRSService, MessageService, ErrorService) {
 
-	var _base_roles = ["admin", "base"];
+	var _base_roles = ["admin", "base", "deployer"];
 
 	MessageService.info({}, function(response) {
 		ErrorService.addInfo(response);

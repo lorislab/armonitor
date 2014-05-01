@@ -27,8 +27,9 @@
 				</div>
 				<div class="navbar-collapse collapse" data-ng-controller="MenuCtrl">
 					<ul class="nav navbar-nav navbar-left">						
-						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard" data-translate="MENU_DASHBOARD">Dashboard</a></li>
-						<li data-ng-class="{ active: active(['/settings'])}" data-ng-show="user">
+						<li data-ng-class="{ active: active(['/dashboard'])}"><a href="#/dashboard"><i class="icon-gauge"></i> <span data-translate="MENU_DASHBOARD">Dashboard</span></a></li>
+						<li data-ng-class="{ active: active(['/deploy'])}"><a href="#/deploy" data-ng-show="roles.deployer"><i class="icon-rocket"></i> Deploy</a></li>
+						<li data-ng-class="{ active: active(['/settings'])}" data-ng-show="roles.admin">
 							<a href="#" class="dropdown-toggle"  data-toggle="dropdown"><i class="icon-cog-alt"></i> Settings <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="#/settings/mail"><i class="icon-mail-alt"></i> Mail service</a></li>
@@ -121,6 +122,7 @@
 		<script src="js/admin/services/services.js"></script>
 		<script src="js/admin/sys/services.js"></script>
 		<script src="js/admin/user/services.js"></script>
+		<script src="js/deploy/services.js"></script>
 		<script src="js/controllers.js"></script>
 		<script src="js/admin/agent/controllers.js"></script>
 		<script src="js/admin/app/controllers.js"></script>
@@ -131,6 +133,7 @@
 		<script src="js/admin/services/controllers.js"></script>
 		<script src="js/admin/sys/controllers.js"></script>
 		<script src="js/admin/user/controllers.js"></script>		
+		<script src="js/deploy/controllers.js"></script>
 		<script src="js/filters.js"></script>
 		<script src="js/directives.js"></script>
 		<!--DEV-JS-->

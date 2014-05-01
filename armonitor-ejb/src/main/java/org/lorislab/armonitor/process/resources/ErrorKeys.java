@@ -49,6 +49,11 @@ public enum ErrorKeys {
     
     NO_ACTIVITY_FOUND_FOR_BUILD,
     
+    /**
+     * The no build for the GUID and application not found.
+     */
+    NO_BUILD_FOR_GUID_AND_APPLICATION_FOUND,
+    
     NO_APPLICATION_FOR_SYSTEM_FOUND,
     
     NO_SYSTEM_FOR_KEY_FOUND,

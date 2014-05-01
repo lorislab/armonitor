@@ -1,0 +1,45 @@
+<h2>Deployment
+	<small>on the system</small>
+</h2>
+
+<ol class="breadcrumb">
+	<li class="active">
+		<i class="icon-rocket"></i> Systems
+	</li>	
+</ol>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="input-group">
+			<input type="search" placeholder="Search" class="form-control" data-ng-model="filter">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" data-ng-click="clear()"><i class="icon-erase"></i></button>
+				<button class="btn btn-default" type="button" data-ng-click="reload()"><i class="icon-arrows-cw"></i></button>
+			</span>				
+		</div>			
+	</div>
+	<table class="table table-striped sortable">
+		<thead>
+			<tr>
+				<th> </th>	
+				<th>Project</th>	
+				<th>Application</th>
+				<th>Name</th>
+				<th>Domain</th>
+				<th>Classification</th>
+			</tr>
+		</thead>			
+		<tbody>
+			<tr data-ng-repeat="item in all| filter:search">
+				<td>
+					<a href="#/deploy/{{item.guid}}"><span class="icon-rocket"></span></a>
+				</td>					
+				<td>{{item.project}}</td>
+				<td>{{item.application}}</td>
+				<td>{{item.name}}</td>
+				<td>{{item.domain}}</td>
+				<td>{{item.clazz}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
