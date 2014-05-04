@@ -73,10 +73,12 @@ public class DeployController implements Serializable {
      * Deploys the build on the system.
      *
      * @param request the deployment request.
+     * @return the deploy system build.
      * @throws Exception if the method fails.
      */
-    public void deploy(DeployRequest request) throws Exception {
-        service.deploy(request);
+    public DeploySystemBuild deploy(DeployRequest request) throws Exception {
+        systemBuild = service.deploy(request);
+        return systemBuild;
     }
 
     /**

@@ -15,7 +15,86 @@
 	<li class="active">
 		<i class="icon-beaker"></i> {{data.system.application}}
 	</li>	
-	<li class="active">
-		<i class="icon-suitcase"></i> {{data.system.name}}
+	<li>
+		<a href="#/deploy/{{data.systemGuid}}">
+			<i class="icon-suitcase"></i> {{data.system.name}}
+		</a>
 	</li>	
 </ol>
+
+<div class="row">
+	<div class="col-lg-5">
+		<div class="panel panel-success">
+			<div class="panel-heading" style="min-height: 140px;">
+				<div class="row">
+					<div class="col-xs-10" style="font-size: 25px;">
+						{{data.system.name}}
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-xs-12" style="font-size: 15px;">
+						<span data-ng-show="data.system.domain">{{data.system.domain}} / </span>
+						<span data-ng-show="data.system.clazz">{{data.system.clazz}}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4" style="font-size: 5em;">
+						<i class="icon-ok" ></i>						
+					</div>
+					<div class="col-xs-8" style="text-align: right;">
+						<p style="font-size: 20px;">
+							{{data.systemBuild.mavenVersion}}
+							{{data.systemBuild.build}}  									
+						</p>
+						<p>
+							<i class="icon-fork" style="font-weight: bold"></i>{{data.systemBuild.scm}}
+						</p>
+						<p>
+							<i class="icon-clock"></i>{{data.systemBuild.date| date:'medium' }}
+						</p>								
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		
+		<div style="text-align: center; margin: 10px;" data-ng-hide="data.systemBuild.guid === data.build.guid" >
+			<button id="gkey" class="btn btn-danger" data-ng-click="deploy()"><i class="icon-right-circled"></i> Deploy</button>
+		</div>
+	</div>
+	<div class="col-lg-5">
+		<div class="panel panel-danger">
+			<div class="panel-heading" style="min-height: 140px;">
+				<div class="row">
+					<div class="col-xs-10" style="font-size: 25px;">
+						{{data.system.name}}
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-xs-12" style="font-size: 15px;">
+						<span data-ng-show="data.system.domain">{{data.system.domain}} / </span>
+						<span data-ng-show="data.system.clazz">{{data.system.clazz}}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4" style="font-size: 5em;">
+						<i class="icon-ok" ></i>						
+					</div>
+					<div class="col-xs-8" style="text-align: right;">
+						<p style="font-size: 20px;">
+							{{data.build.mavenVersion}}
+							{{data.build.build}}  									
+						</p>
+						<p>
+							<i class="icon-fork" style="font-weight: bold"></i>{{data.build.scm}}
+						</p>
+						<p>
+							<i class="icon-clock"></i>{{data.build.date| date:'medium' }}
+						</p>								
+					</div>
+				</div>
+			</div>	
+		</div>		
+	</div>
+</div>

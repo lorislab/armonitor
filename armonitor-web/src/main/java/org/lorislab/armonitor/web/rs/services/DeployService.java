@@ -52,13 +52,14 @@ public class DeployService {
      * Send deployment request.
      *
      * @param request the deployment request.
+     * @return the deploy system build.
      * @throws Exception if the method fails.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void deploy(DeployRequest request) throws Exception {
-        controller.deploy(request);
+    public DeploySystemBuild deploy(DeployRequest request) throws Exception {
+        return controller.deploy(request);
     }
 
     /**
@@ -87,7 +88,7 @@ public class DeployService {
     public DeploySystemBuilds getSystemBuilds(@PathParam("sys") String sys, @QueryParam("reload") @DefaultValue("false") boolean reload) throws Exception {
         return controller.getSystemBuilds(sys, reload);
     }
-    
+
     /**
      * Gets the system builds.
      *

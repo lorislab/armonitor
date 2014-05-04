@@ -14,6 +14,12 @@ controllers.controller('DeploymentCtrl', ['$scope', '$routeParams', 'DeployServi
 			$scope.data = response;
 		});
 	};	
+	
+	$scope.deploy = function() {
+		DeployService.deploy({system: $routeParams.guid, build: $routeParams.build, notification: true}, function(response) {
+			$scope.data = response;
+		});		
+	};
 }]);
 	
 controllers.controller('DeploymentSystemBuildsCtrl', ['$scope', '$routeParams', 'DeployService',

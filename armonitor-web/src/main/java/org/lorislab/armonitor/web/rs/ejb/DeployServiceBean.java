@@ -65,9 +65,11 @@ public class DeployServiceBean {
      * Deploy the build on the system and send notification.
      *
      * @param request the deploy request.
+     * @return the deploy system build.
+     * 
      * @throws ServiceException if the method fails.
      */
-    public void deploy(DeployRequest request) throws ServiceException {
+    public DeploySystemBuild deploy(DeployRequest request) throws ServiceException {
         if (request == null) {
             throw new ServiceException(Errors.DEPLOY_REQUEST_IS_NULL);
         }
@@ -77,6 +79,8 @@ public class DeployServiceBean {
         if (request.notification) {
             service.sendNotificationForSystemBuild(ssb.getGuid());
         }
+        
+        return getSystemBuild(request.system, request.build);
     }
 
     /**
