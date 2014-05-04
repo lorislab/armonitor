@@ -39,7 +39,8 @@ app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/versionbuild/:app/:ver', {templateUrl: 'partials/versionbuild.html', controller: 'VersionBuildCtrl'});
 		$routeProvider.when('/profile', {templateUrl: 'partials/profile.html', controller: 'ProfileCtrl'});
 		$routeProvider.when('/deploy', {templateUrl: 'partials/deploy/systems.html', controller: 'DeploymentSystemCtrl'});
-		$routeProvider.when('/deploy/:guid', {templateUrl: 'partials/deploy/deploy.html', controller: 'DeploymentCtrl'});
+		$routeProvider.when('/deploy/:guid', {templateUrl: 'partials/deploy/builds.html', controller: 'DeploymentSystemBuildsCtrl'});
+		$routeProvider.when('/deploy/:guid/:build', {templateUrl: 'partials/deploy/deploy.html', controller: 'DeploymentCtrl'});
 		$routeProvider.when('/settings', {templateUrl: 'partials/admin/services.html', controller: 'ServicesCtrl'});
 		$routeProvider.when('/settings/timer', {templateUrl: 'partials/admin/services/timer.html', controller: 'TimerAdminCtrl'});
 		$routeProvider.when('/settings/mail', {templateUrl: 'partials/admin/services/mail.html', controller: 'MailAdminCtrl'});

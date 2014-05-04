@@ -115,6 +115,48 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
     }
 
     /**
+     * Gets the application object for the deployment the build on the system.
+     *
+     * @param system the system GUID.
+     * @param build the build GUID.
+     * 
+     * @return the corresponding application.
+     */
+    public StoreApplication getApplicationForDeployment(String system, String build) {
+        StoreApplication result = null;
+
+        CriteriaBuilder cb = getBaseEAO().getCriteriaBuilder();
+        CriteriaQuery<StoreApplication> cq = getBaseEAO().createCriteriaQuery();
+        Root<StoreApplication> root = cq.from(StoreApplication.class);
+
+        cq.distinct(true);
+
+        List<Predicate> predicates = new ArrayList<>();
+        root.fetch(StoreApplication_.project, JoinType.LEFT);
+        
+        Join<StoreApplication, StoreBuild> fb = (Join<StoreApplication, StoreBuild>)  root.fetch(StoreApplication_.builds, JoinType.LEFT);
+        predicates.add(cb.equal(fb.get(StoreBuild_.guid), build));                
+
+        Join<StoreApplication, StoreSystem> fs = (Join<StoreApplication, StoreSystem>) root.fetch(StoreApplication_.systems, JoinType.LEFT);
+        predicates.add(cb.equal(fs.get(StoreSystem_.guid), system));
+
+        if (!predicates.isEmpty()) {
+            cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        }
+
+        try {
+            TypedQuery<StoreApplication> typeQuery = getBaseEAO().createTypedQuery(cq);
+            List<StoreApplication> tmp = typeQuery.getResultList();
+            if (tmp != null && !tmp.isEmpty()) {
+                result = tmp.get(0);
+            }
+        } catch (NoResultException ex) {
+            // do nothing
+        }
+        return result;
+    }
+    
+    /**
      * Gets the application object for the deployment list.
      *
      * @param system the system GUID.
@@ -229,4 +271,5 @@ public class StoreApplicationServiceBean extends AbstractEntityServiceBean<Store
         }
         return result;
     }
+
 }

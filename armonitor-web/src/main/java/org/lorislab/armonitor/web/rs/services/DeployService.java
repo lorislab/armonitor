@@ -18,15 +18,18 @@ package org.lorislab.armonitor.web.rs.services;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.armonitor.web.rs.controller.DeployController;
 import org.lorislab.armonitor.web.rs.model.DeployRequest;
 import org.lorislab.armonitor.web.rs.model.DeploySystem;
+import org.lorislab.armonitor.web.rs.model.DeploySystemBuild;
 import org.lorislab.armonitor.web.rs.model.DeploySystemBuilds;
 import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
@@ -74,12 +77,31 @@ public class DeployService {
      * Gets the system builds.
      *
      * @param sys the system GUID.
+     * @param reload reload flag.
      * @return the system builds.
+     * @throws Exception if the method fails.
      */
     @GET
     @Path("{sys}")
     @Produces(MediaType.APPLICATION_JSON)
-    public DeploySystemBuilds getSystemBuilds(@PathParam("sys") String sys) throws Exception {
-        return controller.getSystemBuilds(sys);
+    public DeploySystemBuilds getSystemBuilds(@PathParam("sys") String sys, @QueryParam("reload") @DefaultValue("false") boolean reload) throws Exception {
+        return controller.getSystemBuilds(sys, reload);
     }
+    
+    /**
+     * Gets the system builds.
+     *
+     * @param sys the system GUID.
+     * @param build the build GUID.
+     * @param reload the reload flag
+     * @return the system builds.
+     * @throws Exception if the method fails.
+     */
+    @GET
+    @Path("{sys}/{build}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public DeploySystemBuild getSystemBuild(@PathParam("sys") String sys, @PathParam("build") String build, @QueryParam("reload") @DefaultValue("false") boolean reload) throws Exception {
+        return controller.getSystemBuild(sys, build, reload);
+    }
+
 }

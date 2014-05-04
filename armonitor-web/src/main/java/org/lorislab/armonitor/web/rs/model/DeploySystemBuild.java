@@ -16,24 +16,30 @@
 
 package org.lorislab.armonitor.web.rs.model;
 
-import java.util.Set;
-
 /**
- * The deployment system builds.
+ * The deploy system build.
  * 
  * @author Andrej Petras
  */
-public class DeploySystemBuilds {
+public class DeploySystemBuild {
     /**
      * The system GUID.
      */
-    public String guid;
+    public String systemGuid;    
+    /**
+     * The build GUID.
+     */
+    public String buildGuid;    
     /**
      * The system.
      */
-    public DeploySystem system;  
+    public DeploySystem system;
     /**
-     * The set of builds.
+     * The system build.
      */
-    public Set<Build> builds;
+    public Build systemBuild;
+    /**
+     * The build.
+     */
+    public Build build;    
 }

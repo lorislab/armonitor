@@ -1,3 +1,57 @@
+controllers.controller('DeploymentCtrl', ['$scope', '$routeParams', 'DeployService',
+	function($scope, $routeParams, DeployService) {
+		
+	function _startup() {
+		DeployService.build({guid: $routeParams.guid, build: $routeParams.build}, function(response) {
+			$scope.data = response;
+		});
+	}
+
+	_startup();
+	
+	$scope.reload = function() {
+		DeployService.build({guid: $routeParams.guid, build: $routeParams.build, reload: true}, function(response) {
+			$scope.data = response;
+		});
+	};	
+}]);
+	
+controllers.controller('DeploymentSystemBuildsCtrl', ['$scope', '$routeParams', 'DeployService',
+	function($scope, $routeParams, DeployService) {
+		
+	function _startup() {
+		DeployService.builds({guid: $routeParams.guid}, function(response) {
+			$scope.data = response;
+		});
+	}
+
+	_startup();	
+	
+	$scope.reload = function() {
+		$scope.filter = null;
+		DeployService.builds({guid: $routeParams.guid, reload: true}, function(response) {
+			$scope.data = response;
+		});
+	};
+
+	$scope.clear = function() {
+		$scope.filter = null;
+	};
+
+	$scope.search = function(row) {
+		if ($scope.filter) {
+			var tmp = $scope.filter || '';
+			return !!(((row.scm !== null && row.scm.indexOf(tmp)) !== -1
+					|| (row.mavenVersion !== null && row.mavenVersion.indexOf(tmp) !== -1)
+					|| (row.build !== null && row.build.indexOf(tmp) !== -1)
+					|| (row.groupId !== null && row.groupId.indexOf(tmp) !== -1)
+					|| (row.artifactId !== null && row.artifactId.indexOf(tmp) !== -1)
+					));
+		}
+		return true;
+	};	
+}]);
+
 controllers.controller('DeploymentSystemCtrl', ['$scope','DeployService',
 	function($scope, DeployService) {
 	
@@ -8,12 +62,7 @@ controllers.controller('DeploymentSystemCtrl', ['$scope','DeployService',
 	}
 
 	_startup();
-
-	$scope.reload = function() {
-		$scope.filter = null;
-		_startup();
-	};
-
+	
 	$scope.clear = function() {
 		$scope.filter = null;
 	};

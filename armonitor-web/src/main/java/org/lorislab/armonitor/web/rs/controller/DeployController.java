@@ -26,15 +26,15 @@ import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.web.rs.ejb.DeployServiceBean;
 import org.lorislab.armonitor.web.rs.model.Dashboard;
 import org.lorislab.armonitor.web.rs.model.DashboardApplication;
-import org.lorislab.armonitor.web.rs.model.DashboardApplicationSystem;
 import org.lorislab.armonitor.web.rs.model.DashboardProject;
 import org.lorislab.armonitor.web.rs.model.DeployRequest;
 import org.lorislab.armonitor.web.rs.model.DeploySystem;
+import org.lorislab.armonitor.web.rs.model.DeploySystemBuild;
 import org.lorislab.armonitor.web.rs.model.DeploySystemBuilds;
 import org.lorislab.jel.cdi.interceptor.annotations.CdiServiceMethod;
 
 /**
- * The deploy controller.
+ * The deployment controller.
  *
  * @author Andrej Petras
  */
@@ -63,6 +63,11 @@ public class DeployController implements Serializable {
      * The system builds.
      */
     private DeploySystemBuilds systemBuilds;
+
+    /**
+     * The system build.
+     */
+    private DeploySystemBuild systemBuild;
 
     /**
      * Deploys the build on the system.
@@ -106,10 +111,14 @@ public class DeployController implements Serializable {
      * Gets the system builds from session or load new system builds.
      *
      * @param sys the system GUID.
+     * @param reload the reload flag.
      * @return the system builds.
      * @throws Exception if the method fails.
      */
-    public DeploySystemBuilds getSystemBuilds(String sys) throws Exception {
+    public DeploySystemBuilds getSystemBuilds(String sys, boolean reload) throws Exception {
+        if (reload) {
+            systemBuilds = null;
+        }
         if (sys == null) {
             systemBuilds = null;
         } else {
@@ -118,5 +127,29 @@ public class DeployController implements Serializable {
             }
         }
         return systemBuilds;
+    }  
+
+    /**
+     * Gets the system build.
+     *
+     * @param sys the system GUID.
+     * @param build the build GUID.
+     * @param reload the reload flag.
+     * @return the system build.
+     * @throws Exception if the method fails.
+     */
+    public DeploySystemBuild getSystemBuild(String sys, String build, boolean reload) throws Exception {
+        if (reload) {
+            systemBuild = null;
+        }
+        if (sys == null || build == null) {
+            systemBuild = null;
+        } else {
+            if (systemBuild == null || !systemBuild.systemGuid.equals(sys) || !systemBuild.buildGuid.equals(build)) {
+                systemBuild = service.getSystemBuild(sys, build);
+            }
+        }
+        return systemBuild;        
     }
+    
 }

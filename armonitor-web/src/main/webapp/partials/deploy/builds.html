@@ -1,0 +1,59 @@
+<h2>Deployment
+	<small>on the system</small>
+</h2>
+
+<ol class="breadcrumb">
+	<li>
+		<i class="icon-rocket"></i> 
+		<a href="#/deploy">
+			Deployments
+		</a>
+	</li>
+	<li class="active">
+		<i class="icon-award"></i> {{data.system.project}}
+	</li>
+	<li class="active">
+		<i class="icon-beaker"></i> {{data.system.application}}
+	</li>	
+	<li class="active">
+		<i class="icon-suitcase"></i> {{data.system.name}}
+	</li>	
+</ol>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="input-group">
+			<input type="search" placeholder="Search" class="form-control" data-ng-model="filter">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" data-ng-click="clear()"><i class="icon-erase"></i></button>
+				<button class="btn btn-default" type="button" data-ng-click="reload()"><i class="icon-arrows-cw"></i></button>
+			</span>				
+		</div>			
+	</div>
+	<table class="table table-striped sortable">
+		<thead>
+			<tr>
+				<th> </th>	
+				<th>SCM</th>
+				<th>Version</th>	
+				<th>Build</th>
+				<th>Group Id</th>
+				<th>Artifact Id</th>												
+				<th>Date</th>
+			</tr>
+		</thead>			
+		<tbody>
+			<tr data-ng-repeat="item in data.builds | filter:search | orderBy:['mavenVersion','scm']:true ">
+				<td>
+					<a href="#/deploy/{{data.guid}}/{{item.guid}}"><span class="icon-rocket"></span></a>
+				</td>					
+				<td>{{item.scm}}</td>
+				<td>{{item.mavenVersion}}</td>												
+				<td>{{item.build}}</td>
+				<td>{{item.groupId}}</td>
+				<td>{{item.artifactId}}</td>				
+				<td>{{item.date | date:'medium' }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

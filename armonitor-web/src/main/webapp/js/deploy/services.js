@@ -8,8 +8,20 @@ services.factory('DeployService', ['$resource','config',
 		},
 		systems: {
 			method: 'GET',
-			url: config.server + '/deploy',			
+			url: config.server + '/deploy/',			
 			isArray: true
+		},
+		builds: {
+			method: 'GET',
+			url: config.server + '/deploy/:guid',			
+			params: {guid: '@guid'},
+			isArray: false
+		},
+		build: {
+			method: 'GET',
+			url: config.server + '/deploy/:guid/:build',			
+			params: {guid: '@guid', build: '@build'},
+			isArray: false
 		}		
 	});
 }]);	

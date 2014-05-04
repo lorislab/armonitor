@@ -4,7 +4,7 @@
 
 <ol class="breadcrumb">
 	<li class="active">
-		<i class="icon-rocket"></i> Systems
+		<i class="icon-rocket"></i> Deployments
 	</li>	
 </ol>
 
@@ -14,7 +14,6 @@
 			<input type="search" placeholder="Search" class="form-control" data-ng-model="filter">
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button" data-ng-click="clear()"><i class="icon-erase"></i></button>
-				<button class="btn btn-default" type="button" data-ng-click="reload()"><i class="icon-arrows-cw"></i></button>
 			</span>				
 		</div>			
 	</div>
@@ -30,7 +29,7 @@
 			</tr>
 		</thead>			
 		<tbody>
-			<tr data-ng-repeat="item in all| filter:search">
+			<tr data-ng-repeat="item in all| filter:search | orderBy:['project','application','name']">
 				<td>
 					<a href="#/deploy/{{item.guid}}"><span class="icon-rocket"></span></a>
 				</td>					

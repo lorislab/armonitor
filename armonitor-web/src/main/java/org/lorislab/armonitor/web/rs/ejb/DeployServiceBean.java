@@ -15,27 +15,23 @@
  */
 package org.lorislab.armonitor.web.rs.ejb;
 
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import org.lorislab.armonitor.mapper.Mapper;
 import org.lorislab.armonitor.process.ejb.ProcessServiceBean;
-import org.lorislab.armonitor.store.criteria.StoreApplicationCriteria;
-import org.lorislab.armonitor.store.criteria.StoreBuildCriteria;
-import org.lorislab.armonitor.store.criteria.StoreSystemCriteria;
+import org.lorislab.armonitor.store.criteria.StoreSystemBuildCriteria;
 import org.lorislab.armonitor.store.ejb.StoreApplicationServiceBean;
-import org.lorislab.armonitor.store.ejb.StoreBuildServiceBean;
-import org.lorislab.armonitor.store.ejb.StoreSystemServiceBean;
+import org.lorislab.armonitor.store.ejb.StoreSystemBuildServiceBean;
 import org.lorislab.armonitor.store.model.StoreApplication;
-import org.lorislab.armonitor.store.model.StoreBuild;
-import org.lorislab.armonitor.store.model.StoreSystem;
 import org.lorislab.armonitor.store.model.StoreSystemBuild;
 import org.lorislab.armonitor.store.model.enums.StoreSystemBuildType;
 import org.lorislab.armonitor.web.rs.model.DeployRequest;
+import org.lorislab.armonitor.web.rs.model.DeploySystemBuild;
 import org.lorislab.armonitor.web.rs.model.DeploySystemBuilds;
 import org.lorislab.armonitor.web.rs.resources.Errors;
+import org.lorislab.armonitor.web.rs.wrapper.DeploySystemBuildWrapper;
 import org.lorislab.jel.ejb.exception.ServiceException;
 
 /**
@@ -54,23 +50,17 @@ public class DeployServiceBean {
     private ProcessServiceBean service;
 
     /**
-     * The store system service.
+     * The store system build service.
      */
     @EJB
-    private StoreSystemServiceBean systemService;
-    
-    /**
-     * The build service.
-     */
-    @EJB
-    private StoreBuildServiceBean buildService;
-    
+    private StoreSystemBuildServiceBean systemBuildService;
+
     /**
      * The application service.
      */
     @EJB
     private StoreApplicationServiceBean appService;
-    
+
     /**
      * Deploy the build on the system and send notification.
      *
@@ -94,12 +84,41 @@ public class DeployServiceBean {
      *
      * @param sys the system GUID.
      * @return the system builds for the system.
-     * 
+     *
      * @throws ServiceException if the method fails.
      */
     public DeploySystemBuilds getSystemBuilds(String sys) throws ServiceException {
-        StoreApplication app = appService.getApplicationForDeployment(sys);            
+        StoreApplication app = appService.getApplicationForDeployment(sys);
         return Mapper.map(app, DeploySystemBuilds.class);
+    }
+
+    /**
+     * Gets the system build information.
+     *
+     * @param sys the system GUID.
+     * @param build the build GUID.
+     * @return the deploy system build.
+     * @throws ServiceException if the method fails.
+     */
+    public DeploySystemBuild getSystemBuild(String sys, String build) throws ServiceException {
+
+        // load current system build
+        StoreSystemBuildCriteria ssbc = new StoreSystemBuildCriteria();
+        ssbc.setSystem(sys);
+        ssbc.setFetchBuild(true);
+        ssbc.setMaxDate(Boolean.TRUE);
+        StoreSystemBuild ssb = systemBuildService.getSystemBuild(ssbc);
+
+        // load the project, application, system and build information
+        StoreApplication app = appService.getApplicationForDeployment(sys, build);
+
+        // create wrapper
+        DeploySystemBuildWrapper wrapper = new DeploySystemBuildWrapper();
+        wrapper.setApplication(app);
+        wrapper.setSystemBuild(ssb);
+
+        // create the result
+        return Mapper.map(wrapper, DeploySystemBuild.class);
     }
 
 }
