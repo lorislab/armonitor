@@ -29,6 +29,10 @@
 			<url-pattern>/rs/deploy</url-pattern>		
 		</web-resource-collection>
 		<web-resource-collection>
+			<web-resource-name>Restricted Access - Deployer RS</web-resource-name>
+			<url-pattern>/rs/deploy/*</url-pattern>		
+		</web-resource-collection>		
+		<web-resource-collection>
 			<web-resource-name>Restricted Access - Deployer HTML</web-resource-name>
 			<url-pattern>/partials/deploy/*</url-pattern>
 			<http-method>GET</http-method>
