@@ -10,8 +10,6 @@ var app = angular.module('armonitor', [
 	'armonitor.controllers'
 ]);
 
-app.value('version', '0.0.3');
-
 app.provider('config', function() {
 	var _server;
 	return {

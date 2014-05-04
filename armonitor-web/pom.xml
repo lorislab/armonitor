@@ -116,6 +116,16 @@
 	
 	<build>		
 		<finalName>armonitor-web</finalName>
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/config</directory>
+				<filtering>true</filtering>
+				<targetPath>${project.build.directory}/config</targetPath>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
@@ -134,7 +144,7 @@
 							</regexFlags>
 							<file>${basedir}/src/main/webapp/index.html</file>
 							<outputFile>${project.build.directory}/${project.build.finalName}/index.html</outputFile>
-							<tokenValueMap>${basedir}/src/main/config/tokens.conf</tokenValueMap>
+							<tokenValueMap>${project.build.directory}/config/tokens.conf</tokenValueMap>
 						</configuration>						                    
 					</execution>										
 				</executions>								
